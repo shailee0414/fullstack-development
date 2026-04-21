@@ -1,0 +1,1700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>React Native — Complete Interview Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --surface2: #1a1a24;
+    --border: #2a2a3a;
+    --accent: #61dca3;
+    --accent2: #40c8e0;
+    --accent3: #ff6b6b;
+    --accent4: #a78bfa;
+    --text: #e8f0e8;
+    --muted: #8888a8;
+    --code-bg: #0d0d14;
+    --green: #4ade80;
+    --orange: #fb923c;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Syne', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  header {
+    position: relative;
+    padding: 60px 40px 40px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(135deg, #0a0f0a 60%, #101a10);
+    overflow: hidden;
+  }
+  header::before {
+    content: 'RN';
+    position: absolute;
+    right: -20px;
+    top: -30px;
+    font-size: 280px;
+    font-weight: 800;
+    color: var(--accent);
+    opacity: 0.04;
+    line-height: 1;
+    pointer-events: none;
+    font-family: 'Space Mono', monospace;
+  }
+  header h1 { font-size: clamp(2.2rem, 5vw, 4rem); font-weight: 800; line-height: 1; letter-spacing: -2px; }
+  header h1 span { color: var(--accent); }
+  header p { color: var(--muted); margin-top: 12px; font-family: 'Space Mono', monospace; font-size: 0.8rem; }
+  .badge-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 20px; }
+  .badge { padding: 4px 12px; border-radius: 4px; font-size: 0.7rem; font-family: 'Space Mono', monospace; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+  .badge-g { background: var(--accent); color: #000; }
+  .badge-t { background: var(--accent2); color: #000; }
+  .badge-r { background: var(--accent3); color: #fff; }
+  .badge-p { background: var(--accent4); color: #fff; }
+  .badge-o { background: var(--orange); color: #000; }
+
+  .shell { display: flex; min-height: calc(100vh - 200px); }
+
+  nav {
+    width: 260px;
+    flex-shrink: 0;
+    border-right: 1px solid var(--border);
+    padding: 24px 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    background: var(--surface);
+  }
+  nav::-webkit-scrollbar { width: 4px; }
+  nav::-webkit-scrollbar-track { background: transparent; }
+  nav::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .nav-section { padding: 0 16px; margin-bottom: 8px; }
+  .nav-section-title {
+    font-size: 0.6rem;
+    font-family: 'Space Mono', monospace;
+    color: var(--muted);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 8px 8px 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .nav-section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .nav-link {
+    display: block;
+    padding: 6px 8px;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.82rem;
+    border-radius: 4px;
+    transition: all 0.15s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .nav-link:hover { background: var(--surface2); color: var(--accent); }
+
+  main { flex: 1; padding: 40px; max-width: 900px; }
+
+  .topic { margin-bottom: 64px; scroll-margin-top: 20px; }
+  .topic-header { display: flex; align-items: baseline; gap: 16px; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+  .topic-num { font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--accent); background: rgba(97,220,163,0.1); padding: 2px 6px; border-radius: 3px; flex-shrink: 0; }
+  .topic-title { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.5px; }
+  .topic-tag { margin-left: auto; font-size: 0.6rem; font-family: 'Space Mono', monospace; padding: 2px 8px; border-radius: 3px; text-transform: uppercase; letter-spacing: 1px; }
+
+  .explain { color: #c0d8c0; line-height: 1.8; font-size: 0.95rem; margin-bottom: 16px; }
+  .explain strong { color: var(--accent); font-weight: 600; }
+  .explain em { color: var(--accent2); font-style: normal; }
+
+  .code-block { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; margin: 16px 0; overflow: hidden; }
+  .code-label { padding: 6px 14px; font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--muted); background: var(--surface2); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
+  .code-label::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); opacity: 0.7; }
+  pre { padding: 16px; overflow-x: auto; font-family: 'Space Mono', monospace; font-size: 0.78rem; line-height: 1.7; color: #c8d8f8; }
+  pre::-webkit-scrollbar { height: 4px; }
+  pre::-webkit-scrollbar-track { background: transparent; }
+  pre::-webkit-scrollbar-thumb { background: var(--border); }
+
+  .kw { color: #c792ea; }
+  .fn { color: #82aaff; }
+  .str { color: #c3e88d; }
+  .num { color: #f78c6c; }
+  .cm { color: #546e7a; font-style: italic; }
+  .op { color: var(--accent); }
+  .tag { color: #f07178; }
+  .attr { color: #ffcb6b; }
+
+  .callout { border-left: 3px solid var(--accent); background: rgba(97,220,163,0.05); padding: 12px 16px; margin: 16px 0; border-radius: 0 6px 6px 0; font-size: 0.88rem; color: #c0d8c0; line-height: 1.7; }
+  .callout.info { border-color: var(--accent2); background: rgba(64,200,224,0.05); }
+  .callout.warn { border-color: var(--accent3); background: rgba(255,107,107,0.05); }
+  .callout.tip  { border-color: var(--green);   background: rgba(74,222,128,0.05); }
+  .callout.hot  { border-color: var(--orange);  background: rgba(251,146,60,0.05); }
+
+  .tbl-wrap { overflow-x: auto; margin: 16px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  th { background: var(--surface2); padding: 10px 14px; text-align: left; font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--accent); letter-spacing: 1px; text-transform: uppercase; border-bottom: 1px solid var(--border); }
+  td { padding: 9px 14px; border-bottom: 1px solid rgba(42,58,42,0.5); color: #b0c8b0; line-height: 1.5; vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(255,255,255,0.02); }
+
+  .pill-list { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+  .pill { padding: 4px 12px; background: var(--surface2); border: 1px solid var(--border); border-radius: 100px; font-family: 'Space Mono', monospace; font-size: 0.72rem; color: var(--accent2); }
+
+  .section-divider { display: flex; align-items: center; gap: 16px; margin: 48px 0 32px; }
+  .section-divider-label { font-size: 0.7rem; font-family: 'Space Mono', monospace; color: var(--accent); letter-spacing: 3px; text-transform: uppercase; white-space: nowrap; background: var(--bg); padding: 0 12px; }
+  .section-divider-line { flex: 1; height: 1px; background: linear-gradient(90deg, var(--accent), transparent); }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 16px 0; }
+  @media (max-width: 700px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+
+  .card { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+  .card-title { font-size: 0.8rem; font-weight: 700; color: var(--accent); margin-bottom: 6px; font-family: 'Space Mono', monospace; }
+  .card p { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+
+  .hot-badge { display: inline-block; background: var(--orange); color: #000; font-size: 0.6rem; font-family: 'Space Mono', monospace; padding: 1px 6px; border-radius: 3px; margin-left: 6px; vertical-align: middle; font-weight: 700; }
+
+  .qa-block { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; margin: 12px 0; overflow: hidden; }
+  .qa-q { padding: 12px 16px; background: rgba(97,220,163,0.07); font-weight: 600; font-size: 0.88rem; color: var(--accent); border-bottom: 1px solid var(--border); }
+  .qa-a { padding: 12px 16px; font-size: 0.85rem; color: #b0c8b0; line-height: 1.7; }
+
+  .back-top { display: inline-block; margin-top: 12px; font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--muted); text-decoration: none; border: 1px solid var(--border); padding: 4px 10px; border-radius: 4px; transition: all 0.15s; }
+  .back-top:hover { color: var(--accent); border-color: var(--accent); }
+
+  .arch-flow { display: flex; align-items: center; gap: 0; margin: 16px 0; flex-wrap: wrap; }
+  .arch-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 10px 16px; font-family: 'Space Mono', monospace; font-size: 0.75rem; color: var(--accent2); text-align: center; min-width: 110px; }
+  .arch-arrow { color: var(--muted); font-size: 1.2rem; padding: 0 6px; }
+
+  @media (max-width: 768px) { nav { display: none; } main { padding: 20px; } header { padding: 30px 20px; } }
+</style>
+</head>
+<body>
+
+<header id="top">
+  <h1>React <span>Native</span><br>Interview Guide</h1>
+  <p>// Core → Advanced → New Architecture · Everything for 2–3 year interviews</p>
+  <div class="badge-row">
+    <span class="badge badge-g">Core RN</span>
+    <span class="badge badge-t">Navigation</span>
+    <span class="badge badge-r">Performance</span>
+    <span class="badge badge-p">New Arch</span>
+    <span class="badge badge-o">Interview Q&amp;A</span>
+  </div>
+</header>
+
+<div class="shell">
+
+<nav>
+  <div class="nav-section">
+    <div class="nav-section-title">Core Concepts</div>
+    <a class="nav-link" href="#what-is-rn">What is React Native?</a>
+    <a class="nav-link" href="#how-it-works">How It Works Internally</a>
+    <a class="nav-link" href="#components">Basic Components</a>
+    <a class="nav-link" href="#styling">Styling & Flexbox</a>
+    <a class="nav-link" href="#state-props">State & Props</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">Key Features</div>
+    <a class="nav-link" href="#navigation">Navigation</a>
+    <a class="nav-link" href="#user-input">User Input</a>
+    <a class="nav-link" href="#lists">Lists & FlatList</a>
+    <a class="nav-link" href="#api-calls">API Calls</a>
+    <a class="nav-link" href="#platform">Platform-Specific Code</a>
+    <a class="nav-link" href="#project-structure">Project Structure</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">Advanced</div>
+    <a class="nav-link" href="#performance">Performance Optimization</a>
+    <a class="nav-link" href="#native-modules">Native Modules</a>
+    <a class="nav-link" href="#async-storage">Async Storage</a>
+    <a class="nav-link" href="#animations">Animations</a>
+    <a class="nav-link" href="#permissions">Permissions</a>
+    <a class="nav-link" href="#push-notifications">Push Notifications</a>
+    <a class="nav-link" href="#deep-linking">Deep Linking</a>
+    <a class="nav-link" href="#offline">Offline Handling</a>
+    <a class="nav-link" href="#debugging">Debugging</a>
+    <a class="nav-link" href="#build-deploy">Build & Deployment</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">🔥 Hot Topics</div>
+    <a class="nav-link" href="#new-arch">New Architecture</a>
+    <a class="nav-link" href="#hermes">Hermes Engine</a>
+    <a class="nav-link" href="#flatlist-deep">FlatList Deep Dive</a>
+    <a class="nav-link" href="#memory">Memory Management</a>
+    <a class="nav-link" href="#error-boundaries">Error Boundaries</a>
+    <a class="nav-link" href="#security">Security</a>
+    <a class="nav-link" href="#typescript">TypeScript in RN</a>
+    <a class="nav-link" href="#testing">Testing</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">Interview</div>
+    <a class="nav-link" href="#rn-vs-react">RN vs React</a>
+    <a class="nav-link" href="#interview-qa">Top Q&A</a>
+  </div>
+</nav>
+
+<main>
+
+<!-- ═══════════════════════ CORE CONCEPTS ═══════════════════════ -->
+<div class="section-divider">
+  <div class="section-divider-line"></div>
+  <div class="section-divider-label">📱 Core Concepts</div>
+  <div class="section-divider-line" style="background:linear-gradient(90deg,transparent,var(--accent))"></div>
+</div>
+
+<!-- 1. What is React Native -->
+<div class="topic" id="what-is-rn">
+  <div class="topic-header">
+    <span class="topic-num">01</span>
+    <h2 class="topic-title">What is React Native?</h2>
+    <span class="topic-tag badge badge-g">Foundation</span>
+  </div>
+  <p class="explain">
+    <strong>React Native</strong> is a framework made by Facebook (Meta) that lets you build <em>real mobile apps</em> for iOS and Android using <strong>JavaScript and React</strong>. The key word is "real" — it does NOT make a website inside your app. It creates actual native mobile UI components.
+  </p>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">NOT a WebView app</div>
+      <p>A WebView just shows a website inside an app shell (like Cordova/Ionic). React Native is completely different — it renders real native UI elements like a real Android/iOS app.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Write Once, Run on Both</div>
+      <p>One codebase for both iOS and Android. You write JavaScript, and React Native translates your components to native platform UI. Huge time and cost saving.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Uses React</div>
+      <p>Same concepts — components, state, props, hooks. If you know React for web, learning React Native is mostly about learning the mobile-specific APIs and components.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Access Native APIs</div>
+      <p>Camera, GPS, accelerometer, push notifications — all accessible. Not limited like a web app. You get the full power of the native platform.</p>
+    </div>
+  </div>
+  <div class="callout tip">
+    <strong>Simple Analogy:</strong> Think of React Native as a translator. You write in JavaScript (English), and RN translates your instructions into native code (local language) that iOS and Android actually understand.
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- 2. How It Works -->
+<div class="topic" id="how-it-works">
+  <div class="topic-header">
+    <span class="topic-num">02</span>
+    <h2 class="topic-title">How React Native Works Internally</h2>
+    <span class="topic-tag badge badge-r">Interview Gold</span>
+  </div>
+  <p class="explain">
+    This is a <strong>very common interview question</strong>. React Native has two worlds — the <em>JavaScript world</em> and the <em>Native world</em>. Understanding how they communicate is crucial.
+  </p>
+
+  <p class="explain" style="margin-top:8px;"><strong>Old Architecture (Bridge-based):</strong></p>
+  <div class="arch-flow">
+    <div class="arch-box">JS Thread<br><span style="color:var(--muted);font-size:0.65rem">(your code runs here)</span></div>
+    <div class="arch-arrow">⟷</div>
+    <div class="arch-box">Bridge<br><span style="color:var(--muted);font-size:0.65rem">(serialized JSON)</span></div>
+    <div class="arch-arrow">⟷</div>
+    <div class="arch-box">Native Thread<br><span style="color:var(--muted);font-size:0.65rem">(iOS / Android)</span></div>
+  </div>
+
+  <div class="grid-2" style="margin-top:12px;">
+    <div class="card">
+      <div class="card-title">JS Thread</div>
+      <p>Your React and JavaScript logic runs here. When you call setState or press a button, this thread processes the logic and sends instructions to the native side.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Native Thread</div>
+      <p>The actual Android/iOS thread that renders real UI components and handles native events (touch, gestures). This is what users see and interact with.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">The Bridge</div>
+      <p>Connects JS ↔ Native. All messages are serialized (converted) to JSON and passed asynchronously. This JSON serialization is the main bottleneck — it's slow and can drop frames.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Shadow Thread</div>
+      <p>A third thread that calculates layout using Yoga (a cross-platform layout engine that implements Flexbox). Sits between JS and Native threads.</p>
+    </div>
+  </div>
+
+  <div class="callout warn">
+    <strong>Bridge Bottleneck:</strong> The bridge is async and serializes everything to JSON. If you're doing heavy work or many rapid interactions, the bridge gets congested. This is why animations done purely in JS can stutter — the JS thread can't keep up at 60fps.
+  </div>
+
+  <div class="code-block">
+    <div class="code-label">how-rn-works.js</div>
+<pre><span class="cm">// When you write this in JS:</span>
+<span class="tag">&lt;View</span> <span class="attr">style</span>={{ backgroundColor: <span class="str">'red'</span> }} <span class="tag">/&gt;</span>
+
+<span class="cm">// React Native internally does something like:</span>
+<span class="cm">// 1. JS creates a virtual node describing the View</span>
+<span class="cm">// 2. Shadow thread calculates the layout (Yoga)</span>
+<span class="cm">// 3. Bridge sends serialized message to native side</span>
+<span class="cm">// 4. Native side creates android.view.View / UIView</span>
+<span class="cm">// → User sees a real native component, not a web element</span></pre>
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- 3. Components -->
+<div class="topic" id="components">
+  <div class="topic-header">
+    <span class="topic-num">03</span>
+    <h2 class="topic-title">Basic Components (Building Blocks)</h2>
+    <span class="topic-tag badge badge-g">Core</span>
+  </div>
+  <p class="explain">
+    In web React you use HTML tags like <code>&lt;div&gt;</code>, <code>&lt;p&gt;</code>, <code>&lt;img&gt;</code>. In React Native, you use <strong>special components</strong> that map to native UI elements. You cannot use HTML tags in RN.
+  </p>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>RN Component</th><th>Web Equivalent</th><th>Maps to Native</th><th>Notes</th></tr>
+      <tr><td><code>View</code></td><td><code>&lt;div&gt;</code></td><td>UIView (iOS) / android.view.View</td><td>Container for layout. Default flexbox.</td></tr>
+      <tr><td><code>Text</code></td><td><code>&lt;p&gt;, &lt;span&gt;</code></td><td>UILabel / TextView</td><td>All text MUST be inside &lt;Text&gt;</td></tr>
+      <tr><td><code>Image</code></td><td><code>&lt;img&gt;</code></td><td>UIImageView / ImageView</td><td>Requires source prop with uri or require()</td></tr>
+      <tr><td><code>ScrollView</code></td><td><code>&lt;div&gt; + overflow:scroll</code></td><td>UIScrollView / ScrollView</td><td>Renders ALL children at once. Small lists only.</td></tr>
+      <tr><td><code>FlatList</code></td><td>Virtual scroll library</td><td>Recycled native cells</td><td>Lazy renders. Use for long lists.</td></tr>
+      <tr><td><code>TextInput</code></td><td><code>&lt;input&gt;</code></td><td>UITextField / EditText</td><td>Controlled with value + onChangeText</td></tr>
+      <tr><td><code>TouchableOpacity</code></td><td><code>&lt;button&gt;</code></td><td>Native touch handler</td><td>Dims on press. Most common press handler.</td></tr>
+      <tr><td><code>Pressable</code></td><td><code>&lt;button&gt;</code></td><td>Native press handler</td><td>Newer, more flexible than Touchable</td></tr>
+      <tr><td><code>SafeAreaView</code></td><td>—</td><td>Safe area insets</td><td>Avoids notch/status bar overlap on iOS</td></tr>
+      <tr><td><code>StatusBar</code></td><td>—</td><td>Native status bar</td><td>Control the top bar appearance</td></tr>
+      <tr><td><code>Modal</code></td><td><code>dialog</code></td><td>Native modal</td><td>Full-screen overlay</td></tr>
+      <tr><td><code>ActivityIndicator</code></td><td>CSS spinner</td><td>Native spinner</td><td>Loading indicator</td></tr>
+    </table>
+  </div>
+  <div class="code-block">
+    <div class="code-label">components-example.jsx</div>
+<pre><span class="kw">import</span> { View, Text, Image, TouchableOpacity } <span class="kw">from</span> <span class="str">'react-native'</span>;
+
+<span class="kw">export default function</span> <span class="fn">Card</span>({ title, imageUri, onPress }) {
+  <span class="kw">return</span> (
+    <span class="tag">&lt;TouchableOpacity</span> <span class="attr">onPress</span>={onPress} <span class="attr">activeOpacity</span>={<span class="num">0.8</span>}<span class="tag">&gt;</span>
+      <span class="tag">&lt;View</span> <span class="attr">style</span>={styles.card}<span class="tag">&gt;</span>
+        <span class="tag">&lt;Image</span>
+          <span class="attr">source</span>={{ uri: imageUri }}
+          <span class="attr">style</span>={styles.image}
+          <span class="attr">resizeMode</span>=<span class="str">"cover"</span>
+        <span class="tag">/&gt;</span>
+        <span class="tag">&lt;Text</span> <span class="attr">style</span>={styles.title}<span class="tag">&gt;</span>{title}<span class="tag">&lt;/Text&gt;</span>
+      <span class="tag">&lt;/View&gt;</span>
+    <span class="tag">&lt;/TouchableOpacity&gt;</span>
+  );
+}</pre>
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- 4. Styling -->
+<div class="topic" id="styling">
+  <div class="topic-header">
+    <span class="topic-num">04</span>
+    <h2 class="topic-title">Styling & Flexbox</h2>
+    <span class="topic-tag badge badge-g">Core</span>
+  </div>
+  <p class="explain">
+    React Native has <strong>no CSS</strong>. Styles are written as <em>JavaScript objects</em> using <code>StyleSheet.create()</code>. The names are similar to CSS but in camelCase. <strong>Flexbox is the default layout system</strong> — and in RN, the default flex direction is <em>column</em> (not row like web).
+  </p>
+  <div class="callout info">
+    <strong>Key difference from web:</strong> In RN, flexDirection defaults to <code>'column'</code> (top to bottom). On the web, it defaults to <code>'row'</code>. Remember this in interviews!
+  </div>
+  <div class="code-block">
+    <div class="code-label">styling.jsx</div>
+<pre><span class="kw">import</span> { StyleSheet, View, Text } <span class="kw">from</span> <span class="str">'react-native'</span>;
+
+<span class="kw">export default function</span> <span class="fn">App</span>() {
+  <span class="kw">return</span> (
+    <span class="tag">&lt;View</span> <span class="attr">style</span>={styles.container}<span class="tag">&gt;</span>
+      <span class="tag">&lt;View</span> <span class="attr">style</span>={styles.box}<span class="tag">&gt;</span>
+        <span class="tag">&lt;Text</span> <span class="attr">style</span>={styles.title}<span class="tag">&gt;</span>Hello!<span class="tag">&lt;/Text&gt;</span>
+      <span class="tag">&lt;/View&gt;</span>
+    <span class="tag">&lt;/View&gt;</span>
+  );
+}
+
+<span class="kw">const</span> styles = StyleSheet.<span class="fn">create</span>({
+  container: {
+    flex: <span class="num">1</span>,                  <span class="cm">// takes full screen height</span>
+    justifyContent: <span class="str">'center'</span>, <span class="cm">// vertical center (flexDirection: column)</span>
+    alignItems: <span class="str">'center'</span>,    <span class="cm">// horizontal center</span>
+    backgroundColor: <span class="str">'#fff'</span>,
+  },
+  box: {
+    width: <span class="num">200</span>,
+    height: <span class="num">100</span>,
+    backgroundColor: <span class="str">'#6c63ff'</span>,
+    borderRadius: <span class="num">12</span>,
+    padding: <span class="num">16</span>,
+    flexDirection: <span class="str">'row'</span>,  <span class="cm">// override to horizontal</span>
+    gap: <span class="num">8</span>,                 <span class="cm">// RN 0.71+ supports gap</span>
+  },
+  title: {
+    fontSize: <span class="num">18</span>,
+    fontWeight: <span class="str">'700'</span>,
+    color: <span class="str">'#fff'</span>,
+  }
+});</pre>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>CSS Property</th><th>React Native Equivalent</th><th>Notes</th></tr>
+      <tr><td>background-color</td><td>backgroundColor</td><td>camelCase</td></tr>
+      <tr><td>border-radius</td><td>borderRadius</td><td>—</td></tr>
+      <tr><td>font-size</td><td>fontSize</td><td>No units (dp by default)</td></tr>
+      <tr><td>margin / padding</td><td>margin / padding</td><td>Also marginTop, paddingHorizontal etc.</td></tr>
+      <tr><td>width: 50%</td><td>width: '50%'</td><td>String with % or number (dp)</td></tr>
+      <tr><td>display: flex</td><td>Always flex by default</td><td>No need to set it</td></tr>
+      <tr><td>z-index</td><td>zIndex</td><td>—</td></tr>
+      <tr><td>opacity</td><td>opacity</td><td>—</td></tr>
+      <tr><td>box-shadow</td><td>elevation (Android), shadow* (iOS)</td><td>Platform difference!</td></tr>
+    </table>
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- 5. State & Props -->
+<div class="topic" id="state-props">
+  <div class="topic-header">
+    <span class="topic-num">05</span>
+    <h2 class="topic-title">State & Props</h2>
+    <span class="topic-tag badge badge-g">Core</span>
+  </div>
+  <p class="explain">
+    Same as React web. <strong>Props</strong> = data passed from parent to child (read-only). <strong>State</strong> = data that lives inside a component and can change, causing re-renders. React Native uses the exact same hooks.
+  </p>
+  <div class="code-block">
+    <div class="code-label">state-props.jsx</div>
+<pre><span class="kw">import</span> { useState, useEffect } <span class="kw">from</span> <span class="str">'react'</span>;
+<span class="kw">import</span> { View, Text, TouchableOpacity } <span class="kw">from</span> <span class="str">'react-native'</span>;
+
+<span class="cm">// Props: parent passes data down</span>
+<span class="kw">function</span> <span class="fn">UserCard</span>({ name, age }) { <span class="cm">// destructured props</span>
+  <span class="kw">return</span> <span class="tag">&lt;Text&gt;</span>{name}, {age} years old<span class="tag">&lt;/Text&gt;</span>;
+}
+
+<span class="cm">// State: internal data that changes</span>
+<span class="kw">function</span> <span class="fn">Counter</span>() {
+  <span class="kw">const</span> [count, setCount] = <span class="fn">useState</span>(<span class="num">0</span>);
+
+  <span class="fn">useEffect</span>(() => {
+    <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">'Count changed:'</span>, count);
+    <span class="kw">return</span> () => <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">'Cleanup on unmount or re-run'</span>);
+  }, [count]); <span class="cm">// runs whenever count changes</span>
+
+  <span class="kw">return</span> (
+    <span class="tag">&lt;View&gt;</span>
+      <span class="tag">&lt;Text&gt;</span>Count: {count}<span class="tag">&lt;/Text&gt;</span>
+      <span class="tag">&lt;TouchableOpacity</span> <span class="attr">onPress</span>={() => <span class="fn">setCount</span>(c => c + <span class="num">1</span>)}<span class="tag">&gt;</span>
+        <span class="tag">&lt;Text&gt;</span>Increment<span class="tag">&lt;/Text&gt;</span>
+      <span class="tag">&lt;/TouchableOpacity&gt;</span>
+    <span class="tag">&lt;/View&gt;</span>
+  );
+}</pre>
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- ═══════════════════════ KEY FEATURES ═══════════════════════ -->
+<div class="section-divider">
+  <div class="section-divider-line"></div>
+  <div class="section-divider-label">🧭 Key Features</div>
+  <div class="section-divider-line" style="background:linear-gradient(90deg,transparent,var(--accent))"></div>
+</div>
+
+<!-- 6. Navigation -->
+<div class="topic" id="navigation">
+  <div class="topic-header">
+    <span class="topic-num">06</span>
+    <h2 class="topic-title">Navigation (React Navigation)</h2>
+    <span class="topic-tag badge badge-r">Very Important</span>
+  </div>
+  <p class="explain">
+    React Native has no built-in navigation. The most popular library is <strong>React Navigation</strong>. Think of it like a browser's back/forward but for mobile screens.
+  </p>
+  <div class="grid-3">
+    <div class="card">
+      <div class="card-title">Stack Navigator</div>
+      <p>Screens stacked on top of each other. Go to a screen = push. Back = pop. Like a stack of cards. Used for: Login → Home → Detail.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Tab Navigator</div>
+      <p>Bottom tabs (or top) that switch between screens. Like Instagram's bottom tab bar. Each tab has its own stack.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Drawer Navigator</div>
+      <p>Slide-out side menu (hamburger menu). Common in admin or content-heavy apps.</p>
+    </div>
+  </div>
+  <div class="code-block">
+    <div class="code-label">navigation-setup.jsx</div>
+<pre><span class="kw">import</span> { NavigationContainer } <span class="kw">from</span> <span class="str">'@react-navigation/native'</span>;
+<span class="kw">import</span> { createNativeStackNavigator } <span class="kw">from</span> <span class="str">'@react-navigation/native-stack'</span>;
+<span class="kw">import</span> { createBottomTabNavigator } <span class="kw">from</span> <span class="str">'@react-navigation/bottom-tabs'</span>;
+
+<span class="kw">const</span> Stack = <span class="fn">createNativeStackNavigator</span>();
+<span class="kw">const</span> Tab   = <span class="fn">createBottomTabNavigator</span>();
+
+<span class="cm">// Stack Navigation</span>
+<span class="kw">function</span> <span class="fn">AppStack</span>() {
+  <span class="kw">return</span> (
+    <span class="tag">&lt;Stack.Navigator</span> <span class="attr">initialRouteName</span>=<span class="str">"Home"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;Stack.Screen</span> <span class="attr">name</span>=<span class="str">"Home"</span>   <span class="attr">component</span>={HomeScreen} <span class="tag">/&gt;</span>
+      <span class="tag">&lt;Stack.Screen</span> <span class="attr">name</span>=<span class="str">"Detail"</span> <span class="attr">component</span>={DetailScreen} <span class="tag">/&gt;</span>
+    <span class="tag">&lt;/Stack.Navigator&gt;</span>
+  );
+}
+
+<span class="cm">// Navigating between screens</span>
+<span class="kw">function</span> <span class="fn">HomeScreen</span>({ navigation }) {
+  <span class="kw">return</span> (
+    <span class="tag">&lt;TouchableOpacity</span>
+      <span class="attr">onPress</span>={() => navigation.<span class="fn">navigate</span>(<span class="str">'Detail'</span>, { id: <span class="num">42</span>, name: <span class="str">'Alice'</span> })}
+    <span class="tag">&gt;</span>
+      <span class="tag">&lt;Text&gt;</span>Go to Detail<span class="tag">&lt;/Text&gt;</span>
+    <span class="tag">&lt;/TouchableOpacity&gt;</span>
+  );
+}
+
+<span class="cm">// Receiving params in destination screen</span>
+<span class="kw">function</span> <span class="fn">DetailScreen</span>({ route }) {
+  <span class="kw">const</span> { id, name } = route.params;
+  <span class="kw">return</span> <span class="tag">&lt;Text&gt;</span>User: {name} (ID: {id})<span class="tag">&lt;/Text&gt;</span>;
+}
+
+<span class="cm">// navigation methods:</span>
+<span class="cm">// navigate('Screen')   — go to screen (no duplicate)</span>
+<span class="cm">// push('Screen')       — push even if duplicate</span>
+<span class="cm">// goBack()             — go back</span>
+<span class="cm">// replace('Screen')    — replace current screen</span>
+<span class="cm">// reset({...})         — reset entire stack</span></pre>
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- 7. User Input -->
+<div class="topic" id="user-input">
+  <div class="topic-header">
+    <span class="topic-num">07</span>
+    <h2 class="topic-title">Handling User Input</h2>
+    <span class="topic-tag badge badge-g">Core</span>
+  </div>
+  <div class="code-block">
+    <div class="code-label">user-input.jsx</div>
+<pre><span class="kw">import</span> { useState } <span class="kw">from</span> <span class="str">'react'</span>;
+<span class="kw">import</span> { TextInput, Button, Pressable, TouchableOpacity, Text, View } <span class="kw">from</span> <span class="str">'react-native'</span>;
+
+<span class="kw">function</span> <span class="fn">LoginForm</span>() {
+  <span class="kw">const</span> [email, setEmail] = <span class="fn">useState</span>(<span class="str">''</span>);
+  <span class="kw">const</span> [password, setPassword] = <span class="fn">useState</span>(<span class="str">''</span>);
+
+  <span class="kw">return</span> (
+    <span class="tag">&lt;View&gt;</span>
+      <span class="tag">&lt;TextInput</span>
+        <span class="attr">value</span>={email}
+        <span class="attr">onChangeText</span>={setEmail}       <span class="cm">// called on every keystroke</span>
+        <span class="attr">placeholder</span>=<span class="str">"Email"</span>
+        <span class="attr">keyboardType</span>=<span class="str">"email-address"</span>  <span class="cm">// shows email keyboard</span>
+        <span class="attr">autoCapitalize</span>=<span class="str">"none"</span>
+      <span class="tag">/&gt;</span>
+      <span class="tag">&lt;TextInput</span>
+        <span class="attr">value</span>={password}
+        <span class="attr">onChangeText</span>={setPassword}
+        <span class="attr">secureTextEntry</span>               <span class="cm">// hides password</span>
+        <span class="attr">placeholder</span>=<span class="str">"Password"</span>
+      <span class="tag">/&gt;</span>
+
+      <span class="cm">// Basic button (limited styling)</span>
+      <span class="tag">&lt;Button</span> <span class="attr">title</span>=<span class="str">"Login"</span> <span class="attr">onPress</span>={() => <span class="fn">handleLogin</span>()} <span class="tag">/&gt;</span>
+
+      <span class="cm">// Touchable — dims on press, fully customizable</span>
+      <span class="tag">&lt;TouchableOpacity</span> <span class="attr">onPress</span>={() => {}} <span class="attr">activeOpacity</span>={<span class="num">0.7</span>}<span class="tag">&gt;</span>
+        <span class="tag">&lt;Text&gt;</span>Touchable Button<span class="tag">&lt;/Text&gt;</span>
+      <span class="tag">&lt;/TouchableOpacity&gt;</span>
+
+      <span class="cm">// Pressable — most modern, supports pressed state</span>
+      <span class="tag">&lt;Pressable</span>
+        <span class="attr">onPress</span>={() => {}}
+        <span class="attr">style</span>={({ pressed }) => ({ opacity: pressed ? <span class="num">0.5</span> : <span class="num">1</span> })}
+      <span class="tag">&gt;</span>
+        <span class="tag">&lt;Text&gt;</span>Pressable Button<span class="tag">&lt;/Text&gt;</span>
+      <span class="tag">&lt;/Pressable&gt;</span>
+    <span class="tag">&lt;/View&gt;</span>
+  );
+}</pre>
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- 8. FlatList -->
+<div class="topic" id="lists">
+  <div class="topic-header">
+    <span class="topic-num">08</span>
+    <h2 class="topic-title">Lists — FlatList vs ScrollView</h2>
+    <span class="topic-tag badge badge-r">Very Important</span>
+  </div>
+  <p class="explain">
+    This is asked in almost every React Native interview. <strong>Never use ScrollView for long lists.</strong> Use FlatList instead. Here's why:
+  </p>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">ScrollView ❌ for long lists</div>
+      <p>Renders ALL children immediately — even items not visible on screen. If you have 1000 items, all 1000 are in memory. This causes memory issues and slow initial load.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">FlatList ✅ for long lists</div>
+      <p>Only renders items currently visible on screen + a small buffer. As you scroll, old items are recycled and new ones are rendered. Like a window sliding over your data.</p>
+    </div>
+  </div>
+  <div class="code-block">
+    <div class="code-label">flatlist-example.jsx</div>
+<pre><span class="kw">import</span> { FlatList, Text, View } <span class="kw">from</span> <span class="str">'react-native'</span>;
+
+<span class="kw">const</span> DATA = [
+  { id: <span class="str">'1'</span>, name: <span class="str">'Alice'</span> },
+  { id: <span class="str">'2'</span>, name: <span class="str">'Bob'</span> },
+  <span class="cm">// ... 1000 more items</span>
+];
+
+<span class="kw">function</span> <span class="fn">UserList</span>() {
+  <span class="kw">return</span> (
+    <span class="tag">&lt;FlatList</span>
+      <span class="attr">data</span>={DATA}
+      <span class="attr">keyExtractor</span>={item => item.id}    <span class="cm">// unique key — required!</span>
+      <span class="attr">renderItem</span>={({ item }) => (        <span class="cm">// render each row</span>
+        <span class="tag">&lt;View&gt;</span>
+          <span class="tag">&lt;Text&gt;</span>{item.name}<span class="tag">&lt;/Text&gt;</span>
+        <span class="tag">&lt;/View&gt;</span>
+      )}
+      <span class="attr">initialNumToRender</span>={<span class="num">10</span>}           <span class="cm">// how many to render first</span>
+      <span class="attr">windowSize</span>={<span class="num">5</span>}                   <span class="cm">// render 5x viewport height</span>
+      <span class="attr">removeClippedSubviews</span>             <span class="cm">// unmount off-screen (Android)</span>
+      <span class="attr">ListHeaderComponent</span>={() => <span class="tag">&lt;Text&gt;</span>Users<span class="tag">&lt;/Text&gt;</span>}  <span class="cm">// header</span>
+      <span class="attr">ListEmptyComponent</span>={() => <span class="tag">&lt;Text&gt;</span>No users<span class="tag">&lt;/Text&gt;</span>}  <span class="cm">// empty state</span>
+      <span class="attr">onEndReached</span>={() => <span class="fn">loadMore</span>()}  <span class="cm">// pagination trigger</span>
+      <span class="attr">onEndReachedThreshold</span>={<span class="num">0.5</span>}       <span class="cm">// trigger at 50% from bottom</span>
+    <span class="tag">/&gt;</span>
+  );
+}</pre>
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- 9. API Calls -->
+<div class="topic" id="api-calls">
+  <div class="topic-header">
+    <span class="topic-num">09</span>
+    <h2 class="topic-title">API Calls</h2>
+    <span class="topic-tag badge badge-g">Core</span>
+  </div>
+  <div class="code-block">
+    <div class="code-label">api-calls.jsx</div>
+<pre><span class="kw">import</span> { useState, useEffect } <span class="kw">from</span> <span class="str">'react'</span>;
+<span class="kw">import</span> { View, Text, ActivityIndicator } <span class="kw">from</span> <span class="str">'react-native'</span>;
+
+<span class="kw">function</span> <span class="fn">UserScreen</span>() {
+  <span class="kw">const</span> [users, setUsers]     = <span class="fn">useState</span>([]);
+  <span class="kw">const</span> [loading, setLoading] = <span class="fn">useState</span>(<span class="kw">true</span>);
+  <span class="kw">const</span> [error, setError]     = <span class="fn">useState</span>(<span class="kw">null</span>);
+
+  <span class="fn">useEffect</span>(() => {
+    <span class="kw">const</span> <span class="fn">fetchUsers</span> = <span class="kw">async</span> () => {
+      <span class="kw">try</span> {
+        <span class="fn">setLoading</span>(<span class="kw">true</span>);
+        <span class="kw">const</span> res  = <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">'https://api.example.com/users'</span>);
+        <span class="kw">if</span> (!res.ok) <span class="kw">throw new</span> Error(<span class="str">`HTTP ${res.status}`</span>);
+        <span class="kw">const</span> data = <span class="kw">await</span> res.<span class="fn">json</span>();
+        <span class="fn">setUsers</span>(data);
+      } <span class="kw">catch</span> (e) {
+        <span class="fn">setError</span>(e.message);
+      } <span class="kw">finally</span> {
+        <span class="fn">setLoading</span>(<span class="kw">false</span>);
+      }
+    };
+    <span class="fn">fetchUsers</span>();
+  }, []);
+
+  <span class="kw">if</span> (loading) <span class="kw">return</span> <span class="tag">&lt;ActivityIndicator</span> <span class="attr">size</span>=<span class="str">"large"</span> <span class="tag">/&gt;</span>;
+  <span class="kw">if</span> (error)   <span class="kw">return</span> <span class="tag">&lt;Text&gt;</span>Error: {error}<span class="tag">&lt;/Text&gt;</span>;
+
+  <span class="kw">return</span> <span class="tag">&lt;Text&gt;</span>{users.length} users loaded<span class="tag">&lt;/Text&gt;</span>;
+}</pre>
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- 10. Platform -->
+<div class="topic" id="platform">
+  <div class="topic-header">
+    <span class="topic-num">10</span>
+    <h2 class="topic-title">Platform-Specific Code</h2>
+    <span class="topic-tag badge badge-g">Core</span>
+  </div>
+  <p class="explain">Sometimes iOS and Android need different code. React Native gives you tools to handle this cleanly without duplicating entire files.</p>
+  <div class="code-block">
+    <div class="code-label">platform-specific.jsx</div>
+<pre><span class="kw">import</span> { Platform, StyleSheet } <span class="kw">from</span> <span class="str">'react-native'</span>;
+
+<span class="cm">// Method 1: Inline Platform.OS</span>
+<span class="kw">const</span> isIOS     = Platform.OS === <span class="str">'ios'</span>;
+<span class="kw">const</span> isAndroid = Platform.OS === <span class="str">'android'</span>;
+
+<span class="kw">const</span> paddingTop = Platform.<span class="fn">select</span>({
+  ios:     <span class="num">44</span>,    <span class="cm">// safe area on iPhone</span>
+  android: <span class="num">24</span>,    <span class="cm">// status bar height on Android</span>
+  default: <span class="num">0</span>,
+});
+
+<span class="cm">// Method 2: Platform-specific files</span>
+<span class="cm">// Button.ios.js    → used automatically on iOS</span>
+<span class="cm">// Button.android.js → used automatically on Android</span>
+<span class="cm">// import Button from './Button'; ← RN picks the right file</span>
+
+<span class="cm">// Method 3: In StyleSheet</span>
+<span class="kw">const</span> styles = StyleSheet.<span class="fn">create</span>({
+  shadow: {
+    ...Platform.<span class="fn">select</span>({
+      ios:     { shadowColor: <span class="str">'#000'</span>, shadowOpacity: <span class="num">0.3</span>, shadowRadius: <span class="num">4</span> },
+      android: { elevation: <span class="num">4</span> },  <span class="cm">// Android uses elevation for shadows</span>
+    }),
+  }
+});</pre>
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- 11. Project Structure -->
+<div class="topic" id="project-structure">
+  <div class="topic-header">
+    <span class="topic-num">11</span>
+    <h2 class="topic-title">Production Project Structure</h2>
+    <span class="topic-tag badge badge-t">Real World</span>
+  </div>
+  <div class="code-block">
+    <div class="code-label">folder-structure.txt</div>
+<pre>my-app/
+├── src/
+│   ├── components/       <span class="cm">← Reusable UI pieces (Button, Card, Avatar)</span>
+│   ├── screens/          <span class="cm">← Full screen views (HomeScreen, ProfileScreen)</span>
+│   ├── navigation/       <span class="cm">← All React Navigation config in one place</span>
+│   ├── store/            <span class="cm">← Redux / Zustand / Context state management</span>
+│   │   ├── slices/       <span class="cm">← Redux Toolkit slices</span>
+│   │   └── store.ts      <span class="cm">← Redux store config</span>
+│   ├── services/         <span class="cm">← API calls (userService.ts, authService.ts)</span>
+│   ├── hooks/            <span class="cm">← Custom hooks (useAuth, useFetch)</span>
+│   ├── utils/            <span class="cm">← Helper functions (formatDate, validators)</span>
+│   ├── constants/        <span class="cm">← Colors, spacing, API endpoints</span>
+│   ├── types/            <span class="cm">← TypeScript interfaces/types</span>
+│   └── assets/           <span class="cm">← Images, fonts, icons</span>
+├── App.tsx               <span class="cm">← Entry point</span>
+├── android/              <span class="cm">← Native Android project</span>
+├── ios/                  <span class="cm">← Native iOS project</span>
+└── package.json</pre>
+  </div>
+  <div class="callout tip">This structure keeps concerns separated. Screens import from services for API calls, from store for state, and from components for UI. Easy to test, easy to maintain.</div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- ═══════════════════════ ADVANCED ═══════════════════════ -->
+<div class="section-divider">
+  <div class="section-divider-line"></div>
+  <div class="section-divider-label">🚀 Advanced Concepts</div>
+  <div class="section-divider-line" style="background:linear-gradient(90deg,transparent,var(--accent))"></div>
+</div>
+
+<!-- 12. Performance -->
+<div class="topic" id="performance">
+  <div class="topic-header">
+    <span class="topic-num">12</span>
+    <h2 class="topic-title">Performance Optimization</h2>
+    <span class="topic-tag badge badge-r">Very Important</span>
+  </div>
+  <p class="explain">The goal is to keep your app at <strong>60fps</strong> (or 120fps on Pro devices) — that means each frame must render in under 16ms. Re-renders are the main enemy.</p>
+  <div class="code-block">
+    <div class="code-label">performance.jsx</div>
+<pre><span class="kw">import</span> { memo, useCallback, useMemo } <span class="kw">from</span> <span class="str">'react'</span>;
+
+<span class="cm">// 1. React.memo — skip re-render if props didn't change</span>
+<span class="kw">const</span> UserCard = memo(<span class="kw">function</span> <span class="fn">UserCard</span>({ name, age }) {
+  <span class="kw">return</span> <span class="tag">&lt;Text&gt;</span>{name}, {age}<span class="tag">&lt;/Text&gt;</span>;
+});
+<span class="cm">// Now UserCard only re-renders when name or age changes</span>
+
+<span class="cm">// 2. useCallback — memoize functions so they don't recreate each render</span>
+<span class="kw">function</span> <span class="fn">Parent</span>() {
+  <span class="kw">const</span> [count, setCount] = <span class="fn">useState</span>(<span class="num">0</span>);
+
+  <span class="kw">const</span> <span class="fn">handlePress</span> = <span class="fn">useCallback</span>(() => {
+    <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">'pressed'</span>);
+  }, []); <span class="cm">// ← empty deps = created once, never recreated</span>
+
+  <span class="cm">// Without useCallback: every Parent re-render creates a NEW handlePress</span>
+  <span class="cm">// → UserCard sees new prop → unnecessary re-render</span>
+  <span class="kw">return</span> <span class="tag">&lt;UserCard</span> <span class="attr">onPress</span>={<span class="fn">handlePress</span>} <span class="tag">/&gt;</span>;
+}
+
+<span class="cm">// 3. useMemo — memoize expensive computed values</span>
+<span class="kw">const</span> filteredList = <span class="fn">useMemo</span>(
+  () => bigList.<span class="fn">filter</span>(item => item.active),
+  [bigList] <span class="cm">// only recomputes when bigList changes</span>
+);
+
+<span class="cm">// 4. Optimize FlatList</span>
+<span class="tag">&lt;FlatList</span>
+  <span class="attr">data</span>={data}
+  <span class="attr">renderItem</span>={<span class="fn">useCallback</span>(({ item }) => <span class="tag">&lt;Row</span> <span class="attr">item</span>={item} <span class="tag">/&gt;</span>, [])}
+  <span class="attr">keyExtractor</span>={<span class="fn">useCallback</span>(item => item.id, [])}
+  <span class="attr">getItemLayout</span>={(_, index) => ({  <span class="cm">// skip layout calculation</span>
+    length: <span class="num">60</span>, offset: <span class="num">60</span> * index, index
+  })}
+  <span class="attr">maxToRenderPerBatch</span>={<span class="num">10</span>}
+  <span class="attr">windowSize</span>={<span class="num">5</span>}
+<span class="tag">/&gt;</span></pre>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Technique</th><th>What It Does</th><th>When to Use</th></tr>
+      <tr><td><code>React.memo</code></td><td>Skip re-render if props unchanged</td><td>Pure components that render often</td></tr>
+      <tr><td><code>useCallback</code></td><td>Memoize function references</td><td>Functions passed as props to memo'd children</td></tr>
+      <tr><td><code>useMemo</code></td><td>Memoize expensive computations</td><td>Heavy filtering, sorting, transformations</td></tr>
+      <tr><td><code>getItemLayout</code></td><td>Pre-calculate item heights in FlatList</td><td>Fixed-height list rows</td></tr>
+      <tr><td><code>removeClippedSubviews</code></td><td>Unmount off-screen views (Android)</td><td>Very long lists on Android</td></tr>
+      <tr><td>InteractionManager</td><td>Defer work until animations are done</td><td>Heavy work after navigation transition</td></tr>
+    </table>
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- 13. Native Modules -->
+<div class="topic" id="native-modules">
+  <div class="topic-header">
+    <span class="topic-num">13</span>
+    <h2 class="topic-title">Native Modules</h2>
+    <span class="topic-tag badge badge-p">Advanced</span>
+  </div>
+  <p class="explain">
+    Sometimes React Native doesn't have a JS library for what you need. You can write code in <strong>Java/Kotlin (Android)</strong> or <strong>Swift/Objective-C (iOS)</strong> and expose it to JavaScript. This is called a <strong>Native Module</strong>.
+  </p>
+  <div class="callout info">
+    <strong>Example use cases:</strong> Bluetooth LE communication, custom hardware SDKs, advanced camera controls, payment SDKs that only have native SDKs. Most common ones already have community packages (react-native-camera, react-native-ble-plx etc.).
+  </div>
+  <div class="code-block">
+    <div class="code-label">native-module-usage.js</div>
+<pre><span class="cm">// After writing your native module in Java/Swift,</span>
+<span class="cm">// you access it in JS like this:</span>
+<span class="kw">import</span> { NativeModules } <span class="kw">from</span> <span class="str">'react-native'</span>;
+
+<span class="kw">const</span> { MyCustomModule } = NativeModules;
+
+<span class="cm">// Call native method</span>
+MyCustomModule.<span class="fn">doSomething</span>(<span class="str">'param'</span>)
+  .<span class="fn">then</span>(result => <span class="fn">console</span>.<span class="fn">log</span>(result))
+  .<span class="fn">catch</span>(err => <span class="fn">console</span>.<span class="fn">error</span>(err));</pre>
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- 14. Async Storage -->
+<div class="topic" id="async-storage">
+  <div class="topic-header">
+    <span class="topic-num">14</span>
+    <h2 class="topic-title">Async Storage (Local Storage for RN)</h2>
+    <span class="topic-tag badge badge-g">Core</span>
+  </div>
+  <p class="explain">
+    React Native has no <code>localStorage</code>. Instead, use <strong>AsyncStorage</strong> — it's like localStorage but asynchronous (returns Promises). Good for storing small data like user preferences, tokens (use SecureStore for sensitive data).
+  </p>
+  <div class="code-block">
+    <div class="code-label">async-storage.js</div>
+<pre><span class="kw">import</span> AsyncStorage <span class="kw">from</span> <span class="str">'@react-native-async-storage/async-storage'</span>;
+
+<span class="cm">// Save data</span>
+<span class="kw">await</span> AsyncStorage.<span class="fn">setItem</span>(<span class="str">'user'</span>, <span class="fn">JSON</span>.<span class="fn">stringify</span>({ name: <span class="str">'Alice'</span> }));
+
+<span class="cm">// Read data</span>
+<span class="kw">const</span> raw  = <span class="kw">await</span> AsyncStorage.<span class="fn">getItem</span>(<span class="str">'user'</span>);
+<span class="kw">const</span> user = raw ? <span class="fn">JSON</span>.<span class="fn">parse</span>(raw) : <span class="kw">null</span>;
+
+<span class="cm">// Delete</span>
+<span class="kw">await</span> AsyncStorage.<span class="fn">removeItem</span>(<span class="str">'user'</span>);
+
+<span class="cm">// Clear everything</span>
+<span class="kw">await</span> AsyncStorage.<span class="fn">clear</span>();
+
+<span class="cm">// ⚠ For sensitive data (tokens, passwords) use:</span>
+<span class="cm">// expo-secure-store  OR  react-native-keychain</span>
+<span class="cm">// These use the device's secure enclave / Keystore</span></pre>
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- 15. Animations -->
+<div class="topic" id="animations">
+  <div class="topic-header">
+    <span class="topic-num">15</span>
+    <h2 class="topic-title">Animations</h2>
+    <span class="topic-tag badge badge-p">Advanced</span>
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Animated API (Built-in)</div>
+      <p>RN's built-in animation system. Works on JS thread by default. Good for basic fade, slide, scale. Use <code>useNativeDriver: true</code> to run on native thread for smooth 60fps.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">React Native Reanimated</div>
+      <p>Third-party library that runs animations entirely on the native/UI thread. No bridge lag. The go-to for production apps. Required for complex gesture-based animations.</p>
+    </div>
+  </div>
+  <div class="code-block">
+    <div class="code-label">animations.jsx</div>
+<pre><span class="kw">import</span> { Animated, useRef, useEffect } <span class="kw">from</span> <span class="str">'react-native'</span>;
+
+<span class="kw">function</span> <span class="fn">FadeIn</span>({ children }) {
+  <span class="kw">const</span> opacity = <span class="fn">useRef</span>(<span class="kw">new</span> Animated.<span class="fn">Value</span>(<span class="num">0</span>)).<span class="fn">current</span>;
+
+  <span class="fn">useEffect</span>(() => {
+    Animated.<span class="fn">timing</span>(opacity, {
+      toValue: <span class="num">1</span>,
+      duration: <span class="num">500</span>,
+      useNativeDriver: <span class="kw">true</span>, <span class="cm">// 🔑 MUST use for opacity/transform</span>
+    }).<span class="fn">start</span>();
+  }, []);
+
+  <span class="kw">return</span> (
+    <span class="tag">&lt;Animated.View</span> <span class="attr">style</span>={{ opacity }}<span class="tag">&gt;</span>
+      {children}
+    <span class="tag">&lt;/Animated.View&gt;</span>
+  );
+}
+
+<span class="cm">// Animated API types:</span>
+<span class="cm">// Animated.timing()  — smooth over time</span>
+<span class="cm">// Animated.spring()  — bouncy, physics-based</span>
+<span class="cm">// Animated.decay()   — slows to a stop</span>
+<span class="cm">// Animated.sequence() — run one after another</span>
+<span class="cm">// Animated.parallel() — run simultaneously</span></pre>
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- 16. Permissions -->
+<div class="topic" id="permissions">
+  <div class="topic-header">
+    <span class="topic-num">16</span>
+    <h2 class="topic-title">Permissions Handling</h2>
+    <span class="topic-tag badge badge-g">Core</span>
+  </div>
+  <div class="code-block">
+    <div class="code-label">permissions.js</div>
+<pre><span class="kw">import</span> { PermissionsAndroid, Platform } <span class="kw">from</span> <span class="str">'react-native'</span>;
+<span class="kw">import</span> { request, PERMISSIONS, RESULTS } <span class="kw">from</span> <span class="str">'react-native-permissions'</span>;
+
+<span class="kw">async function</span> <span class="fn">requestCameraPermission</span>() {
+  <span class="kw">const</span> permission = Platform.OS === <span class="str">'ios'</span>
+    ? PERMISSIONS.IOS.CAMERA
+    : PERMISSIONS.ANDROID.CAMERA;
+
+  <span class="kw">const</span> result = <span class="kw">await</span> <span class="fn">request</span>(permission);
+
+  <span class="kw">switch</span> (result) {
+    <span class="kw">case</span> RESULTS.GRANTED:
+      <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">'Camera permission granted'</span>);
+      <span class="kw">break</span>;
+    <span class="kw">case</span> RESULTS.DENIED:
+      <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">'Permission denied, can request again'</span>);
+      <span class="kw">break</span>;
+    <span class="kw">case</span> RESULTS.BLOCKED:
+      <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">'Blocked — user must go to settings'</span>);
+      <span class="kw">break</span>;
+  }
+}
+
+<span class="cm">// Common permissions: Camera, Microphone, Location,</span>
+<span class="cm">// Contacts, Notifications, Photo Library, Bluetooth</span></pre>
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- 17. Push Notifications -->
+<div class="topic" id="push-notifications">
+  <div class="topic-header">
+    <span class="topic-num">17</span>
+    <h2 class="topic-title">Push Notifications (Firebase FCM)</h2>
+    <span class="topic-tag badge badge-t">Important</span>
+  </div>
+  <p class="explain">Push notifications are sent from your server → Firebase Cloud Messaging (FCM) → device. You need to handle: <em>foreground</em> (app open), <em>background</em> (app minimized), and <em>killed</em> (app closed) states differently.</p>
+  <div class="code-block">
+    <div class="code-label">push-notifications.js</div>
+<pre><span class="kw">import</span> messaging <span class="kw">from</span> <span class="str">'@react-native-firebase/messaging'</span>;
+
+<span class="cm">// 1. Request permission (iOS requires explicit permission)</span>
+<span class="kw">await</span> messaging().<span class="fn">requestPermission</span>();
+
+<span class="cm">// 2. Get device token (send this to your backend)</span>
+<span class="kw">const</span> token = <span class="kw">await</span> messaging().<span class="fn">getToken</span>();
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="str">'FCM Token:'</span>, token); <span class="cm">// save to your server</span>
+
+<span class="cm">// 3. Foreground — app is open</span>
+messaging().<span class="fn">onMessage</span>(<span class="kw">async</span> remoteMessage => {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">'Foreground message:'</span>, remoteMessage.notification?.title);
+  <span class="cm">// Show in-app notification banner</span>
+});
+
+<span class="cm">// 4. Background / Killed — app is in background or closed</span>
+messaging().<span class="fn">setBackgroundMessageHandler</span>(<span class="kw">async</span> remoteMessage => {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">'Background message received'</span>);
+});
+
+<span class="cm">// 5. App opened FROM a notification tap</span>
+messaging().<span class="fn">onNotificationOpenedApp</span>(remoteMessage => {
+  <span class="cm">// Navigate to relevant screen</span>
+  navigation.<span class="fn">navigate</span>(<span class="str">'Detail'</span>, { id: remoteMessage.data.id });
+});</pre>
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- 18. Deep Linking -->
+<div class="topic" id="deep-linking">
+  <div class="topic-header">
+    <span class="topic-num">18</span>
+    <h2 class="topic-title">Deep Linking</h2>
+    <span class="topic-tag badge badge-t">Important</span>
+  </div>
+  <p class="explain">
+    <strong>Deep linking</strong> lets you open a specific screen in your app from a URL — like clicking <code>myapp://products/42</code> and landing directly on the product detail screen. Used in push notifications, emails, and web-to-app redirects.
+  </p>
+  <div class="code-block">
+    <div class="code-label">deep-linking.jsx</div>
+<pre><span class="cm">// In your React Navigation config:</span>
+<span class="kw">const</span> linking = {
+  prefixes: [<span class="str">'myapp://'</span>, <span class="str">'https://myapp.com'</span>],
+  config: {
+    screens: {
+      Home:    <span class="str">'home'</span>,             <span class="cm">// myapp://home</span>
+      Product: <span class="str">'products/:id'</span>,    <span class="cm">// myapp://products/42</span>
+      Profile: <span class="str">'user/:username'</span>,  <span class="cm">// myapp://user/alice</span>
+    }
+  }
+};
+
+<span class="kw">function</span> <span class="fn">App</span>() {
+  <span class="kw">return</span> (
+    <span class="tag">&lt;NavigationContainer</span> <span class="attr">linking</span>={linking}<span class="tag">&gt;</span>
+      <span class="cm">// React Navigation handles the URL automatically</span>
+      <span class="cm">// and navigates to the right screen</span>
+    <span class="tag">&lt;/NavigationContainer&gt;</span>
+  );
+}</pre>
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- 19. Offline -->
+<div class="topic" id="offline">
+  <div class="topic-header">
+    <span class="topic-num">19</span>
+    <h2 class="topic-title">Offline Handling</h2>
+    <span class="topic-tag badge badge-t">Important</span>
+  </div>
+  <div class="code-block">
+    <div class="code-label">offline.js</div>
+<pre><span class="kw">import</span> NetInfo <span class="kw">from</span> <span class="str">'@react-native-community/netinfo'</span>;
+
+<span class="cm">// Check current network state</span>
+<span class="kw">const</span> state = <span class="kw">await</span> NetInfo.<span class="fn">fetch</span>();
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="str">'Is connected?'</span>, state.isConnected);
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="str">'Connection type:'</span>, state.type); <span class="cm">// wifi, cellular, none</span>
+
+<span class="cm">// Subscribe to network changes</span>
+<span class="kw">const</span> unsubscribe = NetInfo.<span class="fn">addEventListener</span>(state => {
+  <span class="kw">if</span> (!state.isConnected) {
+    <span class="fn">showOfflineBanner</span>();
+  } <span class="kw">else</span> {
+    <span class="fn">hideOfflineBanner</span>();
+    <span class="fn">syncPendingData</span>(); <span class="cm">// sync queued actions when back online</span>
+  }
+});
+
+<span class="cm">// Cleanup on unmount</span>
+<span class="kw">return</span> () => <span class="fn">unsubscribe</span>();
+
+<span class="cm">// Cache strategy: store API responses in AsyncStorage</span>
+<span class="cm">// On load: show cached data immediately, then refresh from API</span>
+<span class="cm">// This pattern is called "stale-while-revalidate"</span></pre>
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- 20. Debugging -->
+<div class="topic" id="debugging">
+  <div class="topic-header">
+    <span class="topic-num">20</span>
+    <h2 class="topic-title">Debugging</h2>
+    <span class="topic-tag badge badge-g">Core</span>
+  </div>
+  <div class="grid-2">
+    <div class="card"><div class="card-title">Flipper</div><p>Desktop app by Meta. View network requests, inspect the component tree, check Redux state, and view native logs. Must-have dev tool.</p></div>
+    <div class="card"><div class="card-title">React DevTools</div><p>Browser-based tools to inspect component tree, props, state, and performance. Connect via <code>npx react-devtools</code>.</p></div>
+    <div class="card"><div class="card-title">Console Logs</div><p><code>console.log()</code> shows in Metro bundler terminal or Flipper logs. Use <code>console.warn()</code> for yellow box warnings.</p></div>
+    <div class="card"><div class="card-title">In-App Dev Menu</div><p>Shake device (or Cmd+D in simulator) → Reload, Debug, Performance Monitor, Element Inspector.</p></div>
+  </div>
+  <div class="code-block">
+    <div class="code-label">debugging.js</div>
+<pre><span class="cm">// Shake device or press Cmd+D (iOS) / Cmd+M (Android sim)</span>
+<span class="cm">// → "Debug with Chrome" → opens Chrome debugger</span>
+
+<span class="cm">// Performance monitor — shows FPS, RAM, JS heap</span>
+<span class="cm">// Element inspector — tap any element to inspect styles</span>
+
+<span class="cm">// Console shortcuts</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="str">'info'</span>);
+<span class="fn">console</span>.<span class="fn">warn</span>(<span class="str">'yellow warning box'</span>);
+<span class="fn">console</span>.<span class="fn">error</span>(<span class="str">'red error box'</span>);
+<span class="fn">console</span>.<span class="fn">table</span>(arrayData); <span class="cm">// nice table view</span>
+
+<span class="cm">// Crash reporting in production:</span>
+<span class="cm">// Firebase Crashlytics / Sentry</span></pre>
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- 21. Build & Deploy -->
+<div class="topic" id="build-deploy">
+  <div class="topic-header">
+    <span class="topic-num">21</span>
+    <h2 class="topic-title">Build & Deployment</h2>
+    <span class="topic-tag badge badge-t">Practical</span>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Platform</th><th>Format</th><th>Command</th><th>Submitted to</th></tr>
+      <tr><td>Android Debug</td><td>.apk</td><td><code>cd android && ./gradlew assembleDebug</code></td><td>Side-load / testing</td></tr>
+      <tr><td>Android Release</td><td>.aab (preferred) / .apk</td><td><code>./gradlew bundleRelease</code></td><td>Google Play Store</td></tr>
+      <tr><td>iOS Debug</td><td>.app</td><td>Xcode → Run</td><td>Simulators</td></tr>
+      <tr><td>iOS Release</td><td>.ipa</td><td>Xcode → Archive</td><td>Apple App Store</td></tr>
+    </table>
+  </div>
+  <div class="callout info"><strong>AAB vs APK:</strong> Google Play now requires AAB (Android App Bundle). It's smaller because Play Store delivers only the resources for each device. APK is for direct installation (debugging, enterprise).</div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- ═══════════════════════ HOT TOPICS ═══════════════════════ -->
+<div class="section-divider">
+  <div class="section-divider-line"></div>
+  <div class="section-divider-label">🔥 Hot Interview Topics</div>
+  <div class="section-divider-line" style="background:linear-gradient(90deg,transparent,var(--accent))"></div>
+</div>
+
+<!-- 22. New Architecture -->
+<div class="topic" id="new-arch">
+  <div class="topic-header">
+    <span class="topic-num">22</span>
+    <h2 class="topic-title">New Architecture <span class="hot-badge">🔥 HOT</span></h2>
+    <span class="topic-tag badge badge-o">Must Know</span>
+  </div>
+  <p class="explain">
+    This is the <strong>biggest change in React Native's history</strong>. The old Bridge was the main performance bottleneck. The new architecture replaces it with three key pieces: <em>JSI</em>, <em>Fabric</em>, and <em>TurboModules</em>.
+  </p>
+
+  <p class="explain" style="margin-top:4px;"><strong>Old vs New Architecture:</strong></p>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">❌ Old Architecture (Bridge)</div>
+      <p>JS ↔ Bridge ↔ Native. All messages serialized to JSON. Async only. Copying data between threads is expensive. Bridge can get congested under heavy load. Limited synchronous access.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">✅ New Architecture (JSI)</div>
+      <p>JS directly references native objects via C++ host objects. No serialization. No copying. Synchronous AND asynchronous calls possible. Much faster, no bridge bottleneck.</p>
+    </div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-label">new-architecture-concepts.txt</div>
+<pre><span class="cm">┌─────────────────────────────────────────────────┐</span>
+<span class="cm">│             NEW ARCHITECTURE STACK               │</span>
+<span class="cm">├─────────────────────────────────────────────────┤</span>
+<span class="cm">│  JavaScript (React + App Code)                  │</span>
+<span class="cm">│         ↕ (JSI — direct C++ reference)          │</span>
+<span class="cm">│  TurboModules  (native modules via JSI)          │</span>
+<span class="cm">│  Fabric        (new renderer via JSI)            │</span>
+<span class="cm">│         ↕                                        │</span>
+<span class="cm">│  iOS Native / Android Native                    │</span>
+<span class="cm">└─────────────────────────────────────────────────┘</span>
+
+JSI (JavaScript Interface):
+  • C++ layer that lets JS hold direct references to native objects
+  • No JSON serialization → sync calls are possible
+  • JS can call native methods as if they were JS functions
+
+Fabric:
+  • New rendering system replacing the old UIManager
+  • Renders UI on the native thread directly via JSI
+  • Concurrent rendering (like React 18 Concurrent Mode)
+  • Synchronous layout measurement possible
+
+TurboModules:
+  • New native modules system — lazy loaded (old: all loaded at startup)
+  • Generated TypeScript types for type safety
+  • Faster startup because only used modules are loaded
+
+Codegen:
+  • Auto-generates C++ glue code from TypeScript interfaces
+  • Ensures type safety between JS and native at compile time</pre>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Feature</th><th>Old Architecture</th><th>New Architecture</th></tr>
+      <tr><td>Communication</td><td>JSON over async bridge</td><td>C++ via JSI (sync + async)</td></tr>
+      <tr><td>Serialization</td><td>All data serialized to JSON</td><td>Direct object references</td></tr>
+      <tr><td>Native Modules</td><td>All loaded at startup</td><td>TurboModules — lazy loaded</td></tr>
+      <tr><td>Renderer</td><td>UIManager (old)</td><td>Fabric (new)</td></tr>
+      <tr><td>Sync calls</td><td>Not possible</td><td>Possible via JSI</td></tr>
+      <tr><td>Startup time</td><td>Slower (all modules loaded)</td><td>Faster (lazy loading)</td></tr>
+    </table>
+  </div>
+  <div class="callout hot">React Native 0.76+ enables new architecture by default. You'll almost certainly be asked: <strong>"What is JSI and how does it differ from the Bridge?"</strong></div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- 23. Hermes -->
+<div class="topic" id="hermes">
+  <div class="topic-header">
+    <span class="topic-num">23</span>
+    <h2 class="topic-title">Hermes Engine <span class="hot-badge">🔥</span></h2>
+    <span class="topic-tag badge badge-o">Important</span>
+  </div>
+  <p class="explain">
+    <strong>Hermes</strong> is a JavaScript engine built by Meta specifically for React Native. It replaces JavaScriptCore (JSC — the engine used in Safari). Hermes is optimized for mobile — it's fast to start, uses less memory, and pre-compiles JS to bytecode at build time.
+  </p>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">JavaScriptCore (old default)</div>
+      <p>General-purpose JS engine (used in Safari). Parses and compiles JS at runtime. Larger startup time. More memory usage.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Hermes (new default)</div>
+      <p>Pre-compiles JS to bytecode at BUILD time. At runtime, just executes bytecode — skips parsing and compilation. Much faster TTI (Time To Interactive) and lower memory.</p>
+    </div>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Advantage</th><th>Explanation</th></tr>
+      <tr><td>Faster startup (TTI)</td><td>Bytecode is pre-compiled — no JS parsing at runtime</td></tr>
+      <tr><td>Lower memory usage</td><td>Optimized for resource-constrained mobile devices</td></tr>
+      <tr><td>Smaller APK / IPA</td><td>Bytecode can be more compact than raw JS</td></tr>
+      <tr><td>Better performance</td><td>Specifically tuned for RN workloads, not general browser JS</td></tr>
+    </table>
+  </div>
+  <div class="callout info">Hermes is enabled by default from RN 0.70+. Enable it in <code>android/app/build.gradle</code> with <code>enableHermes: true</code>.</div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- 24. FlatList Deep Dive -->
+<div class="topic" id="flatlist-deep">
+  <div class="topic-header">
+    <span class="topic-num">24</span>
+    <h2 class="topic-title">FlatList Deep Dive</h2>
+    <span class="topic-tag badge badge-r">Interview Trap</span>
+  </div>
+  <div class="code-block">
+    <div class="code-label">flatlist-deep-dive.jsx</div>
+<pre><span class="tag">&lt;FlatList</span>
+  <span class="attr">data</span>={data}
+  <span class="attr">renderItem</span>={renderItem}
+  <span class="attr">keyExtractor</span>={item => item.id}
+
+  <span class="cm">// — PERFORMANCE PROPS —</span>
+
+  <span class="attr">initialNumToRender</span>={<span class="num">10</span>}
+  <span class="cm">// How many items to render for first paint.</span>
+  <span class="cm">// Higher = slower initial load but less white flash on scroll</span>
+
+  <span class="attr">windowSize</span>={<span class="num">5</span>}
+  <span class="cm">// Render window = 5x the viewport height.</span>
+  <span class="cm">// Items outside this window are unmounted to save memory.</span>
+  <span class="cm">// Default is 21. Lower = less memory, more blank flash.</span>
+
+  <span class="attr">maxToRenderPerBatch</span>={<span class="num">10</span>}
+  <span class="cm">// How many items to render per JS batch update.</span>
+  <span class="cm">// Higher = faster fill but could drop frames.</span>
+
+  <span class="attr">updateCellsBatchingPeriod</span>={<span class="num">50</span>}
+  <span class="cm">// Milliseconds between batch render updates. Default 50ms.</span>
+
+  <span class="attr">getItemLayout</span>={(data, index) => ({
+    length: <span class="num">80</span>,           <span class="cm">// fixed row height</span>
+    offset: <span class="num">80</span> * index,   <span class="cm">// position of row</span>
+    index,
+  })}
+  <span class="cm">// Skip layout calculation — HUGE perf boost for fixed-height rows.</span>
+  <span class="cm">// Also enables scrollToIndex without measuring all items first.</span>
+
+  <span class="attr">removeClippedSubviews</span>
+  <span class="cm">// Unmount views off-screen on Android. Memory saver for very long lists.</span>
+
+  <span class="attr">keyExtractor</span>={<span class="fn">useCallback</span>(item => item.id, [])}
+  <span class="attr">renderItem</span>={<span class="fn">useCallback</span>(({ item }) => <span class="tag">&lt;Row</span> <span class="attr">item</span>={item} <span class="tag">/&gt;</span>, [])}
+  <span class="cm">// Wrap both in useCallback to prevent recreating on every parent render</span>
+<span class="tag">/&gt;</span></pre>
+  </div>
+  <div class="callout warn">
+    <strong>Common FlatList mistake:</strong> Putting <code>renderItem</code> inline as an arrow function (not wrapped in <code>useCallback</code>). Every parent re-render creates a new function reference → FlatList thinks renderItem changed → re-renders all visible rows unnecessarily.
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- 25. Memory -->
+<div class="topic" id="memory">
+  <div class="topic-header">
+    <span class="topic-num">25</span>
+    <h2 class="topic-title">Memory Management</h2>
+    <span class="topic-tag badge badge-r">Interview Trap</span>
+  </div>
+  <div class="code-block">
+    <div class="code-label">memory-leaks.jsx</div>
+<pre><span class="cm">// ⚠ MEMORY LEAK — setting state after component unmounts</span>
+<span class="fn">useEffect</span>(() => {
+  fetch(<span class="str">'/api/data'</span>)
+    .then(res => res.json())
+    .then(data => setData(data)); <span class="cm">// component may have unmounted!</span>
+}, []);
+
+<span class="cm">// ✅ FIX 1: AbortController to cancel fetch on unmount</span>
+<span class="fn">useEffect</span>(() => {
+  <span class="kw">const</span> controller = <span class="kw">new</span> AbortController();
+
+  <span class="kw">fetch</span>(<span class="str">'/api/data'</span>, { signal: controller.signal })
+    .<span class="fn">then</span>(res => res.<span class="fn">json</span>())
+    .<span class="fn">then</span>(data => <span class="fn">setData</span>(data))
+    .<span class="fn">catch</span>(e => { <span class="kw">if</span> (e.name !== <span class="str">'AbortError'</span>) throw e; });
+
+  <span class="kw">return</span> () => controller.<span class="fn">abort</span>(); <span class="cm">// cleanup on unmount</span>
+}, []);
+
+<span class="cm">// ✅ FIX 2: Mounted flag</span>
+<span class="fn">useEffect</span>(() => {
+  <span class="kw">let</span> mounted = <span class="kw">true</span>;
+  <span class="kw">fetch</span>(<span class="str">'/api'</span>).<span class="fn">then</span>(res => res.<span class="fn">json</span>()).<span class="fn">then</span>(data => {
+    <span class="kw">if</span> (mounted) <span class="fn">setData</span>(data); <span class="cm">// safe check</span>
+  });
+  <span class="kw">return</span> () => { mounted = <span class="kw">false</span>; };
+}, []);
+
+<span class="cm">// ✅ Always clean up subscriptions, timers, event listeners</span>
+<span class="fn">useEffect</span>(() => {
+  <span class="kw">const</span> sub = NetInfo.<span class="fn">addEventListener</span>(handler);
+  <span class="kw">const</span> timer = <span class="fn">setInterval</span>(tick, <span class="num">1000</span>);
+  <span class="kw">return</span> () => {
+    <span class="fn">sub</span>();              <span class="cm">// unsubscribe</span>
+    <span class="fn">clearInterval</span>(timer); <span class="cm">// clear timer</span>
+  };
+}, []);</pre>
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- 26. Error Boundaries -->
+<div class="topic" id="error-boundaries">
+  <div class="topic-header">
+    <span class="topic-num">26</span>
+    <h2 class="topic-title">Error Boundaries</h2>
+    <span class="topic-tag badge badge-r">Interview Trap</span>
+  </div>
+  <p class="explain">
+    Error Boundaries catch JavaScript errors anywhere in the component tree and display a fallback UI instead of crashing the whole app. <strong>They must be class components</strong> (no hook equivalent yet).
+  </p>
+  <div class="code-block">
+    <div class="code-label">error-boundary.jsx</div>
+<pre><span class="kw">import</span> React <span class="kw">from</span> <span class="str">'react'</span>;
+<span class="kw">import</span> { Text, View } <span class="kw">from</span> <span class="str">'react-native'</span>;
+
+<span class="kw">class</span> <span class="fn">ErrorBoundary</span> <span class="kw">extends</span> React.Component {
+  state = { hasError: <span class="kw">false</span>, error: <span class="kw">null</span> };
+
+  <span class="kw">static</span> <span class="fn">getDerivedStateFromError</span>(error) {
+    <span class="kw">return</span> { hasError: <span class="kw">true</span>, error };
+  }
+
+  <span class="fn">componentDidCatch</span>(error, info) {
+    <span class="cm">// Log to crash reporting (Sentry, Firebase Crashlytics)</span>
+    <span class="fn">console</span>.<span class="fn">error</span>(<span class="str">'Caught error:'</span>, error, info);
+  }
+
+  <span class="fn">render</span>() {
+    <span class="kw">if</span> (<span class="kw">this</span>.state.hasError) {
+      <span class="kw">return</span> (
+        <span class="tag">&lt;View&gt;</span>
+          <span class="tag">&lt;Text&gt;</span>Something went wrong.<span class="tag">&lt;/Text&gt;</span>
+          <span class="tag">&lt;Text&gt;</span>{this.state.error?.message}<span class="tag">&lt;/Text&gt;</span>
+        <span class="tag">&lt;/View&gt;</span>
+      );
+    }
+    <span class="kw">return</span> <span class="kw">this</span>.props.children;
+  }
+}
+
+<span class="cm">// Wrap your app or specific sections</span>
+<span class="kw">function</span> <span class="fn">App</span>() {
+  <span class="kw">return</span> (
+    <span class="tag">&lt;ErrorBoundary&gt;</span>
+      <span class="tag">&lt;MainApp /&gt;</span>
+    <span class="tag">&lt;/ErrorBoundary&gt;</span>
+  );
+}</pre>
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- 27. Security -->
+<div class="topic" id="security">
+  <div class="topic-header">
+    <span class="topic-num">27</span>
+    <h2 class="topic-title">Security</h2>
+    <span class="topic-tag badge badge-r">Important</span>
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">❌ Never use AsyncStorage for secrets</div>
+      <p>AsyncStorage is NOT encrypted. Anyone with physical device access or on a rooted device can read it. Never store JWT tokens, passwords, or API keys here.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">✅ Use Secure Storage for secrets</div>
+      <p><code>react-native-keychain</code> or <code>expo-secure-store</code> use iOS Keychain / Android Keystore — hardware-backed encrypted storage. Always use for tokens and credentials.</p>
+    </div>
+  </div>
+  <div class="code-block">
+    <div class="code-label">security.js</div>
+<pre><span class="kw">import</span> * <span class="kw">as</span> Keychain <span class="kw">from</span> <span class="str">'react-native-keychain'</span>;
+
+<span class="cm">// Save credentials securely</span>
+<span class="kw">await</span> Keychain.<span class="fn">setGenericPassword</span>(<span class="str">'username'</span>, <span class="str">'jwtTokenHere'</span>);
+
+<span class="cm">// Read credentials</span>
+<span class="kw">const</span> creds = <span class="kw">await</span> Keychain.<span class="fn">getGenericPassword</span>();
+<span class="kw">if</span> (creds) {
+  <span class="kw">const</span> token = creds.password;
+}
+
+<span class="cm">// Delete</span>
+<span class="kw">await</span> Keychain.<span class="fn">resetGenericPassword</span>();
+
+<span class="cm">// Other security practices:</span>
+<span class="cm">// ✅ SSL Pinning — prevent man-in-the-middle attacks</span>
+<span class="cm">// ✅ Certificate pinning — verify server's SSL cert in app</span>
+<span class="cm">// ✅ Obfuscate code with ProGuard (Android)</span>
+<span class="cm">// ✅ Disable debug builds in production</span>
+<span class="cm">// ✅ Root/jailbreak detection (react-native-jail-monkey)</span>
+<span class="cm">// ✅ Never hardcode API keys in source code</span></pre>
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- 28. TypeScript -->
+<div class="topic" id="typescript">
+  <div class="topic-header">
+    <span class="topic-num">28</span>
+    <h2 class="topic-title">TypeScript in React Native</h2>
+    <span class="topic-tag badge badge-t">Preferred</span>
+  </div>
+  <p class="explain">Almost all production RN apps and job listings now require TypeScript. New RN projects come with TypeScript configured out of the box.</p>
+  <div class="code-block">
+    <div class="code-label">typescript-rn.tsx</div>
+<pre><span class="kw">import</span> React, { useState } <span class="kw">from</span> <span class="str">'react'</span>;
+<span class="kw">import</span> { View, Text, FlatList } <span class="kw">from</span> <span class="str">'react-native'</span>;
+<span class="kw">import</span> { NativeStackScreenProps } <span class="kw">from</span> <span class="str">'@react-navigation/native-stack'</span>;
+
+<span class="cm">// Define types</span>
+<span class="kw">type</span> User = {
+  id: string;
+  name: string;
+  email: string;
+  age: number;
+};
+
+<span class="cm">// Navigation param types</span>
+<span class="kw">type</span> RootStackParamList = {
+  Home:   <span class="kw">undefined</span>;
+  Detail: { userId: string };
+};
+
+<span class="kw">type</span> Props = NativeStackScreenProps&lt;RootStackParamList, <span class="str">'Home'</span>&gt;;
+
+<span class="cm">// Typed component</span>
+<span class="kw">function</span> <span class="fn">HomeScreen</span>({ navigation }: Props) {
+  <span class="kw">const</span> [users, setUsers] = useState&lt;User[]&gt;([]);
+
+  <span class="kw">const</span> <span class="fn">goToDetail</span> = (userId: string): <span class="kw">void</span> => {
+    navigation.<span class="fn">navigate</span>(<span class="str">'Detail'</span>, { userId });
+  };
+
+  <span class="kw">const</span> <span class="fn">renderItem</span> = ({ item }: { item: User }) => (
+    <span class="tag">&lt;Text</span> <span class="attr">onPress</span>={() => <span class="fn">goToDetail</span>(item.id)}<span class="tag">&gt;</span>{item.name}<span class="tag">&lt;/Text&gt;</span>
+  );
+
+  <span class="kw">return</span> (
+    <span class="tag">&lt;FlatList</span>
+      <span class="attr">data</span>={users}
+      <span class="attr">renderItem</span>={renderItem}
+      <span class="attr">keyExtractor</span>={(item: User) => item.id}
+    <span class="tag">/&gt;</span>
+  );
+}</pre>
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- 29. Testing -->
+<div class="topic" id="testing">
+  <div class="topic-header">
+    <span class="topic-num">29</span>
+    <h2 class="topic-title">Testing</h2>
+    <span class="topic-tag badge badge-p">Advanced</span>
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Jest (Unit Testing)</div>
+      <p>Test individual functions, hooks, and business logic. Mock native modules. Comes pre-configured with RN. Fast, runs in Node.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">React Native Testing Library</div>
+      <p>Test components from a user perspective — render a component, simulate interactions, check what the user sees. No Enzyme.</p>
+    </div>
+  </div>
+  <div class="code-block">
+    <div class="code-label">testing.test.tsx</div>
+<pre><span class="kw">import</span> { render, fireEvent, screen } <span class="kw">from</span> <span class="str">'@testing-library/react-native'</span>;
+<span class="kw">import</span> Counter <span class="kw">from</span> <span class="str">'./Counter'</span>;
+
+<span class="fn">describe</span>(<span class="str">'Counter component'</span>, () => {
+  <span class="fn">it</span>(<span class="str">'starts at 0 and increments on press'</span>, () => {
+    <span class="fn">render</span>(<span class="tag">&lt;Counter /&gt;</span>);
+
+    <span class="cm">// Assert initial state</span>
+    expect(screen.<span class="fn">getByText</span>(<span class="str">'Count: 0'</span>)).<span class="fn">toBeTruthy</span>();
+
+    <span class="cm">// Simulate user press</span>
+    fireEvent.<span class="fn">press</span>(screen.<span class="fn">getByText</span>(<span class="str">'Increment'</span>));
+
+    <span class="cm">// Assert updated state</span>
+    expect(screen.<span class="fn">getByText</span>(<span class="str">'Count: 1'</span>)).<span class="fn">toBeTruthy</span>();
+  });
+});
+
+<span class="cm">// Testing async API calls with mock</span>
+<span class="fn">jest</span>.<span class="fn">mock</span>(<span class="str">'../services/userService'</span>, () => ({
+  <span class="fn">fetchUsers</span>: jest.<span class="fn">fn</span>().<span class="fn">mockResolvedValue</span>([{ id: <span class="str">'1'</span>, name: <span class="str">'Alice'</span> }])
+}));</pre>
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- ═══════════════════════ INTERVIEW ═══════════════════════ -->
+<div class="section-divider">
+  <div class="section-divider-line"></div>
+  <div class="section-divider-label">🎯 Interview Ready</div>
+  <div class="section-divider-line" style="background:linear-gradient(90deg,transparent,var(--accent))"></div>
+</div>
+
+<!-- React vs RN -->
+<div class="topic" id="rn-vs-react">
+  <div class="topic-header">
+    <span class="topic-num">30</span>
+    <h2 class="topic-title">React vs React Native</h2>
+    <span class="topic-tag badge badge-o">Very Common</span>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Feature</th><th>React (Web)</th><th>React Native</th></tr>
+      <tr><td>Platform</td><td>Web browser</td><td>iOS + Android</td></tr>
+      <tr><td>UI Components</td><td>HTML: div, p, img, input</td><td>View, Text, Image, TextInput</td></tr>
+      <tr><td>Styling</td><td>CSS / CSS-in-JS</td><td>JS StyleSheet objects (Flexbox default)</td></tr>
+      <tr><td>Navigation</td><td>React Router</td><td>React Navigation</td></tr>
+      <tr><td>Rendering</td><td>DOM (browser)</td><td>Native UI Components</td></tr>
+      <tr><td>Storage</td><td>localStorage, IndexedDB</td><td>AsyncStorage, SecureStore</td></tr>
+      <tr><td>HTTP</td><td>fetch, axios (same)</td><td>fetch, axios (same)</td></tr>
+      <tr><td>State/Hooks</td><td>Same (useState, useEffect…)</td><td>Same (useState, useEffect…)</td></tr>
+      <tr><td>Animations</td><td>CSS animations, Framer Motion</td><td>Animated API, Reanimated</td></tr>
+      <tr><td>Platform access</td><td>Limited (PWA APIs)</td><td>Full native APIs (camera, GPS, etc.)</td></tr>
+      <tr><td>Flexbox direction</td><td>row (default)</td><td>column (default) ⚠</td></tr>
+    </table>
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- Interview Q&A -->
+<div class="topic" id="interview-qa">
+  <div class="topic-header">
+    <span class="topic-num">31</span>
+    <h2 class="topic-title">Top Interview Q&amp;A</h2>
+    <span class="topic-tag badge badge-o">Must Prepare</span>
+  </div>
+
+  <div class="qa-block">
+    <div class="qa-q">Q: How does React Native work internally?</div>
+    <div class="qa-a">React Native runs JS on a separate thread. When your React code renders components, the Shadow Thread calculates layout using Yoga (Flexbox). These layout instructions are sent to the Native Thread via the Bridge (old arch) or directly via JSI (new arch). The Native Thread then creates real native UI components — UIView on iOS, android.view.View on Android. All communication between JS and Native is asynchronous (old) or can be synchronous (new arch/JSI).</div>
+  </div>
+
+  <div class="qa-block">
+    <div class="qa-q">Q: What is the Bridge and why is it a bottleneck?</div>
+    <div class="qa-a">The Bridge is a message bus between the JS and Native threads. All messages are serialized to JSON strings, sent asynchronously, then deserialized on the other side. This serialization is expensive — it copies all data and can't handle synchronous calls. Under heavy load (rapid gestures, animations), the bridge gets congested. This is why animations done purely in JS can drop frames at 60fps.</div>
+  </div>
+
+  <div class="qa-block">
+    <div class="qa-q">Q: Why is FlatList better than ScrollView for long lists?</div>
+    <div class="qa-a">ScrollView renders ALL children at once, regardless of whether they're visible. For 1000 items, all 1000 are in memory. FlatList uses virtualization — it only renders items in or near the visible viewport. Off-screen items are unmounted and their memory freed. As you scroll, it recycles item views (like Android's RecyclerView). This makes FlatList memory-efficient and fast even for thousands of items.</div>
+  </div>
+
+  <div class="qa-block">
+    <div class="qa-q">Q: What is JSI and how does it differ from the Bridge?</div>
+    <div class="qa-a">JSI (JavaScript Interface) is a C++ layer that lets the JS engine directly reference native objects without serializing to JSON. Instead of sending messages through the bridge, JS holds a direct C++ reference (host object) to native objects. This means: no JSON serialization, synchronous calls are possible, much lower latency. The bridge required copying all data; JSI allows shared memory references.</div>
+  </div>
+
+  <div class="qa-block">
+    <div class="qa-q">Q: What is Fabric?</div>
+    <div class="qa-a">Fabric is the new rendering system in React Native's new architecture. It replaces the old UIManager. Fabric uses JSI to communicate directly with the native renderer, enabling synchronous layout measurements, better concurrency (works with React 18's concurrent features), and allows rendering to happen on the main thread with direct access to the shadow tree without bridge overhead.</div>
+  </div>
+
+  <div class="qa-block">
+    <div class="qa-q">Q: What are the advantages of Hermes?</div>
+    <div class="qa-a">Hermes is Meta's JS engine designed specifically for React Native. It pre-compiles JavaScript to bytecode at build time (not runtime). Benefits: faster Time To Interactive (TTI) because no runtime JS parsing/compilation, lower memory consumption (optimized for mobile), smaller bundle sizes, and generally better performance for RN workloads compared to JavaScriptCore.</div>
+  </div>
+
+  <div class="qa-block">
+    <div class="qa-q">Q: How do you handle offline mode?</div>
+    <div class="qa-a">Use NetInfo to detect connectivity changes. Cache API responses in AsyncStorage with timestamps. On app load, show cached data immediately (stale-while-revalidate pattern), then fetch fresh data. Queue mutations (POST/PUT/DELETE) when offline and execute them when connectivity is restored. Show a visible offline indicator so users know they're offline. Libraries like React Query or SWR handle much of this automatically.</div>
+  </div>
+
+  <div class="qa-block">
+    <div class="qa-q">Q: How do you secure tokens in React Native?</div>
+    <div class="qa-a">Never use AsyncStorage for tokens — it's unencrypted. Use react-native-keychain (uses iOS Keychain / Android Keystore — hardware-backed encrypted storage). For extra security: implement token rotation, use short-lived access tokens + refresh tokens, implement SSL pinning to prevent MITM attacks, detect rooted/jailbroken devices, and never hardcode secrets in source code.</div>
+  </div>
+
+  <div class="qa-block">
+    <div class="qa-q">Q: How do you pass data between screens?</div>
+    <div class="qa-a">Three main ways: (1) Navigation params — pass via navigate('Screen', { id: 42 }), receive via route.params. Good for lightweight data. (2) Global state — Redux, Zustand, Context API. Both screens read from the same store. Best for data used across many screens. (3) Navigation state / parent state. Avoid passing large objects via params — pass only IDs, let the destination screen fetch its own data.</div>
+  </div>
+
+  <div class="qa-block">
+    <div class="qa-q">Q: How do you prevent memory leaks in React Native?</div>
+    <div class="qa-a">Always return cleanup functions from useEffect: unsubscribe from event listeners (NetInfo, AppState), clear timers (clearTimeout, clearInterval), cancel in-flight API requests with AbortController, and use mounted flags to prevent setState after unmount. For FlatList, use removeClippedSubviews and proper windowSize. For images, use lazy loading and avoid storing large bitmaps in state.</div>
+  </div>
+
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+</main>
+</div>
+
+</body>
+</html>

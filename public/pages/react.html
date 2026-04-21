@@ -1,0 +1,2384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>React Interview Mastery Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0f;
+  --surface: #111118;
+  --surface2: #1a1a24;
+  --border: #2a2a3a;
+  --accent: #f0e040;
+  --accent2: #40e0d0;
+  --accent3: #ff6b6b;
+  --accent4: #a78bfa;
+  --text: #e8e8f0;
+  --muted: #8888a8;
+  --code-bg: #0d0d14;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Syne', sans-serif;
+  line-height: 1.7;
+}
+
+/* HEADER */
+header {
+  padding: 60px 40px 50px;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(135deg, #0a0a0f 60%, #13131f);
+  position: relative;
+  overflow: hidden;
+}
+header::before {
+  content: '';
+  position: absolute;
+  top: -80px; right: -80px;
+  width: 320px; height: 320px;
+  background: radial-gradient(circle, rgba(240,224,64,0.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+header::after {
+  content: '';
+  position: absolute;
+  bottom: -60px; left: 30%;
+  width: 240px; height: 240px;
+  background: radial-gradient(circle, rgba(64,224,208,0.05) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+header h1 {
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: 800;
+  letter-spacing: -1px;
+  line-height: 1.1;
+}
+header h1 span { color: var(--accent); }
+
+header p {
+  color: var(--muted);
+  margin-top: 10px;
+  font-size: 15px;
+  max-width: 500px;
+}
+
+.badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 20px;
+}
+.badge {
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.badge-y { background: var(--accent); color: black; }
+.badge-t { background: var(--accent2); color: black; }
+.badge-r { background: var(--accent3); color: white; }
+.badge-p { background: var(--accent4); color: white; }
+
+/* LAYOUT */
+.shell { display: flex; min-height: 100vh; }
+
+/* SIDEBAR */
+nav {
+  width: 260px;
+  min-width: 260px;
+  background: var(--surface);
+  padding: 24px 16px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  border-right: 1px solid var(--border);
+}
+nav::-webkit-scrollbar { width: 4px; }
+nav::-webkit-scrollbar-track { background: transparent; }
+nav::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+.nav-section {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent);
+  padding: 14px 8px 6px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.nav-link {
+  display: block;
+  color: var(--muted);
+  margin: 2px 0;
+  text-decoration: none;
+  padding: 5px 8px;
+  border-radius: 4px;
+  font-size: 13px;
+  transition: all 0.15s;
+}
+.nav-link:hover {
+  color: var(--accent);
+  background: rgba(240,224,64,0.06);
+}
+.nav-link.sub {
+  padding-left: 20px;
+  font-size: 12px;
+}
+
+/* MAIN */
+main {
+  flex: 1;
+  padding: 40px 48px;
+  max-width: 900px;
+}
+
+/* TOPIC */
+.topic {
+  margin-bottom: 64px;
+  scroll-margin-top: 20px;
+}
+
+.topic-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+}
+
+.topic-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.topic-title {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.subtopic {
+  margin: 28px 0;
+}
+.subtopic h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--accent2);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.subtopic h3::before {
+  content: '▸';
+  color: var(--accent);
+  font-size: 12px;
+}
+.subtopic p, .subtopic li {
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.8;
+}
+.subtopic ul, .subtopic ol {
+  padding-left: 20px;
+  margin: 8px 0;
+}
+.subtopic li { margin: 4px 0; }
+
+/* CALLOUT BOXES */
+.callout {
+  border-left: 3px solid var(--accent);
+  background: rgba(240,224,64,0.04);
+  padding: 12px 16px;
+  margin: 12px 0;
+  border-radius: 0 6px 6px 0;
+  font-size: 13px;
+}
+.callout.info { border-color: var(--accent2); background: rgba(64,224,208,0.04); }
+.callout.warn { border-color: var(--accent3); background: rgba(255,107,107,0.04); }
+.callout.tip { border-color: var(--accent4); background: rgba(167,139,250,0.04); }
+.callout strong { display: block; margin-bottom: 4px; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
+.callout.info strong { color: var(--accent2); }
+.callout.warn strong { color: var(--accent3); }
+.callout.tip strong { color: var(--accent4); }
+.callout > strong { color: var(--accent); }
+
+/* CODE BLOCK */
+.code-block {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  margin: 12px 0;
+  overflow: hidden;
+}
+.code-label {
+  padding: 6px 12px;
+  background: var(--surface2);
+  font-size: 11px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.code-label span {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  display: inline-block;
+}
+pre {
+  padding: 16px;
+  overflow-x: auto;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  line-height: 1.7;
+  color: #cdd6f4;
+}
+pre::-webkit-scrollbar { height: 4px; }
+pre::-webkit-scrollbar-track { background: transparent; }
+pre::-webkit-scrollbar-thumb { background: var(--border); }
+
+/* Syntax highlight classes */
+.kw { color: #cba6f7; }
+.fn { color: #89b4fa; }
+.str { color: #a6e3a1; }
+.cm { color: #585b70; font-style: italic; }
+.num { color: #fab387; }
+.tag { color: #f38ba8; }
+.attr { color: #89dceb; }
+.var { color: #cdd6f4; }
+
+/* INTERVIEW Q */
+.interview-q {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 14px 16px;
+  margin: 8px 0;
+  font-size: 13px;
+}
+.interview-q .q {
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.interview-q p { color: var(--text); font-size: 13px; }
+
+/* COMPARISON TABLE */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0;
+  font-size: 13px;
+}
+th {
+  background: var(--surface2);
+  color: var(--accent);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 8px 12px;
+  text-align: left;
+  border: 1px solid var(--border);
+}
+td {
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  color: var(--text);
+  vertical-align: top;
+}
+tr:nth-child(even) td { background: rgba(255,255,255,0.01); }
+
+/* BACK TOP */
+.back-top {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 24px;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  transition: color 0.2s;
+}
+.back-top:hover { color: var(--accent); }
+
+/* SECTION DIVIDER */
+.section-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-family: 'JetBrains Mono', monospace;
+  margin: 48px 0 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* TAGS */
+.tag-pill {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-size: 11px;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  margin: 2px;
+}
+.tag-core { background: rgba(240,224,64,0.15); color: var(--accent); border: 1px solid rgba(240,224,64,0.3); }
+.tag-perf { background: rgba(64,224,208,0.12); color: var(--accent2); border: 1px solid rgba(64,224,208,0.25); }
+.tag-adv { background: rgba(167,139,250,0.12); color: var(--accent4); border: 1px solid rgba(167,139,250,0.25); }
+.tag-new { background: rgba(255,107,107,0.12); color: var(--accent3); border: 1px solid rgba(255,107,107,0.25); }
+
+/* PROGRESS INDICATOR */
+.toc-progress {
+  font-size: 11px;
+  color: var(--muted);
+  font-family: 'JetBrains Mono', monospace;
+  padding: 4px 8px;
+  margin-bottom: 8px;
+}
+
+@media (max-width: 768px) {
+  nav { display: none; }
+  main { padding: 24px 20px; }
+  header { padding: 40px 20px; }
+}
+</style>
+</head>
+<body>
+
+<header id="top">
+  <h1>React <span>Interview</span><br>Mastery Guide</h1>
+  <p>Complete deep-dive — every hook, pattern, API, and concept asked in senior interviews</p>
+  <div class="badge-row">
+    <span class="badge badge-y">React 18</span>
+    <span class="badge badge-t">React 19</span>
+    <span class="badge badge-r">Hooks Deep Dive</span>
+    <span class="badge badge-p">Performance</span>
+    <span class="badge badge-y">Patterns</span>
+    <span class="badge badge-t">Rendering</span>
+  </div>
+</header>
+
+<div class="shell">
+<nav>
+  <div class="toc-progress">📚 12 Sections · 60+ Topics</div>
+
+  <div class="nav-section">Fundamentals</div>
+  <a class="nav-link" href="#s1">1. React Fundamentals</a>
+  <a class="nav-link" href="#s2">2. Component Lifecycle</a>
+
+  <div class="nav-section">Hooks</div>
+  <a class="nav-link" href="#s3">3. Core Hooks</a>
+  <a class="nav-link sub" href="#s3-usestate">useState</a>
+  <a class="nav-link sub" href="#s3-useeffect">useEffect</a>
+  <a class="nav-link sub" href="#s3-usecontext">useContext</a>
+  <a class="nav-link sub" href="#s3-useref">useRef</a>
+  <a class="nav-link sub" href="#s3-usereducer">useReducer</a>
+  <a class="nav-link" href="#s4">4. Performance Hooks</a>
+  <a class="nav-link" href="#s5">5. Advanced Hooks</a>
+  <a class="nav-link" href="#s6">6. React 18 Hooks</a>
+  <a class="nav-link" href="#s7">7. React 19 Hooks</a>
+
+  <div class="nav-section">Advanced</div>
+  <a class="nav-link" href="#s8">8. Rendering & Virtual DOM</a>
+  <a class="nav-link" href="#s9">9. API & Async</a>
+  <a class="nav-link" href="#s10">10. Built-in Components</a>
+  <a class="nav-link" href="#s11">11. React APIs</a>
+  <a class="nav-link" href="#s12">12. Performance Patterns</a>
+
+  <div class="nav-section">Interview Core</div>
+  <a class="nav-link" href="#s13">13. React Patterns</a>
+  <a class="nav-link" href="#s14">14. Context API Deep Dive</a>
+  <a class="nav-link" href="#s15">15. State Management</a>
+  <a class="nav-link" href="#s16">16. React Router</a>
+  <a class="nav-link" href="#s17">17. Error Boundaries</a>
+  <a class="nav-link" href="#s18">18. Forms</a>
+  <a class="nav-link" href="#s19">19. Testing</a>
+  <a class="nav-link" href="#s20">20. Real-World Concepts</a>
+</nav>
+
+<main>
+
+<!-- ===== SECTION 1: REACT FUNDAMENTALS ===== -->
+<div class="section-label">Core Fundamentals</div>
+
+<div class="topic" id="s1">
+  <div class="topic-header">
+    <span class="topic-num">01</span>
+    <h2 class="topic-title">React Fundamentals</h2>
+    <span class="tag-pill tag-core">Core</span>
+  </div>
+
+  <div class="subtopic">
+    <h3>What is React?</h3>
+    <p>React is a <strong>JavaScript library</strong> (not a framework) for building user interfaces. Created by Facebook (Meta) in 2013. It is declarative, component-based, and uses a virtual DOM for efficient updates.</p>
+    <div class="callout">
+      <strong>Interview Gold</strong>
+      React is a <em>library</em>, not a framework. Angular is a framework. React only handles the View layer — you choose your own routing, state management, etc.
+    </div>
+    <div class="interview-q">
+      <div class="q">Q: What is the difference between a library and a framework?</div>
+      <p>A library (React) = you call it. A framework (Angular) = it calls you (Inversion of Control). React gives you tools; you decide the architecture.</p>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>Component-Based Architecture</h3>
+    <p>React splits UI into reusable, self-contained pieces called <strong>components</strong>. Each component manages its own state and renders its own UI. Components can be composed together to build complex UIs.</p>
+    <div class="code-block">
+      <div class="code-label"><span></span>Component Composition</div>
+      <pre><span class="cm">// Each piece is a self-contained component</span>
+<span class="kw">function</span> <span class="fn">Avatar</span>({ src, name }) {
+  <span class="kw">return</span> &lt;<span class="tag">img</span> <span class="attr">src</span>={src} <span class="attr">alt</span>={name} /&gt;;
+}
+
+<span class="kw">function</span> <span class="fn">UserCard</span>({ user }) {
+  <span class="kw">return</span> (
+    &lt;<span class="tag">div</span> <span class="attr">className</span>=<span class="str">"card"</span>&gt;
+      &lt;<span class="tag">Avatar</span> <span class="attr">src</span>={user.avatar} <span class="attr">name</span>={user.name} /&gt;
+      &lt;<span class="tag">h2</span>&gt;{user.name}&lt;/<span class="tag">h2</span>&gt;
+    &lt;/<span class="tag">div</span>&gt;
+  );
+}
+
+<span class="cm">// App composes smaller components</span>
+<span class="kw">function</span> <span class="fn">App</span>() {
+  <span class="kw">return</span> &lt;<span class="tag">UserCard</span> <span class="attr">user</span>={{ name: <span class="str">'Shailesh'</span>, avatar: <span class="str">'/pic.jpg'</span> }} /&gt;;
+}</pre>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>JSX Basics</h3>
+    <p>JSX is <strong>JavaScript XML</strong> — a syntax extension that lets you write HTML-like code in JS. Babel transpiles JSX to <code>React.createElement()</code> calls.</p>
+    <div class="code-block">
+      <div class="code-label"><span></span>JSX vs React.createElement</div>
+      <pre><span class="cm">// JSX (what you write)</span>
+<span class="kw">const</span> el = &lt;<span class="tag">h1</span> <span class="attr">className</span>=<span class="str">"title"</span>&gt;Hello&lt;/<span class="tag">h1</span>&gt;;
+
+<span class="cm">// What Babel compiles it to</span>
+<span class="kw">const</span> el = React.<span class="fn">createElement</span>(<span class="str">'h1'</span>, { className: <span class="str">'title'</span> }, <span class="str">'Hello'</span>);
+
+<span class="cm">// JSX Rules:</span>
+<span class="cm">// 1. Return one root element (or &lt;Fragment&gt;)</span>
+<span class="cm">// 2. Use className not class</span>
+<span class="cm">// 3. Self-close empty tags: &lt;img /&gt;</span>
+<span class="cm">// 4. JS expressions in {}</span>
+<span class="cm">// 5. Attributes are camelCase (onClick, htmlFor)</span></pre>
+    </div>
+    <div class="callout warn">
+      <strong>Common Interview Trap</strong>
+      Why can't we return two sibling elements without a wrapper? Because JSX compiles to a single function call (React.createElement) which can only return one value.
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>Functional Components</h3>
+    <p>Modern React uses <strong>function components</strong> exclusively. They are plain JavaScript functions that accept props and return JSX. With hooks (React 16.8+), they replaced class components entirely.</p>
+    <div class="code-block">
+      <div class="code-label"><span></span>Function Component</div>
+      <pre><span class="cm">// Simple function component</span>
+<span class="kw">function</span> <span class="fn">Greeting</span>({ name = <span class="str">'World'</span> }) {
+  <span class="kw">return</span> &lt;<span class="tag">h1</span>&gt;Hello, {name}!&lt;/<span class="tag">h1</span>&gt;;
+}
+
+<span class="cm">// Arrow function style (same thing)</span>
+<span class="kw">const</span> <span class="fn">Greeting</span> = ({ name = <span class="str">'World'</span> }) =&gt; (
+  &lt;<span class="tag">h1</span>&gt;Hello, {name}!&lt;/<span class="tag">h1</span>&gt;
+);</pre>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>Props vs State</h3>
+    <table>
+      <tr><th>Props</th><th>State</th></tr>
+      <tr><td>Passed from parent</td><td>Managed inside component</td></tr>
+      <tr><td>Immutable (read-only)</td><td>Mutable (via setter)</td></tr>
+      <tr><td>Like function arguments</td><td>Like component memory</td></tr>
+      <tr><td>Changing props re-renders child</td><td>Changing state re-renders component</td></tr>
+    </table>
+    <div class="code-block">
+      <div class="code-label"><span></span>Props vs State Example</div>
+      <pre><span class="kw">function</span> <span class="fn">Counter</span>({ initialCount }) { <span class="cm">// initialCount = prop</span>
+  <span class="kw">const</span> [count, setCount] = React.<span class="fn">useState</span>(initialCount); <span class="cm">// count = state</span>
+
+  <span class="kw">return</span> (
+    &lt;<span class="tag">div</span>&gt;
+      &lt;<span class="tag">p</span>&gt;Count: {count}&lt;/<span class="tag">p</span>&gt;
+      &lt;<span class="tag">button</span> <span class="attr">onClick</span>={() =&gt; <span class="fn">setCount</span>(c =&gt; c + <span class="num">1</span>)}&gt;+&lt;/<span class="tag">button</span>&gt;
+    &lt;/<span class="tag">div</span>&gt;
+  );
+}
+
+<span class="cm">// ❌ Never mutate props</span>
+props.initialCount = <span class="num">10</span>; <span class="cm">// WRONG</span>
+
+<span class="cm">// ✅ Use state for values that change</span></pre>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>Event Handling</h3>
+    <div class="code-block">
+      <div class="code-label"><span></span>React Event Handling</div>
+      <pre><span class="kw">function</span> <span class="fn">Form</span>() {
+  <span class="kw">const</span> <span class="fn">handleSubmit</span> = (e) =&gt; {
+    e.<span class="fn">preventDefault</span>(); <span class="cm">// stop page reload</span>
+    console.<span class="fn">log</span>(<span class="str">'submitted'</span>);
+  };
+
+  <span class="kw">const</span> <span class="fn">handleChange</span> = (e) =&gt; {
+    console.<span class="fn">log</span>(e.target.value); <span class="cm">// get input value</span>
+  };
+
+  <span class="kw">return</span> (
+    &lt;<span class="tag">form</span> <span class="attr">onSubmit</span>={handleSubmit}&gt;
+      &lt;<span class="tag">input</span> <span class="attr">onChange</span>={handleChange} /&gt;
+      &lt;<span class="tag">button</span> <span class="attr">type</span>=<span class="str">"submit"</span>&gt;Submit&lt;/<span class="tag">button</span>&gt;
+    &lt;/<span class="tag">form</span>&gt;
+  );
+}</pre>
+    </div>
+    <div class="callout info">
+      <strong>Note</strong>
+      React uses Synthetic Events — cross-browser wrappers over native browser events. They are pooled in React 16 (not React 17+). Always use e.preventDefault() inside React, not return false.
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- ===== SECTION 2: LIFECYCLE ===== -->
+<div class="topic" id="s2">
+  <div class="topic-header">
+    <span class="topic-num">02</span>
+    <h2 class="topic-title">Component Lifecycle</h2>
+    <span class="tag-pill tag-core">Core</span>
+  </div>
+
+  <div class="subtopic">
+    <h3>Three Phases</h3>
+    <ul>
+      <li><strong>Mounting</strong> — Component created and inserted into DOM</li>
+      <li><strong>Updating</strong> — Re-render due to state or prop change</li>
+      <li><strong>Unmounting</strong> — Component removed from DOM</li>
+    </ul>
+  </div>
+
+  <div class="subtopic">
+    <h3>Class vs Hooks Lifecycle Mapping</h3>
+    <table>
+      <tr><th>Class Component</th><th>Hooks Equivalent</th></tr>
+      <tr><td>constructor()</td><td>useState initial value</td></tr>
+      <tr><td>componentDidMount</td><td>useEffect(() => {}, [])</td></tr>
+      <tr><td>componentDidUpdate</td><td>useEffect(() => {}, [dep])</td></tr>
+      <tr><td>componentWillUnmount</td><td>useEffect cleanup function</td></tr>
+      <tr><td>shouldComponentUpdate</td><td>React.memo / useMemo</td></tr>
+      <tr><td>getDerivedStateFromProps</td><td>Render-time state calculation</td></tr>
+      <tr><td>getSnapshotBeforeUpdate</td><td>useLayoutEffect</td></tr>
+    </table>
+  </div>
+
+  <div class="subtopic">
+    <h3>Lifecycle with Hooks — Full Example</h3>
+    <div class="code-block">
+      <div class="code-label"><span></span>Lifecycle via useEffect</div>
+      <pre><span class="kw">function</span> <span class="fn">DataLoader</span>({ userId }) {
+  <span class="kw">const</span> [data, setData] = <span class="fn">useState</span>(<span class="kw">null</span>);
+
+  <span class="cm">// ✅ componentDidMount — runs once after first render</span>
+  <span class="fn">useEffect</span>(() =&gt; {
+    console.<span class="fn">log</span>(<span class="str">'Component mounted'</span>);
+    <span class="kw">return</span> () =&gt; console.<span class="fn">log</span>(<span class="str">'Component unmounted'</span>);
+  }, []);
+
+  <span class="cm">// ✅ componentDidUpdate — runs when userId changes</span>
+  <span class="fn">useEffect</span>(() =&gt; {
+    <span class="kw">const</span> controller = <span class="kw">new</span> <span class="fn">AbortController</span>();
+
+    <span class="fn">fetch</span>(<span class="str">`/api/user/${userId}`</span>, { signal: controller.signal })
+      .<span class="fn">then</span>(r =&gt; r.<span class="fn">json</span>())
+      .<span class="fn">then</span>(setData);
+
+    <span class="cm">// ✅ componentWillUnmount — cleanup</span>
+    <span class="kw">return</span> () =&gt; controller.<span class="fn">abort</span>();
+  }, [userId]); <span class="cm">// re-run when userId changes</span>
+
+  <span class="kw">if</span> (!data) <span class="kw">return</span> &lt;<span class="tag">p</span>&gt;Loading...&lt;/<span class="tag">p</span>&gt;;
+  <span class="kw">return</span> &lt;<span class="tag">p</span>&gt;{data.name}&lt;/<span class="tag">p</span>&gt;;
+}</pre>
+    </div>
+    <div class="interview-q">
+      <div class="q">Q: Why does useEffect run after render and not before?</div>
+      <p>React guarantees the DOM is updated before effects run. This mirrors componentDidMount/Update behavior — you can safely access the DOM. If you need to run something synchronously before paint, use useLayoutEffect.</p>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+
+<!-- ===== SECTION 3: CORE HOOKS ===== -->
+<div class="section-label">Hooks Deep Dive</div>
+
+<div class="topic" id="s3">
+  <div class="topic-header">
+    <span class="topic-num">03</span>
+    <h2 class="topic-title">Core Hooks</h2>
+    <span class="tag-pill tag-core">Core</span>
+  </div>
+
+  <!-- useState -->
+  <div class="subtopic" id="s3-usestate">
+    <h3>useState — The Foundation</h3>
+    <p>Returns a stateful value and a function to update it. When the setter is called, React re-renders the component with the new value.</p>
+    <div class="code-block">
+      <div class="code-label"><span></span>useState — All Patterns</div>
+      <pre><span class="cm">// 1. Simple state</span>
+<span class="kw">const</span> [count, setCount] = <span class="fn">useState</span>(<span class="num">0</span>);
+
+<span class="cm">// 2. Object state (spread to update)</span>
+<span class="kw">const</span> [user, setUser] = <span class="fn">useState</span>({ name: <span class="str">''</span>, age: <span class="num">0</span> });
+<span class="fn">setUser</span>(prev =&gt; ({ ...prev, name: <span class="str">'Shailesh'</span> })); <span class="cm">// ✅ functional update</span>
+
+<span class="cm">// 3. Lazy initialization (expensive computation runs ONCE)</span>
+<span class="kw">const</span> [data, setData] = <span class="fn">useState</span>(() =&gt; <span class="fn">heavyCompute</span>());
+
+<span class="cm">// 4. Functional updates (ALWAYS use for count-based logic)</span>
+<span class="cm">// ❌ Wrong — may use stale state</span>
+<span class="fn">setCount</span>(count + <span class="num">1</span>);
+<span class="cm">// ✅ Correct — always gets latest value</span>
+<span class="fn">setCount</span>(prev =&gt; prev + <span class="num">1</span>);
+
+<span class="cm">// 5. Arrays — never mutate, always return new array</span>
+<span class="kw">const</span> [items, setItems] = <span class="fn">useState</span>([]);
+<span class="fn">setItems</span>(prev =&gt; [...prev, newItem]);       <span class="cm">// add</span>
+<span class="fn">setItems</span>(prev =&gt; prev.<span class="fn">filter</span>(i =&gt; i.id !== id)); <span class="cm">// remove</span></pre>
+    </div>
+    <div class="callout warn">
+      <strong>Common Mistake</strong>
+      State updates are asynchronous! Calling setCount(count+1) three times in a row will NOT increment by 3 — it increments by 1 because count is stale. Use functional form: setCount(c => c+1) three times = increments by 3.
+    </div>
+    <div class="interview-q">
+      <div class="q">Q: What is "batching" in React state updates?</div>
+      <p>React batches multiple setState calls in the same event handler into a single re-render for performance. React 18 introduced automatic batching — even async code (setTimeout, fetch callbacks) is batched. Use flushSync() to opt out.</p>
+    </div>
+  </div>
+
+  <!-- useEffect -->
+  <div class="subtopic" id="s3-useeffect">
+    <h3>useEffect — Deep Dive</h3>
+    <p>Runs side effects after render. The dependency array controls WHEN it runs.</p>
+    <div class="code-block">
+      <div class="code-label"><span></span>useEffect Dependency Variants</div>
+      <pre><span class="cm">// No deps → runs after EVERY render (usually a bug)</span>
+<span class="fn">useEffect</span>(() =&gt; { console.<span class="fn">log</span>(<span class="str">'every render'</span>); });
+
+<span class="cm">// Empty deps → runs ONCE (componentDidMount)</span>
+<span class="fn">useEffect</span>(() =&gt; { <span class="fn">fetchData</span>(); }, []);
+
+<span class="cm">// With deps → runs when deps change</span>
+<span class="fn">useEffect</span>(() =&gt; { <span class="fn">fetchUser</span>(id); }, [id]);
+
+<span class="cm">// Cleanup (componentWillUnmount)</span>
+<span class="fn">useEffect</span>(() =&gt; {
+  <span class="kw">const</span> timer = <span class="fn">setInterval</span>(() =&gt; <span class="fn">tick</span>(), <span class="num">1000</span>);
+  <span class="kw">return</span> () =&gt; <span class="fn">clearInterval</span>(timer); <span class="cm">// ✅ cleanup</span>
+}, []);</pre>
+    </div>
+    <div class="code-block">
+      <div class="code-label"><span></span>Why async is NOT allowed directly in useEffect</div>
+      <pre><span class="cm">// ❌ WRONG — async function returns a Promise, not a cleanup fn</span>
+<span class="fn">useEffect</span>(<span class="kw">async</span> () =&gt; {
+  <span class="kw">const</span> data = <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">'/api'</span>);
+  <span class="cm">// React expects cleanup fn OR undefined, not a Promise</span>
+}, []);
+
+<span class="cm">// ✅ CORRECT — define async inside</span>
+<span class="fn">useEffect</span>(() =&gt; {
+  <span class="kw">let</span> cancelled = <span class="kw">false</span>;
+
+  <span class="kw">const</span> <span class="fn">load</span> = <span class="kw">async</span> () =&gt; {
+    <span class="kw">const</span> res = <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">'/api'</span>);
+    <span class="kw">const</span> data = <span class="kw">await</span> res.<span class="fn">json</span>();
+    <span class="kw">if</span> (!cancelled) <span class="fn">setData</span>(data); <span class="cm">// guard against stale update</span>
+  };
+
+  <span class="fn">load</span>();
+  <span class="kw">return</span> () =&gt; { cancelled = <span class="kw">true</span>; }; <span class="cm">// cleanup</span>
+}, []);</pre>
+    </div>
+    <div class="interview-q">
+      <div class="q">Q: What is a race condition in useEffect and how to fix it?</div>
+      <p>If userId changes rapidly, multiple fetches fire. The slower one might resolve last with stale data. Fix: use a cancelled flag or AbortController. The cleanup function runs before the next effect, so set cancelled=true or call controller.abort() there.</p>
+    </div>
+  </div>
+
+  <!-- useContext -->
+  <div class="subtopic" id="s3-usecontext">
+    <h3>useContext — Consume Context</h3>
+    <div class="code-block">
+      <div class="code-label"><span></span>useContext Pattern</div>
+      <pre><span class="kw">const</span> ThemeContext = <span class="fn">createContext</span>(<span class="str">'light'</span>);
+
+<span class="kw">function</span> <span class="fn">App</span>() {
+  <span class="kw">return</span> (
+    &lt;<span class="tag">ThemeContext.Provider</span> <span class="attr">value</span>=<span class="str">"dark"</span>&gt;
+      &lt;<span class="tag">Toolbar</span> /&gt;
+    &lt;/<span class="tag">ThemeContext.Provider</span>&gt;
+  );
+}
+
+<span class="kw">function</span> <span class="fn">Toolbar</span>() {
+  <span class="kw">const</span> theme = <span class="fn">useContext</span>(ThemeContext); <span class="cm">// 'dark'</span>
+  <span class="kw">return</span> &lt;<span class="tag">button</span> <span class="attr">className</span>={theme}&gt;Click&lt;/<span class="tag">button</span>&gt;;
+}</pre>
+    </div>
+    <div class="callout warn">
+      <strong>Performance Warning</strong>
+      Every component using useContext re-renders when context value changes — even if they only use part of the value. Fix: split context into smaller contexts, use memo, or use a state manager like Zustand.
+    </div>
+  </div>
+
+  <!-- useRef -->
+  <div class="subtopic" id="s3-useref">
+    <h3>useRef — Two Use Cases</h3>
+    <div class="code-block">
+      <div class="code-label"><span></span>useRef — DOM Access & Persistent Values</div>
+      <pre><span class="kw">function</span> <span class="fn">TextInput</span>() {
+  <span class="kw">const</span> inputRef = <span class="fn">useRef</span>(<span class="kw">null</span>);
+
+  <span class="cm">// Use Case 1: DOM access</span>
+  <span class="kw">const</span> <span class="fn">focus</span> = () =&gt; inputRef.current.<span class="fn">focus</span>();
+
+  <span class="kw">return</span> &lt;&gt;
+    &lt;<span class="tag">input</span> <span class="attr">ref</span>={inputRef} /&gt;
+    &lt;<span class="tag">button</span> <span class="attr">onClick</span>={focus}&gt;Focus&lt;/<span class="tag">button</span>&gt;
+  &lt;/&gt;;
+}
+
+<span class="kw">function</span> <span class="fn">Timer</span>() {
+  <span class="kw">const</span> [count, setCount] = <span class="fn">useState</span>(<span class="num">0</span>);
+  <span class="kw">const</span> timerRef = <span class="fn">useRef</span>(<span class="kw">null</span>);
+
+  <span class="cm">// Use Case 2: Mutable value that persists WITHOUT re-render</span>
+  <span class="cm">// Changing ref.current does NOT cause re-render</span>
+  <span class="kw">const</span> <span class="fn">start</span> = () =&gt; {
+    timerRef.current = <span class="fn">setInterval</span>(() =&gt; {
+      <span class="fn">setCount</span>(c =&gt; c + <span class="num">1</span>);
+    }, <span class="num">1000</span>);
+  };
+
+  <span class="kw">const</span> <span class="fn">stop</span> = () =&gt; <span class="fn">clearInterval</span>(timerRef.current);
+
+  <span class="kw">return</span> &lt;<span class="tag">div</span>&gt;{count} &lt;<span class="tag">button</span> <span class="attr">onClick</span>={start}&gt;Start&lt;/<span class="tag">button</span>&gt;&lt;/<span class="tag">div</span>&gt;;
+}</pre>
+    </div>
+    <div class="interview-q">
+      <div class="q">Q: Difference between useRef and useState?</div>
+      <p>useState — changing value triggers re-render. useRef — changing .current does NOT re-render. Use ref for values you need to persist across renders but don't need to trigger UI updates (timers, previous values, DOM refs).</p>
+    </div>
+    <div class="code-block">
+      <div class="code-label"><span></span>useRef to track previous value (classic interview pattern)</div>
+      <pre><span class="kw">function</span> <span class="fn">usePrevious</span>(value) {
+  <span class="kw">const</span> ref = <span class="fn">useRef</span>();
+  <span class="fn">useEffect</span>(() =&gt; {
+    ref.current = value; <span class="cm">// runs after render, so stores prev</span>
+  });
+  <span class="kw">return</span> ref.current; <span class="cm">// returns value from previous render</span>
+}
+
+<span class="kw">function</span> <span class="fn">Counter</span>() {
+  <span class="kw">const</span> [count, setCount] = <span class="fn">useState</span>(<span class="num">0</span>);
+  <span class="kw">const</span> prev = <span class="fn">usePrevious</span>(count);
+  <span class="kw">return</span> &lt;<span class="tag">p</span>&gt;Now: {count}, Before: {prev}&lt;/<span class="tag">p</span>&gt;;
+}</pre>
+    </div>
+  </div>
+
+  <!-- useReducer -->
+  <div class="subtopic" id="s3-usereducer">
+    <h3>useReducer — Complex State Logic</h3>
+    <p>useReducer is preferred over useState when state logic is complex or next state depends on previous state. Think of it as a mini Redux.</p>
+    <div class="code-block">
+      <div class="code-label"><span></span>useReducer — Shopping Cart Example</div>
+      <pre><span class="kw">const</span> initialState = { items: [], total: <span class="num">0</span> };
+
+<span class="kw">function</span> <span class="fn">cartReducer</span>(state, action) {
+  <span class="kw">switch</span> (action.type) {
+    <span class="kw">case</span> <span class="str">'ADD_ITEM'</span>:
+      <span class="kw">return</span> {
+        ...state,
+        items: [...state.items, action.payload],
+        total: state.total + action.payload.price
+      };
+    <span class="kw">case</span> <span class="str">'REMOVE_ITEM'</span>:
+      <span class="kw">return</span> {
+        ...state,
+        items: state.items.<span class="fn">filter</span>(i =&gt; i.id !== action.payload),
+        total: state.total - state.items.<span class="fn">find</span>(i =&gt; i.id === action.payload).price
+      };
+    <span class="kw">case</span> <span class="str">'CLEAR'</span>:
+      <span class="kw">return</span> initialState;
+    <span class="kw">default</span>:
+      <span class="kw">return</span> state; <span class="cm">// always return state for unknown actions</span>
+  }
+}
+
+<span class="kw">function</span> <span class="fn">Cart</span>() {
+  <span class="kw">const</span> [state, dispatch] = <span class="fn">useReducer</span>(cartReducer, initialState);
+
+  <span class="kw">return</span> (
+    &lt;<span class="tag">div</span>&gt;
+      &lt;<span class="tag">p</span>&gt;Total: ₹{state.total}&lt;/<span class="tag">p</span>&gt;
+      &lt;<span class="tag">button</span> <span class="attr">onClick</span>={() =&gt; <span class="fn">dispatch</span>({ type: <span class="str">'CLEAR'</span> })}&gt;Clear&lt;/<span class="tag">button</span>&gt;
+    &lt;/<span class="tag">div</span>&gt;
+  );
+}</pre>
+    </div>
+    <div class="callout tip">
+      <strong>When to use useReducer vs useState?</strong>
+      Use useReducer when: multiple related state values, next state depends on previous, state logic is complex enough to test separately, or you need predictable state transitions (like a state machine).
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- ===== SECTION 4: PERFORMANCE HOOKS ===== -->
+<div class="topic" id="s4">
+  <div class="topic-header">
+    <span class="topic-num">04</span>
+    <h2 class="topic-title">Performance Hooks</h2>
+    <span class="tag-pill tag-perf">Performance</span>
+  </div>
+
+  <div class="subtopic">
+    <h3>useMemo — Memoize Computed Values</h3>
+    <p>Caches the result of an expensive calculation. Re-computes only when dependencies change.</p>
+    <div class="code-block">
+      <div class="code-label"><span></span>useMemo — Correct Usage</div>
+      <pre><span class="kw">function</span> <span class="fn">ProductList</span>({ products, searchTerm }) {
+  <span class="cm">// ✅ Expensive filter — only recomputes when inputs change</span>
+  <span class="kw">const</span> filtered = <span class="fn">useMemo</span>(
+    () =&gt; products.<span class="fn">filter</span>(p =&gt; p.name.<span class="fn">includes</span>(searchTerm)),
+    [products, searchTerm]
+  );
+
+  <span class="cm">// ❌ Don't memoize cheap operations</span>
+  <span class="kw">const</span> doubled = <span class="fn">useMemo</span>(() =&gt; count * <span class="num">2</span>, [count]); <span class="cm">// overkill</span>
+  <span class="kw">const</span> doubled2 = count * <span class="num">2</span>; <span class="cm">// ✅ just compute it</span>
+
+  <span class="kw">return</span> &lt;<span class="tag">ul</span>&gt;{filtered.<span class="fn">map</span>(p =&gt; &lt;<span class="tag">li</span> <span class="attr">key</span>={p.id}&gt;{p.name}&lt;/<span class="tag">li</span>&gt;)}&lt;/<span class="tag">ul</span>&gt;;
+}</pre>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>useCallback — Memoize Functions</h3>
+    <p>Caches a function reference. Essential when passing callbacks to memoized child components (React.memo) to prevent unnecessary re-renders.</p>
+    <div class="code-block">
+      <div class="code-label"><span></span>useCallback — The Key Use Case</div>
+      <pre><span class="cm">// Without useCallback, new function reference every render</span>
+<span class="cm">// → MemoizedChild re-renders even if nothing changed</span>
+<span class="kw">function</span> <span class="fn">Parent</span>() {
+  <span class="kw">const</span> [count, setCount] = <span class="fn">useState</span>(<span class="num">0</span>);
+  <span class="kw">const</span> [name, setName] = <span class="fn">useState</span>(<span class="str">''</span>);
+
+  <span class="cm">// ✅ Stable reference — only changes if setCount changes (never)</span>
+  <span class="kw">const</span> <span class="fn">increment</span> = <span class="fn">useCallback</span>(() =&gt; {
+    <span class="fn">setCount</span>(c =&gt; c + <span class="num">1</span>);
+  }, []); <span class="cm">// empty deps: setCount is stable</span>
+
+  <span class="kw">return</span> (
+    &lt;<span class="tag">div</span>&gt;
+      &lt;<span class="tag">input</span> <span class="attr">value</span>={name} <span class="attr">onChange</span>={e =&gt; <span class="fn">setName</span>(e.target.value)} /&gt;
+      <span class="cm">// MemoizedButton won't re-render when name changes</span>
+      &lt;<span class="tag">MemoizedButton</span> <span class="attr">onClick</span>={increment} /&gt;
+    &lt;/<span class="tag">div</span>&gt;
+  );
+}
+
+<span class="kw">const</span> MemoizedButton = React.<span class="fn">memo</span>(({ onClick }) =&gt; {
+  console.<span class="fn">log</span>(<span class="str">'Button rendered'</span>); <span class="cm">// only logs once!</span>
+  <span class="kw">return</span> &lt;<span class="tag">button</span> <span class="attr">onClick</span>={onClick}&gt;+&lt;/<span class="tag">button</span>&gt;;
+});</pre>
+    </div>
+    <div class="callout">
+      <strong>Interview Trap</strong>
+      useCallback is ONLY useful when the child is wrapped in React.memo. Without memo, useCallback just adds overhead. useMemo returns a value. useCallback returns a function (it's essentially useMemo(() => fn, deps)).
+    </div>
+    <div class="interview-q">
+      <div class="q">Q: What is the difference between useMemo and useCallback?</div>
+      <p>useMemo caches a computed value: useMemo(() => expensiveCalc(), [dep]). useCallback caches a function reference: useCallback(() => doThing(), [dep]). useCallback(fn, deps) is exactly equivalent to useMemo(() => fn, deps).</p>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+
+<!-- ===== SECTION 5: ADVANCED HOOKS ===== -->
+<div class="topic" id="s5">
+  <div class="topic-header">
+    <span class="topic-num">05</span>
+    <h2 class="topic-title">Advanced Hooks</h2>
+    <span class="tag-pill tag-adv">Advanced</span>
+  </div>
+
+  <div class="subtopic">
+    <h3>useLayoutEffect — Synchronous DOM Measurement</h3>
+    <p>Like useEffect but fires <strong>synchronously before browser paint</strong>. Use for DOM measurements and animations that would flicker with useEffect.</p>
+    <div class="code-block">
+      <div class="code-label"><span></span>useLayoutEffect vs useEffect</div>
+      <pre><span class="cm">// Order of operations:</span>
+<span class="cm">// 1. React renders (reconciliation)</span>
+<span class="cm">// 2. React commits DOM changes</span>
+<span class="cm">// 3. useLayoutEffect runs (SYNC — blocks paint)</span>
+<span class="cm">// 4. Browser PAINTS</span>
+<span class="cm">// 5. useEffect runs (ASYNC — after paint)</span>
+
+<span class="kw">function</span> <span class="fn">Tooltip</span>({ children }) {
+  <span class="kw">const</span> ref = <span class="fn">useRef</span>();
+  <span class="kw">const</span> [width, setWidth] = <span class="fn">useState</span>(<span class="num">0</span>);
+
+  <span class="cm">// ✅ Measure before paint to avoid flicker</span>
+  <span class="fn">useLayoutEffect</span>(() =&gt; {
+    setWidth(ref.current.<span class="fn">getBoundingClientRect</span>().width);
+  }, []);
+
+  <span class="kw">return</span> &lt;<span class="tag">div</span> <span class="attr">ref</span>={ref}&gt;{children} ({width}px)&lt;/<span class="tag">div</span>&gt;;
+}</pre>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>useImperativeHandle — Expose Ref API</h3>
+    <p>Used with forwardRef to customize the ref handle exposed to parent. Lets parent call methods on child component.</p>
+    <div class="code-block">
+      <div class="code-label"><span></span>useImperativeHandle + forwardRef</div>
+      <pre><span class="kw">const</span> FancyInput = React.<span class="fn">forwardRef</span>((props, ref) =&gt; {
+  <span class="kw">const</span> inputRef = <span class="fn">useRef</span>();
+
+  <span class="cm">// Expose only specific methods to parent</span>
+  <span class="fn">useImperativeHandle</span>(ref, () =&gt; ({
+    <span class="fn">focus</span>: () =&gt; inputRef.current.<span class="fn">focus</span>(),
+    <span class="fn">clear</span>: () =&gt; { inputRef.current.value = <span class="str">''</span>; },
+  }));
+
+  <span class="kw">return</span> &lt;<span class="tag">input</span> <span class="attr">ref</span>={inputRef} {...props} /&gt;;
+});
+
+<span class="kw">function</span> <span class="fn">Parent</span>() {
+  <span class="kw">const</span> ref = <span class="fn">useRef</span>();
+  <span class="kw">return</span> (
+    &lt;<span class="tag">div</span>&gt;
+      &lt;<span class="tag">FancyInput</span> <span class="attr">ref</span>={ref} /&gt;
+      &lt;<span class="tag">button</span> <span class="attr">onClick</span>={() =&gt; ref.current.<span class="fn">focus</span>()}&gt;Focus&lt;/<span class="tag">button</span>&gt;
+      &lt;<span class="tag">button</span> <span class="attr">onClick</span>={() =&gt; ref.current.<span class="fn">clear</span>()}&gt;Clear&lt;/<span class="tag">button</span>&gt;
+    &lt;/<span class="tag">div</span>&gt;
+  );
+}</pre>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>useDebugValue — DevTools Label</h3>
+    <div class="code-block">
+      <div class="code-label"><span></span>useDebugValue in custom hooks</div>
+      <pre><span class="kw">function</span> <span class="fn">useOnlineStatus</span>() {
+  <span class="kw">const</span> [isOnline, setIsOnline] = <span class="fn">useState</span>(navigator.onLine);
+
+  <span class="cm">// Shows "OnlineStatus: Online" in React DevTools</span>
+  <span class="fn">useDebugValue</span>(isOnline ? <span class="str">'Online'</span> : <span class="str">'Offline'</span>);
+
+  <span class="fn">useEffect</span>(() =&gt; {
+    <span class="kw">const</span> <span class="fn">on</span> = () =&gt; <span class="fn">setIsOnline</span>(<span class="kw">true</span>);
+    <span class="kw">const</span> <span class="fn">off</span> = () =&gt; <span class="fn">setIsOnline</span>(<span class="kw">false</span>);
+    window.<span class="fn">addEventListener</span>(<span class="str">'online'</span>, on);
+    window.<span class="fn">addEventListener</span>(<span class="str">'offline'</span>, off);
+    <span class="kw">return</span> () =&gt; {
+      window.<span class="fn">removeEventListener</span>(<span class="str">'online'</span>, on);
+      window.<span class="fn">removeEventListener</span>(<span class="str">'offline'</span>, off);
+    };
+  }, []);
+
+  <span class="kw">return</span> isOnline;
+}</pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- ===== SECTION 6: REACT 18 HOOKS ===== -->
+<div class="topic" id="s6">
+  <div class="topic-header">
+    <span class="topic-num">06</span>
+    <h2 class="topic-title">React 18 Hooks</h2>
+    <span class="tag-pill tag-new">React 18</span>
+  </div>
+
+  <div class="subtopic">
+    <h3>useTransition — Non-Blocking UI Updates</h3>
+    <p>Marks updates as non-urgent. React will interrupt them if more urgent updates come in. Perfect for search, filtering, tab switching.</p>
+    <div class="code-block">
+      <div class="code-label"><span></span>useTransition — Search Example</div>
+      <pre><span class="kw">function</span> <span class="fn">SearchPage</span>({ items }) {
+  <span class="kw">const</span> [query, setQuery] = <span class="fn">useState</span>(<span class="str">''</span>);
+  <span class="kw">const</span> [results, setResults] = <span class="fn">useState</span>(items);
+  <span class="kw">const</span> [isPending, startTransition] = <span class="fn">useTransition</span>();
+
+  <span class="kw">const</span> <span class="fn">handleSearch</span> = (e) =&gt; {
+    <span class="kw">const</span> val = e.target.value;
+    <span class="fn">setQuery</span>(val); <span class="cm">// ✅ urgent — input must be responsive</span>
+
+    <span class="fn">startTransition</span>(() =&gt; {
+      <span class="cm">// ⚡ non-urgent — can be interrupted</span>
+      <span class="fn">setResults</span>(items.<span class="fn">filter</span>(i =&gt; i.<span class="fn">includes</span>(val)));
+    });
+  };
+
+  <span class="kw">return</span> (
+    &lt;<span class="tag">div</span>&gt;
+      &lt;<span class="tag">input</span> <span class="attr">value</span>={query} <span class="attr">onChange</span>={handleSearch} /&gt;
+      {isPending &amp;&amp; &lt;<span class="tag">span</span>&gt;Updating...&lt;/<span class="tag">span</span>&gt;}
+      &lt;<span class="tag">ResultsList</span> <span class="attr">items</span>={results} /&gt;
+    &lt;/<span class="tag">div</span>&gt;
+  );
+}</pre>
+    </div>
+    <div class="interview-q">
+      <div class="q">Q: What is Concurrent Mode / Concurrent Features in React 18?</div>
+      <p>React 18's concurrent features allow React to interrupt, pause, and resume renders. useTransition and useDeferredValue are the main hooks for opting into this behavior. It prevents expensive renders from blocking urgent UI updates (like typing in an input).</p>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>useDeferredValue — Defer Slow Renders</h3>
+    <p>Like useTransition but for values you receive (not set). Useful when you can't access the state setter (e.g., props from parent).</p>
+    <div class="code-block">
+      <div class="code-label"><span></span>useDeferredValue</div>
+      <pre><span class="kw">function</span> <span class="fn">SearchResults</span>({ query }) {
+  <span class="cm">// Deferred version lags behind query — allows input to stay snappy</span>
+  <span class="kw">const</span> deferredQuery = <span class="fn">useDeferredValue</span>(query);
+
+  <span class="cm">// This expensive component renders with the deferred (possibly stale) value</span>
+  <span class="kw">const</span> results = <span class="fn">useMemo</span>(
+    () =&gt; <span class="fn">heavyFilter</span>(deferredQuery),
+    [deferredQuery]
+  );
+
+  <span class="kw">const</span> isStale = deferredQuery !== query;
+
+  <span class="kw">return</span> (
+    &lt;<span class="tag">div</span> <span class="attr">style</span>={{ opacity: isStale ? <span class="num">0.7</span> : <span class="num">1</span> }}&gt;
+      {results.<span class="fn">map</span>(r =&gt; &lt;<span class="tag">div</span> <span class="attr">key</span>={r.id}&gt;{r.name}&lt;/<span class="tag">div</span>&gt;)}
+    &lt;/<span class="tag">div</span>&gt;
+  );
+}
+
+<span class="cm">// Difference: useTransition — you control the setter</span>
+<span class="cm">// useDeferredValue — you only have the value (e.g., from props)</span></pre>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>useId — Stable Unique IDs</h3>
+    <div class="code-block">
+      <div class="code-label"><span></span>useId for accessibility</div>
+      <pre><span class="kw">function</span> <span class="fn">FormField</span>({ label }) {
+  <span class="kw">const</span> id = <span class="fn">useId</span>(); <span class="cm">// generates stable, unique ID</span>
+
+  <span class="kw">return</span> (
+    &lt;<span class="tag">div</span>&gt;
+      &lt;<span class="tag">label</span> <span class="attr">htmlFor</span>={id}&gt;{label}&lt;/<span class="tag">label</span>&gt;
+      &lt;<span class="tag">input</span> <span class="attr">id</span>={id} /&gt;
+    &lt;/<span class="tag">div</span>&gt;
+  );
+}
+<span class="cm">// ✅ SSR-safe — same ID on server and client</span>
+<span class="cm">// ❌ Don't use for list keys (use data IDs instead)</span></pre>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>useSyncExternalStore — External Subscriptions</h3>
+    <p>The official way to subscribe to external stores (non-React state) in React 18 concurrent mode. Used by Redux, Zustand, etc. internally.</p>
+    <div class="code-block">
+      <div class="code-label"><span></span>useSyncExternalStore</div>
+      <pre><span class="kw">function</span> <span class="fn">useWindowWidth</span>() {
+  <span class="kw">return</span> <span class="fn">useSyncExternalStore</span>(
+    (callback) =&gt; {
+      window.<span class="fn">addEventListener</span>(<span class="str">'resize'</span>, callback);
+      <span class="kw">return</span> () =&gt; window.<span class="fn">removeEventListener</span>(<span class="str">'resize'</span>, callback);
+    },
+    () =&gt; window.innerWidth,          <span class="cm">// client snapshot</span>
+    () =&gt; <span class="num">1200</span>                          <span class="cm">// server snapshot</span>
+  );
+}</pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- ===== SECTION 7: REACT 19 HOOKS ===== -->
+<div class="topic" id="s7">
+  <div class="topic-header">
+    <span class="topic-num">07</span>
+    <h2 class="topic-title">React 19 / Experimental Hooks</h2>
+    <span class="tag-pill tag-new">React 19</span>
+  </div>
+
+  <div class="subtopic">
+    <h3>useOptimistic — Instant Optimistic UI</h3>
+    <p>Shows optimistic (assumed successful) state immediately while the async operation completes. Automatically rolls back if it fails.</p>
+    <div class="code-block">
+      <div class="code-label"><span></span>useOptimistic — Like Button</div>
+      <pre><span class="kw">function</span> <span class="fn">LikeButton</span>({ postId, initialLikes }) {
+  <span class="kw">const</span> [likes, setLikes] = <span class="fn">useState</span>(initialLikes);
+  <span class="kw">const</span> [optimisticLikes, setOptimisticLikes] = <span class="fn">useOptimistic</span>(likes);
+
+  <span class="kw">const</span> <span class="fn">handleLike</span> = <span class="kw">async</span> () =&gt; {
+    <span class="fn">setOptimisticLikes</span>(l =&gt; l + <span class="num">1</span>); <span class="cm">// shows +1 instantly</span>
+
+    <span class="kw">try</span> {
+      <span class="kw">const</span> updated = <span class="kw">await</span> <span class="fn">likePost</span>(postId);
+      <span class="fn">setLikes</span>(updated.likes); <span class="cm">// sync with server</span>
+    } <span class="kw">catch</span> {
+      <span class="cm">// React auto-reverts optimisticLikes to actual likes</span>
+    }
+  };
+
+  <span class="kw">return</span> &lt;<span class="tag">button</span> <span class="attr">onClick</span>={handleLike}&gt;❤ {optimisticLikes}&lt;/<span class="tag">button</span>&gt;;
+}</pre>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>use() Hook — Suspend on Promises</h3>
+    <p>The <code>use()</code> hook can unwrap Promises and Context inside render — including inside conditionals and loops (unlike other hooks).</p>
+    <div class="code-block">
+      <div class="code-label"><span></span>use() Hook</div>
+      <pre><span class="cm">// With Suspense — component suspends while promise resolves</span>
+<span class="kw">function</span> <span class="fn">UserProfile</span>({ userPromise }) {
+  <span class="kw">const</span> user = <span class="fn">use</span>(userPromise); <span class="cm">// suspends here if pending</span>
+  <span class="kw">return</span> &lt;<span class="tag">h1</span>&gt;{user.name}&lt;/<span class="tag">h1</span>&gt;;
+}
+
+<span class="cm">// Can be used conditionally (unlike other hooks!)</span>
+<span class="kw">function</span> <span class="fn">App</span>({ showUser, userPromise }) {
+  <span class="kw">if</span> (showUser) {
+    <span class="kw">const</span> user = <span class="fn">use</span>(userPromise); <span class="cm">// ✅ valid!</span>
+  }
+}
+
+<span class="cm">// Wrap in Suspense</span>
+&lt;<span class="tag">Suspense</span> <span class="attr">fallback</span>={&lt;<span class="tag">Spinner</span> /&gt;}&gt;
+  &lt;<span class="tag">UserProfile</span> <span class="attr">userPromise</span>={fetchUser()} /&gt;
+&lt;/<span class="tag">Suspense</span>&gt;</pre>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>useEffectEvent (experimental) — Stable Event Handlers</h3>
+    <p>Solves the problem of event handlers needing to read latest values without being in the dependency array.</p>
+    <div class="code-block">
+      <div class="code-label"><span></span>useEffectEvent</div>
+      <pre><span class="kw">function</span> <span class="fn">ChatRoom</span>({ roomId, onMessage }) {
+  <span class="cm">// ✅ Always reads latest onMessage without adding to deps</span>
+  <span class="kw">const</span> <span class="fn">onMessageEvent</span> = <span class="fn">useEffectEvent</span>(onMessage);
+
+  <span class="fn">useEffect</span>(() =&gt; {
+    <span class="kw">const</span> socket = <span class="fn">connect</span>(roomId);
+    socket.<span class="fn">on</span>(<span class="str">'message'</span>, <span class="fn">onMessageEvent</span>);
+    <span class="kw">return</span> () =&gt; socket.<span class="fn">disconnect</span>();
+  }, [roomId]); <span class="cm">// onMessage not in deps — no stale closure issue</span>
+}</pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+
+<!-- ===== SECTION 8: RENDERING & VIRTUAL DOM ===== -->
+<div class="section-label">Interview Core — Rendering</div>
+
+<div class="topic" id="s8">
+  <div class="topic-header">
+    <span class="topic-num">08</span>
+    <h2 class="topic-title">Rendering, Virtual DOM & Reconciliation</h2>
+    <span class="tag-pill tag-core">🔥 Most Asked</span>
+  </div>
+
+  <div class="subtopic">
+    <h3>What is the Virtual DOM?</h3>
+    <p>The Virtual DOM (VDOM) is a lightweight in-memory JavaScript representation of the real DOM tree. React maintains two VDOM trees: the current one and the next one (after state change). It <strong>diffs</strong> them and only updates the real DOM with the minimum changes needed.</p>
+    <div class="callout">
+      <strong>Interview Answer Template</strong>
+      "React maintains a virtual DOM — a JS object tree mirroring the real DOM. On state change, it creates a new VDOM, diffs it against the previous via reconciliation, and applies only the minimal set of real DOM changes. This is more efficient than directly manipulating the DOM every time."
+    </div>
+    <div class="code-block">
+      <div class="code-label"><span></span>VDOM Mental Model</div>
+      <pre><span class="cm">// Real DOM (expensive to manipulate):</span>
+<span class="cm">// &lt;div&gt;&lt;h1&gt;Hello&lt;/h1&gt;&lt;/div&gt;</span>
+
+<span class="cm">// Virtual DOM (cheap JS object):</span>
+{
+  type: <span class="str">'div'</span>,
+  props: {},
+  children: [{
+    type: <span class="str">'h1'</span>,
+    props: {},
+    children: [<span class="str">'Hello'</span>]
+  }]
+}
+
+<span class="cm">// After state change, React creates a NEW vdom tree</span>
+<span class="cm">// Runs the diff algorithm (reconciliation)</span>
+<span class="cm">// Computes minimal DOM operations needed</span>
+<span class="cm">// Batches and applies them to real DOM</span></pre>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>Reconciliation Algorithm</h3>
+    <p>React's algorithm for comparing two VDOM trees (diffing). It has two main heuristics:</p>
+    <ul>
+      <li><strong>Different element type</strong> → tear down old tree, build new one from scratch</li>
+      <li><strong>Same element type</strong> → keep DOM node, only update changed attributes</li>
+      <li><strong>Lists</strong> → use <code>key</code> prop to identify which items moved/added/removed</li>
+    </ul>
+    <div class="code-block">
+      <div class="code-label"><span></span>Reconciliation Examples</div>
+      <pre><span class="cm">// Case 1: Different type → full remount</span>
+<span class="cm">// Before: &lt;div&gt;&lt;Counter /&gt;&lt;/div&gt;</span>
+<span class="cm">// After:  &lt;span&gt;&lt;Counter /&gt;&lt;/span&gt;</span>
+<span class="cm">// Result: Counter unmounts and remounts (state LOST)</span>
+
+<span class="cm">// Case 2: Same type → update in place</span>
+<span class="cm">// Before: &lt;div className="a" /&gt;</span>
+<span class="cm">// After:  &lt;div className="b" /&gt;</span>
+<span class="cm">// Result: React updates className only (state PRESERVED)</span>
+
+<span class="cm">// Case 3: Lists without key (BAD)</span>
+[<span class="str">'a'</span>, <span class="str">'b'</span>, <span class="str">'c'</span>] =&gt; [<span class="str">'x'</span>, <span class="str">'a'</span>, <span class="str">'b'</span>, <span class="str">'c'</span>] <span class="cm">// React mutates all 4</span>
+
+<span class="cm">// Case 4: Lists with key (GOOD)</span>
+<span class="cm">// React knows 'a','b','c' are unchanged — only inserts 'x'</span>
+items.<span class="fn">map</span>(item =&gt; &lt;<span class="tag">li</span> <span class="attr">key</span>={item.id}&gt;{item.name}&lt;/<span class="tag">li</span>&gt;)</pre>
+    </div>
+    <div class="callout warn">
+      <strong>Key Deep Dive — Most Common Interview Question</strong>
+      Keys must be stable, unique, and predictable. Using array index as key causes bugs when list order changes — React gets confused about which item is which. Always use a unique ID from your data.
+    </div>
+    <div class="interview-q">
+      <div class="q">Q: Why is using index as key bad?</div>
+      <p>If you insert an item at position 0, all other items shift. React sees the key=0 component as the same component but with different props, causing wrong state retention and potential rendering bugs. E.g., form inputs retain values of the wrong item.</p>
+    </div>
+    <div class="interview-q">
+      <div class="q">Q: Can two siblings have the same key?</div>
+      <p>Keys only need to be unique among siblings — not globally. But duplicate keys among siblings will cause React to skip rendering one of them.</p>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>React Fiber — The Reconciler</h3>
+    <p>Fiber is React's reimplemented reconciliation algorithm (React 16+). It enables <strong>incremental rendering</strong> — breaking work into chunks that can be paused, aborted, or prioritized. This is what powers Concurrent Mode.</p>
+    <table>
+      <tr><th>Old Stack Reconciler</th><th>Fiber Reconciler</th></tr>
+      <tr><td>Synchronous, blocking</td><td>Interruptible, async capable</td></tr>
+      <tr><td>Once started, must finish</td><td>Can pause and resume</td></tr>
+      <tr><td>No priority levels</td><td>Work has priority (lane model)</td></tr>
+      <tr><td>No Concurrent Mode</td><td>Enables useTransition, Suspense</td></tr>
+    </table>
+  </div>
+
+  <div class="subtopic">
+    <h3>React Render vs Commit Phases</h3>
+    <ul>
+      <li><strong>Render Phase</strong> (pure) — React calls components, creates VDOM, runs reconciliation. Can be interrupted. No side effects here.</li>
+      <li><strong>Commit Phase</strong> (impure) — React applies changes to real DOM. Synchronous, cannot be interrupted. useLayoutEffect runs here.</li>
+    </ul>
+    <div class="callout info">
+      <strong>StrictMode Double Render</strong>
+      In development + StrictMode, React renders components twice (render phase only) to detect side effects. This is why you see console.logs twice. It does NOT double-commit — DOM updates happen once.
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- ===== SECTION 9: API & ASYNC ===== -->
+<div class="topic" id="s9">
+  <div class="topic-header">
+    <span class="topic-num">09</span>
+    <h2 class="topic-title">API & Async Concepts</h2>
+    <span class="tag-pill tag-adv">Advanced</span>
+  </div>
+
+  <div class="subtopic">
+    <h3>AbortController — Cancel Requests</h3>
+    <div class="code-block">
+      <div class="code-label"><span></span>AbortController Pattern</div>
+      <pre><span class="fn">useEffect</span>(() =&gt; {
+  <span class="kw">const</span> controller = <span class="kw">new</span> <span class="fn">AbortController</span>();
+
+  <span class="kw">const</span> <span class="fn">load</span> = <span class="kw">async</span> () =&gt; {
+    <span class="kw">try</span> {
+      <span class="kw">const</span> res = <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">`/api/users/${id}`</span>, {
+        signal: controller.signal <span class="cm">// link to controller</span>
+      });
+      <span class="kw">const</span> data = <span class="kw">await</span> res.<span class="fn">json</span>();
+      <span class="fn">setUser</span>(data);
+    } <span class="kw">catch</span> (err) {
+      <span class="kw">if</span> (err.name === <span class="str">'AbortError'</span>) <span class="kw">return</span>; <span class="cm">// expected — ignore</span>
+      <span class="fn">setError</span>(err);
+    }
+  };
+
+  <span class="fn">load</span>();
+  <span class="kw">return</span> () =&gt; controller.<span class="fn">abort</span>(); <span class="cm">// cancels on cleanup</span>
+}, [id]);</pre>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>Custom Data Fetching Hook</h3>
+    <div class="code-block">
+      <div class="code-label"><span></span>useFetch — reusable pattern</div>
+      <pre><span class="kw">function</span> <span class="fn">useFetch</span>(url) {
+  <span class="kw">const</span> [state, dispatch] = <span class="fn">useReducer</span>(
+    (s, action) =&gt; ({ ...s, ...action }),
+    { data: <span class="kw">null</span>, loading: <span class="kw">true</span>, error: <span class="kw">null</span> }
+  );
+
+  <span class="fn">useEffect</span>(() =&gt; {
+    <span class="kw">if</span> (!url) <span class="kw">return</span>;
+    <span class="kw">const</span> ctrl = <span class="kw">new</span> <span class="fn">AbortController</span>();
+
+    <span class="fn">dispatch</span>({ loading: <span class="kw">true</span>, error: <span class="kw">null</span> });
+
+    <span class="fn">fetch</span>(url, { signal: ctrl.signal })
+      .<span class="fn">then</span>(r =&gt; r.<span class="fn">json</span>())
+      .<span class="fn">then</span>(data =&gt; <span class="fn">dispatch</span>({ data, loading: <span class="kw">false</span> }))
+      .<span class="fn">catch</span>(err =&gt; {
+        <span class="kw">if</span> (err.name !== <span class="str">'AbortError'</span>)
+          <span class="fn">dispatch</span>({ error: err.message, loading: <span class="kw">false</span> });
+      });
+
+    <span class="kw">return</span> () =&gt; ctrl.<span class="fn">abort</span>();
+  }, [url]);
+
+  <span class="kw">return</span> state;
+}
+
+<span class="cm">// Usage</span>
+<span class="kw">const</span> { data, loading, error } = <span class="fn">useFetch</span>(<span class="str">`/api/users/${id}`</span>);</pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- ===== SECTION 10: BUILT-IN COMPONENTS ===== -->
+<div class="topic" id="s10">
+  <div class="topic-header">
+    <span class="topic-num">10</span>
+    <h2 class="topic-title">Built-in React Components</h2>
+    <span class="tag-pill tag-core">Core</span>
+  </div>
+
+  <div class="subtopic">
+    <h3>Fragment — Avoid Wrapper Divs</h3>
+    <div class="code-block">
+      <div class="code-label"><span></span>Fragment Usage</div>
+      <pre><span class="cm">// Long form (supports key prop)</span>
+<span class="kw">return</span> (
+  &lt;<span class="tag">React.Fragment</span> <span class="attr">key</span>={id}&gt;
+    &lt;<span class="tag">dt</span>&gt;Term&lt;/<span class="tag">dt</span>&gt;
+    &lt;<span class="tag">dd</span>&gt;Definition&lt;/<span class="tag">dd</span>&gt;
+  &lt;/<span class="tag">React.Fragment</span>&gt;
+);
+
+<span class="cm">// Short form (cannot use key)</span>
+<span class="kw">return</span> (
+  &lt;&gt;
+    &lt;<span class="tag">dt</span>&gt;Term&lt;/<span class="tag">dt</span>&gt;
+    &lt;<span class="tag">dd</span>&gt;Definition&lt;/<span class="tag">dd</span>&gt;
+  &lt;/&gt;
+);</pre>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>Suspense — Declarative Loading States</h3>
+    <div class="code-block">
+      <div class="code-label"><span></span>Suspense + lazy loading</div>
+      <pre><span class="kw">const</span> ProfilePage = React.<span class="fn">lazy</span>(() =&gt; <span class="fn">import</span>(<span class="str">'./ProfilePage'</span>));
+
+<span class="kw">function</span> <span class="fn">App</span>() {
+  <span class="kw">return</span> (
+    &lt;<span class="tag">Suspense</span> <span class="attr">fallback</span>={&lt;<span class="tag">div</span>&gt;Loading...&lt;/<span class="tag">div</span>&gt;}&gt;
+      &lt;<span class="tag">ProfilePage</span> /&gt;
+    &lt;/<span class="tag">Suspense</span>&gt;
+  );
+}
+
+<span class="cm">// Nested Suspense boundaries</span>
+&lt;<span class="tag">Suspense</span> <span class="attr">fallback</span>={&lt;<span class="tag">PageSkeleton</span> /&gt;}&gt;
+  &lt;<span class="tag">Header</span> /&gt;
+  &lt;<span class="tag">Suspense</span> <span class="attr">fallback</span>={&lt;<span class="tag">Spinner</span> /&gt;}&gt;
+    &lt;<span class="tag">Comments</span> /&gt; <span class="cm">// suspends separately</span>
+  &lt;/<span class="tag">Suspense</span>&gt;
+&lt;/<span class="tag">Suspense</span>&gt;</pre>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>StrictMode — Development Quality Checks</h3>
+    <p>Enables extra checks in development only. Does NOT affect production builds.</p>
+    <ul>
+      <li>Double-invokes render functions to detect impure renders</li>
+      <li>Double-invokes effects to detect missing cleanup</li>
+      <li>Warns about deprecated APIs</li>
+    </ul>
+  </div>
+
+  <div class="subtopic">
+    <h3>Profiler — Measure Performance</h3>
+    <div class="code-block">
+      <div class="code-label"><span></span>Profiler Usage</div>
+      <pre><span class="kw">function</span> <span class="fn">onRender</span>(id, phase, actualDuration) {
+  console.<span class="fn">log</span>(<span class="str">`${id} ${phase} took ${actualDuration}ms`</span>);
+}
+
+&lt;<span class="tag">Profiler</span> <span class="attr">id</span>=<span class="str">"Navigation"</span> <span class="attr">onRender</span>={onRender}&gt;
+  &lt;<span class="tag">Navigation</span> /&gt;
+&lt;/<span class="tag">Profiler</span>&gt;</pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+
+<!-- ===== SECTION 11: REACT APIs ===== -->
+<div class="topic" id="s11">
+  <div class="topic-header">
+    <span class="topic-num">11</span>
+    <h2 class="topic-title">React APIs (Advanced)</h2>
+    <span class="tag-pill tag-adv">Advanced</span>
+  </div>
+
+  <div class="subtopic">
+    <h3>memo — Skip Re-renders</h3>
+    <div class="code-block">
+      <div class="code-label"><span></span>React.memo</div>
+      <pre><span class="cm">// Component only re-renders if props change</span>
+<span class="kw">const</span> ExpensiveList = React.<span class="fn">memo</span>(({ items, onSelect }) =&gt; {
+  return items.<span class="fn">map</span>(item =&gt; &lt;<span class="tag">Item</span> <span class="attr">key</span>={item.id} <span class="attr">item</span>={item} <span class="attr">onClick</span>={onSelect} /&gt;);
+});
+
+<span class="cm">// Custom comparison (like shouldComponentUpdate)</span>
+<span class="kw">const</span> SmartComponent = React.<span class="fn">memo</span>(Component, (prevProps, nextProps) =&gt; {
+  <span class="cm">// return true = skip re-render (props "equal")</span>
+  <span class="cm">// return false = re-render</span>
+  <span class="kw">return</span> prevProps.id === nextProps.id;
+});</pre>
+    </div>
+    <div class="callout warn">
+      <strong>Memo is NOT free</strong>
+      React.memo adds a comparison cost on every render of the parent. Only use when: (1) component renders often, (2) with same props, (3) component is expensive to render.
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>lazy + Suspense — Code Splitting</h3>
+    <div class="code-block">
+      <div class="code-label"><span></span>lazy loading routes</div>
+      <pre><span class="kw">const</span> Dashboard = React.<span class="fn">lazy</span>(() =&gt; <span class="fn">import</span>(<span class="str">'./Dashboard'</span>));
+<span class="kw">const</span> Settings = React.<span class="fn">lazy</span>(() =&gt; <span class="fn">import</span>(<span class="str">'./Settings'</span>));
+
+<span class="cm">// Each lazy component is a separate JS chunk</span>
+<span class="cm">// Only downloaded when first rendered</span>
+&lt;<span class="tag">Routes</span>&gt;
+  &lt;<span class="tag">Route</span> <span class="attr">path</span>=<span class="str">"/dashboard"</span> <span class="attr">element</span>={
+    &lt;<span class="tag">Suspense</span> <span class="attr">fallback</span>={&lt;<span class="tag">Spinner</span>/&gt;}&gt;&lt;<span class="tag">Dashboard</span>/&gt;&lt;/<span class="tag">Suspense</span>&gt;
+  } /&gt;
+&lt;/<span class="tag">Routes</span>&gt;</pre>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>createPortal — Render Outside DOM Tree</h3>
+    <div class="code-block">
+      <div class="code-label"><span></span>Portal for Modals</div>
+      <pre><span class="kw">import</span> { createPortal } <span class="kw">from</span> <span class="str">'react-dom'</span>;
+
+<span class="kw">function</span> <span class="fn">Modal</span>({ children, isOpen }) {
+  <span class="kw">if</span> (!isOpen) <span class="kw">return</span> <span class="kw">null</span>;
+
+  <span class="cm">// Renders into document.body, not current DOM position</span>
+  <span class="cm">// But events still bubble through React component tree!</span>
+  <span class="kw">return</span> <span class="fn">createPortal</span>(
+    &lt;<span class="tag">div</span> <span class="attr">className</span>=<span class="str">"modal-overlay"</span>&gt;
+      &lt;<span class="tag">div</span> <span class="attr">className</span>=<span class="str">"modal"</span>&gt;{children}&lt;/<span class="tag">div</span>&gt;
+    &lt;/<span class="tag">div</span>&gt;,
+    document.body
+  );
+}
+
+<span class="cm">// Used for: modals, tooltips, dropdowns (z-index/overflow issues)</span></pre>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>forwardRef — Pass Ref to Child</h3>
+    <div class="code-block">
+      <div class="code-label"><span></span>forwardRef</div>
+      <pre><span class="cm">// Without forwardRef, ref stops at the component boundary</span>
+<span class="kw">const</span> CustomInput = React.<span class="fn">forwardRef</span>(({ label, ...props }, ref) =&gt; (
+  &lt;<span class="tag">div</span>&gt;
+    &lt;<span class="tag">label</span>&gt;{label}&lt;/<span class="tag">label</span>&gt;
+    &lt;<span class="tag">input</span> <span class="attr">ref</span>={ref} {...props} /&gt; <span class="cm">// ✅ ref passed to input</span>
+  &lt;/<span class="tag">div</span>&gt;
+));
+
+<span class="kw">function</span> <span class="fn">Parent</span>() {
+  <span class="kw">const</span> inputRef = <span class="fn">useRef</span>();
+  <span class="kw">return</span> &lt;<span class="tag">CustomInput</span> <span class="attr">label</span>=<span class="str">"Name"</span> <span class="attr">ref</span>={inputRef} /&gt;;
+}
+<span class="cm">// Note: In React 19, forwardRef is no longer needed — ref is just a prop</span></pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- ===== SECTION 12: PERFORMANCE PATTERNS ===== -->
+<div class="topic" id="s12">
+  <div class="topic-header">
+    <span class="topic-num">12</span>
+    <h2 class="topic-title">Performance Optimization</h2>
+    <span class="tag-pill tag-perf">Performance</span>
+  </div>
+
+  <div class="subtopic">
+    <h3>Preventing Re-renders — The Full Picture</h3>
+    <table>
+      <tr><th>Tool</th><th>What it Prevents</th><th>Cost</th></tr>
+      <tr><td>React.memo</td><td>Component re-render if props unchanged</td><td>Comparison on each parent render</td></tr>
+      <tr><td>useMemo</td><td>Recalculating expensive value</td><td>Comparison + cache overhead</td></tr>
+      <tr><td>useCallback</td><td>New function reference causing memo to fail</td><td>Comparison + cache overhead</td></tr>
+      <tr><td>State structure</td><td>Cascading re-renders</td><td>Refactoring effort</td></tr>
+    </table>
+    <div class="callout tip">
+      <strong>Senior-Level Insight</strong>
+      The best optimization is often state colocation — move state down to the component that needs it. This prevents unnecessary parent re-renders without any memoization at all.
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>State Colocation — Best Optimization</h3>
+    <div class="code-block">
+      <div class="code-label"><span></span>State Colocation</div>
+      <pre><span class="cm">// ❌ Lifting state unnecessarily high</span>
+<span class="kw">function</span> <span class="fn">App</span>() {
+  <span class="kw">const</span> [hovered, setHovered] = <span class="fn">useState</span>(<span class="kw">false</span>);
+  <span class="cm">// App re-renders on hover, including ExpensiveTree!</span>
+  <span class="kw">return</span> &lt;&gt;
+    &lt;<span class="tag">HoverButton</span> <span class="attr">onHover</span>={setHovered} /&gt;
+    &lt;<span class="tag">ExpensiveTree</span> /&gt; <span class="cm">// doesn't need hovered</span>
+  &lt;/&gt;;
+}
+
+<span class="cm">// ✅ Colocate state where it's used</span>
+<span class="kw">function</span> <span class="fn">HoverButton</span>() {
+  <span class="kw">const</span> [hovered, setHovered] = <span class="fn">useState</span>(<span class="kw">false</span>);
+  <span class="cm">// Only HoverButton re-renders on hover</span>
+  <span class="kw">return</span> &lt;<span class="tag">button</span> <span class="attr">onMouseEnter</span>={() =&gt; <span class="fn">setHovered</span>(<span class="kw">true</span>)}&gt;...&lt;/<span class="tag">button</span>&gt;;
+}
+<span class="kw">function</span> <span class="fn">App</span>() {
+  <span class="kw">return</span> &lt;&gt;&lt;<span class="tag">HoverButton</span>/&gt;&lt;<span class="tag">ExpensiveTree</span>/&gt;&lt;/&gt;; <span class="cm">// ExpensiveTree untouched</span>
+}</pre>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>Virtualization — Large Lists</h3>
+    <div class="code-block">
+      <div class="code-label"><span></span>Virtualization with react-window</div>
+      <pre><span class="kw">import</span> { FixedSizeList } <span class="kw">from</span> <span class="str">'react-window'</span>;
+
+<span class="cm">// Only renders visible rows (e.g., 10 of 10,000)</span>
+<span class="kw">function</span> <span class="fn">VirtualList</span>({ items }) {
+  <span class="kw">const</span> <span class="fn">Row</span> = ({ index, style }) =&gt; (
+    &lt;<span class="tag">div</span> <span class="attr">style</span>={style}&gt;{items[index].name}&lt;/<span class="tag">div</span>&gt;
+  );
+
+  <span class="kw">return</span> (
+    &lt;<span class="tag">FixedSizeList</span>
+      <span class="attr">height</span>={<span class="num">500</span>}
+      <span class="attr">itemCount</span>={items.length}
+      <span class="attr">itemSize</span>={<span class="num">50</span>}
+      <span class="attr">width</span>=<span class="str">"100%"</span>
+    &gt;
+      {Row}
+    &lt;/<span class="tag">FixedSizeList</span>&gt;
+  );
+}</pre>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>Debounce / Throttle in React</h3>
+    <div class="code-block">
+      <div class="code-label"><span></span>useDebounce custom hook</div>
+      <pre><span class="kw">function</span> <span class="fn">useDebounce</span>(value, delay = <span class="num">300</span>) {
+  <span class="kw">const</span> [debounced, setDebounced] = <span class="fn">useState</span>(value);
+
+  <span class="fn">useEffect</span>(() =&gt; {
+    <span class="kw">const</span> timer = <span class="fn">setTimeout</span>(() =&gt; <span class="fn">setDebounced</span>(value), delay);
+    <span class="kw">return</span> () =&gt; <span class="fn">clearTimeout</span>(timer); <span class="cm">// cancel if value changes fast</span>
+  }, [value, delay]);
+
+  <span class="kw">return</span> debounced;
+}
+
+<span class="cm">// Usage — API call only fires 300ms after typing stops</span>
+<span class="kw">function</span> <span class="fn">SearchBox</span>() {
+  <span class="kw">const</span> [query, setQuery] = <span class="fn">useState</span>(<span class="str">''</span>);
+  <span class="kw">const</span> debouncedQuery = <span class="fn">useDebounce</span>(query, <span class="num">400</span>);
+
+  <span class="fn">useEffect</span>(() =&gt; {
+    <span class="kw">if</span> (debouncedQuery) <span class="fn">searchAPI</span>(debouncedQuery);
+  }, [debouncedQuery]);
+
+  <span class="kw">return</span> &lt;<span class="tag">input</span> <span class="attr">value</span>={query} <span class="attr">onChange</span>={e =&gt; <span class="fn">setQuery</span>(e.target.value)} /&gt;;
+}</pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+
+<!-- ===== SECTION 13: PATTERNS ===== -->
+<div class="section-label">Patterns & Architecture</div>
+
+<div class="topic" id="s13">
+  <div class="topic-header">
+    <span class="topic-num">13</span>
+    <h2 class="topic-title">React Patterns</h2>
+    <span class="tag-pill tag-adv">Patterns</span>
+  </div>
+
+  <div class="subtopic">
+    <h3>Higher Order Components (HOC)</h3>
+    <p>A HOC is a function that takes a component and returns a new, enhanced component. Pattern from class component era — largely replaced by hooks but still asked in interviews.</p>
+    <div class="code-block">
+      <div class="code-label"><span></span>HOC Pattern</div>
+      <pre><span class="cm">// HOC — adds authentication check</span>
+<span class="kw">function</span> <span class="fn">withAuth</span>(WrappedComponent) {
+  <span class="kw">return</span> <span class="kw">function</span> <span class="fn">AuthComponent</span>(props) {
+    <span class="kw">const</span> isLoggedIn = <span class="fn">useAuth</span>();
+
+    <span class="kw">if</span> (!isLoggedIn) <span class="kw">return</span> &lt;<span class="tag">Redirect</span> <span class="attr">to</span>=<span class="str">"/login"</span> /&gt;;
+    <span class="kw">return</span> &lt;<span class="tag">WrappedComponent</span> {...props} /&gt;;
+  };
+}
+
+<span class="cm">// HOC — adds loading state</span>
+<span class="kw">function</span> <span class="fn">withLoading</span>(Component) {
+  <span class="kw">return</span> ({ isLoading, ...props }) =&gt;
+    isLoading ? &lt;<span class="tag">Spinner</span> /&gt; : &lt;<span class="tag">Component</span> {...props} /&gt;;
+}
+
+<span class="cm">// Usage</span>
+<span class="kw">const</span> ProtectedDashboard = <span class="fn">withAuth</span>(<span class="fn">withLoading</span>(Dashboard));</pre>
+    </div>
+    <div class="interview-q">
+      <div class="q">Q: HOC vs Custom Hooks — which to use?</div>
+      <p>Custom Hooks are preferred for logic reuse (no wrapper component, no prop conflicts, better DevTools readability). HOCs are useful for rendering logic (conditional rendering, wrapping UI). HOCs can cause "wrapper hell" with multiple HOCs stacked.</p>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>Render Props Pattern</h3>
+    <div class="code-block">
+      <div class="code-label"><span></span>Render Props</div>
+      <pre><span class="cm">// Component takes a function as children prop</span>
+<span class="kw">function</span> <span class="fn">MouseTracker</span>({ children }) {
+  <span class="kw">const</span> [pos, setPos] = <span class="fn">useState</span>({ x: <span class="num">0</span>, y: <span class="num">0</span> });
+  <span class="kw">return</span> (
+    &lt;<span class="tag">div</span> <span class="attr">onMouseMove</span>={e =&gt; <span class="fn">setPos</span>({ x: e.clientX, y: e.clientY })}&gt;
+      {<span class="fn">children</span>(pos)} <span class="cm">// passes pos to render function</span>
+    &lt;/<span class="tag">div</span>&gt;
+  );
+}
+
+<span class="cm">// Usage</span>
+&lt;<span class="tag">MouseTracker</span>&gt;
+  {({ x, y }) =&gt; &lt;<span class="tag">p</span>&gt;Mouse at {x}, {y}&lt;/<span class="tag">p</span>&gt;}
+&lt;/<span class="tag">MouseTracker</span>&gt;
+
+<span class="cm">// Modern equivalent — custom hook</span>
+<span class="kw">const</span> { x, y } = <span class="fn">useMousePosition</span>(); <span class="cm">// much cleaner</span></pre>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>Compound Components Pattern</h3>
+    <div class="code-block">
+      <div class="code-label"><span></span>Compound Components</div>
+      <pre><span class="cm">// Components that work together implicitly via context</span>
+<span class="kw">const</span> TabContext = <span class="fn">createContext</span>();
+
+<span class="kw">function</span> <span class="fn">Tabs</span>({ children, defaultTab }) {
+  <span class="kw">const</span> [active, setActive] = <span class="fn">useState</span>(defaultTab);
+  <span class="kw">return</span> (
+    &lt;<span class="tag">TabContext.Provider</span> <span class="attr">value</span>={{ active, setActive }}&gt;
+      {children}
+    &lt;/<span class="tag">TabContext.Provider</span>&gt;
+  );
+}
+
+Tabs.Tab = <span class="kw">function</span> <span class="fn">Tab</span>({ id, children }) {
+  <span class="kw">const</span> { active, setActive } = <span class="fn">useContext</span>(TabContext);
+  <span class="kw">return</span> (
+    &lt;<span class="tag">button</span>
+      <span class="attr">className</span>={active === id ? <span class="str">'active'</span> : <span class="str">''</span>}
+      <span class="attr">onClick</span>={() =&gt; <span class="fn">setActive</span>(id)}
+    &gt;{children}&lt;/<span class="tag">button</span>&gt;
+  );
+};
+
+<span class="cm">// Usage — clean API for consumers</span>
+&lt;<span class="tag">Tabs</span> <span class="attr">defaultTab</span>=<span class="str">"home"</span>&gt;
+  &lt;<span class="tag">Tabs.Tab</span> <span class="attr">id</span>=<span class="str">"home"</span>&gt;Home&lt;/<span class="tag">Tabs.Tab</span>&gt;
+  &lt;<span class="tag">Tabs.Tab</span> <span class="attr">id</span>=<span class="str">"about"</span>&gt;About&lt;/<span class="tag">Tabs.Tab</span>&gt;
+&lt;/<span class="tag">Tabs</span>&gt;</pre>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>Custom Hooks — Reusable Logic</h3>
+    <div class="code-block">
+      <div class="code-label"><span></span>Custom Hook Collection</div>
+      <pre><span class="cm">// useLocalStorage</span>
+<span class="kw">function</span> <span class="fn">useLocalStorage</span>(key, initialValue) {
+  <span class="kw">const</span> [value, setValue] = <span class="fn">useState</span>(() =&gt; {
+    <span class="kw">try</span> {
+      <span class="kw">const</span> stored = localStorage.<span class="fn">getItem</span>(key);
+      <span class="kw">return</span> stored ? <span class="fn">JSON.parse</span>(stored) : initialValue;
+    } <span class="kw">catch</span> { <span class="kw">return</span> initialValue; }
+  });
+
+  <span class="kw">const</span> <span class="fn">set</span> = <span class="fn">useCallback</span>((val) =&gt; {
+    <span class="fn">setValue</span>(val);
+    localStorage.<span class="fn">setItem</span>(key, <span class="fn">JSON.stringify</span>(val));
+  }, [key]);
+
+  <span class="kw">return</span> [value, set];
+}
+
+<span class="cm">// useToggle</span>
+<span class="kw">function</span> <span class="fn">useToggle</span>(initial = <span class="kw">false</span>) {
+  <span class="kw">const</span> [value, setValue] = <span class="fn">useState</span>(initial);
+  <span class="kw">const</span> toggle = <span class="fn">useCallback</span>(() =&gt; <span class="fn">setValue</span>(v =&gt; !v), []);
+  <span class="kw">return</span> [value, toggle];
+}
+
+<span class="cm">// useClickOutside</span>
+<span class="kw">function</span> <span class="fn">useClickOutside</span>(ref, callback) {
+  <span class="fn">useEffect</span>(() =&gt; {
+    <span class="kw">const</span> <span class="fn">handler</span> = (e) =&gt; {
+      <span class="kw">if</span> (ref.current &amp;&amp; !ref.current.<span class="fn">contains</span>(e.target)) {
+        <span class="fn">callback</span>();
+      }
+    };
+    document.<span class="fn">addEventListener</span>(<span class="str">'mousedown'</span>, handler);
+    <span class="kw">return</span> () =&gt; document.<span class="fn">removeEventListener</span>(<span class="str">'mousedown'</span>, handler);
+  }, [ref, callback]);
+}</pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- ===== SECTION 14: CONTEXT API ===== -->
+<div class="topic" id="s14">
+  <div class="topic-header">
+    <span class="topic-num">14</span>
+    <h2 class="topic-title">Context API — Deep Dive</h2>
+    <span class="tag-pill tag-core">Core</span>
+  </div>
+
+  <div class="subtopic">
+    <h3>Full Context Pattern with Performance</h3>
+    <div class="code-block">
+      <div class="code-label"><span></span>Context + Reducer + Split Pattern</div>
+      <pre><span class="cm">// Split context into state and dispatch to prevent re-renders</span>
+<span class="kw">const</span> StateContext = <span class="fn">createContext</span>();
+<span class="kw">const</span> DispatchContext = <span class="fn">createContext</span>();
+
+<span class="kw">const</span> initialState = { user: <span class="kw">null</span>, theme: <span class="str">'dark'</span> };
+
+<span class="kw">function</span> <span class="fn">appReducer</span>(state, action) {
+  <span class="kw">switch</span>(action.type) {
+    <span class="kw">case</span> <span class="str">'SET_USER'</span>: <span class="kw">return</span> { ...state, user: action.payload };
+    <span class="kw">case</span> <span class="str">'SET_THEME'</span>: <span class="kw">return</span> { ...state, theme: action.payload };
+    <span class="kw">default</span>: <span class="kw">return</span> state;
+  }
+}
+
+<span class="kw">export function</span> <span class="fn">AppProvider</span>({ children }) {
+  <span class="kw">const</span> [state, dispatch] = <span class="fn">useReducer</span>(appReducer, initialState);
+
+  <span class="kw">return</span> (
+    &lt;<span class="tag">StateContext.Provider</span> <span class="attr">value</span>={state}&gt;
+      &lt;<span class="tag">DispatchContext.Provider</span> <span class="attr">value</span>={dispatch}&gt;
+        {children}
+      &lt;/<span class="tag">DispatchContext.Provider</span>&gt;
+    &lt;/<span class="tag">StateContext.Provider</span>&gt;
+  );
+}
+
+<span class="cm">// Custom hooks for consumers</span>
+<span class="kw">export const</span> <span class="fn">useAppState</span> = () =&gt; <span class="fn">useContext</span>(StateContext);
+<span class="kw">export const</span> <span class="fn">useAppDispatch</span> = () =&gt; <span class="fn">useContext</span>(DispatchContext);
+
+<span class="cm">// Components that only dispatch won't re-render on state change</span>
+<span class="kw">function</span> <span class="fn">LogoutButton</span>() {
+  <span class="kw">const</span> dispatch = <span class="fn">useAppDispatch</span>(); <span class="cm">// only subscribes to dispatch</span>
+  <span class="kw">return</span> &lt;<span class="tag">button</span> <span class="attr">onClick</span>={() =&gt; <span class="fn">dispatch</span>({ type: <span class="str">'SET_USER'</span>, payload: <span class="kw">null</span> })}&gt;Logout&lt;/<span class="tag">button</span>&gt;;
+}</pre>
+    </div>
+    <div class="interview-q">
+      <div class="q">Q: When should you use Context vs Redux/Zustand?</div>
+      <p>Context: small apps, infrequent updates (theme, auth, locale). Redux/Zustand: frequent updates, complex state, need DevTools, time-travel debugging, or performance-critical state shared widely. Context re-renders all consumers; external stores can subscribe selectively.</p>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- ===== SECTION 15: STATE MANAGEMENT ===== -->
+<div class="topic" id="s15">
+  <div class="topic-header">
+    <span class="topic-num">15</span>
+    <h2 class="topic-title">State Management</h2>
+    <span class="tag-pill tag-adv">Architecture</span>
+  </div>
+
+  <div class="subtopic">
+    <h3>State Management Options Comparison</h3>
+    <table>
+      <tr><th>Solution</th><th>Best For</th><th>Key Feature</th></tr>
+      <tr><td>useState / useReducer</td><td>Local component state</td><td>Built-in, no setup</td></tr>
+      <tr><td>Context API</td><td>Infrequent global data</td><td>No dependency</td></tr>
+      <tr><td>Redux Toolkit</td><td>Large apps, team projects</td><td>DevTools, predictability</td></tr>
+      <tr><td>Zustand</td><td>Simple global state</td><td>Minimal boilerplate</td></tr>
+      <tr><td>TanStack Query</td><td>Server state / async</td><td>Caching, refetch, sync</td></tr>
+      <tr><td>Jotai / Recoil</td><td>Atomic state</td><td>Fine-grained updates</td></tr>
+    </table>
+  </div>
+
+  <div class="subtopic">
+    <h3>Redux Toolkit — Modern Redux</h3>
+    <div class="code-block">
+      <div class="code-label"><span></span>Redux Toolkit Slice</div>
+      <pre><span class="kw">import</span> { createSlice, createAsyncThunk } <span class="kw">from</span> <span class="str">'@reduxjs/toolkit'</span>;
+
+<span class="cm">// Async thunk</span>
+<span class="kw">export const</span> <span class="fn">fetchUser</span> = <span class="fn">createAsyncThunk</span>(<span class="str">'user/fetch'</span>, <span class="kw">async</span> (id) =&gt; {
+  <span class="kw">const</span> res = <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">`/api/users/${id}`</span>);
+  <span class="kw">return</span> res.<span class="fn">json</span>();
+});
+
+<span class="kw">const</span> userSlice = <span class="fn">createSlice</span>({
+  name: <span class="str">'user'</span>,
+  initialState: { data: <span class="kw">null</span>, status: <span class="str">'idle'</span>, error: <span class="kw">null</span> },
+  reducers: {
+    <span class="fn">clearUser</span>: (state) =&gt; { state.data = <span class="kw">null</span>; } <span class="cm">// Immer handles immutability</span>
+  },
+  extraReducers: (builder) =&gt; {
+    builder
+      .<span class="fn">addCase</span>(fetchUser.pending, (state) =&gt; { state.status = <span class="str">'loading'</span>; })
+      .<span class="fn">addCase</span>(fetchUser.fulfilled, (state, action) =&gt; {
+        state.status = <span class="str">'succeeded'</span>;
+        state.data = action.payload;
+      })
+      .<span class="fn">addCase</span>(fetchUser.rejected, (state, action) =&gt; {
+        state.status = <span class="str">'failed'</span>;
+        state.error = action.error.message;
+      });
+  }
+});
+
+<span class="kw">export const</span> { clearUser } = userSlice.actions;</pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+
+<!-- ===== SECTION 16: REACT ROUTER ===== -->
+<div class="topic" id="s16">
+  <div class="topic-header">
+    <span class="topic-num">16</span>
+    <h2 class="topic-title">React Router (v6)</h2>
+    <span class="tag-pill tag-core">Core</span>
+  </div>
+
+  <div class="subtopic">
+    <h3>React Router v6 — Core Concepts</h3>
+    <div class="code-block">
+      <div class="code-label"><span></span>React Router v6 Setup</div>
+      <pre><span class="kw">import</span> { BrowserRouter, Routes, Route, Link, useNavigate,
+  useParams, useSearchParams, Outlet, Navigate } <span class="kw">from</span> <span class="str">'react-router-dom'</span>;
+
+<span class="kw">function</span> <span class="fn">App</span>() {
+  <span class="kw">return</span> (
+    &lt;<span class="tag">BrowserRouter</span>&gt;
+      &lt;<span class="tag">Routes</span>&gt;
+        &lt;<span class="tag">Route</span> <span class="attr">path</span>=<span class="str">"/"</span> <span class="attr">element</span>={&lt;<span class="tag">Home</span> /&gt;} /&gt;
+        &lt;<span class="tag">Route</span> <span class="attr">path</span>=<span class="str">"/users"</span> <span class="attr">element</span>={&lt;<span class="tag">Users</span> /&gt;}&gt;
+          &lt;<span class="tag">Route</span> <span class="attr">path</span>=<span class="str">":id"</span> <span class="attr">element</span>={&lt;<span class="tag">UserDetail</span> /&gt;} /&gt; <span class="cm">// nested</span>
+        &lt;/<span class="tag">Route</span>&gt;
+        &lt;<span class="tag">Route</span> <span class="attr">path</span>=<span class="str">"*"</span> <span class="attr">element</span>={&lt;<span class="tag">NotFound</span> /&gt;} /&gt;
+      &lt;/<span class="tag">Routes</span>&gt;
+    &lt;/<span class="tag">BrowserRouter</span>&gt;
+  );
+}
+
+<span class="cm">// Access params</span>
+<span class="kw">function</span> <span class="fn">UserDetail</span>() {
+  <span class="kw">const</span> { id } = <span class="fn">useParams</span>(); <span class="cm">// /users/42 → id = "42"</span>
+  <span class="kw">const</span> [params] = <span class="fn">useSearchParams</span>(); <span class="cm">// ?tab=profile → params.get('tab')</span>
+  <span class="kw">const</span> navigate = <span class="fn">useNavigate</span>();
+
+  <span class="kw">return</span> (
+    &lt;<span class="tag">div</span>&gt;
+      &lt;<span class="tag">button</span> <span class="attr">onClick</span>={() =&gt; <span class="fn">navigate</span>(<span class="str">'/users'</span>)}&gt;Back&lt;/<span class="tag">button</span>&gt;
+      &lt;<span class="tag">button</span> <span class="attr">onClick</span>={() =&gt; <span class="fn">navigate</span>(-<span class="num">1</span>)}&gt;Go Back&lt;/<span class="tag">button</span>&gt;
+    &lt;/<span class="tag">div</span>&gt;
+  );
+}
+
+<span class="cm">// Protected routes</span>
+<span class="kw">function</span> <span class="fn">PrivateRoute</span>({ children }) {
+  <span class="kw">const</span> isAuth = <span class="fn">useAuth</span>();
+  <span class="kw">return</span> isAuth ? children : &lt;<span class="tag">Navigate</span> <span class="attr">to</span>=<span class="str">"/login"</span> <span class="attr">replace</span> /&gt;;
+}</pre>
+    </div>
+    <div class="interview-q">
+      <div class="q">Q: Difference between BrowserRouter and HashRouter?</div>
+      <p>BrowserRouter uses HTML5 History API — URLs look clean (/users/1). HashRouter uses URL hash (#/users/1) — works without server config. BrowserRouter needs server to handle 404s for client routes. HashRouter works on static file hosts.</p>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- ===== SECTION 17: ERROR BOUNDARIES ===== -->
+<div class="topic" id="s17">
+  <div class="topic-header">
+    <span class="topic-num">17</span>
+    <h2 class="topic-title">Error Boundaries</h2>
+    <span class="tag-pill tag-core">Core</span>
+  </div>
+
+  <div class="subtopic">
+    <h3>What Are Error Boundaries?</h3>
+    <p>Error boundaries are class components that catch JavaScript errors anywhere in their child component tree and display a fallback UI instead of crashing the whole app. They catch errors during rendering, in lifecycle methods, and in constructors of child components.</p>
+    <div class="callout warn">
+      <strong>Limitation</strong>
+      Error boundaries do NOT catch: event handler errors (use try/catch), async errors (use try/catch or react-error-boundary), server-side rendering errors, or errors thrown in the error boundary itself.
+    </div>
+    <div class="code-block">
+      <div class="code-label"><span></span>Error Boundary Implementation</div>
+      <pre><span class="kw">class</span> <span class="fn">ErrorBoundary</span> <span class="kw">extends</span> React.Component {
+  state = { hasError: <span class="kw">false</span>, error: <span class="kw">null</span> };
+
+  <span class="kw">static</span> <span class="fn">getDerivedStateFromError</span>(error) {
+    <span class="cm">// Update state to show fallback UI</span>
+    <span class="kw">return</span> { hasError: <span class="kw">true</span>, error };
+  }
+
+  <span class="fn">componentDidCatch</span>(error, info) {
+    <span class="cm">// Log to error reporting service</span>
+    <span class="fn">logErrorToService</span>(error, info.componentStack);
+  }
+
+  <span class="fn">render</span>() {
+    <span class="kw">if</span> (this.state.hasError) {
+      <span class="kw">return</span> (
+        &lt;<span class="tag">div</span>&gt;
+          &lt;<span class="tag">h2</span>&gt;Something went wrong&lt;/<span class="tag">h2</span>&gt;
+          &lt;<span class="tag">button</span> <span class="attr">onClick</span>={() =&gt; this.<span class="fn">setState</span>({ hasError: <span class="kw">false</span> })}&gt;
+            Try Again
+          &lt;/<span class="tag">button</span>&gt;
+        &lt;/<span class="tag">div</span>&gt;
+      );
+    }
+    <span class="kw">return</span> this.props.children;
+  }
+}
+
+<span class="cm">// Use react-error-boundary library for hook-based approach</span>
+<span class="kw">import</span> { ErrorBoundary } <span class="kw">from</span> <span class="str">'react-error-boundary'</span>;
+
+&lt;<span class="tag">ErrorBoundary</span>
+  <span class="attr">fallback</span>={&lt;<span class="tag">ErrorFallback</span> /&gt;}
+  <span class="attr">onError</span>={logError}
+  <span class="attr">onReset</span>={() =&gt; <span class="fn">resetApp</span>()}
+&gt;
+  &lt;<span class="tag">MyApp</span> /&gt;
+&lt;/<span class="tag">ErrorBoundary</span>&gt;</pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- ===== SECTION 18: FORMS ===== -->
+<div class="topic" id="s18">
+  <div class="topic-header">
+    <span class="topic-num">18</span>
+    <h2 class="topic-title">Forms — Controlled vs Uncontrolled</h2>
+    <span class="tag-pill tag-core">Core</span>
+  </div>
+
+  <div class="subtopic">
+    <h3>Controlled Components</h3>
+    <p>React state is the single source of truth. Every input has a value and onChange handler. React controls the input.</p>
+    <div class="code-block">
+      <div class="code-label"><span></span>Controlled Form</div>
+      <pre><span class="kw">function</span> <span class="fn">SignupForm</span>() {
+  <span class="kw">const</span> [form, setForm] = <span class="fn">useState</span>({ email: <span class="str">''</span>, password: <span class="str">''</span> });
+  <span class="kw">const</span> [errors, setErrors] = <span class="fn">useState</span>({});
+
+  <span class="kw">const</span> <span class="fn">handleChange</span> = ({ target: { name, value } }) =&gt; {
+    <span class="fn">setForm</span>(prev =&gt; ({ ...prev, [name]: value }));
+  };
+
+  <span class="kw">const</span> <span class="fn">validate</span> = () =&gt; {
+    <span class="kw">const</span> errs = {};
+    <span class="kw">if</span> (!form.email.<span class="fn">includes</span>(<span class="str">'@'</span>)) errs.email = <span class="str">'Invalid email'</span>;
+    <span class="kw">if</span> (form.password.length &lt; <span class="num">8</span>) errs.password = <span class="str">'Too short'</span>;
+    <span class="kw">return</span> errs;
+  };
+
+  <span class="kw">const</span> <span class="fn">handleSubmit</span> = (e) =&gt; {
+    e.<span class="fn">preventDefault</span>();
+    <span class="kw">const</span> errs = <span class="fn">validate</span>();
+    <span class="kw">if</span> (Object.<span class="fn">keys</span>(errs).length) { <span class="fn">setErrors</span>(errs); <span class="kw">return</span>; }
+    <span class="fn">submitForm</span>(form);
+  };
+
+  <span class="kw">return</span> (
+    &lt;<span class="tag">form</span> <span class="attr">onSubmit</span>={handleSubmit}&gt;
+      &lt;<span class="tag">input</span> <span class="attr">name</span>=<span class="str">"email"</span> <span class="attr">value</span>={form.email} <span class="attr">onChange</span>={handleChange} /&gt;
+      {errors.email &amp;&amp; &lt;<span class="tag">span</span>&gt;{errors.email}&lt;/<span class="tag">span</span>&gt;}
+      &lt;<span class="tag">input</span> <span class="attr">name</span>=<span class="str">"password"</span> <span class="attr">type</span>=<span class="str">"password"</span>
+             <span class="attr">value</span>={form.password} <span class="attr">onChange</span>={handleChange} /&gt;
+      &lt;<span class="tag">button</span> <span class="attr">type</span>=<span class="str">"submit"</span>&gt;Sign Up&lt;/<span class="tag">button</span>&gt;
+    &lt;/<span class="tag">form</span>&gt;
+  );
+}</pre>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>Uncontrolled Components</h3>
+    <div class="code-block">
+      <div class="code-label"><span></span>Uncontrolled with useRef</div>
+      <pre><span class="kw">function</span> <span class="fn">FileUpload</span>() {
+  <span class="kw">const</span> fileRef = <span class="fn">useRef</span>();
+
+  <span class="kw">const</span> <span class="fn">handleSubmit</span> = (e) =&gt; {
+    e.<span class="fn">preventDefault</span>();
+    <span class="kw">const</span> file = fileRef.current.files[<span class="num">0</span>]; <span class="cm">// access DOM directly</span>
+    console.<span class="fn">log</span>(file.name);
+  };
+
+  <span class="kw">return</span> (
+    &lt;<span class="tag">form</span> <span class="attr">onSubmit</span>={handleSubmit}&gt;
+      &lt;<span class="tag">input</span> <span class="attr">type</span>=<span class="str">"file"</span> <span class="attr">ref</span>={fileRef} /&gt; <span class="cm">// no value/onChange</span>
+      &lt;<span class="tag">button</span>&gt;Upload&lt;/<span class="tag">button</span>&gt;
+    &lt;/<span class="tag">form</span>&gt;
+  );
+}
+
+<span class="cm">// defaultValue vs value</span>
+&lt;<span class="tag">input</span> <span class="attr">defaultValue</span>=<span class="str">"initial"</span> /&gt; <span class="cm">// uncontrolled — sets initial only</span>
+&lt;<span class="tag">input</span> <span class="attr">value</span>=<span class="str">"controlled"</span> <span class="attr">onChange</span>={fn} /&gt; <span class="cm">// controlled</span></pre>
+    </div>
+    <table>
+      <tr><th>Controlled</th><th>Uncontrolled</th></tr>
+      <tr><td>State is source of truth</td><td>DOM is source of truth</td></tr>
+      <tr><td>value + onChange required</td><td>Use ref to read values</td></tr>
+      <tr><td>Easier to validate</td><td>Simpler for file inputs</td></tr>
+      <tr><td>Immediate feedback possible</td><td>Less re-renders</td></tr>
+    </table>
+  </div>
+
+  <div class="subtopic">
+    <h3>React Hook Form — Production Standard</h3>
+    <div class="code-block">
+      <div class="code-label"><span></span>React Hook Form</div>
+      <pre><span class="kw">import</span> { useForm } <span class="kw">from</span> <span class="str">'react-hook-form'</span>;
+
+<span class="kw">function</span> <span class="fn">LoginForm</span>() {
+  <span class="kw">const</span> { register, handleSubmit, formState: { errors } } = <span class="fn">useForm</span>();
+
+  <span class="kw">const</span> <span class="fn">onSubmit</span> = (data) =&gt; console.<span class="fn">log</span>(data);
+
+  <span class="kw">return</span> (
+    &lt;<span class="tag">form</span> <span class="attr">onSubmit</span>={<span class="fn">handleSubmit</span>(onSubmit)}&gt;
+      &lt;<span class="tag">input</span> {...<span class="fn">register</span>(<span class="str">'email'</span>, {
+        required: <span class="str">'Email required'</span>,
+        pattern: { value: <span class="str">/\S+@\S+/</span>, message: <span class="str">'Invalid email'</span> }
+      })} /&gt;
+      {errors.email &amp;&amp; &lt;<span class="tag">p</span>&gt;{errors.email.message}&lt;/<span class="tag">p</span>&gt;}
+      &lt;<span class="tag">button</span>&gt;Login&lt;/<span class="tag">button</span>&gt;
+    &lt;/<span class="tag">form</span>&gt;
+  );
+}
+<span class="cm">// RHF uses uncontrolled inputs internally — fewer re-renders</span></pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- ===== SECTION 19: TESTING ===== -->
+<div class="topic" id="s19">
+  <div class="topic-header">
+    <span class="topic-num">19</span>
+    <h2 class="topic-title">Testing</h2>
+    <span class="tag-pill tag-adv">Testing</span>
+  </div>
+
+  <div class="subtopic">
+    <h3>Testing Philosophy</h3>
+    <div class="callout info">
+      <strong>RTL Guiding Principle</strong>
+      "The more your tests resemble the way your software is used, the more confidence they can give you." — Kent C. Dodds. Test behavior, not implementation.
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>React Testing Library — Core Patterns</h3>
+    <div class="code-block">
+      <div class="code-label"><span></span>RTL Core Queries and Matchers</div>
+      <pre><span class="kw">import</span> { render, screen, fireEvent, waitFor } <span class="kw">from</span> <span class="str">'@testing-library/react'</span>;
+<span class="kw">import</span> userEvent <span class="kw">from</span> <span class="str">'@testing-library/user-event'</span>;
+
+<span class="cm">// Query priority (use in this order)</span>
+<span class="cm">// 1. getByRole — accessible, tests what user sees</span>
+screen.<span class="fn">getByRole</span>(<span class="str">'button'</span>, { name: <span class="str">'Submit'</span> });
+screen.<span class="fn">getByRole</span>(<span class="str">'textbox'</span>, { name: <span class="str">'Email'</span> });
+<span class="cm">// 2. getByLabelText</span>
+screen.<span class="fn">getByLabelText</span>(<span class="str">'Password'</span>);
+<span class="cm">// 3. getByText</span>
+screen.<span class="fn">getByText</span>(<span class="str">'Welcome back'</span>);
+<span class="cm">// 4. getByTestId (last resort)</span>
+screen.<span class="fn">getByTestId</span>(<span class="str">'user-card'</span>);
+
+<span class="cm">// get* throws if not found | query* returns null | find* returns Promise</span>
+
+<span class="cm">// Test example</span>
+<span class="fn">test</span>(<span class="str">'shows error on invalid email'</span>, <span class="kw">async</span> () =&gt; {
+  <span class="fn">render</span>(&lt;<span class="tag">LoginForm</span> /&gt;);
+  <span class="kw">const</span> user = userEvent.<span class="fn">setup</span>();
+
+  <span class="kw">await</span> user.<span class="fn">type</span>(screen.<span class="fn">getByLabelText</span>(<span class="str">'Email'</span>), <span class="str">'notvalid'</span>);
+  <span class="kw">await</span> user.<span class="fn">click</span>(screen.<span class="fn">getByRole</span>(<span class="str">'button'</span>, { name: <span class="str">'Submit'</span> }));
+
+  <span class="kw">await</span> <span class="fn">waitFor</span>(() =&gt; {
+    <span class="fn">expect</span>(screen.<span class="fn">getByText</span>(<span class="str">'Invalid email'</span>)).<span class="fn">toBeInTheDocument</span>();
+  });
+});</pre>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>Mocking APIs in Tests</h3>
+    <div class="code-block">
+      <div class="code-label"><span></span>MSW (Mock Service Worker) Pattern</div>
+      <pre><span class="kw">import</span> { http, HttpResponse } <span class="kw">from</span> <span class="str">'msw'</span>;
+<span class="kw">import</span> { setupServer } <span class="kw">from</span> <span class="str">'msw/node'</span>;
+
+<span class="kw">const</span> server = <span class="fn">setupServer</span>(
+  http.<span class="fn">get</span>(<span class="str">'/api/user/:id'</span>, ({ params }) =&gt; {
+    <span class="kw">return</span> HttpResponse.<span class="fn">json</span>({ id: params.id, name: <span class="str">'Shailesh'</span> });
+  })
+);
+
+beforeAll(() =&gt; server.<span class="fn">listen</span>());
+afterEach(() =&gt; server.<span class="fn">resetHandlers</span>());
+afterAll(() =&gt; server.<span class="fn">close</span>());
+
+<span class="fn">test</span>(<span class="str">'loads user data'</span>, <span class="kw">async</span> () =&gt; {
+  <span class="fn">render</span>(&lt;<span class="tag">UserProfile</span> <span class="attr">id</span>=<span class="str">"1"</span> /&gt;);
+  <span class="fn">expect</span>(<span class="kw">await</span> screen.<span class="fn">findByText</span>(<span class="str">'Shailesh'</span>)).<span class="fn">toBeInTheDocument</span>();
+});</pre>
+    </div>
+    <div class="interview-q">
+      <div class="q">Q: What is the difference between unit, integration, and E2E tests?</div>
+      <p>Unit: test one function/component in isolation (Jest). Integration: test multiple components working together with RTL (most valuable). E2E: test full user flows in a browser (Cypress, Playwright) — slow but highest confidence. Aim for the Testing Trophy: many integration tests.</p>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- ===== SECTION 20: REAL-WORLD ===== -->
+<div class="topic" id="s20">
+  <div class="topic-header">
+    <span class="topic-num">20</span>
+    <h2 class="topic-title">Real-World Concepts</h2>
+    <span class="tag-pill tag-adv">Production</span>
+  </div>
+
+  <div class="subtopic">
+    <h3>Optimistic UI — Full Pattern</h3>
+    <div class="code-block">
+      <div class="code-label"><span></span>Optimistic Update with Rollback</div>
+      <pre><span class="kw">function</span> <span class="fn">TodoList</span>() {
+  <span class="kw">const</span> [todos, setTodos] = <span class="fn">useState</span>([]);
+
+  <span class="kw">const</span> <span class="fn">toggleTodo</span> = <span class="kw">async</span> (id) =&gt; {
+    <span class="cm">// 1. Save previous state for rollback</span>
+    <span class="kw">const</span> prev = todos;
+
+    <span class="cm">// 2. Optimistically update UI</span>
+    <span class="fn">setTodos</span>(todos =&gt; todos.<span class="fn">map</span>(t =&gt;
+      t.id === id ? { ...t, done: !t.done } : t
+    ));
+
+    <span class="kw">try</span> {
+      <span class="cm">// 3. Attempt server update</span>
+      <span class="kw">await</span> <span class="fn">api.toggleTodo</span>(id);
+    } <span class="kw">catch</span> (err) {
+      <span class="cm">// 4. Rollback on failure</span>
+      <span class="fn">setTodos</span>(prev);
+      <span class="fn">toast.error</span>(<span class="str">'Failed to update. Please retry.'</span>);
+    }
+  };
+
+  <span class="kw">return</span> todos.<span class="fn">map</span>(todo =&gt; (
+    &lt;<span class="tag">TodoItem</span> <span class="attr">key</span>={todo.id} <span class="attr">todo</span>={todo} <span class="attr">onToggle</span>={toggleTodo} /&gt;
+  ));
+}</pre>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>Lazy Loading Images</h3>
+    <div class="code-block">
+      <div class="code-label"><span></span>Intersection Observer Hook</div>
+      <pre><span class="kw">function</span> <span class="fn">useLazyLoad</span>(threshold = <span class="num">0.1</span>) {
+  <span class="kw">const</span> ref = <span class="fn">useRef</span>();
+  <span class="kw">const</span> [visible, setVisible] = <span class="fn">useState</span>(<span class="kw">false</span>);
+
+  <span class="fn">useEffect</span>(() =&gt; {
+    <span class="kw">const</span> observer = <span class="kw">new</span> IntersectionObserver(
+      ([entry]) =&gt; entry.isIntersecting &amp;&amp; <span class="fn">setVisible</span>(<span class="kw">true</span>),
+      { threshold }
+    );
+    <span class="kw">if</span> (ref.current) observer.<span class="fn">observe</span>(ref.current);
+    <span class="kw">return</span> () =&gt; observer.<span class="fn">disconnect</span>();
+  }, [threshold]);
+
+  <span class="kw">return</span> [ref, visible];
+}
+
+<span class="kw">function</span> <span class="fn">LazyImage</span>({ src, alt }) {
+  <span class="kw">const</span> [ref, visible] = <span class="fn">useLazyLoad</span>();
+  <span class="kw">return</span> (
+    &lt;<span class="tag">img</span> <span class="attr">ref</span>={ref} <span class="attr">src</span>={visible ? src : <span class="str">''</span>} <span class="attr">alt</span>={alt} /&gt;
+  );
+}</pre>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>Common Interview Questions Rapid Fire</h3>
+    <div class="interview-q">
+      <div class="q">Q: What happens when you call setState inside render?</div>
+      <p>Infinite loop! setState triggers re-render, render calls setState again. Always call state setters in event handlers or effects, never directly in render body (except useReducer dispatch for lazy state init).</p>
+    </div>
+    <div class="interview-q">
+      <div class="q">Q: How does React handle multiple setState calls in same event handler?</div>
+      <p>React 18 batches all setState calls in event handlers AND async code into a single re-render. In React 17, only event handler calls were batched. Use flushSync() to force immediate sync re-render (e.g., before reading DOM).</p>
+    </div>
+    <div class="interview-q">
+      <div class="q">Q: What is prop drilling and how to avoid it?</div>
+      <p>Prop drilling: passing props through many intermediate components that don't use them. Solutions: Context API (for global state), component composition (pass component, not data), state management (Redux/Zustand).</p>
+    </div>
+    <div class="interview-q">
+      <div class="q">Q: What is the children prop?</div>
+      <p>Everything between opening and closing tags of a component is accessible via props.children. Can be a string, element, array, or function (render props pattern). Used for reusable container components like Card, Modal, Layout.</p>
+    </div>
+    <div class="interview-q">
+      <div class="q">Q: Explain React's one-way data flow</div>
+      <p>Data flows down (parent → child via props). Events flow up (child → parent via callback props). This makes data flow predictable and easier to debug. Two-way binding requires explicit onChange handlers (controlled components).</p>
+    </div>
+    <div class="interview-q">
+      <div class="q">Q: What is Strict Mode and why does it double-render?</div>
+      <p>Strict Mode double-invokes render functions and effects in development to help detect side effects in impure components. If your component behaves differently on second render, you have a purity bug. No production impact.</p>
+    </div>
+    <div class="interview-q">
+      <div class="q">Q: What is hydration in React?</div>
+      <p>In Server-Side Rendering (SSR), the server sends HTML. The browser displays it immediately (fast first paint). Then React "hydrates" — attaches event listeners and takes over. Mismatch between server and client HTML = hydration error.</p>
+    </div>
+    <div class="interview-q">
+      <div class="q">Q: Difference between controlled and uncontrolled inputs?</div>
+      <p>Controlled: React state = single source of truth, value prop + onChange required. Uncontrolled: DOM manages input state, read via ref. Controlled is preferred as it enables instant validation, conditional disabling, and format enforcement.</p>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- FOOTER -->
+<div style="border-top:1px solid var(--border); padding:40px 0; margin-top:60px; text-align:center;">
+  <p style="color:var(--muted); font-family:'JetBrains Mono',monospace; font-size:12px;">
+    React Interview Mastery Guide · 20 Sections · 60+ Topics · Hooks → Patterns → Architecture
+  </p>
+  <div class="badge-row" style="justify-content:center; margin-top:12px;">
+    <span class="badge badge-y">Fundamentals ✓</span>
+    <span class="badge badge-t">Hooks ✓</span>
+    <span class="badge badge-p">Advanced ✓</span>
+    <span class="badge badge-r">Interview Ready ✓</span>
+  </div>
+</div>
+
+</main>
+</div>
+
+</body>
+</html>

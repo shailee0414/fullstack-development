@@ -1,0 +1,1824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Redux & Redux Saga — Interview Mastery Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0f;
+  --surface: #111118;
+  --surface2: #1a1a24;
+  --border: #2a2a3a;
+  --accent: #f0e040;
+  --accent2: #40e0d0;
+  --accent3: #ff6b6b;
+  --accent4: #a78bfa;
+  --text: #e8e8f0;
+  --muted: #8888a8;
+  --code-bg: #0d0d14;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: 'Syne', sans-serif; line-height: 1.7; }
+
+header {
+  padding: 60px 40px 50px;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(135deg, #0a0a0f 60%, #110a1a);
+  position: relative; overflow: hidden;
+}
+header::before {
+  content: '';
+  position: absolute; top: -80px; right: -80px;
+  width: 360px; height: 360px;
+  background: radial-gradient(circle, rgba(167,139,250,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+header::after {
+  content: '';
+  position: absolute; bottom: -60px; left: 25%;
+  width: 280px; height: 280px;
+  background: radial-gradient(circle, rgba(240,224,64,0.05) 0%, transparent 70%);
+  pointer-events: none;
+}
+header h1 { font-size: clamp(26px, 3.5vw, 46px); font-weight: 800; letter-spacing: -1px; line-height: 1.1; }
+header h1 .r { color: var(--accent4); }
+header h1 .s { color: var(--accent2); }
+header p { color: var(--muted); margin-top: 10px; font-size: 15px; max-width: 560px; }
+.badge-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+.badge { padding: 5px 10px; border-radius: 4px; font-size: 12px; font-weight: 600; letter-spacing: 0.5px; font-family: 'JetBrains Mono', monospace; }
+.badge-y { background: var(--accent); color: black; }
+.badge-t { background: var(--accent2); color: black; }
+.badge-r { background: var(--accent3); color: white; }
+.badge-p { background: var(--accent4); color: white; }
+
+.shell { display: flex; min-height: 100vh; }
+
+nav {
+  width: 265px; min-width: 265px;
+  background: var(--surface);
+  padding: 24px 16px;
+  position: sticky; top: 0;
+  height: 100vh; overflow-y: auto;
+  border-right: 1px solid var(--border);
+}
+nav::-webkit-scrollbar { width: 4px; }
+nav::-webkit-scrollbar-track { background: transparent; }
+nav::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+.nav-section { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; padding: 14px 8px 6px; font-family: 'JetBrains Mono', monospace; }
+.nav-section.redux { color: var(--accent4); }
+.nav-section.saga { color: var(--accent2); }
+.nav-section.qa { color: var(--accent); }
+.nav-link { display: block; color: var(--muted); margin: 2px 0; text-decoration: none; padding: 5px 8px; border-radius: 4px; font-size: 13px; transition: all 0.15s; }
+.nav-link:hover { color: var(--accent4); background: rgba(167,139,250,0.06); }
+.nav-link.saga-link:hover { color: var(--accent2); background: rgba(64,224,208,0.06); }
+.nav-link.qa-link:hover { color: var(--accent); background: rgba(240,224,64,0.06); }
+.nav-link.sub { padding-left: 20px; font-size: 12px; }
+.toc-count { font-size: 11px; color: var(--muted); font-family: 'JetBrains Mono', monospace; padding: 4px 8px; margin-bottom: 8px; }
+
+main { flex: 1; padding: 40px 48px; max-width: 920px; }
+
+.section-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+  font-family: 'JetBrains Mono', monospace;
+  margin: 52px 0 24px;
+  display: flex; align-items: center; gap: 12px;
+}
+.section-label.redux { color: var(--accent4); }
+.section-label.redux::after { content: ''; flex: 1; height: 1px; background: rgba(167,139,250,0.25); }
+.section-label.saga { color: var(--accent2); }
+.section-label.saga::after { content: ''; flex: 1; height: 1px; background: rgba(64,224,208,0.2); }
+.section-label.qa { color: var(--accent); }
+.section-label.qa::after { content: ''; flex: 1; height: 1px; background: rgba(240,224,64,0.2); }
+
+.topic { margin-bottom: 64px; scroll-margin-top: 20px; }
+.topic-header { display: flex; align-items: center; gap: 12px; padding-bottom: 12px; margin-bottom: 20px; border-bottom: 1px solid var(--border); }
+.topic-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); background: var(--surface2); border: 1px solid var(--border); padding: 2px 8px; border-radius: 4px; }
+.topic-title { font-size: 22px; font-weight: 700; letter-spacing: -0.5px; }
+
+.subtopic { margin: 28px 0; }
+.subtopic h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+.subtopic h3::before { content: '▸'; font-size: 12px; }
+.subtopic.redux-sub h3 { color: var(--accent4); }
+.subtopic.redux-sub h3::before { color: var(--accent); }
+.subtopic.saga-sub h3 { color: var(--accent2); }
+.subtopic.saga-sub h3::before { color: var(--accent4); }
+.subtopic p, .subtopic li { font-size: 14px; color: var(--text); line-height: 1.8; }
+.subtopic ul, .subtopic ol { padding-left: 20px; margin: 8px 0; }
+.subtopic li { margin: 4px 0; }
+
+.callout { border-left: 3px solid var(--accent4); background: rgba(167,139,250,0.04); padding: 12px 16px; margin: 12px 0; border-radius: 0 6px 6px 0; font-size: 13px; }
+.callout.info { border-color: var(--accent2); background: rgba(64,224,208,0.04); }
+.callout.warn { border-color: var(--accent3); background: rgba(255,107,107,0.04); }
+.callout.tip { border-color: var(--accent); background: rgba(240,224,64,0.04); }
+.callout strong { display: block; margin-bottom: 4px; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
+.callout > strong { color: var(--accent4); }
+.callout.info strong { color: var(--accent2); }
+.callout.warn strong { color: var(--accent3); }
+.callout.tip strong { color: var(--accent); }
+
+.code-block { background: var(--code-bg); border: 1px solid var(--border); border-radius: 6px; margin: 12px 0; overflow: hidden; }
+.code-label { padding: 6px 12px; background: var(--surface2); font-size: 11px; font-family: 'JetBrains Mono', monospace; color: var(--muted); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
+.code-label .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.code-label .dot.r { background: var(--accent4); }
+.code-label .dot.s { background: var(--accent2); }
+pre { padding: 16px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.7; color: #cdd6f4; }
+pre::-webkit-scrollbar { height: 4px; }
+pre::-webkit-scrollbar-thumb { background: var(--border); }
+
+.kw { color: #cba6f7; }
+.fn { color: #89b4fa; }
+.str { color: #a6e3a1; }
+.cm { color: #585b70; font-style: italic; }
+.num { color: #fab387; }
+.tag { color: #f38ba8; }
+.attr { color: #89dceb; }
+.op { color: #f0e040; }
+.gen { color: #cba6f7; font-weight: 700; }
+
+.interview-q { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 14px 16px; margin: 8px 0; font-size: 13px; }
+.interview-q .q { font-weight: 700; font-size: 12px; letter-spacing: 0.5px; margin-bottom: 8px; font-family: 'JetBrains Mono', monospace; color: var(--accent); }
+.interview-q p { color: var(--text); font-size: 13px; }
+
+table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13px; }
+th { background: var(--surface2); font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; padding: 8px 12px; text-align: left; border: 1px solid var(--border); color: var(--accent4); }
+th.saga-th { color: var(--accent2); }
+td { padding: 8px 12px; border: 1px solid var(--border); color: var(--text); vertical-align: top; font-size: 13px; }
+tr:nth-child(even) td { background: rgba(255,255,255,0.01); }
+
+.tag-pill { display: inline-block; padding: 2px 8px; border-radius: 3px; font-size: 11px; font-family: 'JetBrains Mono', monospace; font-weight: 600; margin: 2px; }
+.tag-redux { background: rgba(167,139,250,0.12); color: var(--accent4); border: 1px solid rgba(167,139,250,0.25); }
+.tag-saga { background: rgba(64,224,208,0.12); color: var(--accent2); border: 1px solid rgba(64,224,208,0.25); }
+.tag-hot { background: rgba(255,107,107,0.12); color: var(--accent3); border: 1px solid rgba(255,107,107,0.25); }
+.tag-tip { background: rgba(240,224,64,0.12); color: var(--accent); border: 1px solid rgba(240,224,64,0.25); }
+
+/* Flow diagram */
+.flow { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; margin: 16px 0; padding: 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; }
+.flow-box { background: var(--surface2); border-radius: 6px; padding: 8px 14px; font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; text-align: center; }
+.flow-box.r { border: 1px solid rgba(167,139,250,0.4); color: var(--accent4); }
+.flow-box.s { border: 1px solid rgba(64,224,208,0.4); color: var(--accent2); }
+.flow-box.y { border: 1px solid rgba(240,224,64,0.4); color: var(--accent); }
+.flow-box.w { border: 1px solid var(--border); color: var(--text); }
+.flow-arrow { color: var(--muted); font-size: 16px; }
+
+.back-top { display: inline-flex; align-items: center; gap: 6px; margin-top: 24px; color: var(--muted); text-decoration: none; font-size: 12px; font-family: 'JetBrains Mono', monospace; transition: color 0.2s; }
+.back-top:hover { color: var(--accent4); }
+
+@media (max-width: 768px) { nav { display: none; } main { padding: 24px 20px; } header { padding: 40px 20px; } }
+</style>
+</head>
+<body>
+<header id="top">
+  <h1><span class="r">Redux</span> &amp; <span class="s">Redux Saga</span><br>Interview Mastery</h1>
+  <p>Core → Architecture → Toolkit → Middleware → Saga Internals → Advanced Effects → All Interview Questions</p>
+  <div class="badge-row">
+    <span class="badge badge-p">Redux Core</span>
+    <span class="badge badge-t">Redux Toolkit</span>
+    <span class="badge badge-p">Middleware</span>
+    <span class="badge badge-t">Generator Functions</span>
+    <span class="badge badge-r">Saga Effects</span>
+    <span class="badge badge-y">Thunk vs Saga</span>
+  </div>
+</header>
+
+<div class="shell">
+<nav>
+  <div class="toc-count">📚 22 Sections · 80+ Topics</div>
+
+  <div class="nav-section redux">Redux Core</div>
+  <a class="nav-link" href="#r1">1. What is Redux</a>
+  <a class="nav-link" href="#r2">2. Architecture</a>
+  <a class="nav-link" href="#r3">3. Data Operations</a>
+  <a class="nav-link" href="#r4">4. Reducer Concepts</a>
+  <a class="nav-link" href="#r5">5. React Integration</a>
+  <a class="nav-link" href="#r6">6. Lifecycle Handling</a>
+
+  <div class="nav-section redux">Redux Advanced</div>
+  <a class="nav-link" href="#r7">7. Redux Toolkit</a>
+  <a class="nav-link" href="#r8">8. Middleware Internals</a>
+  <a class="nav-link" href="#r9">9. Redux Thunk</a>
+  <a class="nav-link" href="#r10">10. combineReducers</a>
+  <a class="nav-link" href="#r11">11. configureStore</a>
+  <a class="nav-link" href="#r12">12. Action Creators</a>
+  <a class="nav-link" href="#r13">13. State Normalization</a>
+  <a class="nav-link" href="#r14">14. Reselect & Memo</a>
+  <a class="nav-link" href="#r15">15. Redux Persist</a>
+  <a class="nav-link" href="#r16">16. DevTools</a>
+  <a class="nav-link" href="#r17">17. Folder Structure</a>
+
+  <div class="nav-section saga">Redux Saga</div>
+  <a class="nav-link saga-link" href="#s1">18. What is Saga</a>
+  <a class="nav-link saga-link" href="#s2">19. Generator Functions</a>
+  <a class="nav-link saga-link" href="#s3">20. Core Effects</a>
+  <a class="nav-link saga-link" href="#s4">21. Advanced Effects</a>
+  <a class="nav-link saga-link" href="#s5">22. Watcher/Worker</a>
+  <a class="nav-link saga-link" href="#s6">23. Error Handling</a>
+  <a class="nav-link saga-link" href="#s7">24. Cancellation & Race</a>
+  <a class="nav-link saga-link" href="#s8">25. Debounce/Throttle</a>
+  <a class="nav-link saga-link" href="#s9">26. Parallel Calls</a>
+  <a class="nav-link saga-link" href="#s10">27. Testing Sagas</a>
+
+  <div class="nav-section qa">Interview Q&A</div>
+  <a class="nav-link qa-link" href="#qa">28. All Top Questions</a>
+</nav>
+
+<main>
+
+<!-- ===== REDUX CORE ===== -->
+<div class="section-label redux">Redux Core</div>
+
+<!-- R1: WHAT IS REDUX -->
+<div class="topic" id="r1">
+  <div class="topic-header">
+    <span class="topic-num">R-01</span>
+    <h2 class="topic-title">What is Redux & Why Use It</h2>
+    <span class="tag-pill tag-redux">Core</span>
+  </div>
+
+  <div class="subtopic redux-sub">
+    <h3>What is Redux?</h3>
+    <p>Redux is a <strong>predictable state container</strong> for JavaScript apps. It stores the entire application state in a single JavaScript object (the store), and state can only be changed by dispatching actions through pure reducer functions.</p>
+    <ul>
+      <li>Created by Dan Abramov & Andrew Clark (2015), inspired by Flux + Elm</li>
+      <li>Works with React, Angular, Vue, or plain JS</li>
+      <li>State is <strong>read-only</strong> — you never mutate it directly</li>
+      <li>Changes are made by pure functions (reducers) — same input = same output, always</li>
+    </ul>
+    <div class="callout tip">
+      <strong>Interview Gold</strong>
+      "Redux solves three problems: (1) State that needs to be shared across many components, (2) Props drilling through many layers, (3) Debugging — you can time-travel through every state change because all changes are logged via actions."
+    </div>
+  </div>
+
+  <div class="subtopic redux-sub">
+    <h3>Unidirectional Data Flow</h3>
+    <div class="flow">
+      <div class="flow-box r">UI Event</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box y">dispatch(action)</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box r">Middleware</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box w">Reducer</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box w">New State</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box y">UI re-renders</div>
+    </div>
+    <p>Data flows in ONE direction — this makes state changes predictable and easy to trace. Compare to two-way binding (Angular) where state can change from multiple directions.</p>
+    <div class="interview-q">
+      <div class="q">Q: Redux vs Context API — which to use?</div>
+      <p>Context: built-in, no setup, good for infrequent updates (theme, auth, locale). Every consumer re-renders on any context value change. Redux: dedicated devtools, time-travel debugging, middleware pipeline, selective subscriptions (useSelector only re-renders when selected slice changes), predictable with large teams. Use Context for simple global data, Redux for complex, frequently-updated state in large apps.</p>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- R2: ARCHITECTURE -->
+<div class="topic" id="r2">
+  <div class="topic-header">
+    <span class="topic-num">R-02</span>
+    <h2 class="topic-title">Redux Architecture</h2>
+    <span class="tag-pill tag-redux">Core</span>
+  </div>
+
+  <div class="subtopic redux-sub">
+    <h3>The Three Pillars: Store, Action, Reducer</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot r"></span>Store — Single Source of Truth</div>
+      <pre><span class="kw">import</span> { createStore } <span class="kw">from</span> <span class="str">'redux'</span>; <span class="cm">// classic (legacy)</span>
+
+<span class="kw">const</span> store = <span class="fn">createStore</span>(rootReducer);
+
+<span class="cm">// The store has 4 methods:</span>
+store.<span class="fn">getState</span>();           <span class="cm">// read current state</span>
+store.<span class="fn">dispatch</span>(action);    <span class="cm">// trigger state change</span>
+store.<span class="fn">subscribe</span>(listener); <span class="cm">// listen for changes</span>
+store.<span class="fn">replaceReducer</span>(fn);  <span class="cm">// hot reload, code splitting</span></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-label"><span class="dot r"></span>Action — What Happened</div>
+      <pre><span class="cm">// Action = plain object describing an event</span>
+<span class="cm">// MUST have a type property</span>
+<span class="kw">const</span> addUserAction = {
+  type: <span class="str">'user/addUser'</span>,    <span class="cm">// required — describes what happened</span>
+  payload: {              <span class="cm">// optional — carries data</span>
+    id: <span class="num">1</span>,
+    name: <span class="str">'Shailesh'</span>,
+    role: <span class="str">'Tech Lead'</span>
+  }
+};
+
+<span class="cm">// Action types as constants (prevents typos)</span>
+<span class="kw">const</span> ADD_USER    = <span class="str">'user/ADD_USER'</span>;
+<span class="kw">const</span> DELETE_USER = <span class="str">'user/DELETE_USER'</span>;
+<span class="kw">const</span> UPDATE_USER = <span class="str">'user/UPDATE_USER'</span>;</pre>
+    </div>
+    <div class="code-block">
+      <div class="code-label"><span class="dot r"></span>Reducer — How State Changes</div>
+      <pre><span class="cm">// Reducer = pure function: (state, action) => newState</span>
+<span class="kw">const</span> initialState = { users: [], loading: <span class="kw">false</span>, error: <span class="kw">null</span> };
+
+<span class="kw">function</span> <span class="fn">userReducer</span>(state = initialState, action) {
+  <span class="kw">switch</span> (action.type) {
+    <span class="kw">case</span> <span class="str">'user/ADD_USER'</span>:
+      <span class="kw">return</span> {
+        ...state,
+        users: [...state.users, action.payload]  <span class="cm">// ✅ immutable</span>
+      };
+
+    <span class="kw">case</span> <span class="str">'user/DELETE_USER'</span>:
+      <span class="kw">return</span> {
+        ...state,
+        users: state.users.<span class="fn">filter</span>(u =&gt; u.id !== action.payload)
+      };
+
+    <span class="kw">case</span> <span class="str">'user/UPDATE_USER'</span>:
+      <span class="kw">return</span> {
+        ...state,
+        users: state.users.<span class="fn">map</span>(u =&gt;
+          u.id === action.payload.id ? { ...u, ...action.payload } : u
+        )
+      };
+
+    <span class="kw">default</span>:
+      <span class="kw">return</span> state; <span class="cm">// ✅ always return state for unknown actions</span>
+  }
+}</pre>
+    </div>
+  </div>
+
+  <div class="subtopic redux-sub">
+    <h3>Dispatch — Trigger Changes</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot r"></span>Dispatch Flow</div>
+      <pre><span class="cm">// dispatch sends action through middleware → reducer → new state</span>
+store.<span class="fn">dispatch</span>({ type: <span class="str">'user/ADD_USER'</span>, payload: { id: <span class="num">1</span>, name: <span class="str">'Shailesh'</span> } });
+
+<span class="cm">// In React components (with react-redux)</span>
+<span class="kw">const</span> dispatch = <span class="fn">useDispatch</span>();
+<span class="fn">dispatch</span>({ type: <span class="str">'user/ADD_USER'</span>, payload: newUser });</pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- R3: DATA OPERATIONS -->
+<div class="topic" id="r3">
+  <div class="topic-header">
+    <span class="topic-num">R-03</span>
+    <h2 class="topic-title">Data Operations — Immutable Patterns</h2>
+    <span class="tag-pill tag-redux">Core</span>
+  </div>
+
+  <div class="subtopic redux-sub">
+    <h3>All Immutable Update Patterns</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot r"></span>Add, Update, Delete — Without Mutation</div>
+      <pre><span class="cm">// ── OBJECTS ──────────────────────────────────────</span>
+
+<span class="cm">// Add/update a field</span>
+<span class="kw">return</span> { ...state, name: <span class="str">'New Name'</span>, loading: <span class="kw">false</span> };
+
+<span class="cm">// Remove a field</span>
+<span class="kw">const</span> { unwantedField, ...rest } = state;
+<span class="kw">return</span> rest;
+
+<span class="cm">// Update nested object</span>
+<span class="kw">return</span> {
+  ...state,
+  user: { ...state.user, role: <span class="str">'admin'</span> }  <span class="cm">// spread nested</span>
+};
+
+<span class="cm">// ── ARRAYS ───────────────────────────────────────</span>
+
+<span class="cm">// ADD item</span>
+<span class="kw">return</span> { ...state, items: [...state.items, newItem] };
+
+<span class="cm">// DELETE item by id</span>
+<span class="kw">return</span> { ...state, items: state.items.<span class="fn">filter</span>(i =&gt; i.id !== id) };
+
+<span class="cm">// UPDATE item</span>
+<span class="kw">return</span> {
+  ...state,
+  items: state.items.<span class="fn">map</span>(i =&gt; i.id === id ? { ...i, ...changes } : i)
+};
+
+<span class="cm">// INSERT at specific index</span>
+<span class="kw">return</span> {
+  ...state,
+  items: [...state.items.<span class="fn">slice</span>(<span class="num">0</span>, idx), newItem, ...state.items.<span class="fn">slice</span>(idx)]
+};
+
+<span class="cm">// ❌ NEVER DO THIS — direct mutation</span>
+state.users.<span class="fn">push</span>(newUser);       <span class="cm">// WRONG</span>
+state.user.name = <span class="str">'New'</span>;          <span class="cm">// WRONG</span>
+state.users[<span class="num">0</span>] = updatedUser;    <span class="cm">// WRONG</span></pre>
+    </div>
+    <div class="callout warn">
+      <strong>Why Immutability Matters in Redux</strong>
+      Redux checks if state changed using reference equality (===). If you mutate state directly, the reference stays the same → Redux thinks nothing changed → React doesn't re-render. Always return a NEW object/array.
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- R4: REDUCER CONCEPTS -->
+<div class="topic" id="r4">
+  <div class="topic-header">
+    <span class="topic-num">R-04</span>
+    <h2 class="topic-title">Reducer Concepts</h2>
+    <span class="tag-pill tag-redux">Core</span>
+  </div>
+
+  <div class="subtopic redux-sub">
+    <h3>Pure Functions — The Rule</h3>
+    <p>A pure function: (1) Same input → always same output. (2) No side effects — no API calls, no console.log that changes state, no Date.now(), no Math.random().</p>
+    <div class="code-block">
+      <div class="code-label"><span class="dot r"></span>Pure vs Impure Reducers</div>
+      <pre><span class="cm">// ✅ PURE — deterministic, no side effects</span>
+<span class="kw">function</span> <span class="fn">counterReducer</span>(state = <span class="num">0</span>, action) {
+  <span class="kw">switch</span> (action.type) {
+    <span class="kw">case</span> <span class="str">'INCREMENT'</span>: <span class="kw">return</span> state + <span class="num">1</span>;
+    <span class="kw">default</span>: <span class="kw">return</span> state;
+  }
+}
+
+<span class="cm">// ❌ IMPURE — side effects in reducer</span>
+<span class="kw">function</span> <span class="fn">badReducer</span>(state = {}, action) {
+  <span class="kw">if</span> (action.type === <span class="str">'SAVE'</span>) {
+    <span class="fn">fetch</span>(<span class="str">'/api/save'</span>, ...);  <span class="cm">// ❌ API call in reducer</span>
+    localStorage.<span class="fn">setItem</span>(...);   <span class="cm">// ❌ side effect</span>
+    <span class="kw">return</span> { ...state, savedAt: <span class="kw">new</span> <span class="fn">Date</span>() }; <span class="cm">// ❌ non-deterministic</span>
+  }
+}
+
+<span class="cm">// ❌ IMPURE — mutates state</span>
+<span class="kw">function</span> <span class="fn">mutatingReducer</span>(state = [], action) {
+  <span class="kw">if</span> (action.type === <span class="str">'ADD'</span>) {
+    state.<span class="fn">push</span>(action.payload); <span class="cm">// ❌ mutates state</span>
+    <span class="kw">return</span> state;               <span class="cm">// ❌ same reference</span>
+  }
+}</pre>
+    </div>
+    <div class="interview-q">
+      <div class="q">Q: Why must reducers be pure functions?</div>
+      <p>Three reasons: (1) Predictability — same action always produces same state change, making bugs reproducible. (2) Time-travel debugging — DevTools can replay actions; impure functions would give different results on replay. (3) Testing — pure functions are trivially testable: call reducer(state, action), assert result. No mocking needed.</p>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- R5: REACT INTEGRATION -->
+<div class="topic" id="r5">
+  <div class="topic-header">
+    <span class="topic-num">R-05</span>
+    <h2 class="topic-title">Integration with React</h2>
+    <span class="tag-pill tag-redux">React</span>
+  </div>
+
+  <div class="subtopic redux-sub">
+    <h3>useSelector & useDispatch</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot r"></span>Full React + Redux Integration</div>
+      <pre><span class="cm">// 1. Setup Provider (index.js / App.js)</span>
+<span class="kw">import</span> { Provider } <span class="kw">from</span> <span class="str">'react-redux'</span>;
+<span class="kw">import</span> { store } <span class="kw">from</span> <span class="str">'./store'</span>;
+
+ReactDOM.<span class="fn">render</span>(
+  &lt;<span class="tag">Provider</span> <span class="attr">store</span>={store}&gt;
+    &lt;<span class="tag">App</span> /&gt;
+  &lt;/<span class="tag">Provider</span>&gt;,
+  document.<span class="fn">getElementById</span>(<span class="str">'root'</span>)
+);
+
+<span class="cm">// 2. useSelector — read from store</span>
+<span class="kw">function</span> <span class="fn">UserList</span>() {
+  <span class="cm">// Only re-renders when users array changes (not other state)</span>
+  <span class="kw">const</span> users = <span class="fn">useSelector</span>(state =&gt; state.user.users);
+  <span class="kw">const</span> loading = <span class="fn">useSelector</span>(state =&gt; state.user.loading);
+
+  <span class="cm">// ❌ Avoid selecting entire state — over-selects</span>
+  <span class="kw">const</span> entire = <span class="fn">useSelector</span>(state =&gt; state); <span class="cm">// re-renders on ANY change</span>
+
+  <span class="kw">if</span> (loading) <span class="kw">return</span> &lt;<span class="tag">p</span>&gt;Loading...&lt;/<span class="tag">p</span>&gt;;
+  <span class="kw">return</span> &lt;<span class="tag">ul</span>&gt;{users.<span class="fn">map</span>(u =&gt; &lt;<span class="tag">li</span> <span class="attr">key</span>={u.id}&gt;{u.name}&lt;/<span class="tag">li</span>&gt;)}&lt;/<span class="tag">ul</span>&gt;;
+}
+
+<span class="cm">// 3. useDispatch — send actions to store</span>
+<span class="kw">function</span> <span class="fn">AddUserForm</span>() {
+  <span class="kw">const</span> dispatch = <span class="fn">useDispatch</span>();
+  <span class="kw">const</span> [name, setName] = <span class="fn">useState</span>(<span class="str">''</span>);
+
+  <span class="kw">const</span> <span class="fn">handleAdd</span> = () =&gt; {
+    <span class="fn">dispatch</span>({
+      type: <span class="str">'user/ADD_USER'</span>,
+      payload: { id: Date.<span class="fn">now</span>(), name }
+    });
+    <span class="fn">setName</span>(<span class="str">''</span>);
+  };
+
+  <span class="kw">return</span> (
+    &lt;<span class="tag">div</span>&gt;
+      &lt;<span class="tag">input</span> <span class="attr">value</span>={name} <span class="attr">onChange</span>={e =&gt; <span class="fn">setName</span>(e.target.value)} /&gt;
+      &lt;<span class="tag">button</span> <span class="attr">onClick</span>={handleAdd}&gt;Add User&lt;/<span class="tag">button</span>&gt;
+    &lt;/<span class="tag">div</span>&gt;
+  );
+}</pre>
+    </div>
+    <div class="callout">
+      <strong>useSelector Re-render Behaviour</strong>
+      useSelector runs on every store update. It compares the previous and new return value with ===. If different → component re-renders. For objects: { ...obj } !== { ...obj } even if contents are same. Use reselect or shallowEqual to avoid unnecessary re-renders.
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- R6: LIFECYCLE -->
+<div class="topic" id="r6">
+  <div class="topic-header">
+    <span class="topic-num">R-06</span>
+    <h2 class="topic-title">Lifecycle — Clearing Redux State</h2>
+    <span class="tag-pill tag-redux">Lifecycle</span>
+  </div>
+
+  <div class="subtopic redux-sub">
+    <h3>Reset State on Unmount</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot r"></span>Clear Redux State on Unmount</div>
+      <pre><span class="cm">// Pattern: dispatch RESET action in useEffect cleanup</span>
+<span class="kw">function</span> <span class="fn">UserProfile</span>({ userId }) {
+  <span class="kw">const</span> dispatch = <span class="fn">useDispatch</span>();
+  <span class="kw">const</span> user = <span class="fn">useSelector</span>(state =&gt; state.user.data);
+
+  <span class="fn">useEffect</span>(() =&gt; {
+    dispatch({ type: <span class="str">'user/fetchUser'</span>, payload: userId });
+
+    <span class="cm">// Cleanup: reset state when component unmounts</span>
+    <span class="kw">return</span> () =&gt; {
+      dispatch({ type: <span class="str">'user/resetUser'</span> });
+    };
+  }, [userId, dispatch]);
+
+  <span class="kw">return</span> &lt;<span class="tag">div</span>&gt;{user?.name}&lt;/<span class="tag">div</span>&gt;;
+}
+
+<span class="cm">// Reducer handles reset</span>
+<span class="kw">case</span> <span class="str">'user/resetUser'</span>:
+  <span class="kw">return</span> initialState;  <span class="cm">// back to clean state</span>
+
+<span class="cm">// Why important: stale data from previous user shows briefly</span>
+<span class="cm">// when navigating between user profiles without reset</span></pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+
+<!-- ===== REDUX ADVANCED ===== -->
+<div class="section-label redux">Redux Advanced</div>
+
+<!-- R7: REDUX TOOLKIT -->
+<div class="topic" id="r7">
+  <div class="topic-header">
+    <span class="topic-num">R-07</span>
+    <h2 class="topic-title">Redux Toolkit (RTK)</h2>
+    <span class="tag-pill tag-hot">Modern Standard</span>
+  </div>
+
+  <div class="subtopic redux-sub">
+    <h3>Why RTK? Traditional Redux Problems</h3>
+    <table>
+      <tr><th>Traditional Redux Pain</th><th>RTK Solution</th></tr>
+      <tr><td>Boilerplate: separate actions, constants, reducers</td><td>createSlice generates actions + reducer together</td></tr>
+      <tr><td>Immutability boilerplate (spread everywhere)</td><td>Immer built-in — write "mutating" code safely</td></tr>
+      <tr><td>Store config: middleware, devtools manually</td><td>configureStore sets up everything</td></tr>
+      <tr><td>Async: need separate thunk setup</td><td>createAsyncThunk built-in</td></tr>
+    </table>
+  </div>
+
+  <div class="subtopic redux-sub">
+    <h3>createSlice — The Core of RTK</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot r"></span>createSlice — Full Example</div>
+      <pre><span class="kw">import</span> { createSlice, createAsyncThunk } <span class="kw">from</span> <span class="str">'@reduxjs/toolkit'</span>;
+
+<span class="cm">// Async thunk — handles API call lifecycle automatically</span>
+<span class="kw">export const</span> <span class="fn">fetchUsers</span> = <span class="fn">createAsyncThunk</span>(
+  <span class="str">'users/fetchAll'</span>,         <span class="cm">// action type prefix</span>
+  <span class="kw">async</span> (_, { rejectWithValue }) =&gt; {
+    <span class="kw">try</span> {
+      <span class="kw">const</span> res = <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">'/api/users'</span>);
+      <span class="kw">return</span> <span class="kw">await</span> res.<span class="fn">json</span>();
+    } <span class="kw">catch</span> (err) {
+      <span class="kw">return</span> <span class="fn">rejectWithValue</span>(err.message); <span class="cm">// ✅ structured error</span>
+    }
+  }
+);
+
+<span class="kw">const</span> userSlice = <span class="fn">createSlice</span>({
+  name: <span class="str">'users'</span>,
+  initialState: {
+    list: [],
+    loading: <span class="kw">false</span>,
+    error: <span class="kw">null</span>,
+    selectedUser: <span class="kw">null</span>
+  },
+
+  <span class="cm">// Synchronous reducers — Immer handles immutability!</span>
+  reducers: {
+    <span class="fn">addUser</span>: (state, action) =&gt; {
+      state.list.<span class="fn">push</span>(action.payload);  <span class="cm">// ✅ "mutation" OK — Immer converts to immutable</span>
+    },
+    <span class="fn">removeUser</span>: (state, action) =&gt; {
+      state.list = state.list.<span class="fn">filter</span>(u =&gt; u.id !== action.payload);
+    },
+    <span class="fn">updateUser</span>: (state, action) =&gt; {
+      <span class="kw">const</span> idx = state.list.<span class="fn">findIndex</span>(u =&gt; u.id === action.payload.id);
+      <span class="kw">if</span> (idx !== -<span class="num">1</span>) state.list[idx] = action.payload;
+    },
+    <span class="fn">resetUsers</span>: () =&gt; ({ list: [], loading: <span class="kw">false</span>, error: <span class="kw">null</span>, selectedUser: <span class="kw">null</span> })
+  },
+
+  <span class="cm">// Handle async thunk lifecycle</span>
+  extraReducers: (builder) =&gt; {
+    builder
+      .<span class="fn">addCase</span>(fetchUsers.pending, (state) =&gt; {
+        state.loading = <span class="kw">true</span>;
+        state.error = <span class="kw">null</span>;
+      })
+      .<span class="fn">addCase</span>(fetchUsers.fulfilled, (state, action) =&gt; {
+        state.loading = <span class="kw">false</span>;
+        state.list = action.payload;
+      })
+      .<span class="fn">addCase</span>(fetchUsers.rejected, (state, action) =&gt; {
+        state.loading = <span class="kw">false</span>;
+        state.error = action.payload;
+      });
+  }
+});
+
+<span class="cm">// Auto-generated action creators</span>
+<span class="kw">export const</span> { addUser, removeUser, updateUser, resetUsers } = userSlice.actions;
+<span class="kw">export default</span> userSlice.reducer;</pre>
+    </div>
+    <div class="callout info">
+      <strong>How Immer Works in RTK</strong>
+      createSlice wraps reducers with Immer. Immer creates a Proxy over your state. You "mutate" the proxy — Immer tracks all changes and produces a new immutable state object. You write simpler code; immutability is guaranteed under the hood.
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- R8: MIDDLEWARE -->
+<div class="topic" id="r8">
+  <div class="topic-header">
+    <span class="topic-num">R-08</span>
+    <h2 class="topic-title">Middleware — Internals</h2>
+    <span class="tag-pill tag-hot">🔥 Most Asked</span>
+  </div>
+
+  <div class="subtopic redux-sub">
+    <h3>What is Middleware?</h3>
+    <p>Middleware intercepts every action dispatched before it reaches the reducer. It's a pipeline where each piece of middleware can: inspect the action, transform it, stop it, delay it, or dispatch new actions.</p>
+    <div class="flow">
+      <div class="flow-box y">dispatch(action)</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box r">Middleware 1<br><span style="font-size:10px">(logger)</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box r">Middleware 2<br><span style="font-size:10px">(thunk)</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box r">Middleware 3<br><span style="font-size:10px">(saga)</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box w">Reducer</div>
+    </div>
+  </div>
+
+  <div class="subtopic redux-sub">
+    <h3>Middleware Signature — The Curried Pattern</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot r"></span>Custom Middleware from Scratch</div>
+      <pre><span class="cm">// Middleware signature: store => next => action => result</span>
+<span class="cm">// Three curried functions — Redux calls them in sequence</span>
+
+<span class="cm">// 1. Logger Middleware</span>
+<span class="kw">const</span> <span class="fn">loggerMiddleware</span> = (store) =&gt; (next) =&gt; (action) =&gt; {
+  console.<span class="fn">group</span>(action.type);
+  console.<span class="fn">log</span>(<span class="str">'Prev state:'</span>, store.<span class="fn">getState</span>());
+  console.<span class="fn">log</span>(<span class="str">'Action:'</span>, action);
+
+  <span class="kw">const</span> result = <span class="fn">next</span>(action); <span class="cm">// ← calls next middleware (or reducer)</span>
+
+  console.<span class="fn">log</span>(<span class="str">'Next state:'</span>, store.<span class="fn">getState</span>());
+  console.<span class="fn">groupEnd</span>();
+  <span class="kw">return</span> result;
+};
+
+<span class="cm">// 2. Timer Middleware — measure slow actions</span>
+<span class="kw">const</span> <span class="fn">timerMiddleware</span> = (store) =&gt; (next) =&gt; (action) =&gt; {
+  <span class="kw">const</span> start = performance.<span class="fn">now</span>();
+  <span class="kw">const</span> result = <span class="fn">next</span>(action);
+  <span class="kw">const</span> duration = performance.<span class="fn">now</span>() - start;
+  <span class="kw">if</span> (duration > <span class="num">16</span>) console.<span class="fn">warn</span>(<span class="str">`Slow action: ${action.type} (${duration}ms)`</span>);
+  <span class="kw">return</span> result;
+};
+
+<span class="cm">// 3. Apply middleware (classic Redux)</span>
+<span class="kw">import</span> { createStore, applyMiddleware } <span class="kw">from</span> <span class="str">'redux'</span>;
+<span class="kw">const</span> store = <span class="fn">createStore</span>(
+  rootReducer,
+  <span class="fn">applyMiddleware</span>(loggerMiddleware, timerMiddleware)
+);</pre>
+    </div>
+    <div class="interview-q">
+      <div class="q">Q: How does middleware work internally in Redux?</div>
+      <p>applyMiddleware uses function composition. Each middleware wraps the next with its own next function. store.dispatch is replaced with the composed chain. When you call dispatch(action), it enters the first middleware's (store)(next)(action). 'next' is the next middleware's dispatch. The last 'next' calls the actual reducer. This is the Chain of Responsibility pattern.</p>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- R9: THUNK -->
+<div class="topic" id="r9">
+  <div class="topic-header">
+    <span class="topic-num">R-09</span>
+    <h2 class="topic-title">Redux Thunk & Thunk vs Saga</h2>
+    <span class="tag-pill tag-hot">🔥 Most Asked</span>
+  </div>
+
+  <div class="subtopic redux-sub">
+    <h3>Redux Thunk — Dispatch Functions</h3>
+    <p>Thunk middleware allows you to dispatch a <strong>function</strong> instead of an action object. That function receives dispatch and getState, so it can do async work then dispatch real actions.</p>
+    <div class="code-block">
+      <div class="code-label"><span class="dot r"></span>Thunk — Async Action Creator</div>
+      <pre><span class="cm">// Without thunk: can only dispatch objects</span>
+dispatch({ type: <span class="str">'FETCH_USER'</span> }); <span class="cm">// sync only</span>
+
+<span class="cm">// With thunk: dispatch a function</span>
+<span class="kw">const</span> <span class="fn">fetchUser</span> = (userId) =&gt; <span class="kw">async</span> (dispatch, getState) =&gt; {
+  dispatch({ type: <span class="str">'user/loading'</span> });
+
+  <span class="kw">try</span> {
+    <span class="kw">const</span> res = <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">`/api/users/${userId}`</span>);
+    <span class="kw">const</span> data = <span class="kw">await</span> res.<span class="fn">json</span>();
+    dispatch({ type: <span class="str">'user/fetchSuccess'</span>, payload: data });
+  } <span class="kw">catch</span> (err) {
+    dispatch({ type: <span class="str">'user/fetchFail'</span>, payload: err.message });
+  }
+};
+
+<span class="cm">// Component just dispatches it like any action</span>
+dispatch(<span class="fn">fetchUser</span>(<span class="str">'user123'</span>));
+
+<span class="cm">// Thunk middleware implementation (simplified)</span>
+<span class="kw">const</span> thunk = (store) =&gt; (next) =&gt; (action) =&gt; {
+  <span class="kw">if</span> (<span class="kw">typeof</span> action === <span class="str">'function'</span>) {
+    <span class="cm">// It's a thunk — call it with dispatch and getState</span>
+    <span class="kw">return</span> <span class="fn">action</span>(store.dispatch, store.getState);
+  }
+  <span class="kw">return</span> <span class="fn">next</span>(action); <span class="cm">// plain object → pass through</span>
+};</pre>
+    </div>
+  </div>
+
+  <div class="subtopic redux-sub">
+    <h3>Thunk vs Saga — Full Comparison</h3>
+    <table>
+      <tr><th>Aspect</th><th>Redux Thunk</th><th>Redux Saga</th></tr>
+      <tr><td>Concept</td><td>Dispatch functions</td><td>Separate process listening for actions</td></tr>
+      <tr><td>Async syntax</td><td>async/await</td><td>Generator functions (yield)</td></tr>
+      <tr><td>Bundle size</td><td>~800 bytes 🏆</td><td>~25KB</td></tr>
+      <tr><td>Learning curve</td><td>Low — just async/await</td><td>High — generators, effects</td></tr>
+      <tr><td>Complex flows</td><td>Hard — nested callbacks</td><td>Easy — sequential yields</td></tr>
+      <tr><td>Cancellation</td><td>Manual (AbortController)</td><td>Built-in (cancel, race, takeLatest)</td></tr>
+      <tr><td>Testing</td><td>Needs API mocking</td><td>Pure effect testing — no mocks needed</td></tr>
+      <tr><td>Side effects</td><td>Inside thunk functions</td><td>Declarative effects (call, put, take)</td></tr>
+      <tr><td>Best for</td><td>Simple async ops, small apps</td><td>Complex flows, real-time, background tasks</td></tr>
+    </table>
+    <div class="interview-q">
+      <div class="q">Q: When would you pick Thunk over Saga and vice versa?</div>
+      <p>Thunk: small-to-medium app, team unfamiliar with generators, simple CRUD async operations, bundle size matters. Saga: complex async flows (multi-step wizards, polling, WebSocket handling), need cancellation (user navigates away mid-request), real-time features, need debouncing built-in, or need parallel/sequential coordination of multiple async ops. At PB Fintech scale — Saga for critical flows (policy purchase), Thunk for simple lookups.</p>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- R10: combineReducers -->
+<div class="topic" id="r10">
+  <div class="topic-header">
+    <span class="topic-num">R-10</span>
+    <h2 class="topic-title">combineReducers</h2>
+    <span class="tag-pill tag-redux">Core</span>
+  </div>
+
+  <div class="subtopic redux-sub">
+    <h3>Splitting State into Slices</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot r"></span>combineReducers</div>
+      <pre><span class="kw">import</span> { combineReducers } <span class="kw">from</span> <span class="str">'redux'</span>;
+<span class="cm">// OR in RTK: configureStore handles this automatically</span>
+
+<span class="cm">// Each reducer manages its own slice of state</span>
+<span class="kw">const</span> rootReducer = <span class="fn">combineReducers</span>({
+  auth:   authReducer,    <span class="cm">// state.auth</span>
+  users:  userReducer,    <span class="cm">// state.users</span>
+  orders: orderReducer,   <span class="cm">// state.orders</span>
+  ui:     uiReducer,      <span class="cm">// state.ui</span>
+});
+
+<span class="cm">// Resulting state shape:</span>
+{
+  auth:   { isLoggedIn: <span class="kw">true</span>, user: {...} },
+  users:  { list: [...], loading: <span class="kw">false</span> },
+  orders: { items: [...], total: <span class="num">0</span> },
+  ui:     { theme: <span class="str">'dark'</span>, sidebarOpen: <span class="kw">false</span> }
+}
+
+<span class="cm">// How combineReducers works internally:</span>
+<span class="kw">function</span> <span class="fn">combineReducers</span>(reducers) {
+  <span class="kw">return</span> <span class="kw">function</span>(state = {}, action) {
+    <span class="kw">return</span> Object.<span class="fn">keys</span>(reducers).<span class="fn">reduce</span>((newState, key) =&gt; {
+      newState[key] = reducers[key](state[key], action);
+      <span class="cm">// Every action is dispatched to EVERY reducer</span>
+      <span class="kw">return</span> newState;
+    }, {});
+  };
+}
+<span class="cm">// Key insight: ALL reducers receive ALL actions — reducers just ignore irrelevant ones via default</span></pre>
+    </div>
+    <div class="callout warn">
+      <strong>Important: Every action hits every reducer</strong>
+      This is why the default: return state case is mandatory. If you forget it, your reducer returns undefined on unrelated actions, wiping that slice of state.
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- R11: configureStore -->
+<div class="topic" id="r11">
+  <div class="topic-header">
+    <span class="topic-num">R-11</span>
+    <h2 class="topic-title">configureStore (RTK)</h2>
+    <span class="tag-pill tag-redux">RTK</span>
+  </div>
+
+  <div class="subtopic redux-sub">
+    <h3>Modern Store Setup</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot r"></span>store/index.js — Full RTK Setup</div>
+      <pre><span class="kw">import</span> { configureStore } <span class="kw">from</span> <span class="str">'@reduxjs/toolkit'</span>;
+<span class="kw">import</span> createSagaMiddleware <span class="kw">from</span> <span class="str">'redux-saga'</span>;
+<span class="kw">import</span> { persistStore, persistReducer } <span class="kw">from</span> <span class="str">'redux-persist'</span>;
+<span class="kw">import</span> storage <span class="kw">from</span> <span class="str">'redux-persist/lib/storage'</span>;
+
+<span class="kw">import</span> userReducer  <span class="kw">from</span> <span class="str">'./slices/userSlice'</span>;
+<span class="kw">import</span> authReducer  <span class="kw">from</span> <span class="str">'./slices/authSlice'</span>;
+<span class="kw">import</span> rootSaga     <span class="kw">from</span> <span class="str">'./sagas/rootSaga'</span>;
+
+<span class="kw">const</span> sagaMiddleware = <span class="fn">createSagaMiddleware</span>();
+
+<span class="kw">export const</span> store = <span class="fn">configureStore</span>({
+  reducer: {
+    user: userReducer,
+    auth: authReducer,
+  },
+  middleware: (getDefaultMiddleware) =&gt;
+    <span class="fn">getDefaultMiddleware</span>({
+      serializableCheck: {
+        <span class="cm">// Ignore redux-persist actions (they carry non-serializable data)</span>
+        ignoredActions: [<span class="str">'persist/PERSIST'</span>, <span class="str">'persist/REHYDRATE'</span>]
+      }
+    }).<span class="fn">concat</span>(sagaMiddleware),
+
+  devTools: process.env.NODE_ENV !== <span class="str">'production'</span>, <span class="cm">// auto DevTools in dev</span>
+});
+
+sagaMiddleware.<span class="fn">run</span>(rootSaga); <span class="cm">// ← start all sagas</span>
+
+<span class="cm">// configureStore automatically adds:</span>
+<span class="cm">// - redux-thunk middleware</span>
+<span class="cm">// - Redux DevTools Extension support</span>
+<span class="cm">// - Serializable state check (warns about non-serializable values)</span>
+<span class="cm">// - Immutability check (warns about state mutations)</span></pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- R12: ACTION CREATORS -->
+<div class="topic" id="r12">
+  <div class="topic-header">
+    <span class="topic-num">R-12</span>
+    <h2 class="topic-title">Action Creators</h2>
+    <span class="tag-pill tag-redux">Core</span>
+  </div>
+
+  <div class="subtopic redux-sub">
+    <h3>Manual vs RTK Action Creators</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot r"></span>Action Creator Patterns</div>
+      <pre><span class="cm">// ── Manual Action Creator (classic) ──────────────</span>
+<span class="kw">const</span> <span class="fn">addUser</span> = (user) =&gt; ({
+  type: <span class="str">'ADD_USER'</span>,
+  payload: user
+});
+
+<span class="kw">const</span> <span class="fn">deleteUser</span> = (id) =&gt; ({
+  type: <span class="str">'DELETE_USER'</span>,
+  payload: id
+});
+
+<span class="cm">// Usage</span>
+dispatch(<span class="fn">addUser</span>({ id: <span class="num">1</span>, name: <span class="str">'Shailesh'</span> }));
+
+<span class="cm">// ── RTK Auto-Generated ────────────────────────────</span>
+<span class="cm">// createSlice auto-generates action creators from reducer names</span>
+<span class="kw">const</span> { addUser, deleteUser, updateUser } = userSlice.actions;
+
+<span class="cm">// RTK action creator has .type property</span>
+console.<span class="fn">log</span>(addUser.type);    <span class="cm">// 'users/addUser'</span>
+console.<span class="fn">log</span>(deleteUser.type); <span class="cm">// 'users/deleteUser'</span>
+
+<span class="cm">// ── createAction (standalone) ────────────────────</span>
+<span class="kw">import</span> { createAction } <span class="kw">from</span> <span class="str">'@reduxjs/toolkit'</span>;
+<span class="kw">const</span> addUser = <span class="fn">createAction</span>(<span class="str">'users/addUser'</span>);
+<span class="kw">const</span> addUserWithPrepare = <span class="fn">createAction</span>(<span class="str">'users/addUser'</span>, (name, role) =&gt; ({
+  payload: { id: <span class="fn">generateId</span>(), name, role, createdAt: <span class="kw">new</span> Date().<span class="fn">toISOString</span>() }
+}));</pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- R13: STATE NORMALIZATION -->
+<div class="topic" id="r13">
+  <div class="topic-header">
+    <span class="topic-num">R-13</span>
+    <h2 class="topic-title">State Normalization</h2>
+    <span class="tag-pill tag-hot">Senior Level</span>
+  </div>
+
+  <div class="subtopic redux-sub">
+    <h3>Why Avoid Nested State</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot r"></span>Nested vs Normalized State</div>
+      <pre><span class="cm">// ❌ NESTED — hard to update, hard to find by id</span>
+{
+  posts: [
+    {
+      id: <span class="num">1</span>,
+      title: <span class="str">"Post 1"</span>,
+      comments: [           <span class="cm">// nested — expensive to update</span>
+        { id: <span class="num">10</span>, text: <span class="str">"Great!"</span>, author: { id: <span class="num">5</span>, name: <span class="str">"Alice"</span> } }
+      ]
+    }
+  ]
+}
+<span class="cm">// To update comment 10: find post → find comment → spread everything</span>
+
+<span class="cm">// ✅ NORMALIZED — flat, fast lookups, easy updates</span>
+{
+  posts: {
+    byId: { <span class="str">"1"</span>: { id: <span class="num">1</span>, title: <span class="str">"Post 1"</span>, commentIds: [<span class="num">10</span>] } },
+    allIds: [<span class="num">1</span>, <span class="num">2</span>]
+  },
+  comments: {
+    byId: { <span class="str">"10"</span>: { id: <span class="num">10</span>, text: <span class="str">"Great!"</span>, postId: <span class="num">1</span>, authorId: <span class="num">5</span> } },
+    allIds: [<span class="num">10</span>]
+  },
+  users: {
+    byId: { <span class="str">"5"</span>: { id: <span class="num">5</span>, name: <span class="str">"Alice"</span> } }
+  }
+}
+<span class="cm">// To update comment 10: state.comments.byId["10"] = { ...changes }</span>
+
+<span class="cm">// RTK's createEntityAdapter handles normalization automatically</span>
+<span class="kw">import</span> { createEntityAdapter } <span class="kw">from</span> <span class="str">'@reduxjs/toolkit'</span>;
+<span class="kw">const</span> usersAdapter = <span class="fn">createEntityAdapter</span>();
+<span class="cm">// Provides: addOne, addMany, setOne, updateOne, removeOne, getSelectors, etc.</span></pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- R14: RESELECT -->
+<div class="topic" id="r14">
+  <div class="topic-header">
+    <span class="topic-num">R-14</span>
+    <h2 class="topic-title">Reselect & Memoized Selectors</h2>
+    <span class="tag-pill tag-hot">Performance</span>
+  </div>
+
+  <div class="subtopic redux-sub">
+    <h3>createSelector — Memoized Derived State</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot r"></span>reselect — Avoid Unnecessary Re-renders</div>
+      <pre><span class="kw">import</span> { createSelector } <span class="kw">from</span> <span class="str">'reselect'</span>; <span class="cm">// or '@reduxjs/toolkit'</span>
+
+<span class="cm">// Basic selectors (input selectors)</span>
+<span class="kw">const</span> <span class="fn">selectUsers</span> = state =&gt; state.users.list;
+<span class="kw">const</span> <span class="fn">selectFilter</span> = state =&gt; state.ui.searchTerm;
+
+<span class="cm">// ❌ Without reselect — new array EVERY render → useSelector always triggers re-render</span>
+<span class="kw">const</span> <span class="fn">selectActive</span> = state =&gt; state.users.list.<span class="fn">filter</span>(u =&gt; u.active);
+
+<span class="cm">// ✅ With createSelector — memoized, only recomputes if inputs change</span>
+<span class="kw">const</span> <span class="fn">selectActiveUsers</span> = <span class="fn">createSelector</span>(
+  [selectUsers, selectFilter],
+  (users, filter) =&gt; {
+    console.<span class="fn">log</span>(<span class="str">'recomputing...'</span>); <span class="cm">// only logs when users or filter changes</span>
+    <span class="kw">return</span> users
+      .<span class="fn">filter</span>(u =&gt; u.active)
+      .<span class="fn">filter</span>(u =&gt; u.name.<span class="fn">toLowerCase</span>().<span class="fn">includes</span>(filter.<span class="fn">toLowerCase</span>()));
+  }
+);
+
+<span class="cm">// In component — only re-renders when selectActiveUsers output changes</span>
+<span class="kw">const</span> activeUsers = <span class="fn">useSelector</span>(selectActiveUsers);
+
+<span class="cm">// Parameterized selector (factory pattern)</span>
+<span class="kw">const</span> <span class="fn">makeSelectUserById</span> = (userId) =&gt; <span class="fn">createSelector</span>(
+  [selectUsers],
+  (users) =&gt; users.<span class="fn">find</span>(u =&gt; u.id === userId)
+);
+<span class="cm">// Each component gets its own memoized selector instance</span></pre>
+    </div>
+    <div class="interview-q">
+      <div class="q">Q: Why is useSelector(state => state.users.filter(...)) problematic?</div>
+      <p>filter() always returns a new array, even if the elements are identical. useSelector compares results with ===. New array !== new array → component re-renders on every store update, even unrelated ones. createSelector caches the result and only recomputes if the input selectors' values change. RTK includes createSelector from reselect built-in.</p>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- R15: PERSIST -->
+<div class="topic" id="r15">
+  <div class="topic-header">
+    <span class="topic-num">R-15</span>
+    <h2 class="topic-title">Persisting Redux State</h2>
+    <span class="tag-pill tag-redux">Production</span>
+  </div>
+
+  <div class="subtopic redux-sub">
+    <h3>redux-persist Setup</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot r"></span>redux-persist with RTK</div>
+      <pre><span class="kw">import</span> { persistReducer, persistStore } <span class="kw">from</span> <span class="str">'redux-persist'</span>;
+<span class="kw">import</span> storage <span class="kw">from</span> <span class="str">'redux-persist/lib/storage'</span>; <span class="cm">// localStorage</span>
+<span class="kw">import</span> storageSession <span class="kw">from</span> <span class="str">'redux-persist/lib/storage/session'</span>; <span class="cm">// sessionStorage</span>
+
+<span class="kw">const</span> authPersistConfig = {
+  key: <span class="str">'auth'</span>,
+  storage,                          <span class="cm">// where to persist</span>
+  whitelist: [<span class="str">'token'</span>, <span class="str">'user'</span>],   <span class="cm">// only persist these fields</span>
+  <span class="cm">// blacklist: ['loading', 'error'], // OR exclude these fields</span>
+};
+
+<span class="kw">const</span> store = <span class="fn">configureStore</span>({
+  reducer: {
+    auth:  <span class="fn">persistReducer</span>(authPersistConfig, authReducer),
+    users: userReducer,  <span class="cm">// not persisted</span>
+  },
+  middleware: (getDefaultMiddleware) =&gt;
+    <span class="fn">getDefaultMiddleware</span>({
+      serializableCheck: {
+        ignoredActions: [<span class="str">'persist/PERSIST'</span>, <span class="str">'persist/REHYDRATE'</span>]
+      }
+    })
+});
+
+<span class="kw">export const</span> persistor = <span class="fn">persistStore</span>(store);
+
+<span class="cm">// Wrap app with PersistGate</span>
+&lt;<span class="tag">PersistGate</span> <span class="attr">loading</span>={<span class="kw">null</span>} <span class="attr">persistor</span>={persistor}&gt;
+  &lt;<span class="tag">App</span> /&gt;
+&lt;/<span class="tag">PersistGate</span>&gt;
+
+<span class="cm">// Clear persisted state (logout)</span>
+persistor.<span class="fn">purge</span>();
+<span class="cm">// OR selective clear</span>
+dispatch({ type: <span class="str">'auth/logout'</span> });
+<span class="cm">// Reducer sets state back to initialState — persistor writes empty state</span></pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- R16 + R17 -->
+<div class="topic" id="r16">
+  <div class="topic-header">
+    <span class="topic-num">R-16</span>
+    <h2 class="topic-title">Redux DevTools & Folder Structure</h2>
+    <span class="tag-pill tag-tip">Tooling</span>
+  </div>
+
+  <div class="subtopic redux-sub" id="r17">
+    <h3>DevTools — Time Travel Debugging</h3>
+    <ul>
+      <li>Install Redux DevTools browser extension</li>
+      <li><strong>Action log</strong> — see every action dispatched with its payload</li>
+      <li><strong>State diff</strong> — see exactly what changed in state</li>
+      <li><strong>Time travel</strong> — jump to any previous state by clicking an action</li>
+      <li><strong>Import/Export</strong> — save and replay state sessions for bug reports</li>
+    </ul>
+  </div>
+
+  <div class="subtopic redux-sub">
+    <h3>Recommended Folder Structure</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot r"></span>Feature-based structure (recommended)</div>
+      <pre><span class="str">src/</span>
+├── <span class="str">store/</span>
+│   ├── <span class="str">index.js</span>              <span class="cm">// configureStore, sagaMiddleware.run(rootSaga)</span>
+│   ├── <span class="str">rootReducer.js</span>        <span class="cm">// combineReducers (or inline in configureStore)</span>
+│   └── <span class="str">rootSaga.js</span>           <span class="cm">// all([watchUsers, watchAuth, ...])</span>
+│
+├── <span class="str">features/</span>
+│   ├── <span class="str">auth/</span>
+│   │   ├── <span class="str">authSlice.js</span>      <span class="cm">// createSlice (reducer + actions)</span>
+│   │   ├── <span class="str">authSaga.js</span>       <span class="cm">// watcher + worker sagas</span>
+│   │   ├── <span class="str">authSelectors.js</span>  <span class="cm">// createSelector memoized selectors</span>
+│   │   └── <span class="str">authAPI.js</span>        <span class="cm">// API call functions</span>
+│   │
+│   └── <span class="str">users/</span>
+│       ├── <span class="str">userSlice.js</span>
+│       ├── <span class="str">userSaga.js</span>
+│       ├── <span class="str">userSelectors.js</span>
+│       └── <span class="str">userAPI.js</span>
+│
+└── <span class="str">components/</span>             <span class="cm">// UI components (no Redux logic)</span></pre>
+    </div>
+    <div class="callout tip">
+      <strong>Feature-based vs role-based folders</strong>
+      Feature-based (auth/, users/) keeps all related Redux code together. Role-based (/actions, /reducers, /sagas) spreads related code across folders. Feature-based scales better — you can delete a feature by deleting one folder.
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+
+<!-- ===== REDUX SAGA ===== -->
+<div class="section-label saga">Redux Saga</div>
+
+<!-- S1: WHAT IS SAGA -->
+<div class="topic" id="s1">
+  <div class="topic-header">
+    <span class="topic-num">S-01</span>
+    <h2 class="topic-title">What is Redux Saga?</h2>
+    <span class="tag-pill tag-saga">Saga</span>
+  </div>
+
+  <div class="subtopic saga-sub">
+    <h3>Saga as a Separate Process</h3>
+    <p>Redux Saga is middleware that makes async operations (API calls, background tasks, complex flows) <strong>easy to manage and test</strong> using ES6 generator functions. Sagas are like separate "background threads" that listen for actions and react to them.</p>
+    <div class="flow">
+      <div class="flow-box y">UI dispatches action</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box r">Redux Store</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box s">Saga watches</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box s">API call</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box s">put(success)</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box r">Reducer updates</div>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- S2: GENERATORS -->
+<div class="topic" id="s2">
+  <div class="topic-header">
+    <span class="topic-num">S-02</span>
+    <h2 class="topic-title">Generator Functions — The Foundation</h2>
+    <span class="tag-pill tag-hot">🔥 Most Asked</span>
+  </div>
+
+  <div class="subtopic saga-sub">
+    <h3>Why Generators? How They Work</h3>
+    <p>Generator functions (<code>function*</code>) can <strong>pause and resume</strong> execution. <code>yield</code> pauses the function and returns a value. The caller calls <code>.next()</code> to resume. This makes async code look sequential without async/await.</p>
+    <div class="code-block">
+      <div class="code-label"><span class="dot s"></span>Generator Function Internals</div>
+      <pre><span class="cm">// Generator function returns an iterator</span>
+<span class="kw">function</span><span class="gen">*</span> <span class="fn">counter</span>() {
+  console.<span class="fn">log</span>(<span class="str">'start'</span>);
+  <span class="kw">yield</span> <span class="num">1</span>;           <span class="cm">// pause, return 1</span>
+  console.<span class="fn">log</span>(<span class="str">'resumed'</span>);
+  <span class="kw">yield</span> <span class="num">2</span>;           <span class="cm">// pause, return 2</span>
+  <span class="kw">return</span> <span class="str">'done'</span>;     <span class="cm">// final return</span>
+}
+
+<span class="kw">const</span> gen = <span class="fn">counter</span>();        <span class="cm">// doesn't run yet!</span>
+gen.<span class="fn">next</span>(); <span class="cm">// logs 'start', returns { value: 1, done: false }</span>
+gen.<span class="fn">next</span>(); <span class="cm">// logs 'resumed', returns { value: 2, done: false }</span>
+gen.<span class="fn">next</span>(); <span class="cm">// returns { value: 'done', done: true }</span>
+
+<span class="cm">// You can PASS values back in via next(value)</span>
+<span class="kw">function</span><span class="gen">*</span> <span class="fn">dialog</span>() {
+  <span class="kw">const</span> name = <span class="kw">yield</span> <span class="str">'What is your name?'</span>;
+  <span class="kw">const</span> age  = <span class="kw">yield</span> <span class="str">`Hello ${name}! How old are you?`</span>;
+  <span class="kw">return</span> <span class="str">`${name} is ${age} years old.`</span>;
+}
+<span class="kw">const</span> d = <span class="fn">dialog</span>();
+d.<span class="fn">next</span>();               <span class="cm">// → 'What is your name?'</span>
+d.<span class="fn">next</span>(<span class="str">'Shailesh'</span>);     <span class="cm">// name = 'Shailesh' → 'Hello Shailesh! How old are you?'</span>
+d.<span class="fn">next</span>(<span class="num">28</span>);             <span class="cm">// age = 28 → 'Shailesh is 28 years old.'</span></pre>
+    </div>
+    <div class="callout info">
+      <strong>Why Saga uses generators (not async/await)</strong>
+      Saga's middleware takes control of the generator. When you yield an effect like call(api.fetchUser), the middleware runs the API call and passes the result back via .next(result). This lets saga intercept and control every async operation — enabling cancellation, testing, and retry logic that's impossible with async/await.
+    </div>
+    <div class="interview-q">
+      <div class="q">Q: Why does Redux Saga use generators instead of async/await?</div>
+      <p>Three reasons: (1) Testability — you can test sagas by manually calling .next() and asserting the yielded effects WITHOUT running actual API calls. (2) Cancellability — sagas can be cancelled mid-execution; async/await cannot be cancelled. (3) Declarative effects — yield call(fn) tells saga "please call this" rather than calling it directly, letting middleware control execution.</p>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- S3: CORE EFFECTS -->
+<div class="topic" id="s3">
+  <div class="topic-header">
+    <span class="topic-num">S-03</span>
+    <h2 class="topic-title">Core Saga Effects</h2>
+    <span class="tag-pill tag-saga">Core</span>
+  </div>
+
+  <div class="subtopic saga-sub">
+    <h3>The Essential Effects</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot s"></span>Full Practical Saga — User Fetch</div>
+      <pre><span class="kw">import</span> { call, put, takeEvery, takeLatest, select } <span class="kw">from</span> <span class="str">'redux-saga/effects'</span>;
+
+<span class="cm">// ─────────────────────────────────────────────────</span>
+<span class="cm">// call(fn, ...args) — calls function, BLOCKS until done</span>
+<span class="cm">// Returns the resolved value. Used for APIs.</span>
+<span class="cm">// ─────────────────────────────────────────────────</span>
+<span class="kw">const</span> data = <span class="kw">yield</span> <span class="fn">call</span>(api.fetchUser, userId);
+
+<span class="cm">// ─────────────────────────────────────────────────</span>
+<span class="cm">// put(action) — dispatches action to Redux store</span>
+<span class="cm">// Like store.dispatch() but for sagas</span>
+<span class="cm">// ─────────────────────────────────────────────────</span>
+<span class="kw">yield</span> <span class="fn">put</span>({ type: <span class="str">'user/fetchSuccess'</span>, payload: data });
+<span class="kw">yield</span> <span class="fn">put</span>(<span class="fn">fetchSuccess</span>(data)); <span class="cm">// with action creator</span>
+
+<span class="cm">// ─────────────────────────────────────────────────</span>
+<span class="cm">// select(selector) — read current Redux state</span>
+<span class="cm">// ─────────────────────────────────────────────────</span>
+<span class="kw">const</span> userId = <span class="kw">yield</span> <span class="fn">select</span>(state =&gt; state.auth.userId);
+<span class="kw">const</span> token  = <span class="kw">yield</span> <span class="fn">select</span>(<span class="fn">selectAuthToken</span>); <span class="cm">// selector function</span>
+
+<span class="cm">// ─────────────────────────────────────────────────</span>
+<span class="cm">// takeEvery — watch for action, run worker for EACH</span>
+<span class="cm">// ─────────────────────────────────────────────────</span>
+<span class="kw">yield</span> <span class="fn">takeEvery</span>(<span class="str">'user/FETCH_REQUEST'</span>, fetchUserWorker);
+<span class="cm">// All parallel — 3 rapid clicks = 3 API calls all running</span>
+
+<span class="cm">// ─────────────────────────────────────────────────</span>
+<span class="cm">// takeLatest — run only the LATEST, cancel previous</span>
+<span class="cm">// ─────────────────────────────────────────────────</span>
+<span class="kw">yield</span> <span class="fn">takeLatest</span>(<span class="str">'user/FETCH_REQUEST'</span>, fetchUserWorker);
+<span class="cm">// 3 rapid clicks = first 2 cancelled, only 3rd runs</span>
+
+<span class="cm">// ─────────────────────────────────────────────────</span>
+<span class="cm">// Complete Worker Saga</span>
+<span class="cm">// ─────────────────────────────────────────────────</span>
+<span class="kw">function</span><span class="gen">*</span> <span class="fn">fetchUserWorker</span>(action) {
+  <span class="kw">try</span> {
+    <span class="kw">yield</span> <span class="fn">put</span>(<span class="fn">setLoading</span>(<span class="kw">true</span>));
+    <span class="kw">const</span> data = <span class="kw">yield</span> <span class="fn">call</span>(userAPI.getUser, action.payload);
+    <span class="kw">yield</span> <span class="fn">put</span>(<span class="fn">fetchSuccess</span>(data));
+  } <span class="kw">catch</span> (error) {
+    <span class="kw">yield</span> <span class="fn">put</span>(<span class="fn">fetchFailed</span>(error.message));
+  } <span class="kw">finally</span> {
+    <span class="kw">yield</span> <span class="fn">put</span>(<span class="fn">setLoading</span>(<span class="kw">false</span>));
+  }
+}</pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- S4: ADVANCED EFFECTS -->
+<div class="topic" id="s4">
+  <div class="topic-header">
+    <span class="topic-num">S-04</span>
+    <h2 class="topic-title">Advanced Effects</h2>
+    <span class="tag-pill tag-hot">🔥 Senior Level</span>
+  </div>
+
+  <div class="subtopic saga-sub">
+    <h3>fork vs call — Blocking vs Non-Blocking</h3>
+    <table>
+      <tr><th class="saga-th">Effect</th><th class="saga-th">Blocking?</th><th class="saga-th">Use For</th></tr>
+      <tr><td>call(fn)</td><td>✅ Yes — waits for result</td><td>Sequential ops, API calls you need result from</td></tr>
+      <tr><td>fork(fn)</td><td>❌ No — continues immediately</td><td>Background tasks, parallel work, child sagas</td></tr>
+      <tr><td>spawn(fn)</td><td>❌ No</td><td>Like fork but error/cancel independent from parent</td></tr>
+    </table>
+    <div class="code-block">
+      <div class="code-label"><span class="dot s"></span>fork vs call — Practical</div>
+      <pre><span class="kw">import</span> { call, fork, spawn, join } <span class="kw">from</span> <span class="str">'redux-saga/effects'</span>;
+
+<span class="cm">// call — BLOCKING (sequential)</span>
+<span class="kw">function</span><span class="gen">*</span> <span class="fn">sequential</span>() {
+  <span class="kw">const</span> user = <span class="kw">yield</span> <span class="fn">call</span>(fetchUser);     <span class="cm">// waits for user</span>
+  <span class="kw">const</span> posts = <span class="kw">yield</span> <span class="fn">call</span>(fetchPosts, user.id); <span class="cm">// then fetches posts</span>
+}
+
+<span class="cm">// fork — NON-BLOCKING (parallel background tasks)</span>
+<span class="kw">function</span><span class="gen">*</span> <span class="fn">withBackground</span>() {
+  <span class="kw">const</span> task = <span class="kw">yield</span> <span class="fn">fork</span>(syncDataInBackground); <span class="cm">// starts, doesn't wait</span>
+  <span class="kw">yield</span> <span class="fn">call</span>(doMainWork);                          <span class="cm">// continues immediately</span>
+  <span class="kw">yield</span> <span class="fn">join</span>(task);                                <span class="cm">// optionally wait for fork</span>
+}
+
+<span class="cm">// spawn — independent, errors/cancellation don't propagate to parent</span>
+<span class="kw">function</span><span class="gen">*</span> <span class="fn">rootSaga</span>() {
+  <span class="kw">yield</span> <span class="fn">spawn</span>(analyticsTracker); <span class="cm">// if this crashes, root saga continues</span>
+  <span class="kw">yield</span> <span class="fn">spawn</span>(watchUserActions);
+}</pre>
+    </div>
+    <div class="interview-q">
+      <div class="q">Q: What is the difference between call and fork?</div>
+      <p>call is blocking — the saga pauses at yield call(fn) until fn resolves, like await. fork is non-blocking — the saga continues to the next line immediately and the forked task runs in background. Error in forked task propagates to parent (unlike spawn). Use call for sequential dependent operations, fork for background tasks or parallel execution.</p>
+    </div>
+  </div>
+
+  <div class="subtopic saga-sub">
+    <h3>all() — Parallel API Calls</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot s"></span>all() — Like Promise.all</div>
+      <pre><span class="kw">import</span> { all, call } <span class="kw">from</span> <span class="str">'redux-saga/effects'</span>;
+
+<span class="cm">// ❌ Sequential — slow (each waits for previous)</span>
+<span class="kw">const</span> user    = <span class="kw">yield</span> <span class="fn">call</span>(fetchUser);       <span class="cm">// 300ms</span>
+<span class="kw">const</span> orders  = <span class="kw">yield</span> <span class="fn">call</span>(fetchOrders);    <span class="cm">// 300ms</span>
+<span class="kw">const</span> profile = <span class="kw">yield</span> <span class="fn">call</span>(fetchProfile);   <span class="cm">// 300ms</span>
+<span class="cm">// Total: 900ms</span>
+
+<span class="cm">// ✅ Parallel — fast (all run simultaneously)</span>
+<span class="kw">const</span> [user, orders, profile] = <span class="kw">yield</span> <span class="fn">all</span>([
+  <span class="fn">call</span>(fetchUser),
+  <span class="fn">call</span>(fetchOrders),
+  <span class="fn">call</span>(fetchProfile)
+]);
+<span class="cm">// Total: ~300ms (slowest one)</span>
+
+<span class="cm">// all with object syntax</span>
+<span class="kw">const</span> { user, orders } = <span class="kw">yield</span> <span class="fn">all</span>({
+  user:   <span class="fn">call</span>(fetchUser),
+  orders: <span class="fn">call</span>(fetchOrders)
+});
+
+<span class="cm">// all for multiple watchers in root saga</span>
+<span class="kw">function</span><span class="gen">*</span> <span class="fn">rootSaga</span>() {
+  <span class="kw">yield</span> <span class="fn">all</span>([
+    <span class="fn">watchFetchUsers</span>(),
+    <span class="fn">watchAuthSaga</span>(),
+    <span class="fn">watchOrderSaga</span>(),
+  ]);
+}</pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- S5: WATCHER WORKER -->
+<div class="topic" id="s5">
+  <div class="topic-header">
+    <span class="topic-num">S-05</span>
+    <h2 class="topic-title">Watcher / Worker Architecture</h2>
+    <span class="tag-pill tag-saga">Pattern</span>
+  </div>
+
+  <div class="subtopic saga-sub">
+    <h3>The Standard Saga Pattern</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot s"></span>Watcher + Worker + Root Saga</div>
+      <pre><span class="cm">// ── Worker Saga (does the work) ───────────────────</span>
+<span class="kw">function</span><span class="gen">*</span> <span class="fn">fetchUsersWorker</span>(action) {
+  <span class="kw">try</span> {
+    <span class="kw">const</span> users = <span class="kw">yield</span> <span class="fn">call</span>(userAPI.<span class="fn">getAll</span>);
+    <span class="kw">yield</span> <span class="fn">put</span>(<span class="fn">fetchUsersSuccess</span>(users));
+  } <span class="kw">catch</span> (err) {
+    <span class="kw">yield</span> <span class="fn">put</span>(<span class="fn">fetchUsersFailed</span>(err.message));
+  }
+}
+
+<span class="cm">// ── Watcher Saga (listens for actions) ───────────</span>
+<span class="kw">function</span><span class="gen">*</span> <span class="fn">watchFetchUsers</span>() {
+  <span class="kw">yield</span> <span class="fn">takeLatest</span>(<span class="str">'users/FETCH_REQUEST'</span>, fetchUsersWorker);
+  <span class="cm">// OR: yield takeEvery('users/FETCH_REQUEST', fetchUsersWorker);</span>
+}
+
+<span class="cm">// ── Root Saga (combines all watchers) ────────────</span>
+<span class="kw">function</span><span class="gen">*</span> <span class="fn">rootSaga</span>() {
+  <span class="kw">yield</span> <span class="fn">all</span>([
+    <span class="fn">watchFetchUsers</span>(),
+    <span class="fn">watchAuthSaga</span>(),
+    <span class="fn">watchOrderSaga</span>(),
+    <span class="cm">// Each watcher runs concurrently</span>
+  ]);
+}
+
+<span class="cm">// ── Store setup ──────────────────────────────────</span>
+<span class="kw">const</span> sagaMiddleware = <span class="fn">createSagaMiddleware</span>();
+<span class="kw">const</span> store = <span class="fn">configureStore</span>({ ..., middleware: (get) =&gt; get().<span class="fn">concat</span>(sagaMiddleware) });
+sagaMiddleware.<span class="fn">run</span>(rootSaga); <span class="cm">// starts all watchers</span></pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- S6: ERROR HANDLING -->
+<div class="topic" id="s6">
+  <div class="topic-header">
+    <span class="topic-num">S-06</span>
+    <h2 class="topic-title">Error Handling in Sagas</h2>
+    <span class="tag-pill tag-saga">Critical</span>
+  </div>
+
+  <div class="subtopic saga-sub">
+    <h3>try/catch + Global Error Handling</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot s"></span>Error Handling Patterns</div>
+      <pre><span class="cm">// ── Pattern 1: try/catch in worker (most common) ──</span>
+<span class="kw">function</span><span class="gen">*</span> <span class="fn">fetchPolicyWorker</span>({ payload: policyId }) {
+  <span class="kw">try</span> {
+    <span class="kw">const</span> policy = <span class="kw">yield</span> <span class="fn">call</span>(policyAPI.get, policyId);
+    <span class="kw">yield</span> <span class="fn">put</span>({ type: <span class="str">'policy/success'</span>, payload: policy });
+  } <span class="kw">catch</span> (error) {
+    <span class="kw">yield</span> <span class="fn">put</span>({ type: <span class="str">'policy/error'</span>, payload: error.message });
+    <span class="cm">// Optional: show toast notification</span>
+    <span class="kw">yield</span> <span class="fn">put</span>({ type: <span class="str">'ui/showToast'</span>, payload: { type: <span class="str">'error'</span>, msg: error.message } });
+  }
+}
+
+<span class="cm">// ── Pattern 2: Global error handler ───────────────</span>
+<span class="kw">function</span><span class="gen">*</span> <span class="fn">globalErrorHandler</span>() {
+  <span class="kw">while</span> (<span class="kw">true</span>) {
+    <span class="kw">const</span> { payload: error } = <span class="kw">yield</span> <span class="fn">take</span>(<span class="str">'*ERROR*'</span>); <span class="cm">// watch all error actions</span>
+    <span class="kw">yield</span> <span class="fn">call</span>(errorReportingService.log, error);
+    <span class="kw">yield</span> <span class="fn">put</span>({ type: <span class="str">'ui/showGlobalError'</span>, payload: error });
+  }
+}
+
+<span class="cm">// ── Pattern 3: Retry logic ────────────────────────</span>
+<span class="kw">function</span><span class="gen">*</span> <span class="fn">retryWorker</span>(action, retries = <span class="num">3</span>) {
+  <span class="kw">for</span> (<span class="kw">let</span> i = <span class="num">0</span>; i &lt; retries; i++) {
+    <span class="kw">try</span> {
+      <span class="kw">const</span> result = <span class="kw">yield</span> <span class="fn">call</span>(api.fetchData, action.payload);
+      <span class="kw">yield</span> <span class="fn">put</span>(<span class="fn">success</span>(result));
+      <span class="kw">return</span>;
+    } <span class="kw">catch</span> (err) {
+      <span class="kw">if</span> (i === retries - <span class="num">1</span>) <span class="kw">yield</span> <span class="fn">put</span>(<span class="fn">failed</span>(err.message));
+      <span class="kw">else</span> <span class="kw">yield</span> <span class="fn">delay</span>(<span class="num">1000</span> * (i + <span class="num">1</span>)); <span class="cm">// exponential backoff</span>
+    }
+  }
+}</pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- S7: CANCELLATION & RACE -->
+<div class="topic" id="s7">
+  <div class="topic-header">
+    <span class="topic-num">S-07</span>
+    <h2 class="topic-title">Cancellation, take, and race</h2>
+    <span class="tag-pill tag-hot">🔥 Senior Level</span>
+  </div>
+
+  <div class="subtopic saga-sub">
+    <h3>Cancelling Tasks + race()</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot s"></span>cancel + race — Practical Patterns</div>
+      <pre><span class="kw">import</span> { fork, cancel, take, race, call, put, delay } <span class="kw">from</span> <span class="str">'redux-saga/effects'</span>;
+
+<span class="cm">// ── Manual task cancellation ───────────────────</span>
+<span class="kw">function</span><span class="gen">*</span> <span class="fn">bgSyncSaga</span>() {
+  <span class="kw">while</span> (<span class="kw">true</span>) {
+    <span class="kw">yield</span> <span class="fn">take</span>(<span class="str">'SYNC_START'</span>);
+    <span class="kw">const</span> task = <span class="kw">yield</span> <span class="fn">fork</span>(syncDataTask);
+
+    <span class="kw">yield</span> <span class="fn">take</span>(<span class="str">'SYNC_STOP'</span>);     <span class="cm">// wait for stop action</span>
+    <span class="kw">yield</span> <span class="fn">cancel</span>(task);           <span class="cm">// cancel the fork</span>
+  }
+}
+
+<span class="cm">// ── race() — whoever finishes FIRST wins ──────</span>
+<span class="cm">// Others are automatically cancelled!</span>
+<span class="kw">function</span><span class="gen">*</span> <span class="fn">fetchWithTimeout</span>(action) {
+  <span class="kw">const</span> { data, timeout } = <span class="kw">yield</span> <span class="fn">race</span>({
+    data:    <span class="fn">call</span>(api.fetchUser, action.payload),
+    timeout: <span class="fn">delay</span>(<span class="num">5000</span>)          <span class="cm">// 5 second timeout</span>
+  });
+
+  <span class="kw">if</span> (timeout) {
+    <span class="kw">yield</span> <span class="fn">put</span>(<span class="fn">fetchTimedOut</span>());
+  } <span class="kw">else</span> {
+    <span class="kw">yield</span> <span class="fn">put</span>(<span class="fn">fetchSuccess</span>(data));
+  }
+}
+
+<span class="cm">// ── race() for authentication flow ────────────</span>
+<span class="kw">function</span><span class="gen">*</span> <span class="fn">authFlow</span>() {
+  <span class="kw">while</span> (<span class="kw">true</span>) {
+    <span class="kw">yield</span> <span class="fn">take</span>(<span class="str">'LOGIN_REQUEST'</span>);
+
+    <span class="kw">const</span> { success, logout } = <span class="kw">yield</span> <span class="fn">race</span>({
+      success: <span class="fn">call</span>(loginFlow),
+      logout:  <span class="fn">take</span>(<span class="str">'LOGOUT'</span>)     <span class="cm">// if user logs out mid-login → cancel</span>
+    });
+
+    <span class="kw">if</span> (success) <span class="kw">yield</span> <span class="fn">put</span>(<span class="fn">loginSuccess</span>());
+    <span class="kw">if</span> (logout)  <span class="kw">yield</span> <span class="fn">put</span>(<span class="fn">logoutSuccess</span>());
+  }
+}</pre>
+    </div>
+    <div class="interview-q">
+      <div class="q">Q: How do you handle race conditions in Sagas?</div>
+      <p>takeLatest automatically handles the most common race condition — it cancels the previous saga if a new action comes in before it finishes. For custom race conditions, use race() — yield race({ result: call(api), timeout: delay(5000) }) — the loser is automatically cancelled. For complex flows, fork + cancel gives full manual control.</p>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- S8: DEBOUNCE/THROTTLE -->
+<div class="topic" id="s8">
+  <div class="topic-header">
+    <span class="topic-num">S-08</span>
+    <h2 class="topic-title">Debouncing & Throttling in Sagas</h2>
+    <span class="tag-pill tag-saga">Patterns</span>
+  </div>
+
+  <div class="subtopic saga-sub">
+    <h3>Debounce with delay() + takeLatest</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot s"></span>Debounce / Throttle Patterns</div>
+      <pre><span class="kw">import</span> { takeLatest, call, put, delay, throttle } <span class="kw">from</span> <span class="str">'redux-saga/effects'</span>;
+
+<span class="cm">// ── Debounce — wait until user stops typing ────</span>
+<span class="kw">function</span><span class="gen">*</span> <span class="fn">searchWorker</span>({ payload: query }) {
+  <span class="kw">yield</span> <span class="fn">delay</span>(<span class="num">400</span>);             <span class="cm">// wait 400ms before API call</span>
+  <span class="kw">const</span> results = <span class="kw">yield</span> <span class="fn">call</span>(searchAPI, query);
+  <span class="kw">yield</span> <span class="fn">put</span>(<span class="fn">searchSuccess</span>(results));
+}
+
+<span class="cm">// takeLatest cancels previous saga when new action arrives</span>
+<span class="cm">// + delay inside = debounce effect!</span>
+<span class="kw">function</span><span class="gen">*</span> <span class="fn">watchSearch</span>() {
+  <span class="kw">yield</span> <span class="fn">takeLatest</span>(<span class="str">'search/QUERY_CHANGE'</span>, searchWorker);
+  <span class="cm">// Rapid keystrokes → previous workers cancelled → delay resets → 1 API call</span>
+}
+
+<span class="cm">// ── Throttle — built-in effect ─────────────────</span>
+<span class="kw">function</span><span class="gen">*</span> <span class="fn">watchScroll</span>() {
+  <span class="cm">// Max 1 call per 300ms, ignores rest</span>
+  <span class="kw">yield</span> <span class="fn">throttle</span>(<span class="num">300</span>, <span class="str">'SCROLL_EVENT'</span>, handleScrollWorker);
+}
+
+<span class="cm">// ── takeLeading — first wins, ignore until done ─</span>
+<span class="kw">import</span> { takeLeading } <span class="kw">from</span> <span class="str">'redux-saga/effects'</span>;
+<span class="kw">function</span><span class="gen">*</span> <span class="fn">watchSubmit</span>() {
+  <span class="cm">// Prevent double-submit: ignores new actions until current completes</span>
+  <span class="kw">yield</span> <span class="fn">takeLeading</span>(<span class="str">'form/SUBMIT'</span>, submitFormWorker);
+}</pre>
+    </div>
+    <div class="callout tip">
+      <strong>takeEvery vs takeLatest vs takeLeading vs throttle</strong>
+      takeEvery: all parallel (logs, analytics). takeLatest: cancel prev, run new (search). takeLeading: ignore new until current done (form submit). throttle: rate limit (scroll events). These 4 cover 95% of real-world use cases.
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- S9: PARALLEL -->
+<div class="topic" id="s9">
+  <div class="topic-header">
+    <span class="topic-num">S-09</span>
+    <h2 class="topic-title">Parallel API Calls with all()</h2>
+    <span class="tag-pill tag-saga">Performance</span>
+  </div>
+
+  <div class="subtopic saga-sub">
+    <h3>Dashboard Data Loading</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot s"></span>Load dashboard data in parallel</div>
+      <pre><span class="kw">function</span><span class="gen">*</span> <span class="fn">loadDashboardWorker</span>() {
+  <span class="kw">try</span> {
+    <span class="kw">yield</span> <span class="fn">put</span>(<span class="fn">setLoading</span>(<span class="kw">true</span>));
+
+    <span class="cm">// All 4 APIs fire in parallel — total time = slowest one</span>
+    <span class="kw">const</span> [user, policies, claims, notifications] = <span class="kw">yield</span> <span class="fn">all</span>([
+      <span class="fn">call</span>(userAPI.getProfile),
+      <span class="fn">call</span>(policyAPI.getActivePolicies),
+      <span class="fn">call</span>(claimsAPI.getPendingClaims),
+      <span class="fn">call</span>(notifAPI.getUnread)
+    ]);
+
+    <span class="kw">yield</span> <span class="fn">put</span>(<span class="fn">dashboardLoaded</span>({ user, policies, claims, notifications }));
+
+  } <span class="kw">catch</span> (err) {
+    <span class="cm">// all() fails fast — if ANY call throws, all others are cancelled</span>
+    <span class="kw">yield</span> <span class="fn">put</span>(<span class="fn">dashboardFailed</span>(err.message));
+  } <span class="kw">finally</span> {
+    <span class="kw">yield</span> <span class="fn">put</span>(<span class="fn">setLoading</span>(<span class="kw">false</span>));
+  }
+}</pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- S10: TESTING -->
+<div class="topic" id="s10">
+  <div class="topic-header">
+    <span class="topic-num">S-10</span>
+    <h2 class="topic-title">Testing Sagas</h2>
+    <span class="tag-pill tag-saga">Testing</span>
+  </div>
+
+  <div class="subtopic saga-sub">
+    <h3>Pure Effect Testing — No Mocks Needed</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot s"></span>Unit Testing a Saga</div>
+      <pre><span class="kw">import</span> { call, put } <span class="kw">from</span> <span class="str">'redux-saga/effects'</span>;
+
+<span class="cm">// The saga to test</span>
+<span class="kw">function</span><span class="gen">*</span> <span class="fn">fetchUserWorker</span>({ payload: userId }) {
+  <span class="kw">yield</span> <span class="fn">put</span>({ type: <span class="str">'user/loading'</span> });
+  <span class="kw">const</span> user = <span class="kw">yield</span> <span class="fn">call</span>(userAPI.getUser, userId);
+  <span class="kw">yield</span> <span class="fn">put</span>({ type: <span class="str">'user/success'</span>, payload: user });
+}
+
+<span class="cm">// ── Test by stepping through with .next() ──────</span>
+<span class="fn">describe</span>(<span class="str">'fetchUserWorker'</span>, () =&gt; {
+  <span class="kw">const</span> gen = <span class="fn">fetchUserWorker</span>({ payload: <span class="str">'user123'</span> });
+
+  <span class="fn">it</span>(<span class="str">'dispatches loading'</span>, () =&gt; {
+    <span class="kw">const</span> effect = gen.<span class="fn">next</span>().value;
+    <span class="fn">expect</span>(effect).<span class="fn">toEqual</span>(<span class="fn">put</span>({ type: <span class="str">'user/loading'</span> }));
+    <span class="cm">// No mock needed — we just compare the effect descriptor!</span>
+  });
+
+  <span class="fn">it</span>(<span class="str">'calls the API'</span>, () =&gt; {
+    <span class="kw">const</span> effect = gen.<span class="fn">next</span>().value;
+    <span class="fn">expect</span>(effect).<span class="fn">toEqual</span>(<span class="fn">call</span>(userAPI.getUser, <span class="str">'user123'</span>));
+    <span class="cm">// ✅ Just checks that call() effect is correct — API never actually runs</span>
+  });
+
+  <span class="fn">it</span>(<span class="str">'dispatches success with data'</span>, () =&gt; {
+    <span class="kw">const</span> mockUser = { id: <span class="str">'user123'</span>, name: <span class="str">'Shailesh'</span> };
+    <span class="cm">// Pass mock API result back via next(mockUser)</span>
+    <span class="kw">const</span> effect = gen.<span class="fn">next</span>(mockUser).value;
+    <span class="fn">expect</span>(effect).<span class="fn">toEqual</span>(<span class="fn">put</span>({ type: <span class="str">'user/success'</span>, payload: mockUser }));
+  });
+});
+
+<span class="cm">// ── Integration test with runSaga ──────────────</span>
+<span class="kw">import</span> { runSaga } <span class="kw">from</span> <span class="str">'redux-saga'</span>;
+
+<span class="fn">it</span>(<span class="str">'full saga integration test'</span>, <span class="kw">async</span> () =&gt; {
+  jest.<span class="fn">spyOn</span>(userAPI, <span class="str">'getUser'</span>).<span class="fn">mockResolvedValue</span>({ name: <span class="str">'Shailesh'</span> });
+  <span class="kw">const</span> dispatched = [];
+
+  <span class="kw">await</span> <span class="fn">runSaga</span>({ dispatch: a =&gt; dispatched.<span class="fn">push</span>(a) }, fetchUserWorker, { payload: <span class="str">'u1'</span> });
+
+  <span class="fn">expect</span>(dispatched[<span class="num">0</span>]).<span class="fn">toEqual</span>({ type: <span class="str">'user/loading'</span> });
+  <span class="fn">expect</span>(dispatched[<span class="num">1</span>].type).<span class="fn">toBe</span>(<span class="str">'user/success'</span>);
+});</pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+
+<!-- ===== ALL INTERVIEW Q&A ===== -->
+<div class="section-label qa">🔥 All Interview Questions</div>
+
+<div class="topic" id="qa">
+  <div class="topic-header">
+    <span class="topic-num">QA</span>
+    <h2 class="topic-title">Complete Interview Q&A</h2>
+    <span class="tag-pill tag-hot">100% Prepare These</span>
+  </div>
+
+  <div class="subtopic redux-sub">
+    <h3>Redux Questions</h3>
+
+    <div class="interview-q">
+      <div class="q">Q: Difference between Redux and Context API?</div>
+      <p>Context: built-in React, no setup, re-renders ALL consumers when value changes, no devtools, no middleware. Redux: separate library, boilerplate, but: selective re-renders (useSelector with equality check), time-travel DevTools, middleware pipeline (logging, analytics, async), predictable state with actions, designed for complex state. Use Context for simple global values (theme, auth). Use Redux for complex, frequently-updating shared state in large apps.</p>
+    </div>
+
+    <div class="interview-q">
+      <div class="q">Q: Why must reducers be pure functions?</div>
+      <p>Predictability: same action always produces same state — bugs are reproducible. Time-travel debugging: DevTools replays all actions; impure functions give different results on replay. Testability: just call reducer(state, action) and assert — no mocks needed. Performance: Redux uses reference equality (===) to detect changes; if you mutate state, the reference is the same and React won't re-render.</p>
+    </div>
+
+    <div class="interview-q">
+      <div class="q">Q: What is immutability and why does Redux require it?</div>
+      <p>Immutability means never modifying existing data — always creating new copies. Redux (and React) detect changes via reference equality (===). If you mutate state directly (state.push(item)), the reference stays the same → Redux thinks nothing changed → no re-render. Always return new objects/arrays: { ...state, field: newValue } or [...arr, newItem]. RTK uses Immer internally so you can write mutation-style code safely.</p>
+    </div>
+
+    <div class="interview-q">
+      <div class="q">Q: Redux Toolkit vs Traditional Redux — what changed?</div>
+      <p>Traditional Redux requires: separate action type constants, separate action creator functions, switch/case reducer with spread operators everywhere, manual store setup with applyMiddleware. RTK simplifies: createSlice combines all three into one, Immer handles immutability so you can write direct mutations, configureStore sets up middleware + DevTools automatically, createAsyncThunk handles async lifecycle. RTK is the official recommendation — no reason to use traditional Redux in new code.</p>
+    </div>
+
+    <div class="interview-q">
+      <div class="q">Q: Redux Thunk vs Redux Saga — detailed comparison?</div>
+      <p>Thunk: dispatch a function, use async/await inside, small bundle (~800 bytes), easy to learn, limited to the thunk function scope. Good for simple async. Saga: separate background process using generators, declarative effects (call, put, take), built-in cancellation (takeLatest, cancel, race), handles complex flows elegantly, excellent testing without mocks, ~25KB. Good for: polling, WebSockets, complex multi-step flows, cancellation. Choose Thunk for simplicity; Saga for power.</p>
+    </div>
+
+    <div class="interview-q">
+      <div class="q">Q: How does Redux work internally?</div>
+      <p>Store holds state as a plain JS object. dispatch(action) passes action through middleware chain (each middleware calls next). After all middleware, action reaches the root reducer (via combineReducers, each slice reducer gets its own state slice and the action). Reducer returns new state. Store replaces old state. All subscribers (useSelector) are notified. useSelector runs selector, compares result with previous via ===, re-renders if different.</p>
+    </div>
+
+    <div class="interview-q">
+      <div class="q">Q: What is createAsyncThunk and how does it handle lifecycle?</div>
+      <p>createAsyncThunk(actionTypePrefix, payloadCreator) generates three action types automatically: pending (starts), fulfilled (success), rejected (failure). When dispatched, it calls the payloadCreator, dispatches pending, waits for resolution, dispatches fulfilled with result or rejected with error. In extraReducers, you handle these three cases with builder.addCase(). This eliminates the manual loading/error/success action pattern.</p>
+    </div>
+
+    <div class="interview-q">
+      <div class="q">Q: What is reselect and when do you need it?</div>
+      <p>reselect's createSelector creates memoized selector functions. Problem: state => state.users.filter(u => u.active) creates a new array on every call → useSelector always sees a new reference → component always re-renders. createSelector takes input selectors and a result function — it only re-runs the result function if input values changed. Essential for any derived/computed state (filtered lists, sorted data, aggregations) used in useSelector.</p>
+    </div>
+  </div>
+
+  <div class="subtopic saga-sub">
+    <h3>Redux Saga Questions</h3>
+
+    <div class="interview-q">
+      <div class="q">Q: Why does Redux Saga use generator functions?</div>
+      <p>Three reasons: (1) Testability — yield produces plain effect descriptors. You can unit test by calling .next() and asserting effects without running actual APIs or timers. (2) Cancellability — generators can be cancelled mid-execution; async/await functions cannot be interrupted once started. (3) Control inversion — when you yield call(fn), the middleware decides when and how to call fn. This enables mocking, retry, timeout logic at the middleware level.</p>
+    </div>
+
+    <div class="interview-q">
+      <div class="q">Q: Difference between call and fork?</div>
+      <p>call(fn) is blocking — saga suspends at that line until fn resolves. Like await. Use for sequential dependent operations. fork(fn) is non-blocking — starts fn in background, saga continues to next line immediately. Forked task errors propagate to parent. Use for background tasks, parallel work, child sagas you want to supervise. spawn is like fork but errors/cancellations are isolated — parent won't be affected if spawned task fails.</p>
+    </div>
+
+    <div class="interview-q">
+      <div class="q">Q: takeEvery vs takeLatest?</div>
+      <p>takeEvery: listens for action, spawns a new worker saga for EVERY occurrence, all run concurrently. Use for independent operations: logging, analytics, notifications where every action matters. takeLatest: listens for action, cancels any currently running worker, starts new worker. Use for search-as-you-type, form submissions where only the latest result matters. Rule: if order matters and you want deduplication → takeLatest. If all must complete → takeEvery.</p>
+    </div>
+
+    <div class="interview-q">
+      <div class="q">Q: How do you cancel an API call in saga?</div>
+      <p>Three ways: (1) takeLatest automatically cancels previous saga when new action comes — if saga is mid-fetch, it's cancelled. (2) race() — yield race({ data: call(api.fetch), cancel: take('CANCEL_ACTION') }) — whichever happens first wins, the other is cancelled. (3) Manual: const task = yield fork(workerSaga); yield take('CANCEL'); yield cancel(task). For actual HTTP cancellation, use AbortController inside the API call function.</p>
+    </div>
+
+    <div class="interview-q">
+      <div class="q">Q: How do you handle race conditions in Sagas?</div>
+      <p>race() is built exactly for this: yield race({ result: call(fetchData), timeout: delay(5000) }). The first one to complete wins; others are cancelled. For search race conditions (old response arrives after newer one), takeLatest is the solution — it automatically cancels previous in-flight requests. For explicit competition (user logs out mid-login), race({ loginResult: call(login), logout: take('LOGOUT') }).</p>
+    </div>
+
+    <div class="interview-q">
+      <div class="q">Q: How do you test sagas without mocking APIs?</div>
+      <p>Sagas yield plain effect descriptors — call(api.fetch, id) returns { type: 'CALL', fn: api.fetch, args: [id] } — a plain object. You can call gen.next().value and deep-equal it against the expected effect object without ever running the API. Pass mock results back via gen.next(mockData). This is pure unit testing: fast, no network, no flakiness. For integration tests with real dispatching, use runSaga() helper.</p>
+    </div>
+
+    <div class="interview-q">
+      <div class="q">Q: How do you debounce an action in Redux Saga?</div>
+      <p>Two approaches: (1) takeLatest + delay(): yield takeLatest('SEARCH', worker) where worker starts with yield delay(400). Rapid actions cancel previous worker before delay completes → only last one after 400ms silence fires the API. (2) Built-in debounce effect: yield debounce(400, 'SEARCH_INPUT', searchWorker) — same result, cleaner syntax. For throttling: yield throttle(300, 'SCROLL', scrollWorker).</p>
+    </div>
+
+    <div class="interview-q">
+      <div class="q">Q: What is the Watcher/Worker pattern?</div>
+      <p>Watcher saga: uses takeEvery/takeLatest/takeLeading to listen for specific actions. Never does real work. Worker saga: receives the action, does the actual async work (call, put), handles try/catch. Root saga: combines all watchers via yield all([watchA(), watchB()]). This separation keeps code clean: watchers define WHEN to react, workers define HOW to react. Each feature gets its own watcher/worker pair in its own file.</p>
+    </div>
+
+    <div class="interview-q">
+      <div class="q">Q: What happens if a saga throws an error that isn't caught?</div>
+      <p>An uncaught error in a forked saga propagates to the parent saga and causes it to error too — cascading up to root. If root saga crashes, the entire saga middleware stops — no more sagas run. This is why you always wrap worker sagas in try/catch, and use spawn (not fork) for independent tasks like analytics where failure shouldn't bring down the main saga. You can also use sagaMiddleware's onError option for global error reporting.</p>
+    </div>
+  </div>
+
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- FOOTER -->
+<div style="border-top:1px solid var(--border); padding:40px 0; margin-top:60px; text-align:center;">
+  <p style="color:var(--muted); font-family:'JetBrains Mono',monospace; font-size:12px;">
+    Redux + Redux Saga Interview Mastery · 28 Sections · 80+ Topics · Core → RTK → Middleware → Generators → Advanced Effects
+  </p>
+  <div class="badge-row" style="justify-content:center; margin-top:12px;">
+    <span class="badge badge-p">Redux Core ✓</span>
+    <span class="badge badge-y">RTK ✓</span>
+    <span class="badge badge-t">Saga Effects ✓</span>
+    <span class="badge badge-r">Interview Ready ✓</span>
+  </div>
+</div>
+
+</main>
+</div>
+</body>
+</html>

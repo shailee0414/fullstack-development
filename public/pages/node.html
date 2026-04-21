@@ -1,0 +1,3815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Node.js Complete Interview Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0f;
+  --surface: #111118;
+  --surface2: #1a1a24;
+  --border: #2a2a3a;
+  --accent: #f0e040;
+  --accent2: #40e0d0;
+  --accent3: #ff6b6b;
+  --accent4: #a78bfa;
+  --text: #e8e8f0;
+  --muted: #8888a8;
+  --code-bg: #0d0d14;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;line-height:1.6}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--muted)}
+
+/* HEADER */
+header{padding:60px 40px;border-bottom:1px solid var(--border);background:linear-gradient(135deg,#0a0a0f 60%,#13131f);position:relative;overflow:hidden}
+header::before{content:'';position:absolute;top:-80px;right:-80px;width:400px;height:400px;background:radial-gradient(circle,rgba(240,224,64,.07) 0%,transparent 70%);pointer-events:none}
+header::after{content:'';position:absolute;bottom:-60px;left:200px;width:250px;height:250px;background:radial-gradient(circle,rgba(64,224,208,.05) 0%,transparent 70%);pointer-events:none}
+.header-eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);letter-spacing:.15em;text-transform:uppercase;margin-bottom:14px;opacity:.8}
+header h1{font-size:clamp(32px,5vw,56px);font-weight:800;line-height:1.05;letter-spacing:-.03em}
+header h1 span{color:var(--accent)}
+.header-sub{color:var(--muted);margin-top:12px;font-size:15px}
+.badge-row{display:flex;gap:8px;margin-top:24px;flex-wrap:wrap}
+.badge{padding:5px 12px;border-radius:4px;font-size:11px;font-weight:700;letter-spacing:.05em;font-family:'JetBrains Mono',monospace}
+.badge-y{background:var(--accent);color:#000}
+.badge-t{background:var(--accent2);color:#000}
+.badge-r{background:var(--accent3);color:#fff}
+.badge-p{background:var(--accent4);color:#fff}
+
+/* PROGRESS */
+.progress-wrap{position:sticky;top:0;z-index:100;height:3px;background:var(--border)}
+.progress-bar{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0%;transition:width .2s}
+
+/* STATS BAR */
+.stats-bar{display:flex;background:var(--surface);border-bottom:1px solid var(--border);overflow-x:auto}
+.stat{padding:16px 28px;border-right:1px solid var(--border);flex-shrink:0}
+.stat-num{font-size:24px;font-weight:800;color:var(--accent);font-family:'JetBrains Mono',monospace}
+.stat-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:2px}
+
+/* SHELL */
+.shell{display:flex;min-height:calc(100vh - 220px)}
+
+/* SIDEBAR */
+nav{width:260px;background:var(--surface);border-right:1px solid var(--border);position:sticky;top:3px;height:calc(100vh - 3px);overflow-y:auto;flex-shrink:0;padding:16px 0}
+.nav-search{margin:0 12px 16px;padding:8px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:12px;width:calc(100% - 24px);font-family:'JetBrains Mono',monospace;outline:none;transition:border-color .15s}
+.nav-search:focus{border-color:var(--accent)}
+.nav-section-label{padding:10px 16px 4px;font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.12em;text-transform:uppercase}
+.nav-link{display:flex;align-items:center;gap:8px;padding:7px 16px;color:var(--muted);cursor:pointer;font-size:12.5px;border-left:2px solid transparent;transition:all .15s;text-decoration:none}
+.nav-link:hover{color:var(--text);background:var(--surface2)}
+.nav-link.active{color:var(--accent);border-left-color:var(--accent);background:rgba(240,224,64,.06)}
+.nav-dot{width:6px;height:6px;border-radius:50%;background:var(--border);flex-shrink:0;transition:background .2s}
+
+/* MAIN */
+main{flex:1;overflow-x:hidden}
+
+/* TOPIC */
+.topic{padding:40px;border-bottom:1px solid var(--border);animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.topic-eyebrow{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;margin-bottom:8px}
+.topic-header{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+.topic-title{font-size:26px;font-weight:800;letter-spacing:-.02em;flex:1;min-width:220px}
+.topic-summary{color:var(--muted);font-size:14px;margin-bottom:24px;line-height:1.7;padding-left:14px;border-left:2px solid var(--border)}
+
+/* TABS */
+.tab-bar{display:flex;border-bottom:1px solid var(--border);margin-bottom:20px;gap:0}
+.tab-btn{padding:10px 20px;background:none;border:none;color:var(--muted);cursor:pointer;font-size:13px;font-weight:700;letter-spacing:.04em;border-bottom:2px solid transparent;transition:all .15s;font-family:'Syne',sans-serif}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
+.tab-content{display:none}
+.tab-content.active{display:block}
+
+/* EXPLANATION */
+.explanation{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:24px;font-size:14px;line-height:1.9;color:var(--text)}
+.explanation h4{color:var(--accent);font-size:13px;font-weight:700;margin:20px 0 8px;text-transform:uppercase;letter-spacing:.08em}
+.explanation h4:first-child{margin-top:0}
+.explanation p{margin-bottom:12px}
+.explanation ul{padding-left:20px;margin-bottom:12px}
+.explanation li{margin-bottom:6px;color:var(--text)}
+.explanation .highlight{color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:13px;background:rgba(240,224,64,.08);padding:2px 6px;border-radius:3px}
+.explanation .highlight2{color:var(--accent2);font-family:'JetBrains Mono',monospace;font-size:13px;background:rgba(64,224,208,.08);padding:2px 6px;border-radius:3px}
+.explanation .highlight3{color:var(--accent3);font-family:'JetBrains Mono',monospace;font-size:13px;background:rgba(255,107,107,.08);padding:2px 6px;border-radius:3px}
+.explanation .note{background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.2);border-radius:6px;padding:12px 16px;margin-top:16px;font-size:13px;color:var(--accent4)}
+.explanation .warning{background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.2);border-radius:6px;padding:12px 16px;margin-top:16px;font-size:13px;color:var(--accent3)}
+.explanation .diagram{background:var(--code-bg);border:1px solid var(--border);border-radius:6px;padding:16px;margin:16px 0;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.8;color:#a0a0c0;overflow-x:auto;white-space:pre}
+
+/* CODE BLOCK */
+.code-block{background:var(--code-bg);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.code-label{padding:8px 16px;background:var(--surface2);font-size:11px;color:var(--muted);border-bottom:1px solid var(--border);font-family:'JetBrains Mono',monospace;letter-spacing:.06em;display:flex;align-items:center;justify-content:space-between}
+.copy-btn{background:none;border:1px solid var(--border);color:var(--muted);padding:3px 10px;border-radius:4px;cursor:pointer;font-size:11px;font-family:'JetBrains Mono',monospace;transition:all .15s}
+.copy-btn:hover{color:var(--accent);border-color:var(--accent)}
+.copy-btn.copied{color:var(--accent2);border-color:var(--accent2)}
+pre{padding:20px;overflow-x:auto;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.75;color:#c8c8e8}
+
+/* INTERVIEW */
+.interview-list{display:flex;flex-direction:column;gap:10px}
+.interview-item{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px 18px;font-size:14px;line-height:1.6;display:flex;align-items:flex-start;gap:12px;transition:border-color .15s}
+.interview-item:hover{border-color:var(--accent4)}
+.q-num{color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;flex-shrink:0;margin-top:1px}
+
+/* DONE BUTTON */
+.mark-btn{padding:8px 16px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;letter-spacing:.06em;font-family:'Syne',sans-serif;transition:all .2s;flex-shrink:0}
+.mark-btn.done{background:rgba(64,224,208,.12);border:1px solid var(--accent2);color:var(--accent2)}
+.mark-btn.undone{background:transparent;border:1px solid var(--border);color:var(--muted)}
+.mark-btn:hover{opacity:.8}
+
+/* EMPTY */
+.empty-state{padding:80px 40px;text-align:center;color:var(--muted)}
+.empty-icon{font-size:48px;margin-bottom:16px}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  nav{display:none}
+  .topic{padding:24px 16px}
+  header{padding:40px 20px}
+  pre{font-size:12px;padding:14px}
+}
+</style>
+</head>
+<body>
+
+<div class="progress-wrap"><div class="progress-bar" id="progress"></div></div>
+
+<header>
+  <div class="header-eyebrow">// Interview Prep — Backend Master Guide</div>
+  <h1>Node.js <span>Complete</span><br>Reference</h1>
+  <p class="header-sub">55+ topics · Event Loop · Express · Auth · Redis · System Design · Docker</p>
+  <div class="badge-row">
+    <span class="badge badge-y">Core Node.js</span>
+    <span class="badge badge-t">Architecture</span>
+    <span class="badge badge-r">Event Loop</span>
+    <span class="badge badge-p">Advanced</span>
+  </div>
+</header>
+
+<div class="stats-bar">
+  <div class="stat"><div class="stat-num" id="total-count">55</div><div class="stat-label">Topics</div></div>
+  <div class="stat"><div class="stat-num" id="done-count">0</div><div class="stat-label">Done</div></div>
+  <div class="stat"><div class="stat-num" id="remain-count">55</div><div class="stat-label">Remaining</div></div>
+  <div class="stat"><div class="stat-num" id="pct-count">0%</div><div class="stat-label">Progress</div></div>
+</div>
+
+<div class="shell">
+<nav id="sidebar">
+  <input class="nav-search" id="nav-search" placeholder="Search topics..." oninput="filterTopics(this.value)">
+
+  <div class="nav-section-label">Core Fundamentals</div>
+  <a class="nav-link" href="#what-is-nodejs"><span class="nav-dot"></span>What is Node.js</a>
+  <a class="nav-link" href="#runtime-vs-language"><span class="nav-dot"></span>Runtime vs Language</a>
+  <a class="nav-link" href="#v8-engine"><span class="nav-dot"></span>V8 Engine</a>
+  <a class="nav-link" href="#why-nodejs"><span class="nav-dot"></span>Why use Node.js</a>
+
+  <div class="nav-section-label">Architecture</div>
+  <a class="nav-link" href="#single-threaded"><span class="nav-dot"></span>Single-Threaded Model</a>
+  <a class="nav-link" href="#non-blocking-io"><span class="nav-dot"></span>Non-Blocking I/O</a>
+  <a class="nav-link" href="#event-driven"><span class="nav-dot"></span>Event-Driven Architecture</a>
+
+  <div class="nav-section-label">Event Loop 🔥🔥</div>
+  <a class="nav-link" href="#event-loop"><span class="nav-dot"></span>What is Event Loop</a>
+  <a class="nav-link" href="#call-stack"><span class="nav-dot"></span>Call Stack</a>
+  <a class="nav-link" href="#callback-queue"><span class="nav-dot"></span>Callback Queue</a>
+  <a class="nav-link" href="#microtask-queue"><span class="nav-dot"></span>Microtask Queue</a>
+  <a class="nav-link" href="#macrotask-queue"><span class="nav-dot"></span>Macrotask Queue</a>
+  <a class="nav-link" href="#event-loop-phases"><span class="nav-dot"></span>Event Loop Phases</a>
+  <a class="nav-link" href="#process-nexttick"><span class="nav-dot"></span>process.nextTick()</a>
+  <a class="nav-link" href="#settimeout-vs-setimmediate"><span class="nav-dot"></span>setTimeout vs setImmediate</a>
+
+  <div class="nav-section-label">I/O vs CPU</div>
+  <a class="nav-link" href="#io-tasks"><span class="nav-dot"></span>I/O Tasks</a>
+  <a class="nav-link" href="#cpu-tasks"><span class="nav-dot"></span>CPU-Bound Tasks</a>
+
+  <div class="nav-section-label">Module System</div>
+  <a class="nav-link" href="#commonjs"><span class="nav-dot"></span>CommonJS (require)</a>
+  <a class="nav-link" href="#esmodules"><span class="nav-dot"></span>ES Modules (import)</a>
+  <a class="nav-link" href="#module-caching"><span class="nav-dot"></span>Module Caching</a>
+
+  <div class="nav-section-label">Built-in Modules</div>
+  <a class="nav-link" href="#fs-module"><span class="nav-dot"></span>fs (File System)</a>
+  <a class="nav-link" href="#path-module"><span class="nav-dot"></span>path</a>
+  <a class="nav-link" href="#http-module"><span class="nav-dot"></span>http</a>
+  <a class="nav-link" href="#os-module"><span class="nav-dot"></span>os</a>
+  <a class="nav-link" href="#events-module"><span class="nav-dot"></span>events (EventEmitter)</a>
+
+  <div class="nav-section-label">Streams & Buffers</div>
+  <a class="nav-link" href="#streams"><span class="nav-dot"></span>Readable/Writable Streams</a>
+  <a class="nav-link" href="#pipe"><span class="nav-dot"></span>Pipe</a>
+  <a class="nav-link" href="#buffer"><span class="nav-dot"></span>Buffer</a>
+
+  <div class="nav-section-label">Error Handling</div>
+  <a class="nav-link" href="#error-handling"><span class="nav-dot"></span>Sync vs Async Errors</a>
+  <a class="nav-link" href="#global-error"><span class="nav-dot"></span>Global Error Handling</a>
+
+  <div class="nav-section-label">Express.js</div>
+  <a class="nav-link" href="#middleware"><span class="nav-dot"></span>Middleware Deep Dive</a>
+  <a class="nav-link" href="#middleware-types"><span class="nav-dot"></span>Types of Middleware</a>
+  <a class="nav-link" href="#error-middleware"><span class="nav-dot"></span>Error Middleware</a>
+  <a class="nav-link" href="#mvc"><span class="nav-dot"></span>MVC Architecture</a>
+  <a class="nav-link" href="#rest-api"><span class="nav-dot"></span>REST API Design</a>
+
+  <div class="nav-section-label">Auth & Security</div>
+  <a class="nav-link" href="#auth-vs-authz"><span class="nav-dot"></span>Auth vs Authorization</a>
+  <a class="nav-link" href="#jwt"><span class="nav-dot"></span>JWT</a>
+  <a class="nav-link" href="#session-auth"><span class="nav-dot"></span>Session-Based Auth</a>
+  <a class="nav-link" href="#oauth"><span class="nav-dot"></span>OAuth</a>
+  <a class="nav-link" href="#rbac"><span class="nav-dot"></span>RBAC</a>
+  <a class="nav-link" href="#cors"><span class="nav-dot"></span>CORS</a>
+  <a class="nav-link" href="#rate-limiting"><span class="nav-dot"></span>Rate Limiting</a>
+  <a class="nav-link" href="#helmet"><span class="nav-dot"></span>Helmet</a>
+  <a class="nav-link" href="#password-hashing"><span class="nav-dot"></span>Password Hashing</a>
+  <a class="nav-link" href="#csrf-xss"><span class="nav-dot"></span>CSRF & XSS</a>
+  <a class="nav-link" href="#injection"><span class="nav-dot"></span>SQL/NoSQL Injection</a>
+
+  <div class="nav-section-label">Database</div>
+  <a class="nav-link" href="#mongodb-indexing"><span class="nav-dot"></span>MongoDB Indexing</a>
+  <a class="nav-link" href="#aggregation"><span class="nav-dot"></span>Aggregation Pipeline</a>
+  <a class="nav-link" href="#transactions"><span class="nav-dot"></span>Transactions</a>
+  <a class="nav-link" href="#db-optimization"><span class="nav-dot"></span>DB Optimization</a>
+
+  <div class="nav-section-label">Redis</div>
+  <a class="nav-link" href="#redis"><span class="nav-dot"></span>What is Redis</a>
+  <a class="nav-link" href="#caching-strategies"><span class="nav-dot"></span>Caching Strategies</a>
+  <a class="nav-link" href="#cache-invalidation"><span class="nav-dot"></span>Cache Invalidation</a>
+  <a class="nav-link" href="#redis-rate-limiting"><span class="nav-dot"></span>Redis Rate Limiting</a>
+
+  <div class="nav-section-label">Advanced Node.js</div>
+  <a class="nav-link" href="#worker-threads"><span class="nav-dot"></span>Worker Threads</a>
+  <a class="nav-link" href="#cluster"><span class="nav-dot"></span>Cluster Module</a>
+  <a class="nav-link" href="#child-processes"><span class="nav-dot"></span>Child Processes</a>
+  <a class="nav-link" href="#performance"><span class="nav-dot"></span>Performance Optimization</a>
+  <a class="nav-link" href="#profiling"><span class="nav-dot"></span>Profiling & Monitoring</a>
+
+  <div class="nav-section-label">Real-Time</div>
+  <a class="nav-link" href="#websockets"><span class="nav-dot"></span>WebSockets</a>
+  <a class="nav-link" href="#socketio"><span class="nav-dot"></span>Socket.IO</a>
+
+  <div class="nav-section-label">System Design</div>
+  <a class="nav-link" href="#system-design"><span class="nav-dot"></span>Scalable API Design</a>
+  <a class="nav-link" href="#load-balancing"><span class="nav-dot"></span>Load Balancing</a>
+
+  <div class="nav-section-label">DevOps</div>
+  <a class="nav-link" href="#docker"><span class="nav-dot"></span>Docker</a>
+  <a class="nav-link" href="#cicd"><span class="nav-dot"></span>CI/CD</a>
+  <a class="nav-link" href="#testing"><span class="nav-dot"></span>Testing (Jest + Supertest)</a>
+</nav>
+
+<main id="main-content">
+
+<!-- ════════════════════════════════════════════════════════════
+     SECTION 1 — CORE FUNDAMENTALS
+════════════════════════════════════════════════════════════ -->
+
+<!-- What is Node.js -->
+<div class="topic" id="what-is-nodejs" data-section="Core Fundamentals">
+  <div class="topic-eyebrow">Core Fundamentals</div>
+  <div class="topic-header">
+    <span class="badge badge-y">CORE</span>
+    <h2 class="topic-title">What is Node.js?</h2>
+    <button class="mark-btn undone" onclick="toggleDone(this)">Mark Done</button>
+  </div>
+  <p class="topic-summary">Node.js is an open-source, cross-platform JavaScript runtime environment built on Chrome's V8 engine that executes JavaScript outside the browser.</p>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab(this,'explanation')">📖 Explanation</button>
+    <button class="tab-btn" onclick="switchTab(this,'code')">💻 Code</button>
+    <button class="tab-btn" onclick="switchTab(this,'interview')">🎯 Interview Qs</button>
+  </div>
+  <div class="tab-content active" data-tab="explanation">
+    <div class="explanation">
+      <h4>What Exactly is Node.js?</h4>
+      <p>Node.js is NOT a language — it's a <span class="highlight">runtime environment</span> that lets you run JavaScript on the server side. Before Node.js (2009), JavaScript could only run inside browsers.</p>
+      <p>Ryan Dahl created Node.js by embedding Google Chrome's <span class="highlight">V8 JavaScript engine</span> (which compiles JS to machine code) into a C++ program that adds capabilities like file system access, networking, and process control — things browsers don't expose.</p>
+      <h4>What Node.js Is NOT</h4>
+      <ul>
+        <li>Not a programming language — JavaScript is the language</li>
+        <li>Not a web framework — Express, Fastify are frameworks built ON Node</li>
+        <li>Not multithreaded (by default) — it runs on a single thread</li>
+      </ul>
+      <h4>Key Characteristics</h4>
+      <ul>
+        <li><span class="highlight">Non-blocking I/O</span> — doesn't wait for file/DB reads to finish</li>
+        <li><span class="highlight">Event-driven</span> — uses events and callbacks to handle async work</li>
+        <li><span class="highlight">npm ecosystem</span> — 2M+ packages available</li>
+        <li><span class="highlight">Same language everywhere</span> — JavaScript on frontend AND backend</li>
+      </ul>
+      <div class="note">💡 Node.js is perfect for I/O-intensive applications (APIs, chat apps, streaming). It struggles with CPU-intensive tasks (image processing, heavy math).</div>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="code">
+    <div class="code-block">
+      <div class="code-label"><span>hello-world.js — Your first Node.js server</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+      <pre>// Node.js gives you globals that don't exist in browser JS:
+console.log(process.version);    // Node version
+console.log(process.platform);   // 'linux', 'darwin', 'win32'
+console.log(__dirname);          // current directory path
+console.log(__filename);         // current file path
+
+// Create a basic HTTP server (no framework needed!)
+const http = require('http');  // built-in module
+
+const server = http.createServer((req, res) => {
+  // req = incoming request, res = outgoing response
+  res.writeHead(200, { 'Content-Type': 'application/json' });
+  res.end(JSON.stringify({
+    message: 'Hello from Node.js!',
+    url: req.url,
+    method: req.method,
+  }));
+});
+
+server.listen(3000, () => {
+  console.log('Server running at http://localhost:3000');
+});
+
+// Node also gives you access to:
+// - File system   (require('fs'))
+// - OS info       (require('os'))
+// - Network       (require('net'))
+// - Child process (require('child_process'))
+// None of these exist in browser JavaScript!</pre>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="interview">
+    <div class="interview-list">
+      <div class="interview-item"><span class="q-num">Q1</span>What is Node.js and what problem does it solve?</div>
+      <div class="interview-item"><span class="q-num">Q2</span>Is Node.js a language, framework, or runtime?</div>
+      <div class="interview-item"><span class="q-num">Q3</span>What is the difference between Node.js and the browser's JavaScript environment?</div>
+      <div class="interview-item"><span class="q-num">Q4</span>What types of applications is Node.js best suited for?</div>
+    </div>
+  </div>
+</div>
+
+<!-- Runtime vs Language -->
+<div class="topic" id="runtime-vs-language" data-section="Core Fundamentals">
+  <div class="topic-eyebrow">Core Fundamentals</div>
+  <div class="topic-header">
+    <span class="badge badge-y">CORE</span>
+    <h2 class="topic-title">Runtime vs Language</h2>
+    <button class="mark-btn undone" onclick="toggleDone(this)">Mark Done</button>
+  </div>
+  <p class="topic-summary">JavaScript is the language. Node.js is the runtime — it provides the environment and APIs to execute that language outside a browser.</p>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab(this,'explanation')">📖 Explanation</button>
+    <button class="tab-btn" onclick="switchTab(this,'code')">💻 Code</button>
+    <button class="tab-btn" onclick="switchTab(this,'interview')">🎯 Interview Qs</button>
+  </div>
+  <div class="tab-content active" data-tab="explanation">
+    <div class="explanation">
+      <h4>The Language vs Runtime Distinction</h4>
+      <p><span class="highlight">JavaScript</span> defines the syntax, semantics, and standard library — <code>Array</code>, <code>Object</code>, <code>Promise</code>, <code>JSON</code>. This is standardized by <strong>ECMAScript</strong>.</p>
+      <p><span class="highlight2">A Runtime</span> provides the environment to RUN JavaScript — it supplies the engine plus platform-specific APIs.</p>
+      <div class="diagram">
+┌──────────────────────────────────────────────────────┐
+│                   YOUR JAVASCRIPT CODE               │
+├──────────────────────────────────────────────────────┤
+│            ECMAScript Standard (the language)        │
+│  Arrays, Objects, Promises, Map, Set, String, Math   │
+├─────────────────────┬────────────────────────────────┤
+│   BROWSER RUNTIME   │      NODE.JS RUNTIME           │
+│  window, document   │  fs, http, os, path, process   │
+│  localStorage       │  require(), module.exports      │
+│  fetch, XMLHttp     │  Buffer, Worker Threads         │
+│  navigator, alert   │  child_process, cluster        │
+│  DOM / CSSOM        │  EventEmitter, Stream          │
+├─────────────────────┴────────────────────────────────┤
+│        V8 Engine (compiles JS → machine code)        │
+└──────────────────────────────────────────────────────┘</div>
+      <h4>What Does a Runtime Actually Do?</h4>
+      <ul>
+        <li>Provides the <span class="highlight">JS engine</span> (V8) to parse and execute code</li>
+        <li>Provides <span class="highlight">platform APIs</span> (file I/O, network, timers)</li>
+        <li>Manages <span class="highlight">memory</span> (garbage collection via V8)</li>
+        <li>Provides the <span class="highlight">event loop</span> mechanism</li>
+      </ul>
+      <div class="note">💡 This is why <code>window.localStorage</code> works in a browser but throws <code>ReferenceError</code> in Node — they share the same language but have different runtime APIs.</div>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="code">
+    <div class="code-block">
+      <div class="code-label"><span>runtime-difference.js</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+      <pre>// ✅ This is pure ECMAScript — works in BOTH browser AND Node.js
+const nums = [1, 2, 3, 4, 5];
+const doubled = nums.map(n => n * 2);
+const sum = nums.reduce((a, b) => a + b, 0);
+console.log(doubled, sum);  // [2,4,6,8,10], 15
+
+const p = new Promise((resolve) => resolve('done'));
+p.then(console.log);  // 'done'
+
+// ✅ Node.js RUNTIME APIs — NOT available in browser
+const fs = require('fs');          // file system
+const os = require('os');          // operating system info
+const path = require('path');      // path utilities
+
+console.log(os.hostname());        // your machine name
+console.log(process.env.NODE_ENV); // environment variables
+console.log(__dirname);            // /Users/shailesh/project
+
+// ❌ Browser APIs — NOT available in Node.js
+// document.getElementById('app');  // ReferenceError: document is not defined
+// localStorage.setItem('key', 'val'); // ReferenceError
+// window.alert('hi');              // ReferenceError
+
+// Modern runtimes: Deno, Bun — competitors to Node.js
+// They all use V8 but have different runtime APIs</pre>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="interview">
+    <div class="interview-list">
+      <div class="interview-item"><span class="q-num">Q1</span>What is the difference between a JavaScript runtime and the JavaScript language?</div>
+      <div class="interview-item"><span class="q-num">Q2</span>Why does <code>window</code> exist in the browser but not in Node.js?</div>
+      <div class="interview-item"><span class="q-num">Q3</span>What is ECMAScript and how does it relate to JavaScript and Node.js?</div>
+    </div>
+  </div>
+</div>
+
+<!-- V8 Engine -->
+<div class="topic" id="v8-engine" data-section="Core Fundamentals">
+  <div class="topic-eyebrow">Core Fundamentals</div>
+  <div class="topic-header">
+    <span class="badge badge-y">CORE</span>
+    <h2 class="topic-title">How Node.js Works — V8 Engine</h2>
+    <button class="mark-btn undone" onclick="toggleDone(this)">Mark Done</button>
+  </div>
+  <p class="topic-summary">V8 is Google's open-source JavaScript engine that compiles JS directly to machine code (JIT compilation) making it extremely fast.</p>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab(this,'explanation')">📖 Explanation</button>
+    <button class="tab-btn" onclick="switchTab(this,'code')">💻 Code</button>
+    <button class="tab-btn" onclick="switchTab(this,'interview')">🎯 Interview Qs</button>
+  </div>
+  <div class="tab-content active" data-tab="explanation">
+    <div class="explanation">
+      <h4>What is V8?</h4>
+      <p>V8 is a C++ program built by Google (used in Chrome). It takes your JavaScript source code and compiles it to native machine code that your CPU can execute directly — this is called <span class="highlight">JIT (Just-In-Time) compilation</span>.</p>
+      <h4>V8 Compilation Pipeline</h4>
+      <div class="diagram">
+Your JS Code
+      ↓
+  Parser → AST (Abstract Syntax Tree)
+      ↓
+  Ignition (Interpreter) → Bytecode  ← runs immediately
+      ↓ (if hot code - called repeatedly)
+  TurboFan (Optimizing Compiler) → Optimized Machine Code
+      ↓
+  CPU executes at near-native speed</div>
+      <h4>Why JIT?</h4>
+      <ul>
+        <li><span class="highlight">Interpreted</span>: Easy to start, slow to run (Python approach)</li>
+        <li><span class="highlight">Compiled</span>: Slow to start, fast to run (C++ approach)</li>
+        <li><span class="highlight">JIT</span>: Best of both — starts fast, optimizes hot paths as they run</li>
+      </ul>
+      <h4>Node.js Architecture Stack</h4>
+      <div class="diagram">
+┌─────────────────────────────────┐
+│         Your JS Code            │
+├─────────────────────────────────┤
+│    Node.js Standard Library     │  (written in JS)
+├─────────────────────────────────┤
+│     Node.js Bindings (C++)      │  bridges JS ↔ C++
+├──────────────┬──────────────────┤
+│   V8 Engine  │    libuv         │
+│   (executes  │  (event loop,    │
+│    JS code)  │   I/O, threads)  │
+├──────────────┴──────────────────┤
+│      Operating System           │
+└─────────────────────────────────┘</div>
+      <p><span class="highlight2">libuv</span> is the C library that gives Node.js its non-blocking I/O capabilities. It manages the event loop, thread pool, and async I/O operations. Without libuv, Node would be just V8 with no async superpowers.</p>
+      <div class="note">💡 libuv's thread pool (default size: 4) handles file I/O, DNS, and crypto operations that can't be done asynchronously at the OS level. This is why Node can do "non-blocking I/O" even when the OS operation is inherently synchronous.</div>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="code">
+    <div class="code-block">
+      <div class="code-label"><span>v8-internals.js</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+      <pre>// You can interact with V8 directly in Node.js
+const v8 = require('v8');
+
+// See V8 heap statistics
+const heapStats = v8.getHeapStatistics();
+console.log('Total heap size:', heapStats.total_heap_size / 1024 / 1024, 'MB');
+console.log('Used heap size:', heapStats.used_heap_size / 1024 / 1024, 'MB');
+console.log('Heap size limit:', heapStats.heap_size_limit / 1024 / 1024, 'MB');
+
+// Serialize/deserialize JS values (V8's internal format)
+const buf = v8.serialize({ name: 'Shailesh', age: 28 });
+const obj = v8.deserialize(buf);
+console.log(obj); // { name: 'Shailesh', age: 28 }
+
+// V8 flags can be set at startup:
+// node --max-old-space-size=4096 app.js  (4GB heap limit)
+// node --expose-gc app.js                (expose GC manually)
+
+// JIT optimization example:
+// V8 optimizes this because the function always receives same types
+function add(a, b) {
+  return a + b;
+}
+
+// Calling with consistent types = V8 makes an optimized version
+for (let i = 0; i < 1000000; i++) {
+  add(i, i + 1);  // always numbers → V8 creates optimized machine code
+}
+
+// ❌ Deoptimization — calling with different types breaks optimization
+add(1, 2);      // number
+add('a', 'b');  // string — V8 must de-optimize!
+
+// Check V8 version
+console.log('V8 version:', process.versions.v8);
+// '11.3.244.8' or similar</pre>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="interview">
+    <div class="interview-list">
+      <div class="interview-item"><span class="q-num">Q1</span>What is V8 and what role does it play in Node.js?</div>
+      <div class="interview-item"><span class="q-num">Q2</span>What is JIT compilation and how does it make V8 fast?</div>
+      <div class="interview-item"><span class="q-num">Q3</span>What is libuv and why is it critical to Node.js?</div>
+      <div class="interview-item"><span class="q-num">Q4</span>What is V8's thread pool and what does it do?</div>
+    </div>
+  </div>
+</div>
+
+<!-- Why Node.js -->
+<div class="topic" id="why-nodejs" data-section="Core Fundamentals">
+  <div class="topic-eyebrow">Core Fundamentals</div>
+  <div class="topic-header">
+    <span class="badge badge-y">CORE</span>
+    <h2 class="topic-title">Why Use Node.js?</h2>
+    <button class="mark-btn undone" onclick="toggleDone(this)">Mark Done</button>
+  </div>
+  <p class="topic-summary">Node.js excels at handling many concurrent I/O-bound connections with minimal overhead — making it ideal for real-time, API, and streaming applications.</p>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab(this,'explanation')">📖 Explanation</button>
+    <button class="tab-btn" onclick="switchTab(this,'code')">💻 Code</button>
+    <button class="tab-btn" onclick="switchTab(this,'interview')">🎯 Interview Qs</button>
+  </div>
+  <div class="tab-content active" data-tab="explanation">
+    <div class="explanation">
+      <h4>Where Node.js Shines ✅</h4>
+      <ul>
+        <li><span class="highlight">REST APIs & GraphQL servers</span> — high throughput with low memory</li>
+        <li><span class="highlight">Real-time apps</span> — chat, notifications, live dashboards (WebSockets)</li>
+        <li><span class="highlight">Streaming</span> — video/audio streaming, file processing pipelines</li>
+        <li><span class="highlight">Microservices</span> — lightweight, fast startup</li>
+        <li><span class="highlight">BFF (Backend for Frontend)</span> — aggregating multiple API calls</li>
+        <li><span class="highlight">CLI tools</span> — build tools (webpack, vite), package managers</li>
+      </ul>
+      <h4>Where Node.js Struggles ❌</h4>
+      <ul>
+        <li><span class="highlight3">CPU-intensive work</span> — image/video processing, ML, complex calculations</li>
+        <li><span class="highlight3">Heavy computation per request</span> — blocks the single thread</li>
+        <li><span class="highlight3">Multi-threaded requirements</span> — better handled by Go, Java, Rust</li>
+      </ul>
+      <h4>Node vs Traditional Thread-Per-Request Model</h4>
+      <div class="diagram">
+APACHE/JAVA (Thread-per-request):
+Request 1 → Thread 1 (waiting for DB...) — BLOCKED
+Request 2 → Thread 2 (waiting for DB...) — BLOCKED
+Request 3 → Thread 3 (waiting for DB...) — BLOCKED
+→ 1000 requests = 1000 threads = high memory!
+
+NODE.JS (Event loop):
+Request 1 → sends DB query → returns to event loop (not blocked!)
+Request 2 → sends DB query → returns to event loop
+Request 3 → sends DB query → returns to event loop
+DB responds → event loop picks up, sends response
+→ 1000 requests = 1 thread = low memory!</div>
+      <div class="note">💡 LinkedIn reduced servers by 10x after switching to Node.js. Netflix reduced startup time by 70%. PayPal doubled requests per second while halving response time.</div>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="code">
+    <div class="code-block">
+      <div class="code-label"><span>why-nodejs-benchmark.js</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+      <pre>// Demonstrating Node's efficiency with concurrent I/O
+
+// Traditional SYNCHRONOUS approach (blocks thread)
+const fs = require('fs');
+console.time('sync');
+const file1 = fs.readFileSync('file1.txt');  // waits...
+const file2 = fs.readFileSync('file2.txt');  // waits...
+const file3 = fs.readFileSync('file3.txt');  // waits...
+console.timeEnd('sync');  // ~300ms (sequential)
+
+// Node.js ASYNC approach (concurrent I/O!)
+console.time('async');
+Promise.all([
+  fs.promises.readFile('file1.txt'),  // starts reading
+  fs.promises.readFile('file2.txt'),  // starts reading (doesn't wait!)
+  fs.promises.readFile('file3.txt'),  // starts reading (doesn't wait!)
+]).then(([f1, f2, f3]) => {
+  console.timeEnd('async');  // ~100ms (all read concurrently!)
+});
+
+// Express server handling concurrent requests efficiently
+const express = require('express');
+const app = express();
+
+// This route can handle 10,000+ concurrent connections
+// because each request doesn't block the thread
+app.get('/users/:id', async (req, res) => {
+  // While this awaits the DB, other requests are being handled!
+  const user = await db.findUser(req.params.id);
+  res.json(user);
+});
+
+// Best use case — API gateway aggregating multiple services
+app.get('/dashboard', async (req, res) => {
+  // All 3 API calls happen CONCURRENTLY (not sequentially!)
+  const [user, posts, notifications] = await Promise.all([
+    userService.getUser(req.userId),
+    postService.getUserPosts(req.userId),
+    notifService.getUnread(req.userId),
+  ]);
+  res.json({ user, posts, notifications });
+});</pre>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="interview">
+    <div class="interview-list">
+      <div class="interview-item"><span class="q-num">Q1</span>What types of applications is Node.js best suited for and why?</div>
+      <div class="interview-item"><span class="q-num">Q2</span>Why is Node.js NOT good for CPU-intensive tasks?</div>
+      <div class="interview-item"><span class="q-num">Q3</span>Compare Node.js's concurrency model to traditional thread-per-request servers.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ ARCHITECTURE ════════════ -->
+
+<div class="topic" id="single-threaded" data-section="Architecture">
+  <div class="topic-eyebrow">Architecture 🔥</div>
+  <div class="topic-header">
+    <span class="badge badge-t">ARCH</span>
+    <h2 class="topic-title">Single-Threaded Model</h2>
+    <button class="mark-btn undone" onclick="toggleDone(this)">Mark Done</button>
+  </div>
+  <p class="topic-summary">Node.js runs your JavaScript on a single main thread. "Single-threaded" means one piece of JS runs at a time — but I/O is delegated to OS/libuv threads behind the scenes.</p>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab(this,'explanation')">📖 Explanation</button>
+    <button class="tab-btn" onclick="switchTab(this,'code')">💻 Code</button>
+    <button class="tab-btn" onclick="switchTab(this,'interview')">🎯 Interview Qs</button>
+  </div>
+  <div class="tab-content active" data-tab="explanation">
+    <div class="explanation">
+      <h4>What "Single-Threaded" Actually Means</h4>
+      <p>Your JavaScript always runs on ONE thread — the <span class="highlight">main thread</span>. Only one piece of JS code executes at any given moment. There is no parallel JS execution (unless you use Worker Threads).</p>
+      <p>BUT — the magic is that while JS code is "at rest" (waiting for I/O), the event loop can process OTHER callbacks. This is how Node achieves concurrency without multiple threads.</p>
+      <h4>The Full Picture</h4>
+      <div class="diagram">
+  Main Thread (your JS runs here):
+  ┌──────────────────────────────────────────┐
+  │  JavaScript → Event Loop → Callbacks     │
+  └──────────────────────────────────────────┘
+              ↓ delegates I/O to ↓
+  libuv Thread Pool (C++ threads, size 4):
+  ┌──────────────────────────────────────────┐
+  │  Thread 1: reading file.txt              │
+  │  Thread 2: DNS lookup                    │
+  │  Thread 3: crypto.pbkdf2()               │
+  │  Thread 4: available                     │
+  └──────────────────────────────────────────┘
+              ↓ results posted back to ↓
+  Event Loop Queue → JS callback runs on main thread</div>
+      <h4>Key Insight</h4>
+      <p>When you call <span class="highlight">fs.readFile()</span>, Node doesn't sit and wait. It hands the work to libuv, which uses OS-level APIs or its own thread pool. When the work is done, it posts the callback to the event loop queue, which runs it on the main JS thread.</p>
+      <div class="warning">⚠️ If you run a long synchronous operation (like a loop with 1 billion iterations), you WILL block the entire server — no other requests can be handled during that time.</div>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="code">
+    <div class="code-block">
+      <div class="code-label"><span>single-threaded-demo.js</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+      <pre>// Demonstrating single-threaded behavior
+
+// ❌ THIS BLOCKS THE ENTIRE SERVER
+app.get('/bad', (req, res) => {
+  // This loop blocks the main thread for ~2 seconds
+  // During this time, ALL other requests are frozen!
+  let sum = 0;
+  for (let i = 0; i < 5_000_000_000; i++) {
+    sum += i;
+  }
+  res.json({ sum });
+});
+
+// ✅ Non-blocking — hands work off to background
+app.get('/good', async (req, res) => {
+  // This does NOT block — Node delegates to libuv thread pool
+  const data = await fs.promises.readFile('bigfile.txt');
+  // Other requests can be served while this is happening!
+  res.json({ size: data.length });
+});
+
+// Proof of single thread — setInterval vs heavy sync work
+setInterval(() => {
+  console.log('tick');  // should print every 1 second
+}, 1000);
+
+// ❌ This blocks the interval above from firing
+setTimeout(() => {
+  const start = Date.now();
+  while (Date.now() - start < 5000) {}  // blocks for 5 seconds!
+  // 'tick' won't fire during these 5 seconds
+}, 2000);
+
+// ✅ libuv thread pool size — can be increased
+process.env.UV_THREADPOOL_SIZE = '8';  // default is 4, max is 1024
+// Useful if you're doing lots of file I/O or crypto operations simultaneously
+
+// Check thread pool usage
+const crypto = require('crypto');
+console.time('4-pbkdf2');
+// These 4 run in parallel (one per thread pool thread)
+for (let i = 0; i < 4; i++) {
+  crypto.pbkdf2('password', 'salt', 100000, 64, 'sha512', () => {});
+}
+// The 5th must wait for a thread to free up
+crypto.pbkdf2('password', 'salt', 100000, 64, 'sha512', () => {
+  console.timeEnd('4-pbkdf2');  // noticeably slower!
+});</pre>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="interview">
+    <div class="interview-list">
+      <div class="interview-item"><span class="q-num">Q1</span>Node.js is single-threaded — so how does it handle multiple concurrent requests?</div>
+      <div class="interview-item"><span class="q-num">Q2</span>What is libuv's thread pool and when is it used?</div>
+      <div class="interview-item"><span class="q-num">Q3</span>What happens when you run a blocking operation in Node.js?</div>
+      <div class="interview-item"><span class="q-num">Q4</span>How would you increase Node's thread pool size and why would you?</div>
+    </div>
+  </div>
+</div>
+
+<div class="topic" id="non-blocking-io" data-section="Architecture">
+  <div class="topic-eyebrow">Architecture 🔥</div>
+  <div class="topic-header">
+    <span class="badge badge-t">ARCH</span>
+    <h2 class="topic-title">Non-Blocking I/O</h2>
+    <button class="mark-btn undone" onclick="toggleDone(this)">Mark Done</button>
+  </div>
+  <p class="topic-summary">Non-blocking I/O means Node initiates an I/O operation and immediately returns control — it doesn't sit and wait. The callback is invoked when the operation completes.</p>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab(this,'explanation')">📖 Explanation</button>
+    <button class="tab-btn" onclick="switchTab(this,'code')">💻 Code</button>
+    <button class="tab-btn" onclick="switchTab(this,'interview')">🎯 Interview Qs</button>
+  </div>
+  <div class="tab-content active" data-tab="explanation">
+    <div class="explanation">
+      <h4>Blocking vs Non-Blocking</h4>
+      <div class="diagram">
+BLOCKING (synchronous):
+Time → [read file... waiting... waiting...] [process] [read next file... waiting...] [process]
+Thread: OCCUPIED ─────────────────────────────────────────────────────────────────────────
+
+NON-BLOCKING (asynchronous):
+Time → [start read] [start read] [start read] [process 1] [process 2] [process 3]
+Thread: FREE ──────────────────── FREE ──── processes callbacks as they arrive</div>
+      <h4>How Node Achieves Non-Blocking I/O</h4>
+      <ul>
+        <li><span class="highlight">Network I/O</span>: Uses OS-level async mechanisms (epoll on Linux, kqueue on macOS, IOCP on Windows)</li>
+        <li><span class="highlight">File I/O</span>: libuv's thread pool does the work, posts result to event loop</li>
+        <li><span class="highlight">DNS</span>: libuv thread pool (getaddrinfo is blocking at OS level)</li>
+        <li><span class="highlight">Crypto (pbkdf2, scrypt)</span>: libuv thread pool</li>
+        <li><span class="highlight">Timers (setTimeout)</span>: libuv timer mechanism</li>
+      </ul>
+      <h4>The Callback Pattern</h4>
+      <p>Node's original I/O API uses the <span class="highlight">error-first callback</span> pattern: <code>callback(err, result)</code>. First argument is always the error (or null), second is the result.</p>
+      <div class="note">💡 The evolution: Callbacks → Promises → async/await. All three work in Node. Modern code uses async/await but you must understand callbacks for legacy codebases and deep internals.</div>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="code">
+    <div class="code-block">
+      <div class="code-label"><span>non-blocking-io.js</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+      <pre>const fs = require('fs');
+
+// ❌ BLOCKING — synchronous (avoid in servers!)
+try {
+  const data = fs.readFileSync('./config.json');  // thread blocked here!
+  const config = JSON.parse(data);
+  console.log(config);
+} catch (err) {
+  console.error('Error:', err.message);
+}
+
+// ✅ NON-BLOCKING — callback style (original Node style)
+fs.readFile('./config.json', 'utf8', (err, data) => {
+  if (err) {
+    console.error('Error:', err.message);
+    return;
+  }
+  const config = JSON.parse(data);
+  console.log(config);
+});
+console.log('This runs BEFORE the file is read!'); // prints first!
+
+// ✅ NON-BLOCKING — Promise style
+fs.promises.readFile('./config.json', 'utf8')
+  .then(data => JSON.parse(data))
+  .then(config => console.log(config))
+  .catch(err => console.error(err));
+
+// ✅ NON-BLOCKING — async/await (modern, cleanest)
+async function loadConfig() {
+  try {
+    const data = await fs.promises.readFile('./config.json', 'utf8');
+    return JSON.parse(data);
+  } catch (err) {
+    console.error('Failed to load config:', err.message);
+    throw err;
+  }
+}
+
+// Concurrent non-blocking I/O — this is where Node SHINES
+async function processMultipleFiles() {
+  console.time('total');
+  
+  // All 3 files read concurrently — NOT sequentially!
+  const [config, users, products] = await Promise.all([
+    fs.promises.readFile('./config.json', 'utf8'),
+    fs.promises.readFile('./users.json', 'utf8'),
+    fs.promises.readFile('./products.json', 'utf8'),
+  ]);
+  
+  console.timeEnd('total'); // Takes time of slowest, not sum of all!
+  return { config, users, products };
+}
+
+// Error-first callback pattern (convention)
+function readUserFile(userId, callback) {
+  fs.readFile(\`./users/\${userId}.json\`, 'utf8', (err, data) => {
+    if (err) return callback(err);          // error first!
+    callback(null, JSON.parse(data));       // null error, then data
+  });
+}
+
+// Usage:
+readUserFile('123', (err, user) => {
+  if (err) { /* handle */ return; }
+  console.log(user);
+});</pre>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="interview">
+    <div class="interview-list">
+      <div class="interview-item"><span class="q-num">Q1</span>What is non-blocking I/O? How does Node.js implement it?</div>
+      <div class="interview-item"><span class="q-num">Q2</span>What is the error-first callback pattern and why does Node use it?</div>
+      <div class="interview-item"><span class="q-num">Q3</span>What is the difference between readFile and readFileSync? When would you use each?</div>
+      <div class="interview-item"><span class="q-num">Q4</span>How does Promise.all() enable concurrent I/O in Node.js?</div>
+    </div>
+  </div>
+</div>
+
+<div class="topic" id="event-driven" data-section="Architecture">
+  <div class="topic-eyebrow">Architecture 🔥</div>
+  <div class="topic-header">
+    <span class="badge badge-t">ARCH</span>
+    <h2 class="topic-title">Event-Driven Architecture</h2>
+    <button class="mark-btn undone" onclick="toggleDone(this)">Mark Done</button>
+  </div>
+  <p class="topic-summary">Node.js is event-driven — instead of polling for I/O completion, it registers listeners and reacts when events fire. Everything in Node inherits from EventEmitter.</p>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab(this,'explanation')">📖 Explanation</button>
+    <button class="tab-btn" onclick="switchTab(this,'code')">💻 Code</button>
+    <button class="tab-btn" onclick="switchTab(this,'interview')">🎯 Interview Qs</button>
+  </div>
+  <div class="tab-content active" data-tab="explanation">
+    <div class="explanation">
+      <h4>Observer Pattern at Scale</h4>
+      <p>Event-driven programming is based on the <span class="highlight">Observer Pattern</span>: you register interest in an event (<code>.on('event', handler)</code>), and when the event fires, all registered handlers are called.</p>
+      <p>Node's entire I/O model is built on this — the HTTP server "fires" an event when a new request arrives. Streams fire <code>'data'</code> when chunks arrive. Processes fire <code>'exit'</code> when terminating.</p>
+      <h4>EventEmitter</h4>
+      <p>The <span class="highlight2">EventEmitter</span> class is the backbone of Node's event system. Almost every Node.js core module (http, fs streams, net, child_process) extends EventEmitter.</p>
+      <div class="diagram">
+EventEmitter instance:
+  eventListeners = {
+    'data':  [handler1, handler2],
+    'error': [handler3],
+    'end':   [handler4],
+  }
+
+.emit('data', chunk)
+  → calls handler1(chunk)
+  → calls handler2(chunk)   (synchronously, in order)</div>
+      <div class="note">💡 <code>emit()</code> is SYNCHRONOUS — all listeners run synchronously before emit() returns. This is important to understand for the event loop discussion.</div>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="code">
+    <div class="code-block">
+      <div class="code-label"><span>event-driven.js</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+      <pre>const { EventEmitter } = require('events');
+
+// ─── Custom EventEmitter ───────────────────────────────────────
+class PaymentService extends EventEmitter {
+  async processPayment(amount, userId) {
+    try {
+      const result = await chargeCard(amount, userId);
+      this.emit('payment:success', { amount, userId, txnId: result.id });
+    } catch (err) {
+      this.emit('payment:failed', { amount, userId, error: err.message });
+    }
+  }
+}
+
+const payments = new PaymentService();
+
+// Register multiple listeners for same event
+payments.on('payment:success', ({ amount, userId, txnId }) => {
+  console.log(\`Payment of ₹\${amount} successful for user \${userId}\`);
+});
+
+payments.on('payment:success', ({ amount, userId }) => {
+  emailService.sendReceipt(userId, amount);  // send receipt
+});
+
+payments.on('payment:success', ({ txnId }) => {
+  analyticsService.trackRevenue(txnId);      // track analytics
+});
+
+payments.on('payment:failed', ({ userId, error }) => {
+  notifyUser(userId, 'Payment failed: ' + error);
+});
+
+// .once() — fires only the first time
+payments.once('payment:success', () => {
+  console.log('First payment ever processed!');
+});
+
+// ─── Node HTTP server is EventEmitter ───────────────────────────
+const http = require('http');
+const server = http.createServer();
+
+// 'request' event fires for EVERY incoming HTTP request
+server.on('request', (req, res) => {
+  res.end('Hello!');
+});
+
+server.on('error', (err) => {
+  console.error('Server error:', err);
+});
+
+server.on('close', () => {
+  console.log('Server shutting down');
+});
+
+server.listen(3000);
+
+// ─── Memory leak prevention ──────────────────────────────────────
+// Default max listeners is 10 — warn if exceeded
+const emitter = new EventEmitter();
+emitter.setMaxListeners(20);  // increase if legitimately needed
+
+// Always remove listeners when done (especially in loops)
+const handler = (data) => processData(data);
+emitter.on('data', handler);
+// Later...
+emitter.off('data', handler);  // or emitter.removeListener('data', handler)</pre>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="interview">
+    <div class="interview-list">
+      <div class="interview-item"><span class="q-num">Q1</span>What is event-driven architecture and how does Node.js implement it?</div>
+      <div class="interview-item"><span class="q-num">Q2</span>What is EventEmitter and which Node modules use it?</div>
+      <div class="interview-item"><span class="q-num">Q3</span>Is EventEmitter.emit() synchronous or asynchronous?</div>
+      <div class="interview-item"><span class="q-num">Q4</span>What is a memory leak in EventEmitter and how do you prevent it?</div>
+      <div class="interview-item"><span class="q-num">Q5</span>What is the difference between .on() and .once()?</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════ EVENT LOOP ════════════════════ -->
+
+<div class="topic" id="event-loop" data-section="Event Loop">
+  <div class="topic-eyebrow">Event Loop 🔥🔥 MOST IMPORTANT</div>
+  <div class="topic-header">
+    <span class="badge badge-r">🔥 CRITICAL</span>
+    <h2 class="topic-title">What is the Event Loop?</h2>
+    <button class="mark-btn undone" onclick="toggleDone(this)">Mark Done</button>
+  </div>
+  <p class="topic-summary">The Event Loop is the mechanism that allows Node.js to perform non-blocking I/O despite being single-threaded — by offloading operations and processing their callbacks when complete.</p>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab(this,'explanation')">📖 Explanation</button>
+    <button class="tab-btn" onclick="switchTab(this,'code')">💻 Code</button>
+    <button class="tab-btn" onclick="switchTab(this,'interview')">🎯 Interview Qs</button>
+  </div>
+  <div class="tab-content active" data-tab="explanation">
+    <div class="explanation">
+      <h4>The Big Picture</h4>
+      <p>The Event Loop is a C program (inside libuv) that continuously checks: "Is there any pending work? Are any callbacks ready to run?" It loops forever until there's nothing left to do.</p>
+      <div class="diagram">
+┌─────────────────────────────────────────────────────────────┐
+│                    EVENT LOOP (libuv)                       │
+│                                                             │
+│  ┌──────────┐   ┌──────────┐   ┌──────────┐   ┌────────┐  │
+│  │  timers  │→  │ pending  │→  │   poll   │→  │ check  │  │
+│  │setTimeout│   │ callbacks│   │  (I/O)   │   │setImm- │  │
+│  │setInterval│  │          │   │          │   │ediate  │  │
+│  └──────────┘   └──────────┘   └──────────┘   └────────┘  │
+│                                                             │
+│  Between EACH phase:                                        │
+│  → process.nextTick() queue (all of them)                   │
+│  → Promise microtask queue (all of them)                    │
+└─────────────────────────────────────────────────────────────┘</div>
+      <h4>How It Works Step by Step</h4>
+      <ul>
+        <li><span class="highlight">1. Your script runs</span>: synchronous code executes on the call stack</li>
+        <li><span class="highlight">2. Async operations initiated</span>: fs.readFile, setTimeout, etc. are registered with libuv</li>
+        <li><span class="highlight">3. Call stack empties</span>: event loop takes over</li>
+        <li><span class="highlight">4. Event loop iterates</span>: checks each phase for ready callbacks</li>
+        <li><span class="highlight">5. Callbacks execute</span>: one at a time on the main thread</li>
+        <li><span class="highlight">6. Repeat</span>: until no more callbacks pending</li>
+      </ul>
+      <h4>Priority Order</h4>
+      <div class="diagram">
+HIGHEST PRIORITY (runs between every event loop phase):
+  1. process.nextTick() callbacks
+  2. Promise .then() / .catch() (microtasks)
+
+THEN (event loop phases in order):
+  3. timers phase: setTimeout / setInterval (expired timers)
+  4. pending callbacks: I/O errors from previous iteration
+  5. idle, prepare: internal use
+  6. poll: I/O callbacks (fs, network)
+  7. check: setImmediate() callbacks
+  8. close callbacks: socket.on('close', ...)
+
+LOWEST PRIORITY</div>
+      <div class="warning">⚠️ This is THE #1 most asked Node.js interview question. Understand the priority queue order cold — nextTick > Promises > setTimeout > setImmediate.</div>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="code">
+    <div class="code-block">
+      <div class="code-label"><span>event-loop-order.js — Predict the output!</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+      <pre>// CHALLENGE: What is the output order?
+
+console.log('1: Script start');
+
+setTimeout(() => console.log('2: setTimeout'), 0);
+
+Promise.resolve()
+  .then(() => console.log('3: Promise 1'))
+  .then(() => console.log('4: Promise 2'));
+
+process.nextTick(() => console.log('5: nextTick'));
+
+console.log('6: Script end');
+
+// OUTPUT:
+// 1: Script start        ← sync
+// 6: Script end          ← sync
+// 5: nextTick            ← nextTick queue (before Promise!)
+// 3: Promise 1           ← microtask queue
+// 4: Promise 2           ← microtask queue (chained)
+// 2: setTimeout          ← timers phase (after all microtasks!)
+
+// ─────────────────────────────────────────────────────────────
+// More complex example:
+setTimeout(() => {
+  console.log('A: setTimeout 1');
+  process.nextTick(() => console.log('B: nextTick inside setTimeout'));
+  Promise.resolve().then(() => console.log('C: Promise inside setTimeout'));
+}, 0);
+
+setTimeout(() => console.log('D: setTimeout 2'), 0);
+
+// OUTPUT:
+// A: setTimeout 1
+// B: nextTick inside setTimeout   ← nextTick drains between phases!
+// C: Promise inside setTimeout    ← then microtasks
+// D: setTimeout 2                 ← next timer
+
+// KEY INSIGHT: After EVERY callback (not just end of loop!),
+// the nextTick queue and Promise queue are drained completely
+// before continuing to the next callback or phase.</pre>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="interview">
+    <div class="interview-list">
+      <div class="interview-item"><span class="q-num">Q1</span>Explain the Node.js Event Loop in detail.</div>
+      <div class="interview-item"><span class="q-num">Q2</span>What is the output order of: console.log, setTimeout(0), Promise.resolve().then(), process.nextTick()?</div>
+      <div class="interview-item"><span class="q-num">Q3</span>What happens when you call process.nextTick() recursively?</div>
+      <div class="interview-item"><span class="q-num">Q4</span>When does the event loop exit?</div>
+    </div>
+  </div>
+</div>
+
+<div class="topic" id="call-stack" data-section="Event Loop">
+  <div class="topic-eyebrow">Event Loop 🔥🔥</div>
+  <div class="topic-header">
+    <span class="badge badge-r">🔥 CRITICAL</span>
+    <h2 class="topic-title">Call Stack</h2>
+    <button class="mark-btn undone" onclick="toggleDone(this)">Mark Done</button>
+  </div>
+  <p class="topic-summary">The call stack is a LIFO (Last In, First Out) data structure that tracks which function is currently executing and where to return when it finishes.</p>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab(this,'explanation')">📖 Explanation</button>
+    <button class="tab-btn" onclick="switchTab(this,'code')">💻 Code</button>
+    <button class="tab-btn" onclick="switchTab(this,'interview')">🎯 Interview Qs</button>
+  </div>
+  <div class="tab-content active" data-tab="explanation">
+    <div class="explanation">
+      <h4>How the Call Stack Works</h4>
+      <p>When you call a function, a <span class="highlight">stack frame</span> is pushed onto the stack containing the function's local variables and the return address. When the function returns, its frame is popped.</p>
+      <div class="diagram">
+function main() {          // 1. main() pushed to stack
+  console.log('start');    //    Stack: [main]
+  greet('Shailesh');       // 2. greet() pushed
+  console.log('end');      //    Stack: [main, greet]
+}                          // 3. greet() returns, popped
+                           //    Stack: [main]
+function greet(name) {     // 4. main() returns, popped
+  sayHello(name);          //    Stack: []
+}
+
+function sayHello(name) {
+  console.log('Hello', name);
+}
+
+// Call stack at deepest point:
+// [main → greet → sayHello]</div>
+      <h4>Stack Overflow</h4>
+      <p>If functions call each other recursively without a base case, the stack grows until it exceeds V8's limit (about 10,000-15,000 frames) → <span class="highlight3">RangeError: Maximum call stack size exceeded</span></p>
+      <h4>The Stack and Event Loop Relationship</h4>
+      <p>The event loop only picks up callbacks from its queues when the <span class="highlight">call stack is empty</span>. This is crucial — even if a setTimeout expires, its callback won't run until all synchronous code finishes and the stack empties.</p>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="code">
+    <div class="code-block">
+      <div class="code-label"><span>call-stack.js</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+      <pre>// Call stack visualization
+function a() {
+  console.log('a start');
+  b();
+  console.log('a end');
+}
+
+function b() {
+  console.log('b start');
+  c();
+  console.log('b end');
+}
+
+function c() {
+  console.log('c');
+  // At this point, call stack is: [anonymous, a, b, c]
+  console.trace(); // prints the current stack trace!
+}
+
+a();
+// Output:
+// a start
+// b start
+// c
+// Trace: c, b, a, anonymous
+// b end
+// a end
+
+// ─── Stack overflow example ───────────────────────────────────
+function infiniteRecursion() {
+  return infiniteRecursion(); // no base case!
+}
+// infiniteRecursion(); // RangeError: Maximum call stack size exceeded
+
+// ✅ Fix: Use iteration instead
+function factorial(n) {
+  let result = 1;
+  for (let i = 2; i <= n; i++) result *= i;
+  return result;
+}
+
+// ✅ Or: Use tail recursion / trampolining for large recursion
+function factTail(n, acc = 1) {
+  if (n <= 1) return acc;
+  return factTail(n - 1, n * acc);
+}
+
+// ─── The "event loop waits for stack to empty" rule ───────────
+setTimeout(() => {
+  console.log('setTimeout fires');
+}, 0); // 0ms delay!
+
+// This loop takes ~3 seconds — setTimeout won't fire until this ends!
+const start = Date.now();
+while (Date.now() - start < 3000) {}  // blocking!
+
+console.log('sync done');
+// Output: 'sync done' THEN 'setTimeout fires'
+// setTimeout "0ms" actually ran after 3 seconds!</pre>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="interview">
+    <div class="interview-list">
+      <div class="interview-item"><span class="q-num">Q1</span>What is the call stack and how does it work?</div>
+      <div class="interview-item"><span class="q-num">Q2</span>What causes a "Maximum call stack size exceeded" error?</div>
+      <div class="interview-item"><span class="q-num">Q3</span>Why does the event loop wait for the call stack to be empty?</div>
+    </div>
+  </div>
+</div>
+
+<div class="topic" id="microtask-queue" data-section="Event Loop">
+  <div class="topic-eyebrow">Event Loop 🔥🔥</div>
+  <div class="topic-header">
+    <span class="badge badge-r">🔥 CRITICAL</span>
+    <h2 class="topic-title">Microtask Queue</h2>
+    <button class="mark-btn undone" onclick="toggleDone(this)">Mark Done</button>
+  </div>
+  <p class="topic-summary">The microtask queue holds Promise callbacks and queueMicrotask(). It is processed completely after each task, before the next macrotask runs.</p>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab(this,'explanation')">📖 Explanation</button>
+    <button class="tab-btn" onclick="switchTab(this,'code')">💻 Code</button>
+    <button class="tab-btn" onclick="switchTab(this,'interview')">🎯 Interview Qs</button>
+  </div>
+  <div class="tab-content active" data-tab="explanation">
+    <div class="explanation">
+      <h4>What Goes in the Microtask Queue?</h4>
+      <ul>
+        <li><span class="highlight">Promise .then() / .catch() / .finally()</span> callbacks</li>
+        <li><span class="highlight">queueMicrotask()</span></li>
+        <li><span class="highlight">MutationObserver</span> (browser)</li>
+        <li>Note: <span class="highlight3">process.nextTick()</span> is NOT technically a microtask but runs BEFORE the Promise microtask queue</li>
+      </ul>
+      <h4>Microtask Queue Rules</h4>
+      <ul>
+        <li>Processed <span class="highlight">completely</span> between event loop phases</li>
+        <li>If a microtask adds another microtask → it also runs in current batch</li>
+        <li>This means infinite Promise chains = <span class="highlight3">starvation</span> of macrotasks (setTimeout, etc.)</li>
+      </ul>
+      <div class="diagram">
+Execution order in one "tick":
+1. Run current synchronous task
+2. Drain nextTick queue (ALL of them, including newly added ones)
+3. Drain Promise microtask queue (ALL of them)
+4. Move to next event loop phase / pick next macrotask
+5. Repeat from step 2</div>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="code">
+    <div class="code-block">
+      <div class="code-label"><span>microtask-queue.js</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+      <pre>// nextTick runs BEFORE Promise microtasks
+process.nextTick(() => console.log('1: nextTick 1'));
+Promise.resolve().then(() => console.log('2: Promise 1'));
+process.nextTick(() => console.log('3: nextTick 2'));
+Promise.resolve().then(() => console.log('4: Promise 2'));
+
+// Output:
+// 1: nextTick 1
+// 3: nextTick 2
+// 2: Promise 1
+// 4: Promise 2
+
+// ─── Microtasks drain completely before macrotasks ───────────
+setTimeout(() => console.log('A: setTimeout'), 0);
+
+Promise.resolve()
+  .then(() => {
+    console.log('B: Promise 1');
+    // Adding another microtask — it still runs before setTimeout!
+    return Promise.resolve();
+  })
+  .then(() => console.log('C: Promise 2'))
+  .then(() => console.log('D: Promise 3'));
+
+// Output: B → C → D → A
+// setTimeout only runs AFTER ALL promise chains complete
+
+// ─── Potential starvation (dangerous!) ───────────────────────
+function recursivePromise() {
+  Promise.resolve().then(recursivePromise); // INFINITE MICROTASKS!
+  // setTimeout(0) and setInterval will NEVER fire!
+  // This is the Promise equivalent of a synchronous infinite loop
+}
+// Don't do this ↑
+
+// ─── queueMicrotask ──────────────────────────────────────────
+queueMicrotask(() => {
+  console.log('runs like a Promise microtask');
+});
+
+// Useful when you want something to run "after current code
+// but before I/O callbacks", without creating a Promise:
+function scheduleWork(fn) {
+  queueMicrotask(fn);  // cheaper than Promise.resolve().then(fn)
+}
+
+// ─── async/await and microtasks ──────────────────────────────
+async function demo() {
+  console.log('async start');    // synchronous
+  await Promise.resolve();       // schedules .then() as microtask
+  console.log('after await');    // runs as microtask callback
+  // Everything AFTER await runs as microtask!
+}
+
+demo();
+console.log('after demo()');
+
+// Output:
+// async start
+// after demo()    ← sync code runs first
+// after await     ← microtask (after stack empties)</pre>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="interview">
+    <div class="interview-list">
+      <div class="interview-item"><span class="q-num">Q1</span>What goes into the microtask queue?</div>
+      <div class="interview-item"><span class="q-num">Q2</span>What is the difference between process.nextTick and Promise microtasks?</div>
+      <div class="interview-item"><span class="q-num">Q3</span>Can infinite Promise chains starve setTimeout callbacks? Explain why.</div>
+      <div class="interview-item"><span class="q-num">Q4</span>What does "draining" the microtask queue mean?</div>
+    </div>
+  </div>
+</div>
+
+<div class="topic" id="event-loop-phases" data-section="Event Loop">
+  <div class="topic-eyebrow">Event Loop 🔥🔥</div>
+  <div class="topic-header">
+    <span class="badge badge-r">🔥 CRITICAL</span>
+    <h2 class="topic-title">Event Loop Phases</h2>
+    <button class="mark-btn undone" onclick="toggleDone(this)">Mark Done</button>
+  </div>
+  <p class="topic-summary">The event loop has 6 phases. Each phase has a FIFO queue of callbacks to execute. The loop iterates through these phases continuously.</p>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab(this,'explanation')">📖 Explanation</button>
+    <button class="tab-btn" onclick="switchTab(this,'code')">💻 Code</button>
+    <button class="tab-btn" onclick="switchTab(this,'interview')">🎯 Interview Qs</button>
+  </div>
+  <div class="tab-content active" data-tab="explanation">
+    <div class="explanation">
+      <h4>The 6 Phases in Detail</h4>
+      <div class="diagram">
+┌───────────────────────────────────────────────────────────┐
+│  PHASE 1: timers                                          │
+│  Runs setTimeout() and setInterval() callbacks whose      │
+│  delay has expired. Note: minimum delay, not exact!       │
+├───────────────────────────────────────────────────────────┤
+│  PHASE 2: pending callbacks                               │
+│  TCP errors, deferred I/O callbacks from previous loop    │
+├───────────────────────────────────────────────────────────┤
+│  PHASE 3: idle, prepare                                   │
+│  Internal use only (you can ignore this)                  │
+├───────────────────────────────────────────────────────────┤
+│  PHASE 4: poll  ← WHERE NODE SPENDS MOST TIME           │
+│  Retrieves new I/O events. Executes I/O callbacks.        │
+│  If timers are ready → move to phase 1                   │
+│  If no I/O → waits here (blocking!) for new I/O events   │
+├───────────────────────────────────────────────────────────┤
+│  PHASE 5: check                                           │
+│  setImmediate() callbacks run here                        │
+├───────────────────────────────────────────────────────────┤
+│  PHASE 6: close callbacks                                 │
+│  socket.on('close'), http.on('close'), etc.              │
+└───────────────────────────────────────────────────────────┘
+Between EVERY phase transition:
+→ Drain nextTick queue → Drain Promise microtask queue</div>
+      <h4>The Poll Phase (Most Important)</h4>
+      <p>The poll phase is where Node spends most of its time. It does two things:</p>
+      <ul>
+        <li>Executes I/O event callbacks (file reads, network responses)</li>
+        <li>If nothing to do: blocks and waits for new I/O (prevents CPU spinning)</li>
+      </ul>
+      <p>It leaves the poll phase when: a timer's threshold is met, or setImmediate() is scheduled.</p>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="code">
+    <div class="code-block">
+      <div class="code-label"><span>event-loop-phases.js</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+      <pre>// Demonstrating all phases
+
+const fs = require('fs');
+
+// PHASE 1: timers
+setTimeout(() => console.log('setTimeout - timers phase'), 0);
+setInterval(() => {}, 1000); // doesn't affect order here
+
+// PHASE 5: check  
+setImmediate(() => console.log('setImmediate - check phase'));
+
+// PHASE 6: close callbacks
+const net = require('net');
+const server = net.createServer();
+server.close(() => console.log('close callback - close phase'));
+
+// PHASE 4: poll - I/O callbacks
+fs.readFile('./package.json', () => {
+  console.log('I/O callback - poll phase');
+  
+  // When called FROM INSIDE a poll callback:
+  // setImmediate always runs before setTimeout (check comes before next timers)
+  setImmediate(() => console.log('setImmediate INSIDE I/O'));
+  setTimeout(() => console.log('setTimeout INSIDE I/O'), 0);
+  // Output inside I/O:
+  // setImmediate INSIDE I/O  ← always!
+  // setTimeout INSIDE I/O
+});
+
+// MICROTASKS (between phases)
+process.nextTick(() => console.log('nextTick - between phases'));
+Promise.resolve().then(() => console.log('Promise - between phases'));
+
+// TYPICAL OUTPUT ORDER (from top-level):
+// nextTick - between phases
+// Promise - between phases
+// setTimeout - timers phase        ← OR setImmediate first (non-deterministic at top level!)
+// setImmediate - check phase
+// I/O callback - poll phase
+// setImmediate INSIDE I/O          ← deterministic when inside I/O callback
+// setTimeout INSIDE I/O
+// close callback - close phase
+
+// NOTE: setTimeout(0) vs setImmediate at TOP LEVEL is NON-DETERMINISTIC
+// (depends on how long setup took vs timer resolution)
+// Inside an I/O callback: setImmediate ALWAYS wins</pre>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="interview">
+    <div class="interview-list">
+      <div class="interview-item"><span class="q-num">Q1</span>Name the 6 phases of the Node.js event loop and what runs in each.</div>
+      <div class="interview-item"><span class="q-num">Q2</span>What happens in the poll phase when there are no I/O events?</div>
+      <div class="interview-item"><span class="q-num">Q3</span>Why is setImmediate deterministically faster than setTimeout inside an I/O callback?</div>
+    </div>
+  </div>
+</div>
+
+<div class="topic" id="process-nexttick" data-section="Event Loop">
+  <div class="topic-eyebrow">Event Loop 🔥🔥</div>
+  <div class="topic-header">
+    <span class="badge badge-r">🔥 CRITICAL</span>
+    <h2 class="topic-title">process.nextTick()</h2>
+    <button class="mark-btn undone" onclick="toggleDone(this)">Mark Done</button>
+  </div>
+  <p class="topic-summary">process.nextTick() schedules a callback to run at the end of the current operation, before the event loop continues — even before Promises.</p>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab(this,'explanation')">📖 Explanation</button>
+    <button class="tab-btn" onclick="switchTab(this,'code')">💻 Code</button>
+    <button class="tab-btn" onclick="switchTab(this,'interview')">🎯 Interview Qs</button>
+  </div>
+  <div class="tab-content active" data-tab="explanation">
+    <div class="explanation">
+      <h4>What Makes nextTick Special</h4>
+      <p><span class="highlight">process.nextTick()</span> is technically NOT part of the event loop phases — it's processed by Node's C++ layer immediately after the current synchronous operation completes, before anything else (including Promise microtasks).</p>
+      <p>Despite its name, "next tick" doesn't mean "next event loop iteration" — it means "as soon as possible before moving anywhere else."</p>
+      <h4>When to Use nextTick</h4>
+      <ul>
+        <li><span class="highlight">Allow errors to be handled</span>: If a constructor emits an error event, the caller hasn't had a chance to attach a listener yet. nextTick defers emission until after the constructor returns.</li>
+        <li><span class="highlight">Guarantee async</span>: Make an API consistently async even when result is already available</li>
+        <li><span class="highlight">Before I/O begins</span>: Do work after call stack unwinds but before any I/O</li>
+      </ul>
+      <div class="warning">⚠️ Recursive nextTick calls will STARVE the event loop! Unlike setImmediate, nextTick processes ALL queued callbacks before moving on — including newly added ones.</div>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="code">
+    <div class="code-block">
+      <div class="code-label"><span>process-nexttick.js</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+      <pre>// ─── Real use case: ensure consistent async behavior ──────────
+class DataLoader {
+  constructor() {
+    this.cache = null;
+  }
+
+  // BAD: sometimes sync, sometimes async → inconsistent!
+  getData_bad(callback) {
+    if (this.cache) {
+      callback(null, this.cache); // ← synchronous! caller might not be ready
+    } else {
+      fetchFromDB((err, data) => {
+        this.cache = data;
+        callback(err, data);      // ← asynchronous
+      });
+    }
+  }
+
+  // GOOD: always async — nextTick makes sync path also async
+  getData(callback) {
+    if (this.cache) {
+      process.nextTick(() => callback(null, this.cache)); // ← deferred
+    } else {
+      fetchFromDB((err, data) => {
+        this.cache = data;
+        callback(err, data);
+      });
+    }
+  }
+}
+
+const loader = new DataLoader();
+loader.getData((err, data) => {
+  // With bad version: 'processing' might print AFTER this if cache exists!
+  // With good version: ALWAYS prints after 'processing'
+  console.log('got data');
+});
+console.log('processing'); // should always print before 'got data'
+
+// ─── nextTick for error emission ─────────────────────────────
+function MyEmitter() {
+  EventEmitter.call(this);
+  process.nextTick(() => {
+    // By the time this fires, caller has had time to attach listeners
+    this.emit('ready');
+  });
+}
+
+const emitter = new MyEmitter();
+emitter.on('ready', () => console.log('ready!')); // attached before emit fires
+
+// ─── nextTick starvation example ─────────────────────────────
+function starveEventLoop() {
+  process.nextTick(starveEventLoop); // ← adds itself back!
+  // This prevents setTimeout, I/O, and EVERYTHING else from running
+  // It's like an infinite while loop for the nextTick queue
+}
+// starveEventLoop(); // DON'T DO THIS
+
+// setImmediate does NOT starve — each iteration only runs callbacks
+// that were scheduled BEFORE that check phase started
+function safeRecursion() {
+  setImmediate(safeRecursion); // ← other I/O can still run between iterations
+}</pre>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="interview">
+    <div class="interview-list">
+      <div class="interview-item"><span class="q-num">Q1</span>What is process.nextTick() and when would you use it?</div>
+      <div class="interview-item"><span class="q-num">Q2</span>Why can process.nextTick() starve the event loop?</div>
+      <div class="interview-item"><span class="q-num">Q3</span>What is the difference between process.nextTick() and setImmediate()?</div>
+      <div class="interview-item"><span class="q-num">Q4</span>Why does Node recommend using setImmediate() over process.nextTick() in most cases?</div>
+    </div>
+  </div>
+</div>
+
+<div class="topic" id="settimeout-vs-setimmediate" data-section="Event Loop">
+  <div class="topic-eyebrow">Event Loop 🔥🔥</div>
+  <div class="topic-header">
+    <span class="badge badge-r">🔥 CRITICAL</span>
+    <h2 class="topic-title">setTimeout vs setImmediate</h2>
+    <button class="mark-btn undone" onclick="toggleDone(this)">Mark Done</button>
+  </div>
+  <p class="topic-summary">Both schedule deferred execution. setImmediate runs in the check phase (after I/O). setTimeout runs in the timers phase after the specified delay.</p>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab(this,'explanation')">📖 Explanation</button>
+    <button class="tab-btn" onclick="switchTab(this,'code')">💻 Code</button>
+    <button class="tab-btn" onclick="switchTab(this,'interview')">🎯 Interview Qs</button>
+  </div>
+  <div class="tab-content active" data-tab="explanation">
+    <div class="explanation">
+      <div class="diagram">
+┌────────────────────────────────────────────────────────────┐
+│              setTimeout vs setImmediate                    │
+├────────────────┬───────────────────────────────────────────┤
+│                │ setTimeout(fn, 0)    │ setImmediate(fn)    │
+├────────────────┼──────────────────────┼────────────────────┤
+│ Phase          │ timers (phase 1)     │ check (phase 5)    │
+│ Minimum delay  │ ~1-4ms (OS timer)   │ no delay           │
+│ At top level   │ non-deterministic   │ non-deterministic  │
+│ Inside I/O cb  │ AFTER setImmediate  │ BEFORE setTimeout  │
+│ Use case       │ delay execution     │ after I/O, sooner  │
+└────────────────┴──────────────────────┴────────────────────┘</div>
+      <h4>Key Rule for Interviews</h4>
+      <p>At the <span class="highlight">top level</span> (outside I/O): order is <span class="highlight3">non-deterministic</span> — depends on OS timer resolution.</p>
+      <p>Inside an <span class="highlight">I/O callback</span>: <span class="highlight2">setImmediate ALWAYS runs before setTimeout(0)</span> — the check phase comes before the next timers phase in the loop.</p>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="code">
+    <div class="code-block">
+      <div class="code-label"><span>settimeout-vs-setimmediate.js</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+      <pre>const fs = require('fs');
+
+// ─── Top level: NON-DETERMINISTIC ────────────────────────────
+setTimeout(() => console.log('setTimeout'), 0);
+setImmediate(() => console.log('setImmediate'));
+
+// Might print: setTimeout then setImmediate
+// Or:          setImmediate then setTimeout
+// Depends on how long process startup took vs timer resolution!
+
+// ─── Inside I/O callback: DETERMINISTIC ──────────────────────
+fs.readFile('./package.json', () => {
+  setTimeout(() => console.log('timeout inside I/O'), 0);
+  setImmediate(() => console.log('immediate inside I/O'));
+  // ALWAYS prints: immediate THEN timeout
+  // Because: poll phase completed → check phase (setImmediate) → timers phase (setTimeout)
+});
+
+// ─── setInterval ──────────────────────────────────────────────
+let count = 0;
+const interval = setInterval(() => {
+  console.log('interval', ++count);
+  if (count === 3) {
+    clearInterval(interval);  // ALWAYS clear intervals!
+    console.log('interval stopped');
+  }
+}, 1000);
+
+// ─── setTimeout chaining vs setInterval ──────────────────────
+// More predictable timing with recursive setTimeout:
+function repeatWithDelay(fn, delay) {
+  setTimeout(function run() {
+    fn();
+    setTimeout(run, delay); // schedule next AFTER fn() completes
+  }, delay);
+}
+// setInterval fires every N ms regardless of how long fn takes
+// recursive setTimeout: N ms AFTER fn completes
+
+// ─── clearTimeout ─────────────────────────────────────────────
+const timer = setTimeout(() => console.log('will not fire'), 5000);
+clearTimeout(timer); // cancelled!
+
+// ─── Practical: debounce using setTimeout ────────────────────
+function debounce(fn, delay) {
+  let timer;
+  return function(...args) {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn.apply(this, args), delay);
+  };
+}
+
+const debouncedSearch = debounce((query) => {
+  console.log('searching for:', query);
+}, 300);
+
+// Only fires 300ms after LAST call:
+debouncedSearch('a');
+debouncedSearch('ap');
+debouncedSearch('app');
+// Only logs: 'searching for: app'</pre>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="interview">
+    <div class="interview-list">
+      <div class="interview-item"><span class="q-num">Q1</span>What is the difference between setTimeout(fn, 0) and setImmediate(fn)?</div>
+      <div class="interview-item"><span class="q-num">Q2</span>When is setImmediate guaranteed to run before setTimeout?</div>
+      <div class="interview-item"><span class="q-num">Q3</span>Why is recursive setTimeout sometimes preferable to setInterval?</div>
+      <div class="interview-item"><span class="q-num">Q4</span>What is the minimum delay for setTimeout in Node.js?</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ MODULE SYSTEM ════════════ -->
+<div class="topic" id="commonjs" data-section="Module System">
+  <div class="topic-eyebrow">Module System 🔥</div>
+  <div class="topic-header">
+    <span class="badge badge-y">CORE</span>
+    <h2 class="topic-title">CommonJS (require)</h2>
+    <button class="mark-btn undone" onclick="toggleDone(this)">Mark Done</button>
+  </div>
+  <p class="topic-summary">CommonJS is Node.js's original module system. Modules are loaded synchronously and cached after first load.</p>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab(this,'explanation')">📖 Explanation</button>
+    <button class="tab-btn" onclick="switchTab(this,'code')">💻 Code</button>
+    <button class="tab-btn" onclick="switchTab(this,'interview')">🎯 Interview Qs</button>
+  </div>
+  <div class="tab-content active" data-tab="explanation">
+    <div class="explanation">
+      <h4>How CommonJS Works</h4>
+      <p>Every file in Node.js is wrapped in a <span class="highlight">module wrapper function</span> before execution:</p>
+      <div class="diagram">(function(exports, require, module, __filename, __dirname) {
+  // Your code here
+});</div>
+      <p>This gives each file its own scope (not global) and provides <code>require</code>, <code>exports</code>, and <code>module</code>.</p>
+      <h4>Resolution Algorithm</h4>
+      <ul>
+        <li>Core module? → return it (e.g., <span class="highlight">require('fs')</span>)</li>
+        <li>Starts with './' or '../'? → resolve as file path</li>
+        <li>Otherwise → search <span class="highlight">node_modules</span> directories up the tree</li>
+      </ul>
+      <h4>Module Loading is Synchronous</h4>
+      <p>require() is synchronous — it blocks until the module is loaded. This is fine at startup but problematic inside request handlers (don't require() inside loops or hot paths).</p>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="code">
+    <div class="code-block">
+      <div class="code-label"><span>commonjs.js</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+      <pre>// ─── math.js (module to export) ──────────────────────────────
+// Export multiple things via exports object
+exports.add = (a, b) => a + b;
+exports.subtract = (a, b) => a - b;
+const PI = 3.14159;
+exports.PI = PI;
+
+// Or replace the entire exports with module.exports
+module.exports = {
+  add: (a, b) => a + b,
+  subtract: (a, b) => a - b,
+  PI: 3.14159,
+};
+
+// Export a class
+module.exports = class Calculator {
+  add(a, b) { return a + b; }
+  multiply(a, b) { return a * b; }
+};
+
+// ─── main.js (import/use) ────────────────────────────────────
+const math = require('./math');           // relative path (file)
+const fs = require('fs');                 // core module
+const express = require('express');       // node_modules
+
+console.log(math.add(2, 3));             // 5
+console.log(math.PI);                    // 3.14159
+
+// Destructuring
+const { add, subtract } = require('./math');
+
+// ─── module.exports vs exports ───────────────────────────────
+// exports is just a reference to module.exports
+// module.exports IS what gets returned from require()
+
+// ✅ Both work:
+exports.name = 'Shailesh';          // adds to module.exports object
+module.exports.name = 'Shailesh';   // same thing
+
+// ❌ This BREAKS exports:
+exports = { name: 'Shailesh' };     // creates new local variable
+// require() still returns the original module.exports = {}
+
+// ✅ This replaces entire export:
+module.exports = { name: 'Shailesh' }; // replaces module.exports
+
+// ─── Circular dependency handling ────────────────────────────
+// a.js requires b.js which requires a.js
+// Node handles this by returning whatever is exported SO FAR
+// This can lead to partial module issues — design to avoid it
+
+// ─── Dynamic require (conditional loading) ───────────────────
+const env = process.env.NODE_ENV;
+const config = require(\`./config.\${env}\`); // loads config.development.js etc
+
+// ─── require.resolve — find path without loading ─────────────
+console.log(require.resolve('express')); // /path/to/node_modules/express/index.js
+
+// ─── require.main — detect if file is run directly ───────────
+if (require.main === module) {
+  // This file was run directly: node main.js
+  console.log('Running as main script');
+} else {
+  // This file was required by another file
+  console.log('Loaded as module');
+}</pre>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="interview">
+    <div class="interview-list">
+      <div class="interview-item"><span class="q-num">Q1</span>What is the difference between exports and module.exports?</div>
+      <div class="interview-item"><span class="q-num">Q2</span>How does Node.js resolve the path when you call require()?</div>
+      <div class="interview-item"><span class="q-num">Q3</span>Is require() synchronous or asynchronous? What are the implications?</div>
+      <div class="interview-item"><span class="q-num">Q4</span>How do you detect if a file is run directly vs required as a module?</div>
+    </div>
+  </div>
+</div>
+
+<div class="topic" id="module-caching" data-section="Module System">
+  <div class="topic-eyebrow">Module System 🔥</div>
+  <div class="topic-header">
+    <span class="badge badge-y">CORE</span>
+    <h2 class="topic-title">Module Caching</h2>
+    <button class="mark-btn undone" onclick="toggleDone(this)">Mark Done</button>
+  </div>
+  <p class="topic-summary">Node.js caches modules after the first require() — subsequent requires return the cached version. Modules are singletons.</p>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab(this,'explanation')">📖 Explanation</button>
+    <button class="tab-btn" onclick="switchTab(this,'code')">💻 Code</button>
+    <button class="tab-btn" onclick="switchTab(this,'interview')">🎯 Interview Qs</button>
+  </div>
+  <div class="tab-content active" data-tab="explanation">
+    <div class="explanation">
+      <h4>Module Cache = Singleton Pattern</h4>
+      <p>After first require(), the module's <span class="highlight">exports object is stored</span> in <code>require.cache</code> keyed by the absolute file path. All subsequent requires return the same object — not a new one.</p>
+      <p>This means: if a module stores state (like a database connection, configuration object, or counter), all files sharing that require() get the SAME instance.</p>
+      <h4>Practical Implications</h4>
+      <ul>
+        <li><span class="highlight">DB connection pools</span>: Create once, reuse everywhere — that's the cache working for you</li>
+        <li><span class="highlight">Config objects</span>: Loaded once, shared across app</li>
+        <li><span class="highlight">Circular deps</span>: Partially loaded cached module returned to break infinite loop</li>
+        <li><span class="highlight">Testing</span>: Must clear cache to re-test module initialization</li>
+      </ul>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="code">
+    <div class="code-block">
+      <div class="code-label"><span>module-caching.js</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+      <pre>// ─── counter.js ──────────────────────────────────────────────
+let count = 0;
+module.exports = {
+  increment() { count++; },
+  getCount() { return count; },
+};
+
+// ─── a.js ────────────────────────────────────────────────────
+const counter = require('./counter');
+counter.increment();
+console.log(counter.getCount()); // 1
+
+// ─── b.js ────────────────────────────────────────────────────
+const counter = require('./counter'); // same cached instance!
+counter.increment();
+console.log(counter.getCount()); // 2 (not 1!)
+
+// Both a.js and b.js share the SAME counter instance
+// This is why modules are called "singletons"
+
+// ─── View the module cache ────────────────────────────────────
+console.log(Object.keys(require.cache));
+// Lists all loaded module paths
+
+// ─── Singleton DB connection using module cache ────────────────
+// db.js
+let db = null;
+
+async function getConnection() {
+  if (!db) {
+    db = await mongoose.connect(process.env.MONGO_URI);
+  }
+  return db; // cached after first call
+}
+
+module.exports = { getConnection };
+
+// ─── Busting the cache (for testing) ─────────────────────────
+function freshRequire(modulePath) {
+  const resolved = require.resolve(modulePath);
+  delete require.cache[resolved]; // remove from cache
+  return require(modulePath);     // fresh load
+}
+
+// In tests:
+beforeEach(() => {
+  delete require.cache[require.resolve('./myModule')];
+});
+
+// ─── ESM does NOT have this pattern ───────────────────────────
+// ES modules are also cached but the cache is implementation-specific
+// You cannot manipulate it like CommonJS require.cache</pre>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="interview">
+    <div class="interview-list">
+      <div class="interview-item"><span class="q-num">Q1</span>What is module caching in Node.js and why does it exist?</div>
+      <div class="interview-item"><span class="q-num">Q2</span>If two files require() the same module, do they get the same object or separate copies?</div>
+      <div class="interview-item"><span class="q-num">Q3</span>How would you force a fresh load of a module (cache busting)?</div>
+      <div class="interview-item"><span class="q-num">Q4</span>How does module caching enable the singleton pattern for DB connections?</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ STREAMS ════════════ -->
+<div class="topic" id="streams" data-section="Streams & Buffers">
+  <div class="topic-eyebrow">Streams & Buffers 🔥 VERY IMPORTANT</div>
+  <div class="topic-header">
+    <span class="badge badge-r">🔥 IMPORTANT</span>
+    <h2 class="topic-title">Streams & Buffers</h2>
+    <button class="mark-btn undone" onclick="toggleDone(this)">Mark Done</button>
+  </div>
+  <p class="topic-summary">Streams process data piece by piece (chunks) without loading everything into memory. Essential for large files, video streaming, and upload handling.</p>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab(this,'explanation')">📖 Explanation</button>
+    <button class="tab-btn" onclick="switchTab(this,'code')">💻 Code</button>
+    <button class="tab-btn" onclick="switchTab(this,'interview')">🎯 Interview Qs</button>
+  </div>
+  <div class="tab-content active" data-tab="explanation">
+    <div class="explanation">
+      <h4>Why Streams?</h4>
+      <p>Without streams, reading a 2GB video file would load 2GB into RAM before sending it. With streams, you send chunks as they're read — memory usage stays at a few KB regardless of file size.</p>
+      <h4>4 Types of Streams</h4>
+      <ul>
+        <li><span class="highlight">Readable</span>: source of data (fs.createReadStream, http.IncomingMessage, process.stdin)</li>
+        <li><span class="highlight">Writable</span>: destination (fs.createWriteStream, http.ServerResponse, process.stdout)</li>
+        <li><span class="highlight">Duplex</span>: both readable and writable (TCP sockets, net.Socket)</li>
+        <li><span class="highlight">Transform</span>: duplex that modifies data (zlib for compression, crypto streams)</li>
+      </ul>
+      <h4>Buffer</h4>
+      <p>A <span class="highlight2">Buffer</span> is a fixed-size chunk of binary data in memory. It's how Node.js represents raw bytes — before streams were common, you'd read entire files into Buffers. Buffers are used internally by streams as chunks.</p>
+      <div class="diagram">
+Reading 1GB file WITHOUT streams:
+[Read entire 1GB into RAM] → [Send to response]
+Memory usage: 1GB+
+
+Reading 1GB file WITH streams:
+[Read chunk 1 64KB] → [Send chunk 1] → free memory
+[Read chunk 2 64KB] → [Send chunk 2] → free memory
+...
+Memory usage: ~64KB constant!</div>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="code">
+    <div class="code-block">
+      <div class="code-label"><span>streams-buffers.js</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+      <pre>const fs = require('fs');
+const zlib = require('zlib');
+const path = require('path');
+
+// ─── Buffer basics ────────────────────────────────────────────
+const buf1 = Buffer.from('Hello, World!', 'utf8');
+console.log(buf1);            // <Buffer 48 65 6c 6c 6f...>
+console.log(buf1.toString()); // 'Hello, World!'
+console.log(buf1.length);     // 13 (bytes)
+
+const buf2 = Buffer.alloc(10);   // 10 zero bytes
+const buf3 = Buffer.alloc(10, 1); // 10 bytes of value 1
+
+// ─── Readable stream ──────────────────────────────────────────
+const readStream = fs.createReadStream('./bigfile.txt', {
+  encoding: 'utf8',
+  highWaterMark: 64 * 1024,  // 64KB chunks (default is 16KB)
+});
+
+readStream.on('data', (chunk) => {
+  console.log('Received chunk:', chunk.length, 'bytes');
+  // chunk is a Buffer (or string if encoding specified)
+});
+
+readStream.on('end', () => {
+  console.log('Done reading file');
+});
+
+readStream.on('error', (err) => {
+  console.error('Stream error:', err.message);
+});
+
+// ─── Writable stream ─────────────────────────────────────────
+const writeStream = fs.createWriteStream('./output.txt');
+
+writeStream.write('First line\n');
+writeStream.write('Second line\n');
+writeStream.end('Last line\n', () => {
+  console.log('All data written and file closed');
+});
+
+writeStream.on('error', (err) => console.error(err));
+
+// ─── pipe — the star of streaming ────────────────────────────
+// Read from source, write to destination automatically
+fs.createReadStream('./input.txt')
+  .pipe(fs.createWriteStream('./output.txt'));
+
+// ─── Transform stream — gzip compression ─────────────────────
+// Compress a file: input.txt → output.txt.gz
+fs.createReadStream('./input.txt')
+  .pipe(zlib.createGzip())               // transform: compress
+  .pipe(fs.createWriteStream('./output.txt.gz'))
+  .on('finish', () => console.log('Compressed!'));
+
+// Decompress
+fs.createReadStream('./output.txt.gz')
+  .pipe(zlib.createGunzip())
+  .pipe(fs.createWriteStream('./restored.txt'));
+
+// ─── Streaming HTTP response ──────────────────────────────────
+const http = require('http');
+
+http.createServer((req, res) => {
+  // Stream a large file directly to HTTP response
+  // No buffering — memory stays constant!
+  const fileStream = fs.createReadStream('./largevideo.mp4');
+  res.setHeader('Content-Type', 'video/mp4');
+  fileStream.pipe(res);
+  fileStream.on('error', (err) => {
+    res.statusCode = 500;
+    res.end('Error streaming file');
+  });
+}).listen(3000);
+
+// ─── pipeline (Node 10+) — better than pipe, handles errors ──
+const { pipeline } = require('stream/promises');
+
+async function processFile() {
+  await pipeline(
+    fs.createReadStream('./input.txt'),
+    zlib.createGzip(),
+    fs.createWriteStream('./output.gz')
+  );
+  console.log('Pipeline completed successfully');
+}
+// pipeline automatically handles errors and cleans up streams</pre>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="interview">
+    <div class="interview-list">
+      <div class="interview-item"><span class="q-num">Q1</span>What are the 4 types of streams in Node.js?</div>
+      <div class="interview-item"><span class="q-num">Q2</span>Why are streams more memory-efficient than reading entire files?</div>
+      <div class="interview-item"><span class="q-num">Q3</span>What is the difference between pipe() and pipeline()?</div>
+      <div class="interview-item"><span class="q-num">Q4</span>What is a Buffer and how does it relate to streams?</div>
+      <div class="interview-item"><span class="q-num">Q5</span>What is highWaterMark in streams?</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ ERROR HANDLING ════════════ -->
+<div class="topic" id="error-handling" data-section="Error Handling">
+  <div class="topic-eyebrow">Error Handling 🔥</div>
+  <div class="topic-header">
+    <span class="badge badge-y">CORE</span>
+    <h2 class="topic-title">Sync vs Async Error Handling</h2>
+    <button class="mark-btn undone" onclick="toggleDone(this)">Mark Done</button>
+  </div>
+  <p class="topic-summary">Sync errors are caught with try/catch. Async errors require different patterns: error-first callbacks, .catch() for Promises, or try/catch in async functions.</p>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab(this,'explanation')">📖 Explanation</button>
+    <button class="tab-btn" onclick="switchTab(this,'code')">💻 Code</button>
+    <button class="tab-btn" onclick="switchTab(this,'interview')">🎯 Interview Qs</button>
+  </div>
+  <div class="tab-content active" data-tab="explanation">
+    <div class="explanation">
+      <h4>The Core Problem</h4>
+      <p>try/catch only catches errors that happen <span class="highlight">synchronously</span> in the same event loop tick. Errors in callbacks or async operations escape the try/catch.</p>
+      <div class="diagram">
+try {                              // ← catch is set up here
+  fs.readFile('file', callback);   // ← this returns immediately!
+} catch(e) {}                      // ← will NOT catch callback errors!
+// The callback runs LATER in a different event loop tick
+// The try/catch is already gone by then</div>
+      <h4>Error Types in Node</h4>
+      <ul>
+        <li><span class="highlight">Synchronous errors</span>: JSON.parse(), fs.readFileSync() — use try/catch</li>
+        <li><span class="highlight">Callback errors</span>: err-first pattern — check err argument</li>
+        <li><span class="highlight">Promise rejections</span>: .catch() or try/catch in async function</li>
+        <li><span class="highlight">EventEmitter errors</span>: 'error' event — MUST have listener or process crashes</li>
+        <li><span class="highlight">Uncaught exceptions</span>: process.on('uncaughtException')</li>
+        <li><span class="highlight">Unhandled rejections</span>: process.on('unhandledRejection')</li>
+      </ul>
+      <div class="warning">⚠️ An EventEmitter that emits 'error' with no listener will crash the process. ALWAYS attach error listeners to streams, servers, and custom EventEmitters.</div>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="code">
+    <div class="code-block">
+      <div class="code-label"><span>error-handling.js</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+      <pre>const fs = require('fs');
+
+// ─── Sync errors: try/catch works ────────────────────────────
+try {
+  const data = JSON.parse('invalid json {{{');
+} catch (err) {
+  console.error('JSON parse error:', err.message);
+}
+
+// ─── Callback errors: error-first pattern ────────────────────
+fs.readFile('./nonexistent.txt', (err, data) => {
+  if (err) {
+    if (err.code === 'ENOENT') {
+      console.error('File not found');
+    } else if (err.code === 'EACCES') {
+      console.error('Permission denied');
+    } else {
+      console.error('Unknown error:', err);
+    }
+    return; // IMPORTANT: return early, don't continue
+  }
+  console.log('File contents:', data.toString());
+});
+
+// ─── Promise errors ──────────────────────────────────────────
+fs.promises.readFile('./file.txt')
+  .then(data => processData(data))
+  .then(result => sendResult(result))
+  .catch(err => {
+    // Catches errors from ANY step in the chain
+    console.error('Pipeline failed:', err);
+  });
+
+// ─── async/await errors (cleanest pattern) ───────────────────
+async function processFile(filename) {
+  try {
+    const data = await fs.promises.readFile(filename, 'utf8');
+    const parsed = JSON.parse(data);  // sync error also caught!
+    const result = await processData(parsed);
+    return result;
+  } catch (err) {
+    // Catches both async rejections AND sync throws!
+    console.error('processFile error:', err.message);
+    throw err; // re-throw to let caller handle it
+  }
+}
+
+// ─── Custom error classes ────────────────────────────────────
+class AppError extends Error {
+  constructor(message, statusCode = 500, code = 'INTERNAL_ERROR') {
+    super(message);
+    this.name = this.constructor.name;
+    this.statusCode = statusCode;
+    this.code = code;
+    Error.captureStackTrace(this, this.constructor);
+  }
+}
+
+class NotFoundError extends AppError {
+  constructor(resource) {
+    super(\`\${resource} not found\`, 404, 'NOT_FOUND');
+  }
+}
+
+class ValidationError extends AppError {
+  constructor(message) {
+    super(message, 400, 'VALIDATION_ERROR');
+  }
+}
+
+// Usage in Express:
+app.get('/user/:id', async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) throw new NotFoundError('User');
+    res.json(user);
+  } catch (err) {
+    next(err); // pass to error middleware
+  }
+});
+
+// Error middleware (must have 4 params!)
+app.use((err, req, res, next) => {
+  const statusCode = err.statusCode || 500;
+  res.status(statusCode).json({
+    error: err.message,
+    code: err.code,
+    ...(process.env.NODE_ENV === 'development' && { stack: err.stack }),
+  });
+});</pre>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="interview">
+    <div class="interview-list">
+      <div class="interview-item"><span class="q-num">Q1</span>Why doesn't try/catch work for catching errors in callbacks?</div>
+      <div class="interview-item"><span class="q-num">Q2</span>What are the different patterns for handling async errors in Node.js?</div>
+      <div class="interview-item"><span class="q-num">Q3</span>What happens if an EventEmitter emits 'error' with no listener?</div>
+      <div class="interview-item"><span class="q-num">Q4</span>How do you create custom error classes in Node.js?</div>
+    </div>
+  </div>
+</div>
+
+<div class="topic" id="global-error" data-section="Error Handling">
+  <div class="topic-eyebrow">Error Handling 🔥</div>
+  <div class="topic-header">
+    <span class="badge badge-y">CORE</span>
+    <h2 class="topic-title">Global Error Handling</h2>
+    <button class="mark-btn undone" onclick="toggleDone(this)">Mark Done</button>
+  </div>
+  <p class="topic-summary">Handle errors that escape all local error boundaries — uncaughtException and unhandledRejection — to prevent silent crashes.</p>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab(this,'explanation')">📖 Explanation</button>
+    <button class="tab-btn" onclick="switchTab(this,'code')">💻 Code</button>
+    <button class="tab-btn" onclick="switchTab(this,'interview')">🎯 Interview Qs</button>
+  </div>
+  <div class="tab-content active" data-tab="explanation">
+    <div class="explanation">
+      <h4>Global Error Events on process</h4>
+      <ul>
+        <li><span class="highlight">uncaughtException</span>: A synchronous error was thrown but not caught anywhere in the call stack → process would crash</li>
+        <li><span class="highlight">unhandledRejection</span>: A Promise was rejected but had no .catch() handler → in Node 15+, crashes the process</li>
+        <li><span class="highlight">SIGTERM</span>: Operating system signal to gracefully shut down (from Docker, Kubernetes, PM2)</li>
+        <li><span class="highlight">SIGINT</span>: Ctrl+C signal</li>
+      </ul>
+      <div class="warning">⚠️ Using uncaughtException to "ignore" errors is dangerous — the process may be in an undefined state after an uncaught exception. Best practice: log the error, then restart the process (let PM2/Docker handle restart).</div>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="code">
+    <div class="code-block">
+      <div class="code-label"><span>global-error-handling.js</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+      <pre>// ─── Uncaught synchronous exception ─────────────────────────
+process.on('uncaughtException', (err, origin) => {
+  console.error('UNCAUGHT EXCEPTION:', err.message);
+  console.error('Origin:', origin);
+  // Log to monitoring service (Sentry, Datadog, etc.)
+  Sentry.captureException(err);
+  // Perform cleanup then exit
+  // Do NOT try to continue — state is unknown
+  process.exit(1); // 1 = error, 0 = success
+});
+
+// ─── Unhandled Promise rejection ──────────────────────────────
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('UNHANDLED REJECTION at:', promise);
+  console.error('Reason:', reason);
+  // In Node 15+, this crashes the process anyway
+  // So handle it explicitly
+  process.exit(1);
+});
+
+// These prevent silent failures:
+async function riskyOperation() {
+  throw new Error('Something went wrong');
+}
+riskyOperation(); // Without unhandledRejection handler, silent failure in Node < 15!
+
+// ─── Graceful shutdown ───────────────────────────────────────
+const server = require('http').createServer(app);
+server.listen(3000);
+
+function gracefulShutdown(signal) {
+  console.log(\`Received \${signal}. Starting graceful shutdown...\`);
+
+  server.close((err) => {
+    if (err) {
+      console.error('Error closing server:', err);
+      process.exit(1);
+    }
+
+    // Close DB connections
+    mongoose.connection.close(() => {
+      console.log('MongoDB connection closed');
+    });
+
+    // Close Redis connection
+    redisClient.quit(() => {
+      console.log('Redis connection closed');
+      console.log('Graceful shutdown complete');
+      process.exit(0);
+    });
+  });
+
+  // Force exit after 10 seconds if graceful shutdown is taking too long
+  setTimeout(() => {
+    console.error('Could not gracefully close, forcing shutdown');
+    process.exit(1);
+  }, 10000).unref(); // .unref() prevents this timer from keeping process alive
+}
+
+process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+process.on('SIGINT', () => gracefulShutdown('SIGINT'));  // Ctrl+C</pre>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="interview">
+    <div class="interview-list">
+      <div class="interview-item"><span class="q-num">Q1</span>What is uncaughtException and when does it fire?</div>
+      <div class="interview-item"><span class="q-num">Q2</span>Should you continue running after catching an uncaughtException? Why not?</div>
+      <div class="interview-item"><span class="q-num">Q3</span>What is an unhandledRejection? What changed in Node 15?</div>
+      <div class="interview-item"><span class="q-num">Q4</span>What is graceful shutdown and why is it important in production?</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ EXPRESS.JS ════════════ -->
+<div class="topic" id="middleware" data-section="Express.js">
+  <div class="topic-eyebrow">Express.js 🔥</div>
+  <div class="topic-header">
+    <span class="badge badge-p">EXPRESS</span>
+    <h2 class="topic-title">Middleware Deep Dive</h2>
+    <button class="mark-btn undone" onclick="toggleDone(this)">Mark Done</button>
+  </div>
+  <p class="topic-summary">Middleware are functions that have access to req, res, and next. They form a pipeline — each middleware can modify the request/response or pass control to the next one.</p>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab(this,'explanation')">📖 Explanation</button>
+    <button class="tab-btn" onclick="switchTab(this,'code')">💻 Code</button>
+    <button class="tab-btn" onclick="switchTab(this,'interview')">🎯 Interview Qs</button>
+  </div>
+  <div class="tab-content active" data-tab="explanation">
+    <div class="explanation">
+      <h4>The Middleware Pipeline</h4>
+      <div class="diagram">
+HTTP Request
+    ↓
+[middleware 1] → next() →
+[middleware 2] → next() →
+[middleware 3] → next() →
+[Route handler] → res.send()
+    ↓
+HTTP Response
+
+If a middleware does NOT call next() and doesn't send a response:
+The request hangs forever!</div>
+      <h4>Middleware Function Signature</h4>
+      <p><code>(req, res, next) => {}</code> — Three parameters define a regular middleware.</p>
+      <p><code>(err, req, res, next) => {}</code> — FOUR parameters define error-handling middleware (Express detects this automatically).</p>
+      <h4>What Middleware Can Do</h4>
+      <ul>
+        <li>Execute any code (logging, validation)</li>
+        <li>Modify <span class="highlight">req</span> object (attach user, parse body)</li>
+        <li>Modify <span class="highlight">res</span> object (set headers)</li>
+        <li>End the request-response cycle (return error, send response)</li>
+        <li>Call <span class="highlight">next()</span> to pass to next middleware</li>
+        <li>Call <span class="highlight">next(err)</span> to skip to error handler</li>
+      </ul>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="code">
+    <div class="code-block">
+      <div class="code-label"><span>middleware.js</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+      <pre>const express = require('express');
+const app = express();
+
+// ─── Global middleware (runs for ALL routes) ─────────────────
+app.use(express.json());            // parse JSON body
+app.use(express.urlencoded({ extended: true })); // parse form data
+
+// Custom logger middleware
+app.use((req, res, next) => {
+  const start = Date.now();
+  console.log(\`[\${new Date().toISOString()}] \${req.method} \${req.url}\`);
+
+  // Hook into response finish to log duration
+  res.on('finish', () => {
+    const duration = Date.now() - start;
+    console.log(\`→ \${res.statusCode} in \${duration}ms\`);
+  });
+
+  next(); // MUST call next or request hangs!
+});
+
+// ─── Route-specific middleware ────────────────────────────────
+function requireAuth(req, res, next) {
+  const token = req.headers.authorization?.split(' ')[1];
+  if (!token) {
+    return res.status(401).json({ error: 'No token provided' });
+    // NOT calling next() — ends the request here
+  }
+  try {
+    req.user = jwt.verify(token, process.env.JWT_SECRET);
+    next(); // valid token, continue to route handler
+  } catch (err) {
+    next(err); // invalid token, pass error to error handler
+  }
+}
+
+// Apply auth middleware to specific routes only
+app.get('/profile', requireAuth, (req, res) => {
+  res.json(req.user); // req.user was set by middleware
+});
+
+// ─── Multiple middleware on a route ──────────────────────────
+function validateEmail(req, res, next) {
+  if (!req.body.email?.includes('@')) {
+    return res.status(400).json({ error: 'Invalid email' });
+  }
+  next();
+}
+
+function checkRateLimit(req, res, next) {
+  // check if user has exceeded rate limit
+  next();
+}
+
+app.post('/register', validateEmail, checkRateLimit, async (req, res) => {
+  const user = await createUser(req.body);
+  res.status(201).json(user);
+});
+
+// ─── Middleware order MATTERS ─────────────────────────────────
+app.use(helmet());        // security headers FIRST
+app.use(cors());          // CORS before routes
+app.use(express.json());  // body parsing before route handlers
+app.use(morgan('dev'));    // logging
+// routes go here
+app.use(notFoundHandler); // 404 handler (after all routes)
+app.use(errorHandler);    // error handler LAST (4 params)
+
+// ─── Router-level middleware ──────────────────────────────────
+const router = express.Router();
+
+router.use(requireAuth); // all routes in this router need auth
+
+router.get('/orders', getOrders);
+router.post('/orders', createOrder);
+router.delete('/orders/:id', deleteOrder);
+
+app.use('/api/v1', router);</pre>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="interview">
+    <div class="interview-list">
+      <div class="interview-item"><span class="q-num">Q1</span>What is Express middleware and what are its three parameters?</div>
+      <div class="interview-item"><span class="q-num">Q2</span>What happens if middleware doesn't call next() or send a response?</div>
+      <div class="interview-item"><span class="q-num">Q3</span>What is the difference between next() and next(err)?</div>
+      <div class="interview-item"><span class="q-num">Q4</span>Why does middleware order matter in Express?</div>
+      <div class="interview-item"><span class="q-num">Q5</span>How do you apply middleware to specific routes only?</div>
+    </div>
+  </div>
+</div>
+
+<!-- REST API -->
+<div class="topic" id="rest-api" data-section="Express.js">
+  <div class="topic-eyebrow">Express.js 🔥</div>
+  <div class="topic-header">
+    <span class="badge badge-p">EXPRESS</span>
+    <h2 class="topic-title">REST API Design</h2>
+    <button class="mark-btn undone" onclick="toggleDone(this)">Mark Done</button>
+  </div>
+  <p class="topic-summary">REST (Representational State Transfer) is an architectural style for designing APIs using HTTP methods, status codes, and resource-based URLs.</p>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab(this,'explanation')">📖 Explanation</button>
+    <button class="tab-btn" onclick="switchTab(this,'code')">💻 Code</button>
+    <button class="tab-btn" onclick="switchTab(this,'interview')">🎯 Interview Qs</button>
+  </div>
+  <div class="tab-content active" data-tab="explanation">
+    <div class="explanation">
+      <h4>REST Principles</h4>
+      <ul>
+        <li><span class="highlight">Stateless</span>: Each request contains all info needed. No session on server.</li>
+        <li><span class="highlight">Resource-based URLs</span>: Nouns, not verbs. /users not /getUsers</li>
+        <li><span class="highlight">HTTP methods as verbs</span>: GET (read), POST (create), PUT (replace), PATCH (update), DELETE (remove)</li>
+        <li><span class="highlight">Consistent status codes</span>: 200 OK, 201 Created, 400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found, 500 Server Error</li>
+      </ul>
+      <h4>HTTP Status Code Reference</h4>
+      <div class="diagram">
+2xx Success:
+  200 OK              → GET, PUT, PATCH success
+  201 Created         → POST success (include Location header)
+  204 No Content      → DELETE success
+
+4xx Client Error:
+  400 Bad Request     → invalid data, missing fields
+  401 Unauthorized    → not authenticated (no/bad token)
+  403 Forbidden       → authenticated but not authorized
+  404 Not Found       → resource doesn't exist
+  409 Conflict        → duplicate resource (email already used)
+  422 Unprocessable   → validation failed
+  429 Too Many Req    → rate limit exceeded
+
+5xx Server Error:
+  500 Internal Error  → unexpected server error
+  502 Bad Gateway     → upstream service failure
+  503 Service Unavail → server down for maintenance</div>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="code">
+    <div class="code-block">
+      <div class="code-label"><span>rest-api.js — Complete CRUD API</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+      <pre>const express = require('express');
+const router = express.Router();
+
+// Resource: /api/v1/users
+
+// GET /users — list with pagination & filtering
+router.get('/', async (req, res, next) => {
+  try {
+    const {
+      page = 1,
+      limit = 20,
+      sort = '-createdAt',
+      search,
+      role,
+    } = req.query;
+
+    const filter = {};
+    if (search) filter.$or = [
+      { name: { $regex: search, $options: 'i' } },
+      { email: { $regex: search, $options: 'i' } },
+    ];
+    if (role) filter.role = role;
+
+    const skip = (page - 1) * limit;
+    const [users, total] = await Promise.all([
+      User.find(filter).sort(sort).skip(skip).limit(+limit).select('-password'),
+      User.countDocuments(filter),
+    ]);
+
+    res.json({
+      success: true,
+      data: users,
+      pagination: {
+        page: +page,
+        limit: +limit,
+        total,
+        pages: Math.ceil(total / limit),
+      },
+    });
+  } catch (err) { next(err); }
+});
+
+// GET /users/:id — single resource
+router.get('/:id', async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.id).select('-password');
+    if (!user) return res.status(404).json({ error: 'User not found' });
+    res.json({ success: true, data: user });
+  } catch (err) { next(err); }
+});
+
+// POST /users — create
+router.post('/', validateUser, async (req, res, next) => {
+  try {
+    const { name, email, password, role } = req.body;
+    
+    const existing = await User.findOne({ email });
+    if (existing) return res.status(409).json({ error: 'Email already registered' });
+    
+    const hashedPassword = await bcrypt.hash(password, 12);
+    const user = await User.create({ name, email, password: hashedPassword, role });
+    
+    res.status(201)
+      .header('Location', \`/api/v1/users/\${user._id}\`)
+      .json({ success: true, data: user });
+  } catch (err) { next(err); }
+});
+
+// PATCH /users/:id — partial update
+router.patch('/:id', requireAuth, async (req, res, next) => {
+  try {
+    const allowedFields = ['name', 'bio', 'avatar'];
+    const updates = Object.keys(req.body)
+      .filter(key => allowedFields.includes(key))
+      .reduce((obj, key) => ({ ...obj, [key]: req.body[key] }), {});
+
+    const user = await User.findByIdAndUpdate(
+      req.params.id,
+      { $set: updates },
+      { new: true, runValidators: true }
+    );
+    if (!user) return res.status(404).json({ error: 'User not found' });
+    res.json({ success: true, data: user });
+  } catch (err) { next(err); }
+});
+
+// DELETE /users/:id
+router.delete('/:id', requireAuth, async (req, res, next) => {
+  try {
+    const user = await User.findByIdAndDelete(req.params.id);
+    if (!user) return res.status(404).json({ error: 'User not found' });
+    res.status(204).send(); // 204 No Content — no body
+  } catch (err) { next(err); }
+});
+
+// API Versioning
+app.use('/api/v1/users', router);
+// app.use('/api/v2/users', routerV2); // easy to add v2 without breaking v1</pre>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="interview">
+    <div class="interview-list">
+      <div class="interview-item"><span class="q-num">Q1</span>What are the principles of REST?</div>
+      <div class="interview-item"><span class="q-num">Q2</span>What is the difference between PUT and PATCH?</div>
+      <div class="interview-item"><span class="q-num">Q3</span>What status code do you return for a successful POST? What about DELETE?</div>
+      <div class="interview-item"><span class="q-num">Q4</span>What is the difference between 401 and 403?</div>
+      <div class="interview-item"><span class="q-num">Q5</span>How do you implement API versioning?</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ AUTH ════════════ -->
+<div class="topic" id="jwt" data-section="Auth & Security">
+  <div class="topic-eyebrow">Auth & Security 🔥 VERY IMPORTANT</div>
+  <div class="topic-header">
+    <span class="badge badge-r">🔥 IMPORTANT</span>
+    <h2 class="topic-title">JWT (JSON Web Token)</h2>
+    <button class="mark-btn undone" onclick="toggleDone(this)">Mark Done</button>
+  </div>
+  <p class="topic-summary">JWT is a compact, self-contained token format for transmitting claims between parties. Stateless authentication — server doesn't store sessions.</p>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab(this,'explanation')">📖 Explanation</button>
+    <button class="tab-btn" onclick="switchTab(this,'code')">💻 Code</button>
+    <button class="tab-btn" onclick="switchTab(this,'interview')">🎯 Interview Qs</button>
+  </div>
+  <div class="tab-content active" data-tab="explanation">
+    <div class="explanation">
+      <h4>JWT Structure</h4>
+      <div class="diagram">
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+.eyJ1c2VySWQiOiIxMjMiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2OTAwMDB9
+.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+
+BASE64URL(header)  .  BASE64URL(payload)  .  SIGNATURE
+
+Header: { "alg": "HS256", "typ": "JWT" }
+Payload: { "userId": "123", "role": "admin", "iat": 1690000, "exp": 1690600 }
+Signature: HMACSHA256(base64(header) + "." + base64(payload), secret)</div>
+      <h4>JWT Flow</h4>
+      <div class="diagram">
+1. User logs in with email + password
+2. Server verifies credentials
+3. Server creates JWT with userId, role, expiry
+4. Server signs JWT with secret key → sends to client
+5. Client stores JWT (localStorage or httpOnly cookie)
+6. Client sends JWT in Authorization: Bearer {token} header
+7. Server verifies signature, extracts userId/role → no DB lookup needed!
+8. Server handles request with user context</div>
+      <h4>Access Token + Refresh Token Pattern</h4>
+      <ul>
+        <li><span class="highlight">Access token</span>: Short-lived (15min), sent with every request</li>
+        <li><span class="highlight">Refresh token</span>: Long-lived (7-30 days), stored in httpOnly cookie, used ONLY to get new access tokens</li>
+        <li>If access token stolen: expires in 15 min (limited damage)</li>
+        <li>If refresh token stolen: can be revoked in DB</li>
+      </ul>
+      <div class="warning">⚠️ JWTs cannot be invalidated before expiry (stateless!). To "log out" or "revoke", use a token blacklist in Redis. This is JWT's main weakness vs sessions.</div>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="code">
+    <div class="code-block">
+      <div class="code-label"><span>jwt-auth.js — Complete JWT implementation</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+      <pre>const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+
+// ─── Token generation ─────────────────────────────────────────
+function generateTokens(userId, role) {
+  const accessToken = jwt.sign(
+    { userId, role },           // payload (public claims)
+    process.env.JWT_SECRET,     // secret key
+    { expiresIn: '15m' }        // short lived
+  );
+
+  const refreshToken = jwt.sign(
+    { userId },
+    process.env.REFRESH_SECRET, // different secret!
+    { expiresIn: '7d' }
+  );
+
+  return { accessToken, refreshToken };
+}
+
+// ─── Login endpoint ───────────────────────────────────────────
+app.post('/auth/login', async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+
+    const user = await User.findOne({ email }).select('+password');
+    if (!user) return res.status(401).json({ error: 'Invalid credentials' });
+
+    const isValid = await bcrypt.compare(password, user.password);
+    if (!isValid) return res.status(401).json({ error: 'Invalid credentials' });
+
+    const { accessToken, refreshToken } = generateTokens(user._id, user.role);
+
+    // Store refresh token in DB (for revocation)
+    await RefreshToken.create({ token: refreshToken, userId: user._id });
+
+    // Send refresh token as httpOnly cookie (XSS-safe)
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,   // can't be accessed by JS
+      secure: true,     // HTTPS only
+      sameSite: 'strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in ms
+    });
+
+    res.json({ accessToken }); // access token in response body
+  } catch (err) { next(err); }
+});
+
+// ─── Auth middleware ──────────────────────────────────────────
+async function authenticate(req, res, next) {
+  try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader?.startsWith('Bearer ')) {
+      return res.status(401).json({ error: 'No token provided' });
+    }
+
+    const token = authHeader.split(' ')[1];
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    // Optionally: check if token is blacklisted
+    const isBlacklisted = await redis.get(\`blacklist:\${token}\`);
+    if (isBlacklisted) return res.status(401).json({ error: 'Token revoked' });
+
+    req.user = decoded; // { userId, role, iat, exp }
+    next();
+  } catch (err) {
+    if (err.name === 'TokenExpiredError') {
+      return res.status(401).json({ error: 'Token expired', code: 'TOKEN_EXPIRED' });
+    }
+    if (err.name === 'JsonWebTokenError') {
+      return res.status(401).json({ error: 'Invalid token' });
+    }
+    next(err);
+  }
+}
+
+// ─── Refresh token endpoint ───────────────────────────────────
+app.post('/auth/refresh', async (req, res, next) => {
+  try {
+    const { refreshToken } = req.cookies;
+    if (!refreshToken) return res.status(401).json({ error: 'No refresh token' });
+
+    const decoded = jwt.verify(refreshToken, process.env.REFRESH_SECRET);
+
+    // Verify it's in our DB (not revoked)
+    const stored = await RefreshToken.findOne({ token: refreshToken });
+    if (!stored) return res.status(401).json({ error: 'Refresh token revoked' });
+
+    const user = await User.findById(decoded.userId);
+    const { accessToken } = generateTokens(user._id, user.role);
+
+    res.json({ accessToken });
+  } catch (err) { next(err); }
+});
+
+// ─── Logout ───────────────────────────────────────────────────
+app.post('/auth/logout', authenticate, async (req, res) => {
+  // Blacklist the access token in Redis until it expires
+  const token = req.headers.authorization.split(' ')[1];
+  const decoded = jwt.decode(token);
+  const ttl = decoded.exp - Math.floor(Date.now() / 1000);
+  await redis.setex(\`blacklist:\${token}\`, ttl, '1');
+
+  // Delete refresh token from DB
+  await RefreshToken.deleteOne({ token: req.cookies.refreshToken });
+  res.clearCookie('refreshToken');
+  res.json({ message: 'Logged out successfully' });
+});</pre>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="interview">
+    <div class="interview-list">
+      <div class="interview-item"><span class="q-num">Q1</span>What are the three parts of a JWT?</div>
+      <div class="interview-item"><span class="q-num">Q2</span>What is the difference between access tokens and refresh tokens?</div>
+      <div class="interview-item"><span class="q-num">Q3</span>How do you invalidate a JWT before it expires?</div>
+      <div class="interview-item"><span class="q-num">Q4</span>Should you store JWT in localStorage or httpOnly cookies? Why?</div>
+      <div class="interview-item"><span class="q-num">Q5</span>What is the difference between JWT and session-based authentication?</div>
+    </div>
+  </div>
+</div>
+
+<div class="topic" id="cors" data-section="Auth & Security">
+  <div class="topic-eyebrow">Auth & Security 🔥 IMPORTANT</div>
+  <div class="topic-header">
+    <span class="badge badge-r">🔥 IMPORTANT</span>
+    <h2 class="topic-title">CORS</h2>
+    <button class="mark-btn undone" onclick="toggleDone(this)">Mark Done</button>
+  </div>
+  <p class="topic-summary">Cross-Origin Resource Sharing (CORS) is a browser security mechanism that controls which origins can access your API.</p>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab(this,'explanation')">📖 Explanation</button>
+    <button class="tab-btn" onclick="switchTab(this,'code')">💻 Code</button>
+    <button class="tab-btn" onclick="switchTab(this,'interview')">🎯 Interview Qs</button>
+  </div>
+  <div class="tab-content active" data-tab="explanation">
+    <div class="explanation">
+      <h4>Same-Origin Policy</h4>
+      <p>Browsers enforce that a page at <span class="highlight">https://app.com</span> cannot make fetch requests to <span class="highlight">https://api.otherdomain.com</span> unless that other domain explicitly allows it via CORS headers.</p>
+      <p>Same origin = same protocol + same host + same port. Any difference = cross-origin.</p>
+      <h4>Preflight Request</h4>
+      <p>For "non-simple" requests (custom headers, non-GET/POST, JSON body), the browser sends an <span class="highlight">OPTIONS preflight</span> request first to ask "do you allow this?" The server must respond with appropriate CORS headers before the actual request is sent.</p>
+      <div class="diagram">
+Browser                          Server
+   |                                |
+   |-- OPTIONS /api/users -------→  |
+   |   Origin: https://app.com      |
+   |   Access-Control-Request-Method: POST    |
+   |                                |
+   |← 204 No Content ---------------|
+   |  Access-Control-Allow-Origin: https://app.com
+   |  Access-Control-Allow-Methods: POST
+   |                                |
+   |-- POST /api/users ----------→  |  (actual request)
+   |← 200 OK -----------------------|</div>
+      <h4>Key CORS Headers</h4>
+      <ul>
+        <li><span class="highlight">Access-Control-Allow-Origin</span>: which origins allowed (* = all)</li>
+        <li><span class="highlight">Access-Control-Allow-Methods</span>: GET, POST, PUT, DELETE, etc.</li>
+        <li><span class="highlight">Access-Control-Allow-Headers</span>: Content-Type, Authorization, etc.</li>
+        <li><span class="highlight">Access-Control-Allow-Credentials</span>: true (for cookies/auth headers)</li>
+        <li><span class="highlight">Access-Control-Max-Age</span>: how long to cache preflight (seconds)</li>
+      </ul>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="code">
+    <div class="code-block">
+      <div class="code-label"><span>cors-config.js</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+      <pre>const cors = require('cors');
+
+// ─── Simple — allow all origins (development only!) ──────────
+app.use(cors()); // ❌ never in production
+
+// ─── Production config ────────────────────────────────────────
+const allowedOrigins = [
+  'https://app.policybazaar.com',
+  'https://www.policybazaar.com',
+  'https://admin.policybazaar.com',
+  ...(process.env.NODE_ENV === 'development' ? ['http://localhost:3000'] : []),
+];
+
+const corsOptions = {
+  origin: (origin, callback) => {
+    // Allow requests with no origin (server-to-server, Postman)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error(\`CORS: Origin \${origin} not allowed\`));
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Request-ID'],
+  credentials: true,          // allow cookies
+  maxAge: 86400,              // cache preflight for 24 hours
+  optionsSuccessStatus: 204,  // some legacy browsers need 200
+};
+
+app.use(cors(corsOptions));
+
+// ─── Manual CORS (without package, to understand internals) ──
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Vary', 'Origin'); // tell CDN to cache per origin
+  }
+  
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  
+  // Handle preflight
+  if (req.method === 'OPTIONS') {
+    res.setHeader('Access-Control-Max-Age', '86400');
+    return res.status(204).end();
+  }
+  
+  next();
+});
+
+// ─── Different CORS per route ─────────────────────────────────
+// Public API — allow all
+app.get('/api/public', cors(), publicHandler);
+
+// Private API — restricted origins
+app.post('/api/private', cors(corsOptions), privateHandler);</pre>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="interview">
+    <div class="interview-list">
+      <div class="interview-item"><span class="q-num">Q1</span>What is the Same-Origin Policy and why does it exist?</div>
+      <div class="interview-item"><span class="q-num">Q2</span>What is a CORS preflight request and when is it triggered?</div>
+      <div class="interview-item"><span class="q-num">Q3</span>What is the difference between CORS with and without credentials?</div>
+      <div class="interview-item"><span class="q-num">Q4</span>Can you use Access-Control-Allow-Origin: * with credentials: true?</div>
+      <div class="interview-item"><span class="q-num">Q5</span>Is CORS a server-side or client-side restriction?</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ REDIS ════════════ -->
+<div class="topic" id="redis" data-section="Redis">
+  <div class="topic-eyebrow">Redis 🔥 ADVANCED + IMPORTANT</div>
+  <div class="topic-header">
+    <span class="badge badge-p">REDIS</span>
+    <h2 class="topic-title">What is Redis?</h2>
+    <button class="mark-btn undone" onclick="toggleDone(this)">Mark Done</button>
+  </div>
+  <p class="topic-summary">Redis is an in-memory data store used as a cache, message broker, and session store. Sub-millisecond response times make it ideal for caching hot data.</p>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab(this,'explanation')">📖 Explanation</button>
+    <button class="tab-btn" onclick="switchTab(this,'code')">💻 Code</button>
+    <button class="tab-btn" onclick="switchTab(this,'interview')">🎯 Interview Qs</button>
+  </div>
+  <div class="tab-content active" data-tab="explanation">
+    <div class="explanation">
+      <h4>Why Redis?</h4>
+      <p>MongoDB query: ~10-50ms. Redis GET: ~0.1ms. For frequently-read data, caching in Redis reduces DB load by 90%+ and speeds up responses dramatically.</p>
+      <h4>Redis Data Structures</h4>
+      <ul>
+        <li><span class="highlight">String</span>: key-value, numbers — cache JSON, counters</li>
+        <li><span class="highlight">Hash</span>: field-value map — store objects without serializing</li>
+        <li><span class="highlight">List</span>: linked list — queues, recent activity feeds</li>
+        <li><span class="highlight">Set</span>: unique values — unique visitors, tags</li>
+        <li><span class="highlight">Sorted Set</span>: scored members — leaderboards, rate limiting</li>
+        <li><span class="highlight">Pub/Sub</span>: messaging — real-time notifications</li>
+        <li><span class="highlight">Stream</span>: append-only log — event sourcing</li>
+      </ul>
+      <div class="diagram">
+Without Redis cache:
+User → Node.js → MongoDB (50ms) → User  [every request!]
+
+With Redis cache:
+User → Node.js → Redis (0.1ms) → User  [cache hit, 99% of requests]
+User → Node.js → MongoDB (50ms) → Redis (store) → User  [cache miss, 1%]</div>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="code">
+    <div class="code-block">
+      <div class="code-label"><span>redis-complete.js</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+      <pre>const { createClient } = require('redis');
+
+// ─── Connection ────────────────────────────────────────────────
+const redis = createClient({
+  url: process.env.REDIS_URL || 'redis://localhost:6379',
+  socket: {
+    reconnectStrategy: (retries) => Math.min(retries * 100, 3000),
+  },
+});
+
+redis.on('error', (err) => console.error('Redis error:', err));
+redis.on('connect', () => console.log('Redis connected'));
+
+await redis.connect();
+
+// ─── Basic operations ────────────────────────────────────────
+await redis.set('key', 'value');
+await redis.set('key', 'value', { EX: 3600 }); // expire in 1 hour
+const val = await redis.get('key');             // 'value'
+await redis.del('key');
+const ttl = await redis.ttl('key');             // seconds until expiry
+
+// ─── Cache middleware (route-level) ──────────────────────────
+function cacheMiddleware(ttlSeconds = 300) {
+  return async (req, res, next) => {
+    const key = \`cache:\${req.method}:\${req.url}:\${req.user?.id || 'anon'}\`;
+    
+    const cached = await redis.get(key);
+    if (cached) {
+      console.log('Cache HIT:', key);
+      return res.json(JSON.parse(cached));
+    }
+    
+    // Capture the response to cache it
+    const originalJson = res.json.bind(res);
+    res.json = async (data) => {
+      await redis.set(key, JSON.stringify(data), { EX: ttlSeconds });
+      originalJson(data);
+    };
+    
+    next();
+  };
+}
+
+// Apply to routes:
+app.get('/products', cacheMiddleware(600), getProducts);
+app.get('/categories', cacheMiddleware(3600), getCategories);
+
+// ─── Caching function pattern ─────────────────────────────────
+async function getCachedUser(userId) {
+  const cacheKey = \`user:\${userId}\`;
+  
+  // Try cache first
+  const cached = await redis.get(cacheKey);
+  if (cached) return JSON.parse(cached);
+  
+  // Cache miss — fetch from DB
+  const user = await User.findById(userId).select('-password');
+  if (!user) return null;
+  
+  // Store in cache with 30 minute TTL
+  await redis.set(cacheKey, JSON.stringify(user), { EX: 1800 });
+  
+  return user;
+}
+
+// Invalidate when user updates
+async function updateUser(userId, data) {
+  const user = await User.findByIdAndUpdate(userId, data, { new: true });
+  await redis.del(\`user:\${userId}\`); // ← invalidate cache!
+  return user;
+}
+
+// ─── Rate limiting with Redis ─────────────────────────────────
+async function rateLimit(identifier, maxRequests, windowSeconds) {
+  const key = \`rl:\${identifier}\`;
+  
+  const current = await redis.incr(key);
+  if (current === 1) {
+    await redis.expire(key, windowSeconds); // set TTL on first hit
+  }
+  
+  return {
+    allowed: current <= maxRequests,
+    count: current,
+    remaining: Math.max(0, maxRequests - current),
+  };
+}
+
+// Usage in middleware:
+app.use(async (req, res, next) => {
+  const identifier = req.user?.id || req.ip;
+  const { allowed, remaining } = await rateLimit(identifier, 100, 60);
+  
+  res.setHeader('X-RateLimit-Remaining', remaining);
+  
+  if (!allowed) {
+    return res.status(429).json({ error: 'Rate limit exceeded. Try again later.' });
+  }
+  next();
+});</pre>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="interview">
+    <div class="interview-list">
+      <div class="interview-item"><span class="q-num">Q1</span>What is Redis and what are its main use cases in Node.js?</div>
+      <div class="interview-item"><span class="q-num">Q2</span>What Redis data structures do you know and when would you use each?</div>
+      <div class="interview-item"><span class="q-num">Q3</span>How do you implement cache invalidation?</div>
+      <div class="interview-item"><span class="q-num">Q4</span>What is the cache-aside pattern?</div>
+      <div class="interview-item"><span class="q-num">Q5</span>How does Redis help with rate limiting?</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ ADVANCED NODE ════════════ -->
+<div class="topic" id="worker-threads" data-section="Advanced Node.js">
+  <div class="topic-eyebrow">Advanced Node.js 🔥 VERY IMPORTANT</div>
+  <div class="topic-header">
+    <span class="badge badge-r">🔥 ADVANCED</span>
+    <h2 class="topic-title">Worker Threads</h2>
+    <button class="mark-btn undone" onclick="toggleDone(this)">Mark Done</button>
+  </div>
+  <p class="topic-summary">Worker Threads enable true multi-threading in Node.js for CPU-intensive tasks — without blocking the main event loop.</p>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab(this,'explanation')">📖 Explanation</button>
+    <button class="tab-btn" onclick="switchTab(this,'code')">💻 Code</button>
+    <button class="tab-btn" onclick="switchTab(this,'interview')">🎯 Interview Qs</button>
+  </div>
+  <div class="tab-content active" data-tab="explanation">
+    <div class="explanation">
+      <h4>Why Worker Threads?</h4>
+      <p>The event loop is single-threaded. A CPU-heavy task (image resize, PDF generation, complex calculation) blocks it for all other requests. Worker Threads solve this by running CPU tasks in separate V8 instances with their own event loop.</p>
+      <div class="diagram">
+WITHOUT Worker Threads:
+Main thread: [req1] [CPU task 5000ms] [req2] [req3]
+             ← all requests wait during CPU task! →
+
+WITH Worker Threads:
+Main thread: [req1] ─────────────────────→ [res1]
+             [req2] ─────────────────────→ [res2]
+Worker 1:           [CPU task 5000ms]
+             ← req1, req2 handled while CPU task runs! →</div>
+      <h4>Worker Threads vs Cluster vs Child Process</h4>
+      <ul>
+        <li><span class="highlight">Worker Threads</span>: CPU tasks within same process, shared memory available</li>
+        <li><span class="highlight">Cluster</span>: Multiple Node processes for I/O scaling on multi-core CPUs</li>
+        <li><span class="highlight">Child Process</span>: Run external scripts, isolated process, pipe communication</li>
+      </ul>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="code">
+    <div class="code-block">
+      <div class="code-label"><span>worker-threads.js</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+      <pre>const { Worker, isMainThread, parentPort, workerData } = require('worker_threads');
+
+// ─── worker.js (the worker file) ─────────────────────────────
+if (!isMainThread) {
+  // This code runs in the worker thread
+  const { data, type } = workerData;
+
+  let result;
+  if (type === 'fibonacci') {
+    function fib(n) {
+      if (n <= 1) return n;
+      return fib(n - 1) + fib(n - 2);
+    }
+    result = fib(data);
+  } else if (type === 'sort') {
+    result = data.sort((a, b) => a - b);
+  }
+
+  // Send result back to main thread
+  parentPort.postMessage({ result, type });
+}
+
+// ─── main.js ─────────────────────────────────────────────────
+function runInWorker(data, type) {
+  return new Promise((resolve, reject) => {
+    const worker = new Worker(__filename, {
+      workerData: { data, type },
+    });
+
+    worker.on('message', resolve);
+    worker.on('error', reject);
+    worker.on('exit', (code) => {
+      if (code !== 0) reject(new Error(\`Worker exited with code \${code}\`));
+    });
+  });
+}
+
+// API endpoint that uses worker for CPU task
+app.get('/fibonacci/:n', async (req, res, next) => {
+  try {
+    const n = parseInt(req.params.n);
+    if (n > 50) return res.status(400).json({ error: 'Too large' });
+
+    // Runs in worker thread — doesn't block event loop!
+    const { result } = await runInWorker(n, 'fibonacci');
+    res.json({ n, fibonacci: result });
+  } catch (err) { next(err); }
+});
+
+// ─── Worker Pool (production pattern) ────────────────────────
+// Creating a new worker for every request is expensive
+// Use a pool to reuse workers
+
+const { StaticPool } = require('node-worker-threads-pool');
+
+const pool = new StaticPool({
+  size: 4,            // pool of 4 workers
+  task: './worker.js', // worker file
+});
+
+app.post('/process-image', async (req, res) => {
+  // Pool manages worker lifecycle automatically
+  const result = await pool.exec({ image: req.body.image, op: 'resize' });
+  res.json(result);
+});
+
+// ─── SharedArrayBuffer — zero-copy data sharing ───────────────
+const sharedBuffer = new SharedArrayBuffer(4);
+const sharedArray = new Int32Array(sharedBuffer);
+
+const worker = new Worker('./worker.js', {
+  workerData: { sharedBuffer },
+});
+
+// Main thread can read what worker writes (no serialization!)
+Atomics.store(sharedArray, 0, 42);
+worker.postMessage('read'); // tell worker to use sharedArray[0]</pre>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="interview">
+    <div class="interview-list">
+      <div class="interview-item"><span class="q-num">Q1</span>What are Worker Threads and why were they added to Node.js?</div>
+      <div class="interview-item"><span class="q-num">Q2</span>What is the difference between Worker Threads, Cluster, and Child Process?</div>
+      <div class="interview-item"><span class="q-num">Q3</span>Can Worker Threads share memory? How?</div>
+      <div class="interview-item"><span class="q-num">Q4</span>What is a worker pool and why is it better than creating a new worker per request?</div>
+    </div>
+  </div>
+</div>
+
+<div class="topic" id="cluster" data-section="Advanced Node.js">
+  <div class="topic-eyebrow">Advanced Node.js 🔥</div>
+  <div class="topic-header">
+    <span class="badge badge-r">🔥 ADVANCED</span>
+    <h2 class="topic-title">Cluster Module</h2>
+    <button class="mark-btn undone" onclick="toggleDone(this)">Mark Done</button>
+  </div>
+  <p class="topic-summary">The cluster module forks Node.js into multiple processes (one per CPU core) to handle more concurrent requests and utilize multi-core machines.</p>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab(this,'explanation')">📖 Explanation</button>
+    <button class="tab-btn" onclick="switchTab(this,'code')">💻 Code</button>
+    <button class="tab-btn" onclick="switchTab(this,'interview')">🎯 Interview Qs</button>
+  </div>
+  <div class="tab-content active" data-tab="explanation">
+    <div class="explanation">
+      <h4>The Problem</h4>
+      <p>A single Node.js process runs on ONE CPU core. An 8-core machine is 87.5% idle! Cluster forks worker processes that all share the same port, and the OS distributes connections among them.</p>
+      <div class="diagram">
+Master Process (cluster.isMaster)
+  ├── Worker Process 1 (CPU core 1) → handles requests
+  ├── Worker Process 2 (CPU core 2) → handles requests
+  ├── Worker Process 3 (CPU core 3) → handles requests
+  ├── Worker Process 4 (CPU core 4) → handles requests
+  ├── Worker Process 5 (CPU core 5) → handles requests
+  ├── Worker Process 6 (CPU core 6) → handles requests
+  ├── Worker Process 7 (CPU core 7) → handles requests
+  └── Worker Process 8 (CPU core 8) → handles requests
+All workers share port 3000 — OS load balances between them</div>
+      <h4>Cluster vs PM2</h4>
+      <p>In production, you typically use <span class="highlight">PM2</span> (<code>pm2 start app.js -i max</code>) instead of writing your own cluster code — PM2 handles clustering, restarts, and monitoring automatically.</p>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="code">
+    <div class="code-block">
+      <div class="code-label"><span>cluster.js</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+      <pre>const cluster = require('cluster');
+const os = require('os');
+const http = require('http');
+
+const NUM_CPUS = os.cpus().length; // e.g., 8
+
+if (cluster.isMaster) {
+  console.log(\`Master PID \${process.pid} starting \${NUM_CPUS} workers\`);
+
+  // Fork a worker for each CPU core
+  for (let i = 0; i < NUM_CPUS; i++) {
+    cluster.fork();
+  }
+
+  // Restart workers that die
+  cluster.on('exit', (worker, code, signal) => {
+    console.warn(\`Worker \${worker.process.pid} died (signal: \${signal}). Restarting...\`);
+    cluster.fork(); // replace the dead worker
+  });
+
+  // Send message to all workers
+  cluster.on('online', (worker) => {
+    console.log(\`Worker \${worker.process.pid} is online\`);
+    worker.send({ type: 'config', data: { maxConnections: 1000 } });
+  });
+
+} else {
+  // Workers run the actual server
+  const express = require('express');
+  const app = express();
+
+  app.get('/', (req, res) => {
+    res.send(\`Response from worker \${process.pid}\`);
+  });
+
+  // CPU-intensive route (each worker handles it independently)
+  app.get('/heavy', (req, res) => {
+    let result = 0;
+    for (let i = 0; i < 1e8; i++) result += i; // heavy computation
+    res.json({ result, pid: process.pid });
+  });
+
+  // Receive messages from master
+  process.on('message', (msg) => {
+    if (msg.type === 'config') {
+      console.log(\`Worker \${process.pid} configured:\`, msg.data);
+    }
+  });
+
+  app.listen(3000, () => {
+    console.log(\`Worker \${process.pid} listening on port 3000\`);
+  });
+}
+
+// ─── Using PM2 instead (recommended for production) ──────────
+// pm2 start app.js --name api -i max   # -i max = one per CPU
+// pm2 start app.js --name api -i 4     # exactly 4 workers
+// pm2 status                           # see all processes
+// pm2 logs                             # view logs
+// pm2 reload api                       # zero-downtime reload
+// pm2 save                             # save config
+// pm2 startup                          # auto-start on reboot
+
+// ecosystem.config.js for PM2:
+module.exports = {
+  apps: [{
+    name: 'policybazaar-api',
+    script: './src/server.js',
+    instances: 'max',           // use all CPUs
+    exec_mode: 'cluster',
+    watch: false,
+    max_memory_restart: '1G',
+    env: { NODE_ENV: 'production' },
+    error_file: './logs/err.log',
+    out_file: './logs/out.log',
+  }],
+};</pre>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="interview">
+    <div class="interview-list">
+      <div class="interview-item"><span class="q-num">Q1</span>What is the Node.js cluster module and why is it needed?</div>
+      <div class="interview-item"><span class="q-num">Q2</span>How does the cluster module handle incoming connections?</div>
+      <div class="interview-item"><span class="q-num">Q3</span>What is PM2 and what advantages does it have over manual clustering?</div>
+      <div class="interview-item"><span class="q-num">Q4</span>Can cluster workers share state? If not, how do you share state across workers?</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ WEBSOCKETS ════════════ -->
+<div class="topic" id="websockets" data-section="Real-Time">
+  <div class="topic-eyebrow">Real-Time 🔥</div>
+  <div class="topic-header">
+    <span class="badge badge-t">REAL-TIME</span>
+    <h2 class="topic-title">WebSockets</h2>
+    <button class="mark-btn undone" onclick="toggleDone(this)">Mark Done</button>
+  </div>
+  <p class="topic-summary">WebSockets provide full-duplex, persistent TCP connections between client and server — enabling real-time bidirectional communication without HTTP overhead.</p>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab(this,'explanation')">📖 Explanation</button>
+    <button class="tab-btn" onclick="switchTab(this,'code')">💻 Code</button>
+    <button class="tab-btn" onclick="switchTab(this,'interview')">🎯 Interview Qs</button>
+  </div>
+  <div class="tab-content active" data-tab="explanation">
+    <div class="explanation">
+      <h4>HTTP vs WebSocket</h4>
+      <div class="diagram">
+HTTP (request-response):
+Client → [request] → Server
+Client ← [response] ← Server
+Connection closed. New connection for every message.
+
+WebSocket (persistent):
+Client ←──────────── persistent connection ──────────────→ Server
+       [msg] →  [msg] ←  [msg] →  [msg] ←  [msg] ←  [msg]
+One connection, data flows freely in both directions!</div>
+      <h4>WebSocket Handshake</h4>
+      <p>WebSocket starts as an HTTP request with <span class="highlight">Upgrade: websocket</span> header. The server responds with 101 Switching Protocols — then they switch to WebSocket protocol. After that, no more HTTP.</p>
+      <h4>Use Cases</h4>
+      <ul>
+        <li>Chat applications</li>
+        <li>Live notifications</li>
+        <li>Real-time dashboards</li>
+        <li>Collaborative editing (Google Docs style)</li>
+        <li>Live sports scores / stock prices</li>
+        <li>Multiplayer games</li>
+      </ul>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="code">
+    <div class="code-block">
+      <div class="code-label"><span>websocket-chat.js — Socket.IO chat app</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+      <pre>// ─── Server (socket.io) ───────────────────────────────────────
+const express = require('express');
+const { createServer } = require('http');
+const { Server } = require('socket.io');
+
+const app = express();
+const httpServer = createServer(app);
+const io = new Server(httpServer, {
+  cors: {
+    origin: 'https://chat.app.com',
+    methods: ['GET', 'POST'],
+  },
+});
+
+// Online users tracker
+const onlineUsers = new Map(); // socketId → { userId, username, room }
+
+// ─── Authentication middleware for Socket.IO ─────────────────
+io.use(async (socket, next) => {
+  try {
+    const token = socket.handshake.auth.token;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    socket.userId = decoded.userId;
+    socket.username = decoded.username;
+    next();
+  } catch (err) {
+    next(new Error('Authentication error'));
+  }
+});
+
+// ─── Connection handler ───────────────────────────────────────
+io.on('connection', (socket) => {
+  console.log(\`User connected: \${socket.userId} (\${socket.id})\`);
+
+  // ─── Join a room ─────────────────────────────────────────────
+  socket.on('join:room', async ({ roomId }) => {
+    socket.join(roomId); // subscribe to room
+    onlineUsers.set(socket.id, { userId: socket.userId, roomId });
+
+    // Load last 50 messages
+    const messages = await Message.find({ roomId })
+      .sort({ createdAt: -1 })
+      .limit(50);
+
+    socket.emit('messages:history', messages.reverse());
+
+    // Notify others in room
+    socket.to(roomId).emit('user:joined', {
+      userId: socket.userId,
+      username: socket.username,
+    });
+
+    // Send online users list
+    io.to(roomId).emit('users:online', getOnlineInRoom(roomId));
+  });
+
+  // ─── Send message ─────────────────────────────────────────────
+  socket.on('message:send', async ({ roomId, content }) => {
+    const message = await Message.create({
+      roomId,
+      userId: socket.userId,
+      username: socket.username,
+      content,
+    });
+
+    // Broadcast to EVERYONE in room (including sender)
+    io.to(roomId).emit('message:new', message);
+  });
+
+  // ─── Typing indicator ─────────────────────────────────────────
+  socket.on('typing:start', ({ roomId }) => {
+    socket.to(roomId).emit('user:typing', { username: socket.username });
+  });
+
+  socket.on('typing:stop', ({ roomId }) => {
+    socket.to(roomId).emit('user:stopped-typing', { username: socket.username });
+  });
+
+  // ─── Disconnect ───────────────────────────────────────────────
+  socket.on('disconnect', (reason) => {
+    const user = onlineUsers.get(socket.id);
+    if (user) {
+      socket.to(user.roomId).emit('user:left', { userId: socket.userId });
+      onlineUsers.delete(socket.id);
+      io.to(user.roomId).emit('users:online', getOnlineInRoom(user.roomId));
+    }
+    console.log(\`User disconnected: \${socket.userId} (reason: \${reason})\`);
+  });
+});
+
+// Emit to specific user (across all their connections)
+function emitToUser(userId, event, data) {
+  io.to(\`user:\${userId}\`).emit(event, data);
+}
+
+// When user connects, join their personal room
+socket.on('connection', () => {
+  socket.join(\`user:\${socket.userId}\`);
+});
+
+httpServer.listen(3000);</pre>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="interview">
+    <div class="interview-list">
+      <div class="interview-item"><span class="q-num">Q1</span>What is the difference between HTTP and WebSocket?</div>
+      <div class="interview-item"><span class="q-num">Q2</span>How does the WebSocket handshake work?</div>
+      <div class="interview-item"><span class="q-num">Q3</span>What is the difference between socket.emit(), socket.to(room).emit(), and io.emit()?</div>
+      <div class="interview-item"><span class="q-num">Q4</span>How do you scale WebSocket servers across multiple Node processes?</div>
+      <div class="interview-item"><span class="q-num">Q5</span>What are Socket.IO rooms and namespaces?</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ DOCKER ════════════ -->
+<div class="topic" id="docker" data-section="DevOps">
+  <div class="topic-eyebrow">DevOps 🔥 VERY IMPORTANT</div>
+  <div class="topic-header">
+    <span class="badge badge-y">DEVOPS</span>
+    <h2 class="topic-title">Docker & Containerization</h2>
+    <button class="mark-btn undone" onclick="toggleDone(this)">Mark Done</button>
+  </div>
+  <p class="topic-summary">Docker packages your Node.js app and all its dependencies into a container that runs identically everywhere — dev, staging, production.</p>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab(this,'explanation')">📖 Explanation</button>
+    <button class="tab-btn" onclick="switchTab(this,'code')">💻 Code</button>
+    <button class="tab-btn" onclick="switchTab(this,'interview')">🎯 Interview Qs</button>
+  </div>
+  <div class="tab-content active" data-tab="explanation">
+    <div class="explanation">
+      <h4>Why Docker?</h4>
+      <p>"It works on my machine" → Docker makes it work <span class="highlight">everywhere</span>. A container includes Node.js version, npm packages, OS-level dependencies — everything is bundled.</p>
+      <h4>Key Concepts</h4>
+      <ul>
+        <li><span class="highlight">Image</span>: Blueprint — built from Dockerfile, immutable</li>
+        <li><span class="highlight">Container</span>: Running instance of an image</li>
+        <li><span class="highlight">Dockerfile</span>: Instructions to build an image</li>
+        <li><span class="highlight">docker-compose</span>: Define multi-container apps (Node + MongoDB + Redis)</li>
+        <li><span class="highlight">Layer caching</span>: Each Dockerfile instruction is a cached layer — order matters for build speed</li>
+      </ul>
+      <h4>Multi-Stage Builds</h4>
+      <p>Build the app in one stage (with dev dependencies), copy only the production artifact to a smaller final image. This reduces image size from ~1GB to ~100MB.</p>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="code">
+    <div class="code-block">
+      <div class="code-label"><span>Dockerfile + docker-compose.yml</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+      <pre># ─── Dockerfile (production-optimized) ──────────────────────────
+
+# Stage 1: Build
+FROM node:20-alpine AS builder
+WORKDIR /app
+
+# Copy package files FIRST (layer caching — only re-run npm install if these change)
+COPY package*.json ./
+RUN npm ci --only=production  # ci = clean install, faster than npm install
+
+# Copy source code
+COPY . .
+
+# Stage 2: Production image (smaller)
+FROM node:20-alpine AS production
+WORKDIR /app
+
+# Non-root user for security
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+
+# Copy only production artifacts
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/src ./src
+COPY --from=builder /app/package.json ./package.json
+
+# Switch to non-root user
+USER appuser
+
+# Expose port
+EXPOSE 3000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=10s \
+  CMD node healthcheck.js || exit 1
+
+# Start app
+CMD ["node", "src/server.js"]
+
+# ─── .dockerignore (exclude from build context) ──────────────────
+# node_modules
+# .env
+# .git
+# *.log
+# coverage/
+# .nyc_output
+
+# ─── docker-compose.yml (multi-service) ──────────────────────────
+version: '3.9'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      MONGO_URI: mongodb://mongo:27017/myapp
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: ${JWT_SECRET}
+    depends_on:
+      - mongo
+      - redis
+    restart: unless-stopped
+    networks:
+      - app-network
+
+  mongo:
+    image: mongo:7
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - app-network
+
+  redis:
+    image: redis:7-alpine
+    volumes:
+      - redis_data:/data
+    networks:
+      - app-network
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - api
+    networks:
+      - app-network
+
+volumes:
+  mongo_data:
+  redis_data:
+
+networks:
+  app-network:
+    driver: bridge
+
+# ─── Common Docker commands ───────────────────────────────────────
+# docker build -t myapp:1.0 .           # build image
+# docker run -p 3000:3000 myapp:1.0     # run container
+# docker-compose up -d                  # start all services (background)
+# docker-compose down                   # stop all services
+# docker logs api -f                    # follow container logs
+# docker exec -it api sh                # shell into container
+# docker stats                          # resource usage</pre>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="interview">
+    <div class="interview-list">
+      <div class="interview-item"><span class="q-num">Q1</span>What is Docker and what problem does it solve for Node.js apps?</div>
+      <div class="interview-item"><span class="q-num">Q2</span>What is the difference between a Docker image and a container?</div>
+      <div class="interview-item"><span class="q-num">Q3</span>What is a multi-stage Docker build and why is it used?</div>
+      <div class="interview-item"><span class="q-num">Q4</span>Why should you put COPY package.json before COPY . in a Dockerfile?</div>
+      <div class="interview-item"><span class="q-num">Q5</span>What is docker-compose used for?</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ TESTING ════════════ -->
+<div class="topic" id="testing" data-section="Testing">
+  <div class="topic-eyebrow">Testing 🔥 IMPORTANT</div>
+  <div class="topic-header">
+    <span class="badge badge-p">TESTING</span>
+    <h2 class="topic-title">Testing with Jest & Supertest</h2>
+    <button class="mark-btn undone" onclick="toggleDone(this)">Mark Done</button>
+  </div>
+  <p class="topic-summary">Jest for unit testing, Supertest for integration testing HTTP endpoints without spinning up a real server.</p>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab(this,'explanation')">📖 Explanation</button>
+    <button class="tab-btn" onclick="switchTab(this,'code')">💻 Code</button>
+    <button class="tab-btn" onclick="switchTab(this,'interview')">🎯 Interview Qs</button>
+  </div>
+  <div class="tab-content active" data-tab="explanation">
+    <div class="explanation">
+      <h4>Testing Pyramid</h4>
+      <div class="diagram">
+           ▲
+          /E2E\          few — slow, expensive, brittle
+         /──────\
+        /  Integ \       some — test API endpoints with DB
+       /──────────\
+      /    Unit    \     many — fast, isolated, mocked deps
+     ──────────────────</div>
+      <h4>Types in Node.js Testing</h4>
+      <ul>
+        <li><span class="highlight">Unit tests</span>: Test a function in isolation. Mock all external dependencies (DB, Redis, external APIs). Fast.</li>
+        <li><span class="highlight">Integration tests</span>: Test an API endpoint with real (or in-memory) DB. Supertest + Jest.</li>
+        <li><span class="highlight">E2E tests</span>: Full app testing. Usually with Playwright/Cypress on the frontend.</li>
+      </ul>
+      <h4>Jest Key Concepts</h4>
+      <ul>
+        <li><span class="highlight">jest.fn()</span>: Create a mock function that tracks calls</li>
+        <li><span class="highlight">jest.mock()</span>: Auto-mock an entire module</li>
+        <li><span class="highlight">jest.spyOn()</span>: Mock a specific method on an object</li>
+        <li><span class="highlight">beforeEach/afterEach</span>: Setup/teardown per test</li>
+        <li><span class="highlight">beforeAll/afterAll</span>: Setup/teardown per test suite</li>
+      </ul>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="code">
+    <div class="code-block">
+      <div class="code-label"><span>testing.test.js — Jest + Supertest</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+      <pre>const request = require('supertest');
+const mongoose = require('mongoose');
+const app = require('../src/app');
+const User = require('../src/models/User');
+
+// ─── Unit test example ────────────────────────────────────────
+// auth.service.js
+const { hashPassword, comparePassword } = require('../src/services/auth');
+
+describe('Auth Service', () => {
+  test('hashPassword creates a hash that is not the original', async () => {
+    const hash = await hashPassword('myPassword123');
+    expect(hash).not.toBe('myPassword123');
+    expect(hash).toMatch(/^\$2[aby]\$/); // bcrypt pattern
+  });
+
+  test('comparePassword returns true for correct password', async () => {
+    const hash = await hashPassword('myPassword123');
+    const result = await comparePassword('myPassword123', hash);
+    expect(result).toBe(true);
+  });
+
+  test('comparePassword returns false for wrong password', async () => {
+    const hash = await hashPassword('myPassword123');
+    const result = await comparePassword('wrongPassword', hash);
+    expect(result).toBe(false);
+  });
+});
+
+// ─── Integration test with Supertest ─────────────────────────
+describe('POST /auth/login', () => {
+  beforeAll(async () => {
+    await mongoose.connect(process.env.TEST_MONGO_URI);
+    // Create test user
+    await User.create({
+      email: 'test@test.com',
+      password: await hashPassword('Password123!'),
+      name: 'Test User',
+    });
+  });
+
+  afterAll(async () => {
+    await User.deleteMany({});
+    await mongoose.disconnect();
+  });
+
+  test('returns 200 and token for valid credentials', async () => {
+    const res = await request(app)
+      .post('/auth/login')
+      .send({ email: 'test@test.com', password: 'Password123!' });
+
+    expect(res.status).toBe(200);
+    expect(res.body).toHaveProperty('accessToken');
+    expect(res.body.accessToken).toMatch(/^eyJ/); // JWT starts with eyJ
+  });
+
+  test('returns 401 for invalid password', async () => {
+    const res = await request(app)
+      .post('/auth/login')
+      .send({ email: 'test@test.com', password: 'wrongpassword' });
+
+    expect(res.status).toBe(401);
+    expect(res.body.error).toBe('Invalid credentials');
+  });
+
+  test('returns 400 for missing email', async () => {
+    const res = await request(app)
+      .post('/auth/login')
+      .send({ password: 'Password123!' });
+
+    expect(res.status).toBe(400);
+  });
+});
+
+// ─── Mocking external services ────────────────────────────────
+jest.mock('../src/services/emailService');
+const emailService = require('../src/services/emailService');
+
+describe('User Registration', () => {
+  test('sends welcome email after registration', async () => {
+    emailService.sendWelcome.mockResolvedValue(true);
+
+    const res = await request(app)
+      .post('/api/v1/users')
+      .send({
+        name: 'Shailesh',
+        email: 'shailesh@test.com',
+        password: 'Password123!',
+      });
+
+    expect(res.status).toBe(201);
+    expect(emailService.sendWelcome).toHaveBeenCalledWith(
+      'shailesh@test.com',
+      expect.objectContaining({ name: 'Shailesh' })
+    );
+  });
+});
+
+// ─── Authenticated route testing ──────────────────────────────
+test('GET /profile returns user data with valid token', async () => {
+  const token = jwt.sign({ userId: testUser._id }, process.env.JWT_SECRET);
+
+  const res = await request(app)
+    .get('/api/v1/profile')
+    .set('Authorization', \`Bearer \${token}\`);
+
+  expect(res.status).toBe(200);
+  expect(res.body.data.email).toBe('test@test.com');
+});</pre>
+    </div>
+  </div>
+  <div class="tab-content" data-tab="interview">
+    <div class="interview-list">
+      <div class="interview-item"><span class="q-num">Q1</span>What is the testing pyramid and what types of tests are in it?</div>
+      <div class="interview-item"><span class="q-num">Q2</span>What is Supertest and how does it test Express APIs without a real server?</div>
+      <div class="interview-item"><span class="q-num">Q3</span>What is the difference between jest.mock() and jest.spyOn()?</div>
+      <div class="interview-item"><span class="q-num">Q4</span>How do you test routes that require authentication?</div>
+    </div>
+  </div>
+</div>
+
+</main>
+</div>
+
+<script>
+// ─── Tab switching ────────────────────────────────────────────
+function switchTab(btn, tabName) {
+  const topic = btn.closest('.topic');
+  topic.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  topic.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  topic.querySelector('[data-tab="' + tabName + '"]').classList.add('active');
+}
+
+// ─── Done tracking ────────────────────────────────────────────
+let doneSet = new Set(JSON.parse(localStorage.getItem('nodeguide_done') || '[]'));
+
+function saveDone() {
+  localStorage.setItem('nodeguide_done', JSON.stringify([...doneSet]));
+  updateStats();
+}
+
+function toggleDone(btn) {
+  const topic = btn.closest('.topic');
+  const id = topic.id;
+  if (doneSet.has(id)) {
+    doneSet.delete(id);
+    btn.className = 'mark-btn undone';
+    btn.textContent = 'Mark Done';
+    const navLink = document.querySelector('.nav-link[href="#' + id + '"]');
+    if (navLink) { navLink.classList.remove('active'); navLink.querySelector('.nav-dot').style.background = ''; }
+  } else {
+    doneSet.add(id);
+    btn.className = 'mark-btn done';
+    btn.textContent = '✓ Done';
+    const navLink = document.querySelector('.nav-link[href="#' + id + '"]');
+    if (navLink) { navLink.classList.add('active'); navLink.querySelector('.nav-dot').style.background = 'var(--accent2)'; }
+  }
+  saveDone();
+}
+
+function updateStats() {
+  const total = document.querySelectorAll('.topic').length;
+  const done = doneSet.size;
+  document.getElementById('total-count').textContent = total;
+  document.getElementById('done-count').textContent = done;
+  document.getElementById('remain-count').textContent = total - done;
+  document.getElementById('pct-count').textContent = Math.round(done / total * 100) + '%';
+}
+
+// Restore done state
+function restoreDone() {
+  doneSet.forEach(id => {
+    const topic = document.getElementById(id);
+    if (!topic) return;
+    const btn = topic.querySelector('.mark-btn');
+    if (btn) { btn.className = 'mark-btn done'; btn.textContent = '✓ Done'; }
+    const navLink = document.querySelector('.nav-link[href="#' + id + '"]');
+    if (navLink) { navLink.classList.add('active'); navLink.querySelector('.nav-dot').style.background = 'var(--accent2)'; }
+  });
+  updateStats();
+}
+
+// ─── Copy code ────────────────────────────────────────────────
+function copyCode(btn) {
+  const pre = btn.closest('.code-block').querySelector('pre');
+  navigator.clipboard.writeText(pre.textContent).then(() => {
+    btn.textContent = '✓ copied';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+// ─── Search / filter ──────────────────────────────────────────
+function filterTopics(query) {
+  const q = query.toLowerCase();
+  document.querySelectorAll('.topic').forEach(topic => {
+    const text = topic.textContent.toLowerCase();
+    topic.style.display = text.includes(q) ? '' : 'none';
+  });
+}
+
+// ─── Scroll progress ──────────────────────────────────────────
+const mainEl = document.getElementById('main-content');
+mainEl.addEventListener('scroll', () => {
+  const { scrollTop, scrollHeight, clientHeight } = mainEl;
+  const pct = (scrollTop / (scrollHeight - clientHeight)) * 100;
+  document.getElementById('progress').style.width = pct + '%';
+});
+
+// ─── Active nav on scroll ─────────────────────────────────────
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      document.querySelectorAll('.nav-link').forEach(l => l.style.color = '');
+      const link = document.querySelector('.nav-link[href="#' + entry.target.id + '"]');
+      if (link) link.style.color = 'var(--accent)';
+    }
+  });
+}, { root: mainEl, threshold: 0.3 });
+
+document.querySelectorAll('.topic').forEach(t => observer.observe(t));
+
+// ─── Init ─────────────────────────────────────────────────────
+restoreDone();
+updateStats();
+</script>
+</body>
+</html>

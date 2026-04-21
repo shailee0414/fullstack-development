@@ -1,0 +1,1719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JS Mastery — Complete Interview Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --surface2: #1a1a24;
+    --border: #2a2a3a;
+    --accent: #f0e040;
+    --accent2: #40e0d0;
+    --accent3: #ff6b6b;
+    --accent4: #a78bfa;
+    --text: #e8e8f0;
+    --muted: #8888a8;
+    --code-bg: #0d0d14;
+    --green: #4ade80;
+    --orange: #fb923c;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Syne', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER ── */
+  header {
+    position: relative;
+    padding: 60px 40px 40px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(135deg, #0a0a0f 60%, #13131f);
+    overflow: hidden;
+  }
+  header::before {
+    content: 'JS';
+    position: absolute;
+    right: -20px;
+    top: -30px;
+    font-size: 280px;
+    font-weight: 800;
+    color: var(--accent);
+    opacity: 0.04; 
+    /* line-height: 1; */
+    pointer-events: none;
+    font-family: 'Space Mono', monospace;
+  }
+  header h1 {
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    font-weight: 800;
+    /* line-height: 1; */
+    letter-spacing: -2px;
+  }
+  header h1 span { color: var(--accent); }
+  header p {
+    color: var(--muted);
+    margin-top: 12px;
+    font-size: 1rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.8rem;
+  }
+  .badge-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+  }
+  .badge {
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-family: 'Space Mono', monospace;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .badge-y { background: var(--accent); color: #000; }
+  .badge-t { background: var(--accent2); color: #000; }
+  .badge-r { background: var(--accent3); color: #fff; }
+  .badge-p { background: var(--accent4); color: #fff; }
+
+  /* ── LAYOUT ── */
+  .shell {
+    display: flex;
+    min-height: calc(100vh - 200px);
+  }
+
+  /* ── SIDEBAR ── */
+  nav {
+    width: 260px;
+    flex-shrink: 0;
+    border-right: 1px solid var(--border);
+    padding: 24px 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    background: var(--surface);
+  }
+  nav::-webkit-scrollbar { width: 4px; }
+  nav::-webkit-scrollbar-track { background: transparent; }
+  nav::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .nav-section {
+    padding: 0 16px;
+    margin-bottom: 8px;
+  }
+  .nav-section-title {
+    font-size: 0.6rem;
+    font-family: 'Space Mono', monospace;
+    color: var(--muted);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 8px 8px 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .nav-section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .nav-link {
+    display: block;
+    padding: 6px 8px;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.82rem;
+    border-radius: 4px;
+    transition: all 0.15s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .nav-link:hover { background: var(--surface2); color: var(--accent); }
+
+  /* ── MAIN ── */
+  main {
+    flex: 1;
+    padding: 40px;
+    max-width: 900px;
+  }
+
+  /* ── TOPIC ── */
+  .topic {
+    margin-bottom: 64px;
+    scroll-margin-top: 20px;
+  }
+
+  .topic-header {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .topic-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--accent);
+    background: rgba(240,224,64,0.1);
+    padding: 2px 6px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+  .topic-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+  .topic-tag {
+    margin-left: auto;
+    font-size: 0.6rem;
+    font-family: 'Space Mono', monospace;
+    padding: 2px 8px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .explain {
+    color: #c8c8e0;
+    /* line-height: 1.8; */
+    font-size: 0.95rem;
+    margin-bottom: 16px;
+  }
+  .explain strong { color: var(--accent); font-weight: 600; }
+  .explain em { color: var(--accent2); font-style: normal; }
+
+  /* ── CODE ── */
+  .code-block {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin: 16px 0;
+    overflow: hidden;
+  }
+  .code-label {
+    padding: 6px 14px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .code-label::before {
+    content: '';
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    opacity: 0.7;
+  }
+  pre {
+    padding: 16px;
+    overflow-x: auto;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    /* line-height: 1.7; */
+    color: #c8d8f8;
+  }
+  pre::-webkit-scrollbar { height: 4px; }
+  pre::-webkit-scrollbar-track { background: transparent; }
+  pre::-webkit-scrollbar-thumb { background: var(--border); }
+
+  .kw { color: #c792ea; }
+  .fn { color: #82aaff; }
+  .str { color: #c3e88d; }
+  .num { color: #f78c6c; }
+  .cm { color: #546e7a; font-style: italic; }
+  .op { color: var(--accent); }
+
+  /* ── CALLOUT ── */
+  .callout {
+    border-left: 3px solid var(--accent);
+    background: rgba(240,224,64,0.05);
+    padding: 12px 16px;
+    margin: 16px 0;
+    border-radius: 0 6px 6px 0;
+    font-size: 0.88rem;
+    color: #d8d8e8;
+    /* line-height: 1.7; */
+  }
+  .callout.info { border-color: var(--accent2); background: rgba(64,224,208,0.05); }
+  .callout.warn { border-color: var(--accent3); background: rgba(255,107,107,0.05); }
+  .callout.tip  { border-color: var(--green);   background: rgba(74,222,128,0.05); }
+
+  /* ── TABLE ── */
+  .tbl-wrap { overflow-x: auto; margin: 16px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  th {
+    background: var(--surface2);
+    padding: 10px 14px;
+    text-align: left;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid rgba(42,42,58,0.5);
+    color: #c0c0d8;
+    /* line-height: 1.5; */
+    vertical-align: top;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(255,255,255,0.02); }
+
+  /* ── PILL LIST ── */
+  .pill-list { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+  .pill {
+    padding: 4px 12px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--accent2);
+  }
+
+  /* ── SECTION DIVIDER ── */
+  .section-divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 48px 0 32px;
+  }
+  .section-divider-label {
+    font-size: 0.7rem;
+    font-family: 'Space Mono', monospace;
+    color: var(--accent);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    background: var(--bg);
+    padding: 0 12px;
+  }
+  .section-divider-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+  }
+
+  /* ── GRID ── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
+  @media (max-width: 700px) { .grid-2 { grid-template-columns: 1fr; } }
+
+  .card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+  }
+  .card-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 6px;
+    font-family: 'Space Mono', monospace;
+  }
+  .card p { font-size: 0.82rem; color: var(--muted); /* line-height: 1.6; */ }
+
+  /* ── BACK TO TOP ── */
+  .back-top {
+    display: inline-block;
+    margin-top: 12px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    text-decoration: none;
+    border: 1px solid var(--border);
+    padding: 4px 10px;
+    border-radius: 4px;
+    transition: all 0.15s;
+  }
+  .back-top:hover { color: var(--accent); border-color: var(--accent); }
+
+  @media (max-width: 768px) {
+    nav { display: none; }
+    main { padding: 20px; }
+    header { padding: 30px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<header id="top">
+  <h1>JS <span>Mastery</span><br>Interview Guide</h1>
+  <p>// Complete syllabus · 2–3 year frontend interviews · Theory + Code</p>
+  <div class="badge-row">
+    <span class="badge badge-y">Core JS</span>
+    <span class="badge badge-t">Async</span>
+    <span class="badge badge-r">DOM</span>
+    <span class="badge badge-p">React</span>
+    <span class="badge badge-y">OOP</span>
+    <span class="badge badge-t">Performance</span>
+  </div>
+</header>
+
+<div class="shell">
+
+<!-- SIDEBAR NAV -->
+<nav>
+  <div class="nav-section">
+    <div class="nav-section-title">Core JS</div>
+    <a class="nav-link" href="#exec-context">Execution Context</a>
+    <a class="nav-link" href="#hoisting">Hoisting</a>
+    <a class="nav-link" href="#scope">Scope</a>
+    <a class="nav-link" href="#closures">Closures</a>
+    <a class="nav-link" href="#this">this keyword</a>
+    <a class="nav-link" href="#datatypes">Data Types</a>
+    <a class="nav-link" href="#coercion">Type Coercion</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">Functions</div>
+    <a class="nav-link" href="#call-apply-bind">call / apply / bind</a>
+    <a class="nav-link" href="#hof">Higher Order Functions</a>
+    <a class="nav-link" href="#currying">Currying</a>
+    <a class="nav-link" href="#memoization">Memoization</a>
+    <a class="nav-link" href="#deep-equal">Deep Equality</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">OOP</div>
+    <a class="nav-link" href="#prototypes">Prototypes</a>
+    <a class="nav-link" href="#proto-chain">Prototype Chain</a>
+    <a class="nav-link" href="#inheritance">Inheritance</a>
+    <a class="nav-link" href="#oop-pillars">OOP Pillars</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">Async JS</div>
+    <a class="nav-link" href="#event-loop">Event Loop</a>
+    <a class="nav-link" href="#micro-macro">Microtask vs Macrotask</a>
+    <a class="nav-link" href="#promises">Promises</a>
+    <a class="nav-link" href="#promise-apis">Promise APIs</a>
+    <a class="nav-link" href="#async-await">async / await</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">Performance</div>
+    <a class="nav-link" href="#debounce">Debouncing</a>
+    <a class="nav-link" href="#throttle">Throttling</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">API & Errors</div>
+    <a class="nav-link" href="#error-handling">Error Handling</a>
+    <a class="nav-link" href="#fetch-axios">fetch & axios</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">DOM & Browser</div>
+    <a class="nav-link" href="#dom">DOM Manipulation</a>
+    <a class="nav-link" href="#virtual-dom">Virtual DOM</a>
+    <a class="nav-link" href="#event-delegation">Event Delegation</a>
+    <a class="nav-link" href="#storage">Browser Storage</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">Array & String</div>
+    <a class="nav-link" href="#array-methods">Array Methods</a>
+    <a class="nav-link" href="#string-methods">String Methods</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">React</div>
+    <a class="nav-link" href="#react">State & Virtual DOM</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">Advanced</div>
+    <a class="nav-link" href="#event-prop">Event Propagation</a>
+    <a class="nav-link" href="#security">XSS & CSRF</a>
+    <a class="nav-link" href="#polyfills">Polyfills</a>
+  </div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main>
+
+<!-- ═══════════════════════════════════ CORE JS ═══════════════════════════════════ -->
+<div class="section-divider">
+  <div class="section-divider-line"></div>
+  <div class="section-divider-label">⚙ Core JavaScript</div>
+  <div class="section-divider-line" style="background:linear-gradient(90deg,transparent,var(--accent))"></div>
+</div>
+
+<!-- 1. Execution Context -->
+<div class="topic" id="exec-context">
+  <div class="topic-header">
+    <span class="topic-num">01</span>
+    <h2 class="topic-title">Execution Context</h2>
+    <span class="topic-tag badge badge-y">Fundamental</span>
+  </div>
+  <p class="explain">
+    An <strong>Execution Context (EC)</strong> is the environment in which JavaScript code is evaluated and executed. Every time the JS engine runs code, it creates an EC. There are three types: <em>Global EC</em>, <em>Function EC</em>, and <em>Eval EC</em>.
+  </p>
+  <p class="explain">
+    Each EC has two phases: <strong>Creation Phase</strong> (sets up memory — variables are hoisted, `this` is bound, outer environment is linked) and <strong>Execution Phase</strong> (code runs line by line).
+  </p>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Creation Phase</div>
+      <p>Variable Environment created, arguments object set, `this` binding set, hoisting happens (var → undefined, functions → full definition)</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Execution Phase</div>
+      <p>Code executes line by line. Variables get assigned real values. Functions get called, spawning new ECs on the Call Stack.</p>
+    </div>
+  </div>
+  <div class="code-block">
+    <div class="code-label">execution-context.js</div>
+<pre><span class="cm">// Global EC is created first</span>
+<span class="kw">var</span> name = <span class="str">'Alice'</span>;
+
+<span class="kw">function</span> <span class="fn">greet</span>() {
+  <span class="cm">// New Function EC is pushed onto Call Stack</span>
+  <span class="kw">var</span> msg = <span class="str">'Hello, '</span> + name;
+  <span class="fn">console</span>.<span class="fn">log</span>(msg); <span class="cm">// "Hello, Alice"</span>
+  <span class="cm">// Function EC is popped when function returns</span>
+}
+
+<span class="fn">greet</span>();
+<span class="cm">// Call Stack: [Global EC] → [Global EC, greet EC] → [Global EC]</span></pre>
+  </div>
+  <div class="callout info">The <strong>Call Stack</strong> is a stack data structure that manages execution contexts. Global EC is always at the bottom. When a function is called, its EC is pushed; when it returns, it's popped.</div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- 2. Hoisting -->
+<div class="topic" id="hoisting">
+  <div class="topic-header">
+    <span class="topic-num">02</span>
+    <h2 class="topic-title">Hoisting</h2>
+    <span class="topic-tag badge badge-y">Core</span>
+  </div>
+  <p class="explain">
+    <strong>Hoisting</strong> is JavaScript's behavior of moving declarations to the top of their scope during the Creation Phase. Only <em>declarations</em> are hoisted — not initializations.
+  </p>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Keyword</th><th>Hoisted?</th><th>Initial Value</th><th>TDZ?</th></tr>
+      <tr><td><code>var</code></td><td>✅ Yes</td><td><code>undefined</code></td><td>No</td></tr>
+      <tr><td><code>let</code></td><td>✅ Yes (declaration)</td><td>uninitialized</td><td>✅ Yes</td></tr>
+      <tr><td><code>const</code></td><td>✅ Yes (declaration)</td><td>uninitialized</td><td>✅ Yes</td></tr>
+      <tr><td>Function Declaration</td><td>✅ Fully hoisted</td><td>Full function</td><td>No</td></tr>
+      <tr><td>Function Expression</td><td>Partially (var part)</td><td><code>undefined</code></td><td>—</td></tr>
+    </table>
+  </div>
+  <div class="code-block">
+    <div class="code-label">hoisting.js</div>
+<pre><span class="fn">console</span>.<span class="fn">log</span>(x); <span class="cm">// undefined (var is hoisted)</span>
+<span class="kw">var</span> x = <span class="num">5</span>;
+
+<span class="fn">sayHi</span>(); <span class="cm">// "Hi!" — function declaration fully hoisted</span>
+<span class="kw">function</span> <span class="fn">sayHi</span>() { <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">'Hi!'</span>); }
+
+<span class="cm">// console.log(y); → ReferenceError: TDZ (Temporal Dead Zone)</span>
+<span class="kw">let</span> y = <span class="num">10</span>;
+
+<span class="cm">// sayBye(); → TypeError: sayBye is not a function</span>
+<span class="kw">var</span> <span class="fn">sayBye</span> = <span class="kw">function</span>() { <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">'Bye!'</span>); };</pre>
+  </div>
+  <div class="callout warn"><strong>TDZ (Temporal Dead Zone)</strong>: The period between the start of a block and the point where <code>let</code>/<code>const</code> is initialized. Accessing the variable in TDZ throws a ReferenceError.</div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- 3. Scope -->
+<div class="topic" id="scope">
+  <div class="topic-header">
+    <span class="topic-num">03</span>
+    <h2 class="topic-title">Scope</h2>
+    <span class="topic-tag badge badge-y">Core</span>
+  </div>
+  <p class="explain"><strong>Scope</strong> determines where variables and functions are accessible. JavaScript uses <em>Lexical Scoping</em> — scope is determined at write time, not runtime.</p>
+  <div class="grid-2">
+    <div class="card"><div class="card-title">Global Scope</div><p>Variables declared outside any function/block. Accessible everywhere. <code>var</code> becomes a property of <code>window</code>.</p></div>
+    <div class="card"><div class="card-title">Function Scope</div><p>Variables declared with <code>var</code> inside a function. Accessible only within that function.</p></div>
+    <div class="card"><div class="card-title">Block Scope</div><p><code>let</code> and <code>const</code> are scoped to the nearest <code>{ }</code> block (if, for, while).</p></div>
+    <div class="card"><div class="card-title">Lexical / Static Scope</div><p>Functions remember the scope where they were defined, not where they're called. Basis of closures.</p></div>
+  </div>
+  <div class="code-block">
+    <div class="code-label">scope.js</div>
+<pre><span class="kw">var</span> global = <span class="str">'global'</span>;
+
+<span class="kw">function</span> <span class="fn">outer</span>() {
+  <span class="kw">let</span> outerVar = <span class="str">'outer'</span>;
+
+  <span class="kw">function</span> <span class="fn">inner</span>() {
+    <span class="kw">const</span> innerVar = <span class="str">'inner'</span>;
+    <span class="fn">console</span>.<span class="fn">log</span>(global, outerVar, innerVar); <span class="cm">// all accessible</span>
+  }
+
+  <span class="fn">inner</span>();
+  <span class="cm">// console.log(innerVar); → ReferenceError</span>
+}
+
+<span class="kw">if</span> (<span class="kw">true</span>) {
+  <span class="kw">var</span> a = <span class="num">1</span>;  <span class="cm">// function-scoped (leaks out of block)</span>
+  <span class="kw">let</span> b = <span class="num">2</span>;  <span class="cm">// block-scoped</span>
+}
+<span class="fn">console</span>.<span class="fn">log</span>(a); <span class="cm">// 1</span>
+<span class="cm">// console.log(b); → ReferenceError</span></pre>
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- 4. Closures -->
+<div class="topic" id="closures">
+  <div class="topic-header">
+    <span class="topic-num">04</span>
+    <h2 class="topic-title">Closures (Deep Dive)</h2>
+    <span class="topic-tag badge badge-p">Must Know</span>
+  </div>
+  <p class="explain">A <strong>closure</strong> is a function that <em>remembers and accesses variables from its outer (lexical) scope</em> even after that outer function has finished executing. Closures are created every time a function is created.</p>
+  <div class="callout tip">Think of a closure as a function bundled with its surrounding state (lexical environment). The inner function "closes over" the outer variables.</div>
+  <div class="code-block">
+    <div class="code-label">closure-basics.js</div>
+<pre><span class="kw">function</span> <span class="fn">makeCounter</span>() {
+  <span class="kw">let</span> count = <span class="num">0</span>; <span class="cm">// private variable</span>
+  <span class="kw">return</span> {
+    increment: () => ++count,
+    decrement: () => --count,
+    value:     () => count
+  };
+}
+
+<span class="kw">const</span> counter = <span class="fn">makeCounter</span>();
+counter.<span class="fn">increment</span>(); <span class="cm">// 1</span>
+counter.<span class="fn">increment</span>(); <span class="cm">// 2</span>
+counter.<span class="fn">decrement</span>(); <span class="cm">// 1</span>
+<span class="fn">console</span>.<span class="fn">log</span>(counter.<span class="fn">value</span>()); <span class="cm">// 1</span>
+<span class="cm">// count is not directly accessible — it's private!</span></pre>
+  </div>
+  <div class="code-block">
+    <div class="code-label">closure-loop-gotcha.js</div>
+<pre><span class="cm">// Classic interview problem — var vs let in loops</span>
+<span class="kw">for</span> (<span class="kw">var</span> i = <span class="num">0</span>; i < <span class="num">3</span>; i++) {
+  setTimeout(() => <span class="fn">console</span>.<span class="fn">log</span>(i), <span class="num">100</span>); <span class="cm">// 3, 3, 3 (var is shared)</span>
+}
+
+<span class="kw">for</span> (<span class="kw">let</span> j = <span class="num">0</span>; j < <span class="num">3</span>; j++) {
+  setTimeout(() => <span class="fn">console</span>.<span class="fn">log</span>(j), <span class="num">100</span>); <span class="cm">// 0, 1, 2 (let has block scope)</span>
+}
+
+<span class="cm">// Fix with var using IIFE:</span>
+<span class="kw">for</span> (<span class="kw">var</span> k = <span class="num">0</span>; k < <span class="num">3</span>; k++) {
+  ((<span class="kw">function</span>(k) {
+    setTimeout(() => <span class="fn">console</span>.<span class="fn">log</span>(k), <span class="num">100</span>);
+  })(k));
+}</pre>
+  </div>
+  <p class="explain">Real-world uses: <strong>data privacy</strong>, <strong>memoization</strong>, <strong>partial application/currying</strong>, <strong>module pattern</strong>, <strong>event handlers</strong>.</p>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- 5. this -->
+<div class="topic" id="this">
+  <div class="topic-header">
+    <span class="topic-num">05</span>
+    <h2 class="topic-title">The <code>this</code> Keyword</h2>
+    <span class="topic-tag badge badge-p">Tricky</span>
+  </div>
+  <p class="explain"><code>this</code> refers to the <strong>execution context</strong> — the object that is currently calling the function. Its value depends on <em>how</em> a function is called, not where it's defined (except for arrow functions).</p>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Call Context</th><th><code>this</code> value</th></tr>
+      <tr><td>Global scope (non-strict)</td><td><code>window</code> (browser) / <code>global</code> (Node)</td></tr>
+      <tr><td>Regular function (non-strict)</td><td><code>window</code></td></tr>
+      <tr><td>Regular function (strict mode)</td><td><code>undefined</code></td></tr>
+      <tr><td>Object method</td><td>The object before the dot</td></tr>
+      <tr><td>Arrow function</td><td>Inherits from enclosing lexical scope</td></tr>
+      <tr><td><code>new</code> keyword</td><td>Newly created object</td></tr>
+      <tr><td><code>call / apply / bind</code></td><td>Explicitly set object</td></tr>
+    </table>
+  </div>
+  <div class="code-block">
+    <div class="code-label">this-keyword.js</div>
+<pre><span class="kw">const</span> obj = {
+  name: <span class="str">'Bob'</span>,
+  regular: <span class="kw">function</span>() { <span class="kw">return</span> <span class="kw">this</span>.name; },  <span class="cm">// 'Bob'</span>
+  arrow:   () => <span class="kw">this</span>.name,                    <span class="cm">// undefined (lexical this)</span>
+};
+
+<span class="cm">// Losing `this`</span>
+<span class="kw">const</span> fn = obj.regular;
+fn(); <span class="cm">// undefined (or window.name) — `this` is lost!</span>
+
+<span class="cm">// Fixing with bind</span>
+<span class="kw">const</span> bound = obj.regular.<span class="fn">bind</span>(obj);
+<span class="fn">bound</span>(); <span class="cm">// 'Bob'</span></pre>
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- 6. Data Types -->
+<div class="topic" id="datatypes">
+  <div class="topic-header">
+    <span class="topic-num">06</span>
+    <h2 class="topic-title">Data Types</h2>
+    <span class="topic-tag badge badge-y">Core</span>
+  </div>
+  <p class="explain">JavaScript has <strong>8 data types</strong>: 7 primitives + 1 non-primitive (Object).</p>
+  <div class="pill-list">
+    <span class="pill">String</span><span class="pill">Number</span><span class="pill">BigInt</span><span class="pill">Boolean</span><span class="pill">undefined</span><span class="pill">null</span><span class="pill">Symbol</span><span class="pill">Object</span>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Type</th><th>Example</th><th>typeof</th><th>Notes</th></tr>
+      <tr><td>String</td><td><code>"hello"</code></td><td><code>"string"</code></td><td>Immutable sequence of UTF-16</td></tr>
+      <tr><td>Number</td><td><code>42, 3.14, NaN, Infinity</code></td><td><code>"number"</code></td><td>IEEE 754 double precision</td></tr>
+      <tr><td>BigInt</td><td><code>9007199254740993n</code></td><td><code>"bigint"</code></td><td>Arbitrary precision integers</td></tr>
+      <tr><td>Boolean</td><td><code>true, false</code></td><td><code>"boolean"</code></td><td>—</td></tr>
+      <tr><td>undefined</td><td><code>let x;</code></td><td><code>"undefined"</code></td><td>Declared but not assigned</td></tr>
+      <tr><td>null</td><td><code>null</code></td><td><code>"object"</code> ⚠️</td><td>Intentional absence of value</td></tr>
+      <tr><td>Symbol</td><td><code>Symbol('id')</code></td><td><code>"symbol"</code></td><td>Unique identifier, ES6</td></tr>
+      <tr><td>Object</td><td><code>{}, [], function(){}</code></td><td><code>"object"</code></td><td>Reference type — heap allocated</td></tr>
+    </table>
+  </div>
+  <div class="callout warn"><strong>Primitives</strong> are stored by value; <strong>Objects</strong> are stored by reference. This is why <code>[] === []</code> is <code>false</code> — they're different references in memory.</div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- 7. Type Coercion -->
+<div class="topic" id="coercion">
+  <div class="topic-header">
+    <span class="topic-num">07</span>
+    <h2 class="topic-title">Type Coercion</h2>
+    <span class="topic-tag badge badge-r">Gotcha</span>
+  </div>
+  <p class="explain"><strong>Type Coercion</strong> is JavaScript automatically converting one type to another. It happens with <code>==</code>, arithmetic operators, template literals, and boolean contexts. Can be <em>implicit</em> (auto) or <em>explicit</em> (manual).</p>
+  <div class="code-block">
+    <div class="code-label">coercion.js</div>
+<pre><span class="cm">// Implicit coercion</span>
+<span class="str">'5'</span> + <span class="num">3</span>    <span class="cm">// "53"  (number → string)</span>
+<span class="str">'5'</span> - <span class="num">3</span>    <span class="cm">// 2     (string → number)</span>
+<span class="num">true</span> + <span class="num">1</span>   <span class="cm">// 2</span>
+<span class="num">false</span> + <span class="num">1</span>  <span class="cm">// 1</span>
+<span class="num">null</span> + <span class="num">1</span>   <span class="cm">// 1</span>
+<span class="num">'' == false</span> <span class="cm">// true</span>
+
+<span class="cm">// Abstract Equality (==) with coercion</span>
+<span class="num">0</span> == <span class="num">false</span>   <span class="cm">// true</span>
+<span class="num">null</span> == <span class="num">undefined</span> <span class="cm">// true (special case)</span>
+<span class="num">NaN</span> == <span class="num">NaN</span>   <span class="cm">// false! (NaN is never equal to itself)</span>
+
+<span class="cm">// Strict Equality (===) — no coercion</span>
+<span class="str">'5'</span> === <span class="num">5</span>   <span class="cm">// false</span>
+
+<span class="cm">// Explicit conversion</span>
+<span class="fn">Number</span>(<span class="str">'42'</span>)   <span class="cm">// 42</span>
+<span class="fn">String</span>(<span class="num">42</span>)    <span class="cm">// "42"</span>
+<span class="fn">Boolean</span>(<span class="num">0</span>)    <span class="cm">// false</span>
+<span class="fn">Boolean</span>(<span class="str">''</span>)   <span class="cm">// false</span>
+<span class="fn">Boolean</span>([])   <span class="cm">// true! (empty array is truthy)</span></pre>
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- ═══════════════════════════════════ FUNCTIONS ═══════════════════════════════════ -->
+<div class="section-divider">
+  <div class="section-divider-line"></div>
+  <div class="section-divider-label">⚡ Functions & Advanced</div>
+  <div class="section-divider-line" style="background:linear-gradient(90deg,transparent,var(--accent))"></div>
+</div>
+
+<!-- 8. call apply bind -->
+<div class="topic" id="call-apply-bind">
+  <div class="topic-header">
+    <span class="topic-num">08</span>
+    <h2 class="topic-title">call, apply, bind</h2>
+    <span class="topic-tag badge badge-y">Core</span>
+  </div>
+  <p class="explain">All three methods allow you to explicitly set <code>this</code> for a function. The difference is in how arguments are passed and when the function executes.</p>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Method</th><th>Arguments</th><th>Executes Immediately?</th></tr>
+      <tr><td><code>call(ctx, a, b)</code></td><td>Spread individually</td><td>✅ Yes</td></tr>
+      <tr><td><code>apply(ctx, [a, b])</code></td><td>As an array</td><td>✅ Yes</td></tr>
+      <tr><td><code>bind(ctx, a, b)</code></td><td>Spread individually</td><td>❌ Returns new function</td></tr>
+    </table>
+  </div>
+  <div class="code-block">
+    <div class="code-label">call-apply-bind.js</div>
+<pre><span class="kw">function</span> <span class="fn">introduce</span>(greeting, punct) {
+  <span class="kw">return</span> <span class="str">`${greeting}, I'm ${<span class="kw">this</span>.name}${punct}`</span>;
+}
+
+<span class="kw">const</span> alice = { name: <span class="str">'Alice'</span> };
+
+introduce.<span class="fn">call</span>(alice, <span class="str">'Hi'</span>, <span class="str">'!'</span>);        <span class="cm">// "Hi, I'm Alice!"</span>
+introduce.<span class="fn">apply</span>(alice, [<span class="str">'Hello'</span>, <span class="str">'.'</span>]);  <span class="cm">// "Hello, I'm Alice."</span>
+
+<span class="kw">const</span> boundFn = introduce.<span class="fn">bind</span>(alice, <span class="str">'Hey'</span>);
+<span class="fn">boundFn</span>(<span class="str">'?'</span>); <span class="cm">// "Hey, I'm Alice?"</span>
+
+<span class="cm">// Polyfill for bind:</span>
+<span class="fn">Function</span>.prototype.<span class="fn">myBind</span> = <span class="kw">function</span>(ctx, ...args) {
+  <span class="kw">const</span> fn = <span class="kw">this</span>;
+  <span class="kw">return</span> <span class="kw">function</span>(...newArgs) {
+    <span class="kw">return</span> fn.<span class="fn">apply</span>(ctx, [...args, ...newArgs]);
+  };
+};</pre>
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- 9. HOF -->
+<div class="topic" id="hof">
+  <div class="topic-header">
+    <span class="topic-num">09</span>
+    <h2 class="topic-title">Higher Order Functions</h2>
+    <span class="topic-tag badge badge-t">Important</span>
+  </div>
+  <p class="explain">A <strong>Higher Order Function (HOF)</strong> is a function that either <em>takes a function as an argument</em> or <em>returns a function</em>. They enable functional programming patterns in JS.</p>
+  <div class="code-block">
+    <div class="code-label">hof.js</div>
+<pre><span class="kw">const</span> nums = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>, <span class="num">5</span>];
+
+<span class="cm">// map — transforms each element</span>
+nums.<span class="fn">map</span>(x => x * <span class="num">2</span>);        <span class="cm">// [2, 4, 6, 8, 10]</span>
+
+<span class="cm">// filter — selects elements</span>
+nums.<span class="fn">filter</span>(x => x % <span class="num">2</span> === <span class="num">0</span>); <span class="cm">// [2, 4]</span>
+
+<span class="cm">// reduce — accumulates</span>
+nums.<span class="fn">reduce</span>((acc, x) => acc + x, <span class="num">0</span>); <span class="cm">// 15</span>
+
+<span class="cm">// Function returning function</span>
+<span class="kw">const</span> <span class="fn">multiplier</span> = n => x => x * n;
+<span class="kw">const</span> double = <span class="fn">multiplier</span>(<span class="num">2</span>);
+double(<span class="num">5</span>); <span class="cm">// 10</span></pre>
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- 10. Currying -->
+<div class="topic" id="currying">
+  <div class="topic-header">
+    <span class="topic-num">10</span>
+    <h2 class="topic-title">Currying</h2>
+    <span class="topic-tag badge badge-p">Advanced</span>
+  </div>
+  <p class="explain"><strong>Currying</strong> transforms a function that takes multiple arguments into a sequence of functions each taking one argument. <code>f(a, b, c)</code> becomes <code>f(a)(b)(c)</code>.</p>
+  <div class="code-block">
+    <div class="code-label">currying.js</div>
+<pre><span class="cm">// Manual curry</span>
+<span class="kw">function</span> <span class="fn">add</span>(a) {
+  <span class="kw">return</span> <span class="kw">function</span>(b) {
+    <span class="kw">return</span> <span class="kw">function</span>(c) {
+      <span class="kw">return</span> a + b + c;
+    };
+  };
+}
+<span class="fn">add</span>(<span class="num">1</span>)(<span class="num">2</span>)(<span class="num">3</span>); <span class="cm">// 6</span>
+
+<span class="cm">// Generic curry function (interview polyfill)</span>
+<span class="kw">function</span> <span class="fn">curry</span>(fn) {
+  <span class="kw">return function</span> <span class="fn">curried</span>(...args) {
+    <span class="kw">if</span> (args.length >= fn.length) {
+      <span class="kw">return</span> fn.<span class="fn">apply</span>(<span class="kw">this</span>, args);
+    }
+    <span class="kw">return</span> <span class="kw">function</span>(...args2) {
+      <span class="kw">return</span> curried.<span class="fn">apply</span>(<span class="kw">this</span>, args.<span class="fn">concat</span>(args2));
+    };
+  };
+}
+
+<span class="kw">const</span> curriedAdd = <span class="fn">curry</span>((a, b, c) => a + b + c);
+curriedAdd(<span class="num">1</span>)(<span class="num">2</span>)(<span class="num">3</span>); <span class="cm">// 6</span>
+curriedAdd(<span class="num">1</span>, <span class="num">2</span>)(<span class="num">3</span>); <span class="cm">// 6</span></pre>
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- 11. Memoization -->
+<div class="topic" id="memoization">
+  <div class="topic-header">
+    <span class="topic-num">11</span>
+    <h2 class="topic-title">Memoization</h2>
+    <span class="topic-tag badge badge-p">Performance</span>
+  </div>
+  <p class="explain"><strong>Memoization</strong> is a caching optimization technique — store the results of expensive function calls and return the cached result when the same inputs occur again. Uses closures under the hood.</p>
+  <div class="code-block">
+    <div class="code-label">memoization.js</div>
+<pre><span class="kw">function</span> <span class="fn">memoize</span>(fn) {
+  <span class="kw">const</span> cache = <span class="kw">new</span> <span class="fn">Map</span>();
+  <span class="kw">return function</span>(...args) {
+    <span class="kw">const</span> key = <span class="fn">JSON</span>.<span class="fn">stringify</span>(args);
+    <span class="kw">if</span> (cache.<span class="fn">has</span>(key)) {
+      <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">'Cache hit!'</span>);
+      <span class="kw">return</span> cache.<span class="fn">get</span>(key);
+    }
+    <span class="kw">const</span> result = fn.<span class="fn">apply</span>(<span class="kw">this</span>, args);
+    cache.<span class="fn">set</span>(key, result);
+    <span class="kw">return</span> result;
+  };
+}
+
+<span class="kw">const</span> <span class="fn">expensiveAdd</span> = (a, b) => { <span class="cm">/* heavy computation */</span> <span class="kw">return</span> a + b; };
+<span class="kw">const</span> memoAdd = <span class="fn">memoize</span>(<span class="fn">expensiveAdd</span>);
+memoAdd(<span class="num">2</span>, <span class="num">3</span>); <span class="cm">// computed</span>
+memoAdd(<span class="num">2</span>, <span class="num">3</span>); <span class="cm">// Cache hit! (no recomputation)</span></pre>
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- 12. Deep Equality -->
+<div class="topic" id="deep-equal">
+  <div class="topic-header">
+    <span class="topic-num">12</span>
+    <h2 class="topic-title">Deep Equality</h2>
+    <span class="topic-tag badge badge-r">Interview</span>
+  </div>
+  <p class="explain"><code>===</code> compares object <em>references</em>, not values. Deep equality checks if two objects have the same structure and values recursively.</p>
+  <div class="code-block">
+    <div class="code-label">deep-equal.js</div>
+<pre><span class="kw">function</span> <span class="fn">deepEqual</span>(a, b) {
+  <span class="kw">if</span> (a === b) <span class="kw">return true</span>;
+  <span class="kw">if</span> (typeof a !== <span class="str">'object'</span> || typeof b !== <span class="str">'object'</span>) <span class="kw">return false</span>;
+  <span class="kw">if</span> (a === <span class="kw">null</span> || b === <span class="kw">null</span>) <span class="kw">return false</span>;
+
+  <span class="kw">const</span> keysA = <span class="fn">Object</span>.<span class="fn">keys</span>(a), keysB = <span class="fn">Object</span>.<span class="fn">keys</span>(b);
+  <span class="kw">if</span> (keysA.length !== keysB.length) <span class="kw">return false</span>;
+
+  <span class="kw">return</span> keysA.<span class="fn">every</span>(key => <span class="fn">deepEqual</span>(a[key], b[key]));
+}
+
+<span class="fn">deepEqual</span>({ a: { b: <span class="num">1</span> } }, { a: { b: <span class="num">1</span> } }); <span class="cm">// true</span>
+<span class="fn">deepEqual</span>([<span class="num">1</span>, <span class="num">2</span>], [<span class="num">1</span>, <span class="num">2</span>]);                  <span class="cm">// true</span></pre>
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- ═══════════════════════════════════ OOP ═══════════════════════════════════ -->
+<div class="section-divider">
+  <div class="section-divider-line"></div>
+  <div class="section-divider-label">🧱 OOP & Prototypes</div>
+  <div class="section-divider-line" style="background:linear-gradient(90deg,transparent,var(--accent))"></div>
+</div>
+
+<!-- 13. Prototypes -->
+<div class="topic" id="prototypes">
+  <div class="topic-header">
+    <span class="topic-num">13</span>
+    <h2 class="topic-title">Prototypes</h2>
+    <span class="topic-tag badge badge-y">Core</span>
+  </div>
+  <p class="explain">Every JavaScript object has an internal link to another object called its <strong>prototype</strong>. Objects inherit properties and methods from their prototype. This is <em>prototype-based inheritance</em> — different from class-based OOP.</p>
+  <div class="code-block">
+    <div class="code-label">prototypes.js</div>
+<pre><span class="kw">function</span> <span class="fn">Animal</span>(name) {
+  <span class="kw">this</span>.name = name;
+}
+<span class="fn">Animal</span>.prototype.<span class="fn">speak</span> = <span class="kw">function</span>() {
+  <span class="kw">return</span> <span class="str">`${<span class="kw">this</span>.name} makes a sound.`</span>;
+};
+
+<span class="kw">const</span> dog = <span class="kw">new</span> <span class="fn">Animal</span>(<span class="str">'Dog'</span>);
+dog.<span class="fn">speak</span>(); <span class="cm">// "Dog makes a sound."</span>
+
+<span class="cm">// dog.__proto__ === Animal.prototype → true</span>
+<span class="cm">// Animal.prototype.__proto__ === Object.prototype → true</span>
+<span class="cm">// Object.prototype.__proto__ === null (end of chain)</span>
+
+<span class="cm">// Object.create() — create with specific prototype</span>
+<span class="kw">const</span> cat = <span class="fn">Object</span>.<span class="fn">create</span>(<span class="fn">Animal</span>.prototype);
+cat.name = <span class="str">'Cat'</span>;
+cat.<span class="fn">speak</span>(); <span class="cm">// "Cat makes a sound."</span></pre>
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- 14. Prototype Chain -->
+<div class="topic" id="proto-chain">
+  <div class="topic-header">
+    <span class="topic-num">14</span>
+    <h2 class="topic-title">Prototype Chain</h2>
+    <span class="topic-tag badge badge-y">Core</span>
+  </div>
+  <p class="explain">When you access a property on an object, JS first looks on the object itself, then climbs the <strong>prototype chain</strong> until it finds the property or reaches <code>null</code>.</p>
+  <div class="code-block">
+    <div class="code-label">proto-chain.js</div>
+<pre><span class="kw">const</span> arr = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>];
+
+<span class="cm">// Property lookup chain:</span>
+<span class="cm">// arr → Array.prototype → Object.prototype → null</span>
+
+arr.<span class="fn">hasOwnProperty</span>(<span class="str">'length'</span>); <span class="cm">// true  (own property)</span>
+arr.<span class="fn">hasOwnProperty</span>(<span class="str">'map'</span>);    <span class="cm">// false (inherited from Array.prototype)</span>
+
+<span class="cm">// in operator checks the whole chain</span>
+<span class="str">'map'</span> <span class="kw">in</span> arr; <span class="cm">// true</span></pre>
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- 15. Inheritance -->
+<div class="topic" id="inheritance">
+  <div class="topic-header">
+    <span class="topic-num">15</span>
+    <h2 class="topic-title">Inheritance</h2>
+    <span class="topic-tag badge badge-y">Core</span>
+  </div>
+  <div class="code-block">
+    <div class="code-label">inheritance.js</div>
+<pre><span class="cm">// ES6 Class Syntax (syntactic sugar over prototypes)</span>
+<span class="kw">class</span> <span class="fn">Animal</span> {
+  <span class="fn">constructor</span>(name) { <span class="kw">this</span>.name = name; }
+  <span class="fn">speak</span>() { <span class="kw">return</span> <span class="str">`${<span class="kw">this</span>.name} makes a sound.`</span>; }
+}
+
+<span class="kw">class</span> <span class="fn">Dog</span> <span class="kw">extends</span> <span class="fn">Animal</span> {
+  <span class="fn">constructor</span>(name, breed) {
+    <span class="kw">super</span>(name); <span class="cm">// Must call super() before using this</span>
+    <span class="kw">this</span>.breed = breed;
+  }
+  <span class="fn">speak</span>() { <span class="kw">return</span> <span class="str">`${<span class="kw">this</span>.name} barks!`</span>; } <span class="cm">// Override</span>
+  <span class="fn">info</span>()  { <span class="kw">return</span> <span class="str">`${<span class="kw">super</span>.speak()} Breed: ${<span class="kw">this</span>.breed}`</span>; }
+}
+
+<span class="kw">const</span> d = <span class="kw">new</span> <span class="fn">Dog</span>(<span class="str">'Rex'</span>, <span class="str">'Labrador'</span>);
+d.<span class="fn">speak</span>(); <span class="cm">// "Rex barks!"</span>
+d <span class="kw">instanceof</span> Dog;    <span class="cm">// true</span>
+d <span class="kw">instanceof</span> Animal; <span class="cm">// true</span></pre>
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- 16. OOP Pillars -->
+<div class="topic" id="oop-pillars">
+  <div class="topic-header">
+    <span class="topic-num">16</span>
+    <h2 class="topic-title">OOP Pillars</h2>
+    <span class="topic-tag badge badge-p">Theory</span>
+  </div>
+  <div class="grid-2">
+    <div class="card"><div class="card-title">Encapsulation</div><p>Bundling data + methods; hiding internal state. In JS: closures, <code>#privateField</code>, getters/setters.</p></div>
+    <div class="card"><div class="card-title">Abstraction</div><p>Hiding complex implementation, exposing only what's necessary. Abstract interface, concrete implementation.</p></div>
+    <div class="card"><div class="card-title">Inheritance</div><p>Child class inherits from parent. Code reuse via <code>extends</code> + prototype chain.</p></div>
+    <div class="card"><div class="card-title">Polymorphism</div><p>Same method name, different behavior. Method overriding in subclasses. <code>speak()</code> behaves differently for Dog vs Cat.</p></div>
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- ═══════════════════════════════════ ASYNC ═══════════════════════════════════ -->
+<div class="section-divider">
+  <div class="section-divider-line"></div>
+  <div class="section-divider-label">🔄 Async JavaScript</div>
+  <div class="section-divider-line" style="background:linear-gradient(90deg,transparent,var(--accent))"></div>
+</div>
+
+<!-- 17. Event Loop -->
+<div class="topic" id="event-loop">
+  <div class="topic-header">
+    <span class="topic-num">17</span>
+    <h2 class="topic-title">Event Loop (Deep Dive)</h2>
+    <span class="topic-tag badge badge-p">Must Know</span>
+  </div>
+  <p class="explain">JavaScript is <strong>single-threaded</strong> but handles concurrency via the <em>Event Loop</em>. The loop continuously checks if the Call Stack is empty, then moves tasks from queues to the stack.</p>
+  <div class="grid-2">
+    <div class="card"><div class="card-title">Call Stack</div><p>Synchronous code runs here LIFO. One task at a time. If it blocks, everything freezes.</p></div>
+    <div class="card"><div class="card-title">Web APIs</div><p>Browser-provided async handlers: setTimeout, fetch, DOM events. Offloaded here, not blocking the stack.</p></div>
+    <div class="card"><div class="card-title">Microtask Queue</div><p>Higher priority. Promises (.then), queueMicrotask, MutationObserver. Drained <em>completely</em> before Macrotask.</p></div>
+    <div class="card"><div class="card-title">Macrotask Queue</div><p>setTimeout, setInterval, I/O, UI rendering. One per event loop iteration after microtasks.</p></div>
+  </div>
+  <div class="code-block">
+    <div class="code-label">event-loop-order.js</div>
+<pre><span class="fn">console</span>.<span class="fn">log</span>(<span class="str">'1 - sync'</span>);
+
+setTimeout(() => <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">'4 - macrotask'</span>), <span class="num">0</span>);
+
+<span class="fn">Promise</span>.<span class="fn">resolve</span>().<span class="fn">then</span>(() => <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">'3 - microtask'</span>));
+
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="str">'2 - sync'</span>);
+
+<span class="cm">// Output: 1, 2, 3, 4</span>
+<span class="cm">// Sync → Microtasks → Macrotasks</span></pre>
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- 18. Microtask vs Macrotask -->
+<div class="topic" id="micro-macro">
+  <div class="topic-header">
+    <span class="topic-num">18</span>
+    <h2 class="topic-title">Microtask vs Macrotask</h2>
+    <span class="topic-tag badge badge-r">Gotcha</span>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Type</th><th>Examples</th><th>Priority</th></tr>
+      <tr><td>Microtask</td><td>Promise.then/catch/finally, queueMicrotask, MutationObserver</td><td>🔴 High — runs before any macrotask</td></tr>
+      <tr><td>Macrotask</td><td>setTimeout, setInterval, setImmediate, I/O, UI events</td><td>🟡 Lower — one per loop tick</td></tr>
+    </table>
+  </div>
+  <div class="callout warn">The entire microtask queue is drained after each macrotask before the next macrotask runs. If a microtask enqueues another microtask, it also runs before any macrotask — this can starve macrotasks!</div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- 19. Promises -->
+<div class="topic" id="promises">
+  <div class="topic-header">
+    <span class="topic-num">19</span>
+    <h2 class="topic-title">Promises</h2>
+    <span class="topic-tag badge badge-t">Important</span>
+  </div>
+  <p class="explain">A <strong>Promise</strong> represents the eventual completion (or failure) of an async operation. It has 3 states: <em>Pending</em> → <em>Fulfilled</em> / <em>Rejected</em>.</p>
+  <div class="code-block">
+    <div class="code-label">promises.js</div>
+<pre><span class="kw">const</span> p = <span class="kw">new</span> <span class="fn">Promise</span>((resolve, reject) => {
+  setTimeout(() => <span class="fn">resolve</span>(<span class="str">'data'</span>), <span class="num">1000</span>);
+});
+
+p.<span class="fn">then</span>(data => <span class="fn">console</span>.<span class="fn">log</span>(data))  <span class="cm">// "data"</span>
+ .<span class="fn">catch</span>(err => <span class="fn">console</span>.<span class="fn">error</span>(err))
+ .<span class="fn">finally</span>(() => <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">'Done'</span>));
+
+<span class="cm">// Promise chaining</span>
+<span class="fn">fetch</span>(<span class="str">'/api/user'</span>)
+  .<span class="fn">then</span>(res => res.<span class="fn">json</span>())
+  .<span class="fn">then</span>(user => <span class="fn">fetch</span>(<span class="str">`/api/posts/${user.id}`</span>))
+  .<span class="fn">then</span>(res => res.<span class="fn">json</span>())
+  .<span class="fn">then</span>(posts => <span class="fn">console</span>.<span class="fn">log</span>(posts))
+  .<span class="fn">catch</span>(err => <span class="fn">console</span>.<span class="fn">error</span>(err));</pre>
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- 20. Promise APIs -->
+<div class="topic" id="promise-apis">
+  <div class="topic-header">
+    <span class="topic-num">20</span>
+    <h2 class="topic-title">Promise APIs</h2>
+    <span class="topic-tag badge badge-t">Important</span>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>API</th><th>Resolves when</th><th>Rejects when</th><th>Use case</th></tr>
+      <tr><td><code>Promise.all()</code></td><td>ALL resolve</td><td>ANY rejects</td><td>Parallel, all required</td></tr>
+      <tr><td><code>Promise.allSettled()</code></td><td>ALL settle (always)</td><td>Never rejects</td><td>All results regardless</td></tr>
+      <tr><td><code>Promise.race()</code></td><td>FIRST settles</td><td>FIRST rejects</td><td>Timeout patterns</td></tr>
+      <tr><td><code>Promise.any()</code></td><td>FIRST resolves</td><td>ALL reject</td><td>First success wins</td></tr>
+    </table>
+  </div>
+  <div class="code-block">
+    <div class="code-label">promise-apis.js</div>
+<pre><span class="kw">const</span> p1 = <span class="fn">fetch</span>(<span class="str">'/api/a'</span>);
+<span class="kw">const</span> p2 = <span class="fn">fetch</span>(<span class="str">'/api/b'</span>);
+
+<span class="cm">// All must succeed</span>
+<span class="kw">const</span> [a, b] = <span class="kw">await</span> <span class="fn">Promise</span>.<span class="fn">all</span>([p1, p2]);
+
+<span class="cm">// Timeout pattern with race()</span>
+<span class="kw">const</span> <span class="fn">timeout</span> = ms => <span class="kw">new</span> <span class="fn">Promise</span>((_, reject) =>
+  setTimeout(() => reject(<span class="kw">new</span> Error(<span class="str">'Timeout'</span>)), ms)
+);
+<span class="kw">await</span> <span class="fn">Promise</span>.<span class="fn">race</span>([<span class="fn">fetch</span>(<span class="str">'/api'</span>), <span class="fn">timeout</span>(<span class="num">5000</span>)]);</pre>
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- 21. async/await -->
+<div class="topic" id="async-await">
+  <div class="topic-header">
+    <span class="topic-num">21</span>
+    <h2 class="topic-title">async / await</h2>
+    <span class="topic-tag badge badge-t">Important</span>
+  </div>
+  <p class="explain"><code>async/await</code> is syntactic sugar over Promises, making async code look synchronous. An <code>async</code> function always returns a Promise. <code>await</code> pauses execution inside the function (not globally) until the Promise resolves.</p>
+  <div class="code-block">
+    <div class="code-label">async-await.js</div>
+<pre><span class="kw">async function</span> <span class="fn">getUser</span>(id) {
+  <span class="kw">try</span> {
+    <span class="kw">const</span> res  = <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">`/api/user/${id}`</span>);
+    <span class="kw">if</span> (!res.ok) <span class="kw">throw new</span> Error(<span class="str">`HTTP ${res.status}`</span>);
+    <span class="kw">const</span> user = <span class="kw">await</span> res.<span class="fn">json</span>();
+    <span class="kw">return</span> user;
+  } <span class="kw">catch</span> (err) {
+    <span class="fn">console</span>.<span class="fn">error</span>(<span class="str">'Failed:'</span>, err);
+    <span class="kw">throw</span> err;
+  }
+}
+
+<span class="cm">// Parallel with async/await</span>
+<span class="kw">async function</span> <span class="fn">loadAll</span>() {
+  <span class="kw">const</span> [users, posts] = <span class="kw">await</span> <span class="fn">Promise</span>.<span class="fn">all</span>([
+    <span class="fn">fetch</span>(<span class="str">'/api/users'</span>).<span class="fn">then</span>(r => r.<span class="fn">json</span>()),
+    <span class="fn">fetch</span>(<span class="str">'/api/posts'</span>).<span class="fn">then</span>(r => r.<span class="fn">json</span>()),
+  ]);
+  <span class="kw">return</span> { users, posts };
+}</pre>
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- ═══════════════════════════════════ PERFORMANCE ═══════════════════════════════════ -->
+<div class="section-divider">
+  <div class="section-divider-line"></div>
+  <div class="section-divider-label">⚡ Performance</div>
+  <div class="section-divider-line" style="background:linear-gradient(90deg,transparent,var(--accent))"></div>
+</div>
+
+<!-- 22. Debounce -->
+<div class="topic" id="debounce">
+  <div class="topic-header">
+    <span class="topic-num">22</span>
+    <h2 class="topic-title">Debouncing</h2>
+    <span class="topic-tag badge badge-r">Polyfill</span>
+  </div>
+  <p class="explain"><strong>Debounce</strong> delays executing a function until after a specified time has elapsed since the last call. Use case: search input — wait until user stops typing.</p>
+  <div class="code-block">
+    <div class="code-label">debounce.js</div>
+<pre><span class="kw">function</span> <span class="fn">debounce</span>(fn, delay) {
+  <span class="kw">let</span> timer;
+  <span class="kw">return function</span>(...args) {
+    <span class="fn">clearTimeout</span>(timer);
+    timer = <span class="fn">setTimeout</span>(() => {
+      fn.<span class="fn">apply</span>(<span class="kw">this</span>, args);
+    }, delay);
+  };
+}
+
+<span class="kw">const</span> onSearch = <span class="fn">debounce</span>((query) => {
+  <span class="fn">fetch</span>(<span class="str">`/api/search?q=${query}`</span>); <span class="cm">// only fires 500ms after last keystroke</span>
+}, <span class="num">500</span>);
+
+input.<span class="fn">addEventListener</span>(<span class="str">'input'</span>, e => <span class="fn">onSearch</span>(e.target.value));</pre>
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- 23. Throttle -->
+<div class="topic" id="throttle">
+  <div class="topic-header">
+    <span class="topic-num">23</span>
+    <h2 class="topic-title">Throttling</h2>
+    <span class="topic-tag badge badge-r">Polyfill</span>
+  </div>
+  <p class="explain"><strong>Throttle</strong> ensures a function is called <em>at most once</em> per specified time period, regardless of how many times it's triggered. Use case: scroll handler, resize events.</p>
+  <div class="code-block">
+    <div class="code-label">throttle.js</div>
+<pre><span class="kw">function</span> <span class="fn">throttle</span>(fn, limit) {
+  <span class="kw">let</span> inThrottle = <span class="kw">false</span>;
+  <span class="kw">return function</span>(...args) {
+    <span class="kw">if</span> (!inThrottle) {
+      fn.<span class="fn">apply</span>(<span class="kw">this</span>, args);
+      inThrottle = <span class="kw">true</span>;
+      <span class="fn">setTimeout</span>(() => inThrottle = <span class="kw">false</span>, limit);
+    }
+  };
+}
+
+<span class="kw">const</span> onScroll = <span class="fn">throttle</span>(() => {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">'Scroll event (max once per 200ms)'</span>);
+}, <span class="num">200</span>);
+
+window.<span class="fn">addEventListener</span>(<span class="str">'scroll'</span>, onScroll);</pre>
+  </div>
+  <div class="callout info"><strong>Debounce vs Throttle:</strong> Debounce → fires AFTER silence. Throttle → fires AT MOST every N ms. Both use closures.</div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- ═══════════════════════════════════ API & ERRORS ═══════════════════════════════════ -->
+<div class="section-divider">
+  <div class="section-divider-line"></div>
+  <div class="section-divider-label">🌐 API & Error Handling</div>
+  <div class="section-divider-line" style="background:linear-gradient(90deg,transparent,var(--accent))"></div>
+</div>
+
+<!-- 24. Error Handling -->
+<div class="topic" id="error-handling">
+  <div class="topic-header">
+    <span class="topic-num">24</span>
+    <h2 class="topic-title">Error Handling</h2>
+    <span class="topic-tag badge badge-y">Core</span>
+  </div>
+  <div class="code-block">
+    <div class="code-label">error-handling.js</div>
+<pre><span class="cm">// Sync error handling</span>
+<span class="kw">try</span> {
+  <span class="fn">JSON</span>.<span class="fn">parse</span>(<span class="str">'invalid'</span>);
+} <span class="kw">catch</span> (err) {
+  <span class="fn">console</span>.<span class="fn">error</span>(err.name, err.message); <span class="cm">// SyntaxError</span>
+} <span class="kw">finally</span> {
+  <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">'Always runs'</span>);
+}
+
+<span class="cm">// Async error handling</span>
+<span class="kw">async function</span> <span class="fn">fetchData</span>() {
+  <span class="kw">try</span> {
+    <span class="kw">const</span> res = <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">'/api'</span>);
+    <span class="kw">if</span> (!res.ok) <span class="kw">throw new</span> Error(<span class="str">`Error: ${res.status}`</span>);
+    <span class="kw">return await</span> res.<span class="fn">json</span>();
+  } <span class="kw">catch</span>(e) { <span class="kw">throw</span> e; }
+}
+
+<span class="cm">// Custom error types</span>
+<span class="kw">class</span> <span class="fn">ValidationError</span> <span class="kw">extends</span> Error {
+  <span class="fn">constructor</span>(message, field) {
+    <span class="kw">super</span>(message);
+    <span class="kw">this</span>.name = <span class="str">'ValidationError'</span>;
+    <span class="kw">this</span>.field = field;
+  }
+}
+<span class="kw">throw new</span> <span class="fn">ValidationError</span>(<span class="str">'Required'</span>, <span class="str">'email'</span>);</pre>
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- 25. fetch & axios -->
+<div class="topic" id="fetch-axios">
+  <div class="topic-header">
+    <span class="topic-num">25</span>
+    <h2 class="topic-title">fetch & axios + Retry Logic</h2>
+    <span class="topic-tag badge badge-t">Practical</span>
+  </div>
+  <div class="code-block">
+    <div class="code-label">fetch-axios.js</div>
+<pre><span class="cm">// fetch — built-in, no auto-throw on HTTP errors</span>
+<span class="kw">const</span> res = <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">'/api/data'</span>, {
+  method: <span class="str">'POST'</span>,
+  headers: { <span class="str">'Content-Type'</span>: <span class="str">'application/json'</span>, <span class="str">'Authorization'</span>: <span class="str">`Bearer ${token}`</span> },
+  body: <span class="fn">JSON</span>.<span class="fn">stringify</span>({ key: <span class="str">'value'</span> })
+});
+<span class="kw">if</span> (!res.ok) <span class="kw">throw new</span> Error(res.status);
+
+<span class="cm">// axios — auto throws on 4xx/5xx, auto JSON parse</span>
+<span class="kw">const</span> { data } = <span class="kw">await</span> axios.<span class="fn">post</span>(<span class="str">'/api/data'</span>, { key: <span class="str">'value'</span> }, {
+  headers: { Authorization: <span class="str">`Bearer ${token}`</span> }
+});
+
+<span class="cm">// Axios Interceptor</span>
+axios.interceptors.request.<span class="fn">use</span>(config => {
+  config.headers.Authorization = <span class="str">`Bearer ${getToken()}`</span>;
+  <span class="kw">return</span> config;
+});
+axios.interceptors.response.<span class="fn">use</span>(<span class="kw">null</span>, err => {
+  <span class="kw">if</span> (err.response?.status === <span class="num">401</span>) <span class="fn">logout</span>();
+  <span class="kw">return</span> Promise.<span class="fn">reject</span>(err);
+});
+
+<span class="cm">// Retry logic</span>
+<span class="kw">async function</span> <span class="fn">fetchWithRetry</span>(url, retries = <span class="num">3</span>) {
+  <span class="kw">for</span> (<span class="kw">let</span> i = <span class="num">0</span>; i < retries; i++) {
+    <span class="kw">try</span> {
+      <span class="kw">return await</span> (<span class="kw">await</span> <span class="fn">fetch</span>(url)).<span class="fn">json</span>();
+    } <span class="kw">catch</span> (e) {
+      <span class="kw">if</span> (i === retries - <span class="num">1</span>) <span class="kw">throw</span> e;
+      <span class="kw">await new</span> <span class="fn">Promise</span>(r => <span class="fn">setTimeout</span>(r, <span class="num">1000</span> * (i + <span class="num">1</span>))); <span class="cm">// exponential backoff</span>
+    }
+  }
+}</pre>
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- ═══════════════════════════════════ DOM ═══════════════════════════════════ -->
+<div class="section-divider">
+  <div class="section-divider-line"></div>
+  <div class="section-divider-label">🌳 DOM & Browser</div>
+  <div class="section-divider-line" style="background:linear-gradient(90deg,transparent,var(--accent))"></div>
+</div>
+
+<!-- 26. DOM -->
+<div class="topic" id="dom">
+  <div class="topic-header">
+    <span class="topic-num">26</span>
+    <h2 class="topic-title">DOM Manipulation</h2>
+    <span class="topic-tag badge badge-y">Core</span>
+  </div>
+  <div class="code-block">
+    <div class="code-label">dom.js</div>
+<pre><span class="cm">// Selecting</span>
+document.<span class="fn">getElementById</span>(<span class="str">'id'</span>);
+document.<span class="fn">querySelector</span>(<span class="str">'.class'</span>);       <span class="cm">// first match</span>
+document.<span class="fn">querySelectorAll</span>(<span class="str">'div > p'</span>); <span class="cm">// NodeList</span>
+
+<span class="cm">// Creating & inserting</span>
+<span class="kw">const</span> el = document.<span class="fn">createElement</span>(<span class="str">'div'</span>);
+el.textContent = <span class="str">'Hello'</span>;
+el.classList.<span class="fn">add</span>(<span class="str">'card'</span>);
+el.<span class="fn">setAttribute</span>(<span class="str">'data-id'</span>, <span class="str">'42'</span>);
+document.body.<span class="fn">appendChild</span>(el);      <span class="cm">// adds to end</span>
+parent.<span class="fn">insertBefore</span>(el, sibling);
+
+<span class="cm">// Modifying</span>
+el.style.color = <span class="str">'red'</span>;
+el.innerHTML = <span class="str">'&lt;strong&gt;Bold&lt;/strong&gt;'</span>; <span class="cm">// ⚠ XSS risk</span>
+
+<span class="cm">// Removing</span>
+el.<span class="fn">remove</span>();</pre>
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- 27. Virtual DOM -->
+<div class="topic" id="virtual-dom">
+  <div class="topic-header">
+    <span class="topic-num">27</span>
+    <h2 class="topic-title">Virtual DOM & Reconciliation</h2>
+    <span class="topic-tag badge badge-p">React</span>
+  </div>
+  <p class="explain">The <strong>Virtual DOM</strong> is an in-memory representation of the real DOM. React creates a virtual tree, and when state changes, it creates a new virtual tree and <em>diffs</em> it against the old one — only updating what changed in the real DOM.</p>
+  <div class="grid-2">
+    <div class="card"><div class="card-title">Diffing Algorithm</div><p>React compares old vs new VDOM trees. Same element type → update props. Different type → destroy and recreate. List items need unique <code>key</code> props.</p></div>
+    <div class="card"><div class="card-title">React Fiber</div><p>React's reconciliation engine. Breaks rendering into units of work, allowing pausing, prioritization, and resuming — enabling features like Concurrent Mode.</p></div>
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- 28. Event Delegation -->
+<div class="topic" id="event-delegation">
+  <div class="topic-header">
+    <span class="topic-num">28</span>
+    <h2 class="topic-title">Event Delegation & Bubbling</h2>
+    <span class="topic-tag badge badge-y">Core</span>
+  </div>
+  <p class="explain"><strong>Event Bubbling</strong>: events propagate from child → parent → document. <strong>Event Delegation</strong>: attach one listener on a parent instead of many listeners on children — handles dynamic elements efficiently.</p>
+  <div class="code-block">
+    <div class="code-label">event-delegation.js</div>
+<pre><span class="cm">// Without delegation — bad for dynamic lists</span>
+document.<span class="fn">querySelectorAll</span>(<span class="str">'li'</span>).<span class="fn">forEach</span>(li =>
+  li.<span class="fn">addEventListener</span>(<span class="str">'click'</span>, handler)
+);
+
+<span class="cm">// With delegation — efficient</span>
+document.<span class="fn">getElementById</span>(<span class="str">'list'</span>).<span class="fn">addEventListener</span>(<span class="str">'click'</span>, (e) => {
+  <span class="kw">if</span> (e.target.<span class="fn">matches</span>(<span class="str">'li'</span>)) {
+    <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">'Clicked:'</span>, e.target.textContent);
+  }
+});
+
+<span class="cm">// Stop propagation</span>
+e.<span class="fn">stopPropagation</span>();   <span class="cm">// stops bubbling</span>
+e.<span class="fn">preventDefault</span>();   <span class="cm">// prevents default browser action</span>
+
+<span class="cm">// Capture phase (parent first)</span>
+el.<span class="fn">addEventListener</span>(<span class="str">'click'</span>, handler, { capture: <span class="kw">true</span> });</pre>
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- 29. Storage -->
+<div class="topic" id="storage">
+  <div class="topic-header">
+    <span class="topic-num">29</span>
+    <h2 class="topic-title">Browser Storage</h2>
+    <span class="topic-tag badge badge-y">Core</span>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Type</th><th>Capacity</th><th>Persists</th><th>Accessible</th><th>Sent with requests?</th></tr>
+      <tr><td>localStorage</td><td>~5MB</td><td>Until cleared</td><td>Same origin</td><td>No</td></tr>
+      <tr><td>sessionStorage</td><td>~5MB</td><td>Tab session only</td><td>Same tab + origin</td><td>No</td></tr>
+      <tr><td>Cookies</td><td>~4KB</td><td>Until expiry</td><td>Configurable</td><td>✅ Yes (auto)</td></tr>
+    </table>
+  </div>
+  <div class="code-block">
+    <div class="code-label">storage.js</div>
+<pre>localStorage.<span class="fn">setItem</span>(<span class="str">'user'</span>, <span class="fn">JSON</span>.<span class="fn">stringify</span>({ name: <span class="str">'Alice'</span> }));
+<span class="kw">const</span> user = <span class="fn">JSON</span>.<span class="fn">parse</span>(localStorage.<span class="fn">getItem</span>(<span class="str">'user'</span>));
+localStorage.<span class="fn">removeItem</span>(<span class="str">'user'</span>);
+localStorage.<span class="fn">clear</span>();
+
+<span class="cm">// Cookies (manual string, or use js-cookie lib)</span>
+document.cookie = <span class="str">"token=abc123; expires=Fri, 31 Dec 2025 23:59:59 GMT; path=/"</span>;
+<span class="cm">// HttpOnly flag: server-set only, JS can't read → XSS protection</span></pre>
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- ═══════════════════════════════════ ARRAY & STRING ═══════════════════════════════════ -->
+<div class="section-divider">
+  <div class="section-divider-line"></div>
+  <div class="section-divider-label">📦 Array & String Methods</div>
+  <div class="section-divider-line" style="background:linear-gradient(90deg,transparent,var(--accent))"></div>
+</div>
+
+<!-- 30. Array Methods -->
+<div class="topic" id="array-methods">
+  <div class="topic-header">
+    <span class="topic-num">30</span>
+    <h2 class="topic-title">Array Methods — Complete</h2>
+    <span class="topic-tag badge badge-p">Must Know</span>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Method</th><th>Mutates?</th><th>Returns</th><th>Description</th></tr>
+      <tr><td><code>push(...items)</code></td><td>✅</td><td>new length</td><td>Add to end</td></tr>
+      <tr><td><code>pop()</code></td><td>✅</td><td>removed item</td><td>Remove from end</td></tr>
+      <tr><td><code>shift()</code></td><td>✅</td><td>removed item</td><td>Remove from start</td></tr>
+      <tr><td><code>unshift(...items)</code></td><td>✅</td><td>new length</td><td>Add to start</td></tr>
+      <tr><td><code>splice(i, n, ...items)</code></td><td>✅</td><td>removed items</td><td>Insert/delete at index</td></tr>
+      <tr><td><code>sort(compareFn)</code></td><td>✅</td><td>sorted array</td><td>Sort in place</td></tr>
+      <tr><td><code>reverse()</code></td><td>✅</td><td>reversed array</td><td>Reverse in place</td></tr>
+      <tr><td><code>fill(val, start, end)</code></td><td>✅</td><td>array</td><td>Fill with value</td></tr>
+      <tr><td><code>map(fn)</code></td><td>❌</td><td>new array</td><td>Transform each element</td></tr>
+      <tr><td><code>filter(fn)</code></td><td>❌</td><td>new array</td><td>Keep matching elements</td></tr>
+      <tr><td><code>reduce(fn, init)</code></td><td>❌</td><td>accumulator</td><td>Accumulate to single value</td></tr>
+      <tr><td><code>reduceRight(fn, init)</code></td><td>❌</td><td>accumulator</td><td>Reduce right-to-left</td></tr>
+      <tr><td><code>find(fn)</code></td><td>❌</td><td>element / undefined</td><td>First matching element</td></tr>
+      <tr><td><code>findIndex(fn)</code></td><td>❌</td><td>index / -1</td><td>Index of first match</td></tr>
+      <tr><td><code>every(fn)</code></td><td>❌</td><td>boolean</td><td>All elements pass test</td></tr>
+      <tr><td><code>some(fn)</code></td><td>❌</td><td>boolean</td><td>At least one passes</td></tr>
+      <tr><td><code>includes(val)</code></td><td>❌</td><td>boolean</td><td>Contains value (NaN safe)</td></tr>
+      <tr><td><code>indexOf(val)</code></td><td>❌</td><td>index / -1</td><td>First index of value</td></tr>
+      <tr><td><code>flat(depth)</code></td><td>❌</td><td>new array</td><td>Flatten nested arrays</td></tr>
+      <tr><td><code>flatMap(fn)</code></td><td>❌</td><td>new array</td><td>Map then flat(1)</td></tr>
+      <tr><td><code>slice(start, end)</code></td><td>❌</td><td>new array</td><td>Shallow copy portion</td></tr>
+      <tr><td><code>concat(...arrays)</code></td><td>❌</td><td>new array</td><td>Merge arrays</td></tr>
+      <tr><td><code>join(sep)</code></td><td>❌</td><td>string</td><td>Array to string</td></tr>
+      <tr><td><code>forEach(fn)</code></td><td>❌</td><td>undefined</td><td>Iterate (no return)</td></tr>
+      <tr><td><code>Array.from(iterable)</code></td><td>—</td><td>new array</td><td>Convert iterable/array-like</td></tr>
+      <tr><td><code>Array.isArray(val)</code></td><td>—</td><td>boolean</td><td>Type check</td></tr>
+      <tr><td><code>at(index)</code></td><td>❌</td><td>element</td><td>Supports negative index</td></tr>
+    </table>
+  </div>
+  <div class="code-block">
+    <div class="code-label">array-examples.js</div>
+<pre><span class="kw">const</span> nums = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>, <span class="num">5</span>];
+
+<span class="cm">// Chaining</span>
+nums
+  .<span class="fn">filter</span>(n => n % <span class="num">2</span> === <span class="num">0</span>) <span class="cm">// [2, 4]</span>
+  .<span class="fn">map</span>(n => n * <span class="num">10</span>)          <span class="cm">// [20, 40]</span>
+  .<span class="fn">reduce</span>((a, n) => a + n, <span class="num">0</span>) <span class="cm">// 60</span>
+
+<span class="cm">// Flatten</span>
+[<span class="num">1</span>, [<span class="num">2</span>, [<span class="num">3</span>, [<span class="num">4</span>]]]].<span class="fn">flat</span>(<span class="num">Infinity</span>); <span class="cm">// [1, 2, 3, 4]</span>
+
+<span class="cm">// Sort numbers correctly</span>
+[<span class="num">10</span>, <span class="num">1</span>, <span class="num">21</span>].<span class="fn">sort</span>((a, b) => a - b); <span class="cm">// [1, 10, 21]</span>
+
+<span class="cm">// Remove duplicates</span>
+[...<span class="kw">new</span> Set([<span class="num">1</span>, <span class="num">2</span>, <span class="num">2</span>, <span class="num">3</span>])]; <span class="cm">// [1, 2, 3]</span>
+
+<span class="cm">// Array from string</span>
+Array.<span class="fn">from</span>(<span class="str">'hello'</span>); <span class="cm">// ['h','e','l','l','o']</span></pre>
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- 31. String Methods -->
+<div class="topic" id="string-methods">
+  <div class="topic-header">
+    <span class="topic-num">31</span>
+    <h2 class="topic-title">String Methods — Complete</h2>
+    <span class="topic-tag badge badge-p">Must Know</span>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Method</th><th>Returns</th><th>Description</th></tr>
+      <tr><td><code>length</code></td><td>number</td><td>Character count</td></tr>
+      <tr><td><code>charAt(i)</code></td><td>string</td><td>Character at index</td></tr>
+      <tr><td><code>charCodeAt(i)</code></td><td>number</td><td>UTF-16 code</td></tr>
+      <tr><td><code>at(i)</code></td><td>string</td><td>Char at index (negative supported)</td></tr>
+      <tr><td><code>indexOf(str)</code></td><td>number</td><td>First occurrence index, -1 if not found</td></tr>
+      <tr><td><code>lastIndexOf(str)</code></td><td>number</td><td>Last occurrence index</td></tr>
+      <tr><td><code>includes(str)</code></td><td>boolean</td><td>Contains substring</td></tr>
+      <tr><td><code>startsWith(str)</code></td><td>boolean</td><td>Starts with</td></tr>
+      <tr><td><code>endsWith(str)</code></td><td>boolean</td><td>Ends with</td></tr>
+      <tr><td><code>slice(start, end)</code></td><td>string</td><td>Extract substring (negative ok)</td></tr>
+      <tr><td><code>substring(start, end)</code></td><td>string</td><td>Extract (no negatives)</td></tr>
+      <tr><td><code>toUpperCase()</code></td><td>string</td><td>Uppercase</td></tr>
+      <tr><td><code>toLowerCase()</code></td><td>string</td><td>Lowercase</td></tr>
+      <tr><td><code>trim()</code></td><td>string</td><td>Remove whitespace both ends</td></tr>
+      <tr><td><code>trimStart() / trimEnd()</code></td><td>string</td><td>One side only</td></tr>
+      <tr><td><code>split(sep)</code></td><td>array</td><td>Split into array</td></tr>
+      <tr><td><code>replace(pat, repl)</code></td><td>string</td><td>Replace first match</td></tr>
+      <tr><td><code>replaceAll(pat, repl)</code></td><td>string</td><td>Replace all matches</td></tr>
+      <tr><td><code>match(regex)</code></td><td>array/null</td><td>Regex match</td></tr>
+      <tr><td><code>matchAll(regex)</code></td><td>iterator</td><td>All regex matches</td></tr>
+      <tr><td><code>search(regex)</code></td><td>number</td><td>Index of regex match</td></tr>
+      <tr><td><code>padStart(n, str)</code></td><td>string</td><td>Pad to length from start</td></tr>
+      <tr><td><code>padEnd(n, str)</code></td><td>string</td><td>Pad to length from end</td></tr>
+      <tr><td><code>repeat(n)</code></td><td>string</td><td>Repeat n times</td></tr>
+      <tr><td><code>concat(...strs)</code></td><td>string</td><td>Join strings</td></tr>
+      <tr><td><code>String.fromCharCode(n)</code></td><td>string</td><td>Create from char code</td></tr>
+    </table>
+  </div>
+  <div class="code-block">
+    <div class="code-label">string-examples.js</div>
+<pre><span class="kw">const</span> s = <span class="str">'  Hello, World!  '</span>;
+s.<span class="fn">trim</span>();                           <span class="cm">// "Hello, World!"</span>
+s.<span class="fn">trim</span>().<span class="fn">toLowerCase</span>();             <span class="cm">// "hello, world!"</span>
+<span class="str">'hello'</span>.<span class="fn">split</span>(<span class="str">''</span>).<span class="fn">reverse</span>().<span class="fn">join</span>(<span class="str">''</span>); <span class="cm">// "olleh"</span>
+<span class="str">'abc'</span>.<span class="fn">padStart</span>(<span class="num">5</span>, <span class="str">'0'</span>);             <span class="cm">// "00abc"</span>
+<span class="str">'ha'</span>.<span class="fn">repeat</span>(<span class="num">3</span>);                      <span class="cm">// "hahaha"</span>
+<span class="str">'Hello World'</span>.<span class="fn">replace</span>(<span class="str">/o/g</span>, <span class="str">'0'</span>);   <span class="cm">// "Hell0 W0rld"</span>
+
+<span class="cm">// Template literals</span>
+<span class="kw">const</span> name = <span class="str">'Alice'</span>;
+<span class="str">`Hello, ${name}! ${<span class="num">1</span> + <span class="num">2</span>}`</span>; <span class="cm">// "Hello, Alice! 3"</span></pre>
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- ═══════════════════════════════════ REACT ═══════════════════════════════════ -->
+<div class="section-divider">
+  <div class="section-divider-line"></div>
+  <div class="section-divider-label">⚛ React Concepts</div>
+  <div class="section-divider-line" style="background:linear-gradient(90deg,transparent,var(--accent))"></div>
+</div>
+
+<!-- 32. React -->
+<div class="topic" id="react">
+  <div class="topic-header">
+    <span class="topic-num">32</span>
+    <h2 class="topic-title">State Batching & Functional Updates</h2>
+    <span class="topic-tag badge badge-p">React</span>
+  </div>
+  <div class="code-block">
+    <div class="code-label">react-state.jsx</div>
+<pre><span class="cm">// State Batching (React 18+) — multiple setState calls in one render</span>
+<span class="kw">function</span> <span class="fn">Counter</span>() {
+  <span class="kw">const</span> [count, setCount] = useState(<span class="num">0</span>);
+  <span class="kw">const</span> [flag, setFlag]   = useState(<span class="kw">false</span>);
+
+  <span class="kw">const</span> <span class="fn">handleClick</span> = () => {
+    setCount(c => c + <span class="num">1</span>); <span class="cm">// functional update — based on previous</span>
+    setFlag(f => !f);
+    <span class="cm">// React 18 batches these → ONE re-render, not two</span>
+  };
+
+  <span class="cm">// ⚠ Wrong — reads stale state</span>
+  <span class="kw">const</span> <span class="fn">bad</span> = () => {
+    setCount(count + <span class="num">1</span>); <span class="cm">// count is stale closure</span>
+    setCount(count + <span class="num">1</span>); <span class="cm">// still count+1, not count+2!</span>
+  };
+
+  <span class="cm">// ✅ Correct — functional form</span>
+  <span class="kw">const</span> <span class="fn">good</span> = () => {
+    setCount(c => c + <span class="num">1</span>);
+    setCount(c => c + <span class="num">1</span>); <span class="cm">// correctly count+2</span>
+  };
+}</pre>
+  </div>
+  <div class="callout info">In React 18, batching works everywhere — even inside <code>setTimeout</code>, promises, and native event handlers. Use <code>flushSync()</code> to opt out of batching when needed.</div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- ═══════════════════════════════════ ADVANCED ═══════════════════════════════════ -->
+<div class="section-divider">
+  <div class="section-divider-line"></div>
+  <div class="section-divider-label">🚀 Advanced Topics</div>
+  <div class="section-divider-line" style="background:linear-gradient(90deg,transparent,var(--accent))"></div>
+</div>
+
+<!-- 33. Event Propagation -->
+<div class="topic" id="event-prop">
+  <div class="topic-header">
+    <span class="topic-num">33</span>
+    <h2 class="topic-title">Event Propagation — Capturing vs Bubbling</h2>
+    <span class="topic-tag badge badge-r">Deep Dive</span>
+  </div>
+  <p class="explain">DOM events travel in 3 phases: <strong>Capture</strong> (window → target), <strong>Target</strong> (at element), <strong>Bubble</strong> (target → window). By default, handlers are registered on the bubble phase.</p>
+  <div class="code-block">
+    <div class="code-label">event-propagation.js</div>
+<pre><span class="cm">// Capture phase — parent first</span>
+parent.<span class="fn">addEventListener</span>(<span class="str">'click'</span>, () => <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">'parent capture'</span>), <span class="kw">true</span>);
+child.<span class="fn">addEventListener</span>( <span class="str">'click'</span>, () => <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">'child'</span>));
+parent.<span class="fn">addEventListener</span>(<span class="str">'click'</span>, () => <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">'parent bubble'</span>));
+<span class="cm">// Click child → "parent capture", "child", "parent bubble"</span>
+
+e.<span class="fn">stopPropagation</span>();      <span class="cm">// stop at current element</span>
+e.<span class="fn">stopImmediatePropagation</span>(); <span class="cm">// also stops other handlers on same element</span></pre>
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- 34. Security -->
+<div class="topic" id="security">
+  <div class="topic-header">
+    <span class="topic-num">34</span>
+    <h2 class="topic-title">XSS & CSRF</h2>
+    <span class="topic-tag badge badge-r">Security</span>
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">XSS (Cross-Site Scripting)</div>
+      <p>Attacker injects malicious scripts into your page. Prevention: never use <code>innerHTML</code> with user input — use <code>textContent</code> or sanitize with DOMPurify. Set <code>Content-Security-Policy</code> header. Use HttpOnly cookies.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">CSRF (Cross-Site Request Forgery)</div>
+      <p>Malicious site tricks authenticated user's browser into making requests to your API. Prevention: CSRF tokens, SameSite cookies (<code>SameSite=Strict</code>), check Origin/Referer headers.</p>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+<!-- 35. Polyfills -->
+<div class="topic" id="polyfills">
+  <div class="topic-header">
+    <span class="topic-num">35</span>
+    <h2 class="topic-title">Polyfills — Interview Implementations</h2>
+    <span class="topic-tag badge badge-p">Coding</span>
+  </div>
+  <div class="code-block">
+    <div class="code-label">polyfills.js</div>
+<pre><span class="cm">// Array.prototype.map polyfill</span>
+Array.prototype.<span class="fn">myMap</span> = <span class="kw">function</span>(fn) {
+  <span class="kw">const</span> result = [];
+  <span class="kw">for</span> (<span class="kw">let</span> i = <span class="num">0</span>; i < <span class="kw">this</span>.length; i++) {
+    result.<span class="fn">push</span>(<span class="fn">fn</span>(<span class="kw">this</span>[i], i, <span class="kw">this</span>));
+  }
+  <span class="kw">return</span> result;
+};
+
+<span class="cm">// Array.prototype.filter polyfill</span>
+Array.prototype.<span class="fn">myFilter</span> = <span class="kw">function</span>(fn) {
+  <span class="kw">const</span> result = [];
+  <span class="kw">for</span> (<span class="kw">let</span> i = <span class="num">0</span>; i < <span class="kw">this</span>.length; i++) {
+    <span class="kw">if</span> (<span class="fn">fn</span>(<span class="kw">this</span>[i], i, <span class="kw">this</span>)) result.<span class="fn">push</span>(<span class="kw">this</span>[i]);
+  }
+  <span class="kw">return</span> result;
+};
+
+<span class="cm">// Array.prototype.reduce polyfill</span>
+Array.prototype.<span class="fn">myReduce</span> = <span class="kw">function</span>(fn, init) {
+  <span class="kw">let</span> acc = init !== <span class="kw">undefined</span> ? init : <span class="kw">this</span>[<span class="num">0</span>];
+  <span class="kw">let</span> start = init !== <span class="kw">undefined</span> ? <span class="num">0</span> : <span class="num">1</span>;
+  <span class="kw">for</span> (<span class="kw">let</span> i = start; i < <span class="kw">this</span>.length; i++) {
+    acc = <span class="fn">fn</span>(acc, <span class="kw">this</span>[i], i, <span class="kw">this</span>);
+  }
+  <span class="kw">return</span> acc;
+};
+
+<span class="cm">// Promise.all polyfill</span>
+<span class="fn">Promise</span>.<span class="fn">myAll</span> = <span class="kw">function</span>(promises) {
+  <span class="kw">return new</span> <span class="fn">Promise</span>((resolve, reject) => {
+    <span class="kw">const</span> results = [];
+    <span class="kw">let</span> count = <span class="num">0</span>;
+    promises.<span class="fn">forEach</span>((p, i) => {
+      <span class="fn">Promise</span>.<span class="fn">resolve</span>(p).<span class="fn">then</span>(val => {
+        results[i] = val;
+        <span class="kw">if</span> (++count === promises.length) <span class="fn">resolve</span>(results);
+      }).<span class="fn">catch</span>(reject);
+    });
+  });
+};</pre>
+  </div>
+  <a class="back-top" href="#top">↑ Top</a>
+</div>
+
+</main>
+</div>
+
+</body>
+</html>

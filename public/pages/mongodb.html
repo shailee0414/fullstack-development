@@ -1,0 +1,1528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MongoDB Interview Mastery Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0f;
+  --surface: #111118;
+  --surface2: #1a1a24;
+  --border: #2a2a3a;
+  --accent: #f0e040;
+  --accent2: #40e0d0;
+  --accent3: #ff6b6b;
+  --accent4: #a78bfa;
+  --text: #e8e8f0;
+  --muted: #8888a8;
+  --code-bg: #0d0d14;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: 'Syne', sans-serif; line-height: 1.7; }
+
+header {
+  padding: 60px 40px 50px;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(135deg, #0a0a0f 60%, #0f130f);
+  position: relative; overflow: hidden;
+}
+header::before {
+  content: '';
+  position: absolute; top: -80px; right: -80px;
+  width: 320px; height: 320px;
+  background: radial-gradient(circle, rgba(64,224,208,0.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+header::after {
+  content: '';
+  position: absolute; bottom: -60px; left: 30%;
+  width: 240px; height: 240px;
+  background: radial-gradient(circle, rgba(240,224,64,0.05) 0%, transparent 70%);
+  pointer-events: none;
+}
+header h1 { font-size: clamp(28px, 4vw, 48px); font-weight: 800; letter-spacing: -1px; line-height: 1.1; }
+header h1 span { color: var(--accent2); }
+header p { color: var(--muted); margin-top: 10px; font-size: 15px; max-width: 520px; }
+.badge-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+.badge { padding: 5px 10px; border-radius: 4px; font-size: 12px; font-weight: 600; letter-spacing: 0.5px; font-family: 'JetBrains Mono', monospace; }
+.badge-y { background: var(--accent); color: black; }
+.badge-t { background: var(--accent2); color: black; }
+.badge-r { background: var(--accent3); color: white; }
+.badge-p { background: var(--accent4); color: white; }
+
+.shell { display: flex; min-height: 100vh; }
+
+nav {
+  width: 260px; min-width: 260px;
+  background: var(--surface);
+  padding: 24px 16px;
+  position: sticky; top: 0;
+  height: 100vh; overflow-y: auto;
+  border-right: 1px solid var(--border);
+}
+nav::-webkit-scrollbar { width: 4px; }
+nav::-webkit-scrollbar-track { background: transparent; }
+nav::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+.nav-section { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--accent2); padding: 14px 8px 6px; font-family: 'JetBrains Mono', monospace; }
+.nav-link { display: block; color: var(--muted); margin: 2px 0; text-decoration: none; padding: 5px 8px; border-radius: 4px; font-size: 13px; transition: all 0.15s; }
+.nav-link:hover { color: var(--accent2); background: rgba(64,224,208,0.06); }
+.nav-link.sub { padding-left: 20px; font-size: 12px; }
+.toc-progress { font-size: 11px; color: var(--muted); font-family: 'JetBrains Mono', monospace; padding: 4px 8px; margin-bottom: 8px; }
+
+main { flex: 1; padding: 40px 48px; max-width: 920px; }
+
+.section-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--accent2); font-family: 'JetBrains Mono', monospace;
+  margin: 48px 0 24px;
+  display: flex; align-items: center; gap: 12px;
+}
+.section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+.topic { margin-bottom: 64px; scroll-margin-top: 20px; }
+.topic-header { display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 20px; }
+.topic-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); background: var(--surface2); border: 1px solid var(--border); padding: 2px 8px; border-radius: 4px; }
+.topic-title { font-size: 22px; font-weight: 700; letter-spacing: -0.5px; }
+
+.subtopic { margin: 28px 0; }
+.subtopic h3 { font-size: 16px; font-weight: 700; color: var(--accent2); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+.subtopic h3::before { content: '▸'; color: var(--accent); font-size: 12px; }
+.subtopic p, .subtopic li { font-size: 14px; color: var(--text); line-height: 1.8; }
+.subtopic ul, .subtopic ol { padding-left: 20px; margin: 8px 0; }
+.subtopic li { margin: 4px 0; }
+
+.callout { border-left: 3px solid var(--accent); background: rgba(240,224,64,0.04); padding: 12px 16px; margin: 12px 0; border-radius: 0 6px 6px 0; font-size: 13px; }
+.callout.info { border-color: var(--accent2); background: rgba(64,224,208,0.04); }
+.callout.warn { border-color: var(--accent3); background: rgba(255,107,107,0.04); }
+.callout.tip { border-color: var(--accent4); background: rgba(167,139,250,0.04); }
+.callout strong { display: block; margin-bottom: 4px; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
+.callout > strong { color: var(--accent); }
+.callout.info strong { color: var(--accent2); }
+.callout.warn strong { color: var(--accent3); }
+.callout.tip strong { color: var(--accent4); }
+
+.code-block { background: var(--code-bg); border: 1px solid var(--border); border-radius: 6px; margin: 12px 0; overflow: hidden; }
+.code-label { padding: 6px 12px; background: var(--surface2); font-size: 11px; font-family: 'JetBrains Mono', monospace; color: var(--muted); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
+.code-label span { width: 8px; height: 8px; border-radius: 50%; background: var(--accent2); display: inline-block; }
+pre { padding: 16px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.7; color: #cdd6f4; }
+pre::-webkit-scrollbar { height: 4px; }
+pre::-webkit-scrollbar-track { background: transparent; }
+pre::-webkit-scrollbar-thumb { background: var(--border); }
+
+.kw { color: #cba6f7; }
+.fn { color: #89b4fa; }
+.str { color: #a6e3a1; }
+.cm { color: #585b70; font-style: italic; }
+.num { color: #fab387; }
+.tag { color: #f38ba8; }
+.attr { color: #89dceb; }
+.op { color: #f0e040; }
+
+.interview-q { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 14px 16px; margin: 8px 0; font-size: 13px; }
+.interview-q .q { color: var(--accent); font-weight: 700; font-size: 12px; letter-spacing: 0.5px; margin-bottom: 6px; font-family: 'JetBrains Mono', monospace; }
+.interview-q p { color: var(--text); font-size: 13px; }
+
+table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13px; }
+th { background: var(--surface2); color: var(--accent2); font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; padding: 8px 12px; text-align: left; border: 1px solid var(--border); }
+td { padding: 8px 12px; border: 1px solid var(--border); color: var(--text); vertical-align: top; }
+tr:nth-child(even) td { background: rgba(255,255,255,0.01); }
+
+.tag-pill { display: inline-block; padding: 2px 8px; border-radius: 3px; font-size: 11px; font-family: 'JetBrains Mono', monospace; font-weight: 600; margin: 2px; }
+.tag-core { background: rgba(64,224,208,0.12); color: var(--accent2); border: 1px solid rgba(64,224,208,0.25); }
+.tag-hot { background: rgba(255,107,107,0.12); color: var(--accent3); border: 1px solid rgba(255,107,107,0.25); }
+.tag-adv { background: rgba(167,139,250,0.12); color: var(--accent4); border: 1px solid rgba(167,139,250,0.25); }
+.tag-perf { background: rgba(240,224,64,0.12); color: var(--accent); border: 1px solid rgba(240,224,64,0.25); }
+
+.back-top { display: inline-flex; align-items: center; gap: 6px; margin-top: 24px; color: var(--muted); text-decoration: none; font-size: 12px; font-family: 'JetBrains Mono', monospace; transition: color 0.2s; }
+.back-top:hover { color: var(--accent2); }
+
+/* Architecture diagram */
+.arch-box {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 20px;
+  margin: 12px 0;
+  background: var(--surface);
+  text-align: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+}
+.arch-row { display: flex; gap: 12px; justify-content: center; margin: 8px 0; align-items: center; flex-wrap: wrap; }
+.arch-node { background: var(--surface2); border: 1px solid var(--accent2); border-radius: 6px; padding: 8px 16px; color: var(--accent2); font-size: 12px; font-weight: 600; }
+.arch-node.primary { border-color: var(--accent); color: var(--accent); }
+.arch-node.router { border-color: var(--accent4); color: var(--accent4); }
+.arch-node.config { border-color: var(--accent3); color: var(--accent3); }
+.arch-arrow { color: var(--muted); font-size: 18px; }
+
+@media (max-width: 768px) { nav { display: none; } main { padding: 24px 20px; } header { padding: 40px 20px; } }
+</style>
+</head>
+<body>
+
+<header id="top">
+  <h1>MongoDB <span>Interview</span><br>Mastery Guide</h1>
+  <p>Core concepts → Indexing internals → Sharding architecture → Real-world scenarios</p>
+  <div class="badge-row">
+    <span class="badge badge-t">CRUD</span>
+    <span class="badge badge-y">Indexing Deep</span>
+    <span class="badge badge-r">Sharding</span>
+    <span class="badge badge-p">Aggregation</span>
+    <span class="badge badge-t">Performance</span>
+    <span class="badge badge-y">Schema Design</span>
+  </div>
+</header>
+
+<div class="shell">
+<nav>
+  <div class="toc-progress">📚 12 Sections · 60+ Topics</div>
+  <div class="nav-section">Foundations</div>
+  <a class="nav-link" href="#s1">1. Core Concepts</a>
+  <a class="nav-link" href="#s2">2. CRUD Operations</a>
+  <div class="nav-section">Deep Dives</div>
+  <a class="nav-link" href="#s3">3. Indexing (Deep)</a>
+  <a class="nav-link sub" href="#s3-btree">B+ Tree Algorithm</a>
+  <a class="nav-link sub" href="#s3-types">Index Types</a>
+  <a class="nav-link sub" href="#s3-covered">Covered Queries</a>
+  <a class="nav-link" href="#s4">4. Aggregation</a>
+  <a class="nav-link" href="#s5">5. Data Modeling</a>
+  <div class="nav-section">Architecture</div>
+  <a class="nav-link" href="#s6">6. Transactions & ACID</a>
+  <a class="nav-link" href="#s7">7. Replication</a>
+  <a class="nav-link" href="#s8">8. Sharding (Very Deep)</a>
+  <a class="nav-link sub" href="#s8-arch">Architecture</a>
+  <a class="nav-link sub" href="#s8-shardkey">Shard Key</a>
+  <a class="nav-link sub" href="#s8-routing">Query Routing</a>
+  <div class="nav-section">Production</div>
+  <a class="nav-link" href="#s9">9. Performance</a>
+  <a class="nav-link" href="#s10">10. Node.js / Mongoose</a>
+  <a class="nav-link" href="#s11">11. Advanced Concepts</a>
+  <a class="nav-link" href="#s12">12. Scenario-Based</a>
+</nav>
+
+<main>
+
+<!-- ===== SECTION 1: CORE CONCEPTS ===== -->
+<div class="section-label">Foundations</div>
+
+<div class="topic" id="s1">
+  <div class="topic-header">
+    <span class="topic-num">01</span>
+    <h2 class="topic-title">Core Concepts</h2>
+    <span class="tag-pill tag-core">Core</span>
+  </div>
+
+  <div class="subtopic">
+    <h3>What is MongoDB?</h3>
+    <p>MongoDB is a <strong>document-oriented NoSQL database</strong> that stores data in flexible, JSON-like documents (BSON format) instead of rows and columns. Built for scale, flexibility, and developer speed.</p>
+    <ul>
+      <li>Released in 2009 by 10gen (now MongoDB Inc.)</li>
+      <li>Documents can have different fields — no fixed schema</li>
+      <li>Horizontally scalable via sharding</li>
+      <li>Supports ACID transactions (since v4.0)</li>
+    </ul>
+    <div class="callout info">
+      <strong>Interview Answer</strong>
+      "MongoDB is a document database that stores data as BSON documents inside collections. Unlike relational DBs, there's no fixed schema — each document can have different fields. It's designed for horizontal scaling, flexible data models, and high-throughput workloads."
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>NoSQL vs SQL — Full Comparison</h3>
+    <table>
+      <tr><th>Aspect</th><th>SQL (PostgreSQL/MySQL)</th><th>MongoDB (NoSQL)</th></tr>
+      <tr><td>Data Model</td><td>Tables, rows, columns</td><td>Collections, documents (JSON)</td></tr>
+      <tr><td>Schema</td><td>Fixed, predefined</td><td>Dynamic, flexible</td></tr>
+      <tr><td>Scaling</td><td>Vertical (bigger machine)</td><td>Horizontal (more machines)</td></tr>
+      <tr><td>Joins</td><td>Native, efficient</td><td>$lookup (less efficient)</td></tr>
+      <tr><td>ACID</td><td>Full, always</td><td>Document-level always; multi-doc via transactions</td></tr>
+      <tr><td>Query Language</td><td>SQL (standardized)</td><td>MongoDB Query Language (MQL)</td></tr>
+      <tr><td>Best For</td><td>Financial, relational, complex queries</td><td>Catalogs, user profiles, events, real-time</td></tr>
+    </table>
+    <div class="interview-q">
+      <div class="q">Q: When would you choose MongoDB over PostgreSQL?</div>
+      <p>Choose MongoDB when: data is hierarchical/nested (product catalogs, user profiles), schema evolves rapidly, you need horizontal scaling from day one, or you're storing semi-structured data. Choose PostgreSQL for: financial transactions, complex multi-table joins, strict ACID requirements, or when data is truly relational.</p>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>Collections vs Documents</h3>
+    <table>
+      <tr><th>SQL Concept</th><th>MongoDB Equivalent</th></tr>
+      <tr><td>Database</td><td>Database</td></tr>
+      <tr><td>Table</td><td>Collection</td></tr>
+      <tr><td>Row</td><td>Document</td></tr>
+      <tr><td>Column</td><td>Field</td></tr>
+      <tr><td>Index</td><td>Index</td></tr>
+      <tr><td>JOIN</td><td>$lookup (aggregation)</td></tr>
+      <tr><td>Primary Key</td><td>_id (auto-generated ObjectId)</td></tr>
+    </table>
+    <div class="code-block">
+      <div class="code-label"><span></span>Document Structure</div>
+      <pre><span class="cm">// A MongoDB Document — flexible, nested, no rigid schema</span>
+{
+  <span class="attr">_id</span>: ObjectId(<span class="str">"64a1b2c3d4e5f6a7b8c9d0e1"</span>),
+  <span class="attr">name</span>: <span class="str">"Shailesh Yadav"</span>,
+  <span class="attr">email</span>: <span class="str">"shailesh@example.com"</span>,
+  <span class="attr">age</span>: <span class="num">28</span>,
+  <span class="attr">address</span>: {                    <span class="cm">// embedded document</span>
+    <span class="attr">city</span>: <span class="str">"Faridabad"</span>,
+    <span class="attr">state</span>: <span class="str">"Haryana"</span>
+  },
+  <span class="attr">skills</span>: [<span class="str">"React Native"</span>, <span class="str">"Node.js"</span>],  <span class="cm">// array</span>
+  <span class="attr">createdAt</span>: ISODate(<span class="str">"2024-01-15T10:30:00Z"</span>)
+}</pre>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>BSON vs JSON</h3>
+    <table>
+      <tr><th>Feature</th><th>JSON</th><th>BSON</th></tr>
+      <tr><td>Format</td><td>Text (human-readable)</td><td>Binary (machine-readable)</td></tr>
+      <tr><td>Size</td><td>Smaller for simple data</td><td>Larger (includes type info)</td></tr>
+      <tr><td>Speed</td><td>Slower to parse</td><td>Faster traversal</td></tr>
+      <tr><td>Types</td><td>String, Number, Bool, Array, Object, Null</td><td>All JSON types + Date, ObjectId, Binary, Decimal128, etc.</td></tr>
+      <tr><td>Used by</td><td>APIs, wire transfer</td><td>MongoDB internal storage</td></tr>
+    </table>
+    <div class="callout">
+      <strong>Key Insight</strong>
+      ObjectId is a 12-byte BSON type: 4 bytes timestamp + 5 bytes random + 3 bytes incrementing counter. It encodes creation time, so you can extract when a document was created from its _id without storing a separate createdAt field.
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- ===== SECTION 2: CRUD ===== -->
+<div class="topic" id="s2">
+  <div class="topic-header">
+    <span class="topic-num">02</span>
+    <h2 class="topic-title">CRUD Operations</h2>
+    <span class="tag-pill tag-core">Core</span>
+  </div>
+
+  <div class="subtopic">
+    <h3>Insert</h3>
+    <div class="code-block">
+      <div class="code-label"><span></span>Insert Operations</div>
+      <pre><span class="cm">// Insert one document</span>
+db.users.<span class="fn">insertOne</span>({
+  name: <span class="str">"Shailesh"</span>,
+  role: <span class="str">"Tech Lead"</span>,
+  company: <span class="str">"PB Fintech"</span>
+});
+
+<span class="cm">// Insert multiple documents (atomic per document)</span>
+db.users.<span class="fn">insertMany</span>([
+  { name: <span class="str">"Alice"</span>, role: <span class="str">"Dev"</span> },
+  { name: <span class="str">"Bob"</span>,   role: <span class="str">"QA"</span>  }
+]);
+
+<span class="cm">// insertMany with ordered: false → continues on error, doesn't stop</span>
+db.users.<span class="fn">insertMany</span>(docs, { ordered: <span class="kw">false</span> });</pre>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>Find — Query & Projection</h3>
+    <div class="code-block">
+      <div class="code-label"><span></span>Find Operations</div>
+      <pre><span class="cm">// Find all</span>
+db.users.<span class="fn">find</span>({});
+
+<span class="cm">// Find with filter</span>
+db.users.<span class="fn">find</span>({ age: { <span class="op">$gte</span>: <span class="num">25</span>, <span class="op">$lte</span>: <span class="num">35</span> } });
+
+<span class="cm">// Logical operators</span>
+db.users.<span class="fn">find</span>({
+  <span class="op">$or</span>: [{ city: <span class="str">"Delhi"</span> }, { city: <span class="str">"Faridabad"</span> }]
+});
+db.users.<span class="fn">find</span>({
+  <span class="op">$and</span>: [{ age: { <span class="op">$gt</span>: <span class="num">20</span> } }, { active: <span class="kw">true</span> }]
+});
+
+<span class="cm">// Projection — include/exclude fields</span>
+db.users.<span class="fn">find</span>({}, { name: <span class="num">1</span>, email: <span class="num">1</span>, _id: <span class="num">0</span> }); <span class="cm">// show only name+email</span>
+db.users.<span class="fn">find</span>({}, { password: <span class="num">0</span> });              <span class="cm">// hide password</span>
+
+<span class="cm">// Querying nested fields</span>
+db.users.<span class="fn">find</span>({ <span class="str">"address.city"</span>: <span class="str">"Faridabad"</span> }); <span class="cm">// dot notation</span>
+
+<span class="cm">// Array queries</span>
+db.users.<span class="fn">find</span>({ skills: <span class="str">"React Native"</span> });          <span class="cm">// contains element</span>
+db.users.<span class="fn">find</span>({ skills: { <span class="op">$all</span>: [<span class="str">"React"</span>, <span class="str">"Node"</span>] } }); <span class="cm">// contains all</span>
+db.users.<span class="fn">find</span>({ skills: { <span class="op">$size</span>: <span class="num">3</span> } });           <span class="cm">// array length = 3</span>
+
+<span class="cm">// Sort, Skip, Limit</span>
+db.users.<span class="fn">find</span>({}).<span class="fn">sort</span>({ age: -<span class="num">1</span> }).<span class="fn">skip</span>(<span class="num">10</span>).<span class="fn">limit</span>(<span class="num">5</span>); <span class="cm">// pagination</span>
+
+<span class="cm">// findOne — returns first match</span>
+db.users.<span class="fn">findOne</span>({ email: <span class="str">"shailesh@example.com"</span> });</pre>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>Update</h3>
+    <div class="code-block">
+      <div class="code-label"><span></span>Update Operations</div>
+      <pre><span class="cm">// updateOne — first matching document</span>
+db.users.<span class="fn">updateOne</span>(
+  { _id: ObjectId(<span class="str">"..."</span>) },              <span class="cm">// filter</span>
+  { <span class="op">$set</span>: { role: <span class="str">"Senior Dev"</span> } }         <span class="cm">// update</span>
+);
+
+<span class="cm">// updateMany — all matching documents</span>
+db.users.<span class="fn">updateMany</span>(
+  { company: <span class="str">"PB Fintech"</span> },
+  { <span class="op">$set</span>: { active: <span class="kw">true</span> } }
+);
+
+<span class="cm">// replaceOne — replaces entire document (keeps _id)</span>
+db.users.<span class="fn">replaceOne</span>(
+  { _id: ObjectId(<span class="str">"..."</span>) },
+  { name: <span class="str">"New Doc"</span>, role: <span class="str">"Admin"</span> }
+);
+
+<span class="cm">// Update operators</span>
+db.users.<span class="fn">updateOne</span>({ _id: id }, {
+  <span class="op">$set</span>:   { name: <span class="str">"Updated"</span> },         <span class="cm">// set field</span>
+  <span class="op">$unset</span>: { oldField: <span class="str">""</span> },             <span class="cm">// remove field</span>
+  <span class="op">$inc</span>:   { loginCount: <span class="num">1</span> },            <span class="cm">// increment</span>
+  <span class="op">$push</span>:  { tags: <span class="str">"mongodb"</span> },          <span class="cm">// add to array</span>
+  <span class="op">$pull</span>:  { tags: <span class="str">"old-tag"</span> },          <span class="cm">// remove from array</span>
+  <span class="op">$addToSet</span>: { skills: <span class="str">"GraphQL"</span> }      <span class="cm">// add if not exists</span>
+});
+
+<span class="cm">// UPSERT — insert if not found, update if found</span>
+db.users.<span class="fn">updateOne</span>(
+  { email: <span class="str">"new@example.com"</span> },
+  { <span class="op">$set</span>: { name: <span class="str">"New User"</span>, active: <span class="kw">true</span> } },
+  { upsert: <span class="kw">true</span> }  <span class="cm">// ← key option</span>
+);
+<span class="cm">// Returns: matchedCount: 0, upsertedId: ObjectId(...) if new</span>
+<span class="cm">// Returns: matchedCount: 1, modifiedCount: 1 if existing</span>
+
+<span class="cm">// findOneAndUpdate — returns document (before or after)</span>
+db.users.<span class="fn">findOneAndUpdate</span>(
+  { email: <span class="str">"shailesh@example.com"</span> },
+  { <span class="op">$inc</span>: { points: <span class="num">10</span> } },
+  { returnDocument: <span class="str">'after'</span> }  <span class="cm">// return updated doc</span>
+);</pre>
+    </div>
+    <div class="callout warn">
+      <strong>$set vs replaceOne Trap</strong>
+      updateOne with $set only updates specified fields. replaceOne replaces the ENTIRE document (only _id is kept). Accidentally using replaceOne when you meant $set will delete all other fields!
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>Delete</h3>
+    <div class="code-block">
+      <div class="code-label"><span></span>Delete Operations</div>
+      <pre><span class="cm">// Delete one</span>
+db.users.<span class="fn">deleteOne</span>({ _id: ObjectId(<span class="str">"..."</span>) });
+
+<span class="cm">// Delete many</span>
+db.users.<span class="fn">deleteMany</span>({ active: <span class="kw">false</span> });
+
+<span class="cm">// Delete all documents (collection stays)</span>
+db.users.<span class="fn">deleteMany</span>({});
+
+<span class="cm">// Drop collection entirely</span>
+db.users.<span class="fn">drop</span>();
+
+<span class="cm">// findOneAndDelete — returns deleted document</span>
+<span class="kw">const</span> deleted = db.users.<span class="fn">findOneAndDelete</span>({ _id: id });</pre>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>Query Operators Cheatsheet</h3>
+    <table>
+      <tr><th>Operator</th><th>Meaning</th><th>Example</th></tr>
+      <tr><td>$eq</td><td>Equal</td><td>{ age: { $eq: 25 } }</td></tr>
+      <tr><td>$ne</td><td>Not equal</td><td>{ status: { $ne: "banned" } }</td></tr>
+      <tr><td>$gt / $gte</td><td>Greater than (or equal)</td><td>{ score: { $gte: 80 } }</td></tr>
+      <tr><td>$lt / $lte</td><td>Less than (or equal)</td><td>{ age: { $lt: 18 } }</td></tr>
+      <tr><td>$in</td><td>In array of values</td><td>{ city: { $in: ["Delhi","Mumbai"] } }</td></tr>
+      <tr><td>$nin</td><td>Not in array</td><td>{ role: { $nin: ["banned"] } }</td></tr>
+      <tr><td>$exists</td><td>Field exists</td><td>{ phone: { $exists: true } }</td></tr>
+      <tr><td>$regex</td><td>Pattern match</td><td>{ name: { $regex: /^sha/i } }</td></tr>
+      <tr><td>$type</td><td>Field type check</td><td>{ age: { $type: "number" } }</td></tr>
+    </table>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+
+<!-- ===== SECTION 3: INDEXING ===== -->
+<div class="section-label">Deep Dives</div>
+
+<div class="topic" id="s3">
+  <div class="topic-header">
+    <span class="topic-num">03</span>
+    <h2 class="topic-title">Indexing — Deep Dive</h2>
+    <span class="tag-pill tag-hot">🔥 Most Asked</span>
+  </div>
+
+  <div class="subtopic">
+    <h3>What is an Index?</h3>
+    <p>An index is a separate data structure that stores a small portion of a collection's data in an <strong>easy-to-traverse form</strong>. Without an index, MongoDB must scan every document (COLLSCAN). With an index, it jumps directly to matches (IXSCAN).</p>
+    <div class="code-block">
+      <div class="code-label"><span></span>Creating Indexes</div>
+      <pre><span class="cm">// Single field index</span>
+db.users.<span class="fn">createIndex</span>({ email: <span class="num">1</span> });          <span class="cm">// 1 = ascending</span>
+db.users.<span class="fn">createIndex</span>({ age: -<span class="num">1</span> });           <span class="cm">// -1 = descending</span>
+
+<span class="cm">// Unique index</span>
+db.users.<span class="fn">createIndex</span>({ email: <span class="num">1</span> }, { unique: <span class="kw">true</span> });
+
+<span class="cm">// View all indexes</span>
+db.users.<span class="fn">getIndexes</span>();
+
+<span class="cm">// Drop index</span>
+db.users.<span class="fn">dropIndex</span>(<span class="str">"email_1"</span>);</pre>
+    </div>
+  </div>
+
+  <div class="subtopic" id="s3-btree">
+    <h3>How Indexing Works Internally — B+ Tree</h3>
+    <p>MongoDB indexes are implemented as <strong>B+ Trees</strong> (Balanced Plus Trees). Here's why this structure is perfect for databases:</p>
+    <ul>
+      <li><strong>Balanced</strong> — all leaf nodes are at the same depth → O(log n) lookups always</li>
+      <li><strong>Sorted</strong> — data in leaf nodes is sorted → range queries are fast</li>
+      <li><strong>Linked leaves</strong> — leaf nodes are linked → sequential scan without going back to root</li>
+      <li><strong>High fan-out</strong> — internal nodes store many keys → shallow tree → fewer disk reads</li>
+    </ul>
+    <div class="arch-box">
+      <div style="color:var(--muted); font-size:11px; margin-bottom:12px; letter-spacing:2px;">B+ TREE STRUCTURE</div>
+      <div class="arch-row">
+        <div class="arch-node primary">[Root: 30 | 60]</div>
+      </div>
+      <div class="arch-row">
+        <div style="color:var(--muted)">↙</div>
+        <div style="color:var(--muted)">↓</div>
+        <div style="color:var(--muted)">↘</div>
+      </div>
+      <div class="arch-row">
+        <div class="arch-node">[10|20|25]</div>
+        <div class="arch-node">[30|40|50]</div>
+        <div class="arch-node">[60|70|80]</div>
+      </div>
+      <div style="color:var(--muted); font-size:11px; margin-top:8px;">Leaf nodes linked: [10|20|25] → [30|40|50] → [60|70|80]</div>
+      <div style="color:var(--muted); font-size:11px; margin-top:4px;">Each leaf → pointer to actual document on disk</div>
+    </div>
+    <div class="interview-q">
+      <div class="q">Q: Why B+ Tree and not B-Tree or Hash index?</div>
+      <p>B+ Tree over B-Tree: all data in leaves (not internal nodes), so sequential range scans traverse linked leaf list without backtracking. Hash index: O(1) equality lookup but CANNOT do range queries ({$gt/$lt}) or sort. B+ Tree handles both. MongoDB also supports hashed indexes but only for equality.</p>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>COLLSCAN vs IXSCAN</h3>
+    <table>
+      <tr><th>COLLSCAN</th><th>IXSCAN</th></tr>
+      <tr><td>Collection scan — reads every document</td><td>Index scan — follows B+ tree pointers</td></tr>
+      <tr><td>O(n) — slow on large collections</td><td>O(log n) — fast regardless of size</td></tr>
+      <tr><td>No index needed</td><td>Requires relevant index</td></tr>
+      <tr><td>Acceptable for tiny collections</td><td>Required for production queries</td></tr>
+    </table>
+    <div class="code-block">
+      <div class="code-label"><span></span>Using explain() to diagnose scan type</div>
+      <pre><span class="cm">// Always use explain() to check query plan</span>
+db.users.<span class="fn">find</span>({ email: <span class="str">"test@test.com"</span> }).<span class="fn">explain</span>(<span class="str">"executionStats"</span>);
+
+<span class="cm">// Key fields to look at in explain output:</span>
+{
+  queryPlanner: {
+    winningPlan: {
+      stage: <span class="str">"IXSCAN"</span>,          <span class="cm">// ✅ good — using index</span>
+      <span class="cm">// OR stage: "COLLSCAN"    ❌ bad — full scan</span>
+      indexName: <span class="str">"email_1"</span>
+    }
+  },
+  executionStats: {
+    nReturned: <span class="num">1</span>,
+    totalDocsExamined: <span class="num">1</span>,       <span class="cm">// ✅ examined == returned (perfect)</span>
+    totalKeysExamined: <span class="num">1</span>,
+    executionTimeMillis: <span class="num">0</span>
+    <span class="cm">// If totalDocsExamined >> nReturned → index not selective enough</span>
+  }
+}</pre>
+    </div>
+  </div>
+
+  <div class="subtopic" id="s3-covered">
+    <h3>Covered Queries — Zero Document Reads</h3>
+    <p>A <strong>covered query</strong> is one where the index contains ALL the fields needed — MongoDB never has to touch the actual documents. This is the fastest possible query.</p>
+    <div class="code-block">
+      <div class="code-label"><span></span>Covered Query Example</div>
+      <pre><span class="cm">// Create compound index covering name and email</span>
+db.users.<span class="fn">createIndex</span>({ name: <span class="num">1</span>, email: <span class="num">1</span> });
+
+<span class="cm">// This query is COVERED — filter + projection both in index</span>
+db.users
+  .<span class="fn">find</span>({ name: <span class="str">"Shailesh"</span> }, { name: <span class="num">1</span>, email: <span class="num">1</span>, _id: <span class="num">0</span> })
+  .<span class="fn">explain</span>();
+
+<span class="cm">// explain() shows: "stage": "PROJECTION_COVERED"</span>
+<span class="cm">// totalDocsExamined: 0  ← zero document reads!</span>
+
+<span class="cm">// NOT covered if you include a field not in the index:</span>
+db.users.<span class="fn">find</span>({ name: <span class="str">"Shailesh"</span> }, { name: <span class="num">1</span>, age: <span class="num">1</span> }); <span class="cm">// age not in index</span></pre>
+    </div>
+    <div class="callout">
+      <strong>Senior-Level Tip</strong>
+      Always exclude _id (set _id: 0) in projection when trying to get covered queries — _id is always returned by default and it IS in the index, but if you have custom projections, explicitly exclude it to keep the query covered.
+    </div>
+  </div>
+
+  <div class="subtopic" id="s3-types">
+    <h3>Index Types & Cardinality</h3>
+    <p><strong>Index Cardinality</strong> = number of distinct values. High cardinality (email, userId) → very selective → great indexes. Low cardinality (boolean, status with 3 values) → not selective → often not worth indexing.</p>
+    <div class="code-block">
+      <div class="code-label"><span></span>Compound Index — Order Is Critical</div>
+      <pre><span class="cm">// Compound index</span>
+db.orders.<span class="fn">createIndex</span>({ status: <span class="num">1</span>, userId: <span class="num">1</span>, createdAt: -<span class="num">1</span> });
+
+<span class="cm">// ESR Rule: Equality → Sort → Range</span>
+<span class="cm">// Put equality fields first, sort fields next, range fields last</span>
+
+<span class="cm">// ✅ Uses index fully (prefix match: status + userId)</span>
+db.orders.<span class="fn">find</span>({ status: <span class="str">"active"</span>, userId: <span class="str">"u123"</span> });
+
+<span class="cm">// ✅ Uses first part of index (prefix: status)</span>
+db.orders.<span class="fn">find</span>({ status: <span class="str">"active"</span> });
+
+<span class="cm">// ❌ CANNOT use this compound index (skips status)</span>
+db.orders.<span class="fn">find</span>({ userId: <span class="str">"u123"</span> }); <span class="cm">// needs separate index</span>
+
+<span class="cm">// Index prefix rule: {a,b,c} index supports queries on:</span>
+<span class="cm">// a | a,b | a,b,c — but NOT b | c | b,c alone</span></pre>
+    </div>
+    <div class="interview-q">
+      <div class="q">Q: What is the ESR Rule for compound indexes?</div>
+      <p>Equality → Sort → Range. Put fields used in equality matches first, fields used for sorting second, fields used in range queries (gt, lt, in) last. This ordering maximizes index utilization and avoids in-memory sorts.</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-label"><span></span>Multikey Index — Arrays</div>
+      <pre><span class="cm">// Multikey index — automatically created when indexing array field</span>
+db.products.<span class="fn">createIndex</span>({ tags: <span class="num">1</span> });
+
+<span class="cm">// MongoDB creates one index entry PER array element</span>
+<span class="cm">// { tags: ["mobile", "fintech", "insurance"] }</span>
+<span class="cm">// Creates 3 index entries: "mobile", "fintech", "insurance"</span>
+
+<span class="cm">// ✅ Fast query</span>
+db.products.<span class="fn">find</span>({ tags: <span class="str">"fintech"</span> });
+
+<span class="cm">// ⚠ Compound multikey: max ONE array field per compound index</span>
+db.col.<span class="fn">createIndex</span>({ arr1: <span class="num">1</span>, arr2: <span class="num">1</span> }); <span class="cm">// ❌ error if both are arrays</span></pre>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>When Indexes Are NOT Used</h3>
+    <ul>
+      <li><strong>$regex without anchoring</strong> — <code>{ name: /shailesh/ }</code> may COLLSCAN. Use <code>/^shailesh/</code> (anchored) to use index.</li>
+      <li><strong>Negation operators</strong> — <code>$ne</code>, <code>$nin</code>, <code>$not</code> often cannot use index efficiently</li>
+      <li><strong>JavaScript expressions</strong> — <code>$where</code> bypasses indexes entirely</li>
+      <li><strong>Low cardinality + high result %</strong> — if query returns >30% of documents, MongoDB may choose COLLSCAN anyway</li>
+      <li><strong>Field used in expression</strong> — <code>{ $expr: { $gt: ["$field", 5] } }</code> may not use index</li>
+    </ul>
+    <div class="callout warn">
+      <strong>The Tradeoff</strong>
+      Every index speeds up reads but slows down writes. Each insert/update/delete must also update ALL relevant indexes. A collection with 10 indexes has 10x write overhead vs no indexes. Index only what you query frequently.
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- ===== SECTION 4: AGGREGATION ===== -->
+<div class="topic" id="s4">
+  <div class="topic-header">
+    <span class="topic-num">04</span>
+    <h2 class="topic-title">Aggregation Framework</h2>
+    <span class="tag-pill tag-hot">🔥 Interview Core</span>
+  </div>
+
+  <div class="subtopic">
+    <h3>Aggregation Pipeline</h3>
+    <p>The aggregation pipeline processes documents through a series of <strong>stages</strong>. Each stage transforms the documents and passes them to the next. Think of it as a Unix pipe: data flows through transformations.</p>
+    <div class="code-block">
+      <div class="code-label"><span></span>Real-World Pipeline — Sales Report</div>
+      <pre><span class="cm">// "Get top 5 products by revenue for active orders in 2024"</span>
+db.orders.<span class="fn">aggregate</span>([
+  <span class="cm">// Stage 1: $match — filter early (like WHERE + uses indexes)</span>
+  {
+    <span class="op">$match</span>: {
+      status: <span class="str">"completed"</span>,
+      createdAt: { <span class="op">$gte</span>: ISODate(<span class="str">"2024-01-01"</span>) }
+    }
+  },
+
+  <span class="cm">// Stage 2: $unwind — flatten array field into separate docs</span>
+  { <span class="op">$unwind</span>: <span class="str">"$items"</span> },
+
+  <span class="cm">// Stage 3: $group — like SQL GROUP BY</span>
+  {
+    <span class="op">$group</span>: {
+      _id: <span class="str">"$items.productId"</span>,       <span class="cm">// group by product</span>
+      totalRevenue: { <span class="op">$sum</span>: { <span class="op">$multiply</span>: [<span class="str">"$items.price"</span>, <span class="str">"$items.qty"</span>] } },
+      totalOrders: { <span class="op">$sum</span>: <span class="num">1</span> },
+      avgPrice: { <span class="op">$avg</span>: <span class="str">"$items.price"</span> }
+    }
+  },
+
+  <span class="cm">// Stage 4: $project — reshape output (like SELECT)</span>
+  {
+    <span class="op">$project</span>: {
+      productId: <span class="str">"$_id"</span>,
+      totalRevenue: <span class="num">1</span>,
+      totalOrders: <span class="num">1</span>,
+      avgPrice: { <span class="op">$round</span>: [<span class="str">"$avgPrice"</span>, <span class="num">2</span>] },
+      _id: <span class="num">0</span>
+    }
+  },
+
+  <span class="cm">// Stage 5: $sort — sort by revenue desc</span>
+  { <span class="op">$sort</span>: { totalRevenue: -<span class="num">1</span> } },
+
+  <span class="cm">// Stage 6: $limit — top 5</span>
+  { <span class="op">$limit</span>: <span class="num">5</span> }
+]);</pre>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>$lookup — MongoDB JOINs</h3>
+    <div class="code-block">
+      <div class="code-label"><span></span>$lookup — Left Outer Join</div>
+      <pre><span class="cm">// Join orders with users collection</span>
+db.orders.<span class="fn">aggregate</span>([
+  { <span class="op">$match</span>: { status: <span class="str">"pending"</span> } },
+  {
+    <span class="op">$lookup</span>: {
+      from: <span class="str">"users"</span>,             <span class="cm">// join with this collection</span>
+      localField: <span class="str">"userId"</span>,     <span class="cm">// field in orders</span>
+      foreignField: <span class="str">"_id"</span>,       <span class="cm">// field in users</span>
+      as: <span class="str">"userDetails"</span>         <span class="cm">// output array name</span>
+    }
+  },
+  <span class="cm">// userDetails is an array — unwind to get single object</span>
+  { <span class="op">$unwind</span>: { path: <span class="str">"$userDetails"</span>, preserveNullAndEmptyArrays: <span class="kw">true</span> } },
+  {
+    <span class="op">$project</span>: {
+      orderId: <span class="str">"$_id"</span>,
+      amount: <span class="num">1</span>,
+      userName: <span class="str">"$userDetails.name"</span>,
+      userEmail: <span class="str">"$userDetails.email"</span>
+    }
+  }
+]);
+
+<span class="cm">// Advanced $lookup with pipeline (MongoDB 3.6+)</span>
+{
+  <span class="op">$lookup</span>: {
+    from: <span class="str">"products"</span>,
+    let: { productIds: <span class="str">"$items.productId"</span> },
+    pipeline: [
+      { <span class="op">$match</span>: { <span class="op">$expr</span>: { <span class="op">$in</span>: [<span class="str">"$_id"</span>, <span class="str">"$$productIds"</span>] } } },
+      { <span class="op">$project</span>: { name: <span class="num">1</span>, price: <span class="num">1</span> } }
+    ],
+    as: <span class="str">"productDetails"</span>
+  }
+}</pre>
+    </div>
+    <div class="callout warn">
+      <strong>$lookup Performance Warning</strong>
+      $lookup is expensive — it performs a join in-memory. Always $match before $lookup to reduce documents. Add indexes on the foreignField in the joined collection. For high-performance systems, consider denormalizing data instead of using $lookup.
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>Common Aggregation Operators</h3>
+    <table>
+      <tr><th>Stage</th><th>Purpose</th><th>SQL Equivalent</th></tr>
+      <tr><td>$match</td><td>Filter documents</td><td>WHERE</td></tr>
+      <tr><td>$group</td><td>Group + accumulate</td><td>GROUP BY</td></tr>
+      <tr><td>$project</td><td>Select/reshape fields</td><td>SELECT</td></tr>
+      <tr><td>$sort</td><td>Order documents</td><td>ORDER BY</td></tr>
+      <tr><td>$limit</td><td>Take first N</td><td>LIMIT</td></tr>
+      <tr><td>$skip</td><td>Skip N documents</td><td>OFFSET</td></tr>
+      <tr><td>$lookup</td><td>Join collections</td><td>JOIN</td></tr>
+      <tr><td>$unwind</td><td>Flatten array field</td><td>LATERAL JOIN</td></tr>
+      <tr><td>$addFields</td><td>Add computed fields</td><td>SELECT ..., expr AS field</td></tr>
+      <tr><td>$count</td><td>Count documents</td><td>COUNT(*)</td></tr>
+      <tr><td>$facet</td><td>Multiple pipelines in one</td><td>Multiple GROUP BY</td></tr>
+    </table>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+
+<!-- ===== SECTION 5: DATA MODELING ===== -->
+<div class="topic" id="s5">
+  <div class="topic-header">
+    <span class="topic-num">05</span>
+    <h2 class="topic-title">Data Modeling</h2>
+    <span class="tag-pill tag-adv">Architecture</span>
+  </div>
+
+  <div class="subtopic">
+    <h3>Embedding vs Referencing</h3>
+    <table>
+      <tr><th></th><th>Embedding (Denormalized)</th><th>Referencing (Normalized)</th></tr>
+      <tr><td>Structure</td><td>Nested document inside parent</td><td>Separate collection + _id reference</td></tr>
+      <tr><td>Read performance</td><td>✅ Single query fetches all</td><td>❌ Multiple queries or $lookup</td></tr>
+      <tr><td>Write performance</td><td>❌ Update parent to change child</td><td>✅ Update child independently</td></tr>
+      <tr><td>Data duplication</td><td>Yes</td><td>No</td></tr>
+      <tr><td>Document size</td><td>Can hit 16MB BSON limit</td><td>Small, no bloat</td></tr>
+      <tr><td>Best for</td><td>Data always accessed together, 1:1 or 1:few</td><td>Many:many, large sub-data, shared references</td></tr>
+    </table>
+    <div class="code-block">
+      <div class="code-label"><span></span>Embedding vs Referencing Examples</div>
+      <pre><span class="cm">// ✅ EMBED — address is always fetched with user</span>
+{
+  _id: ObjectId(<span class="str">"..."</span>),
+  name: <span class="str">"Shailesh"</span>,
+  address: {                  <span class="cm">// embedded</span>
+    street: <span class="str">"Sector 14"</span>,
+    city: <span class="str">"Faridabad"</span>
+  }
+}
+
+<span class="cm">// ✅ EMBED — order items are part of the order</span>
+{
+  _id: ObjectId(<span class="str">"..."</span>),
+  orderId: <span class="str">"ORD-001"</span>,
+  items: [                    <span class="cm">// embedded array</span>
+    { productId: <span class="str">"P1"</span>, qty: <span class="num">2</span>, price: <span class="num">500</span> }
+  ]
+}
+
+<span class="cm">// ✅ REFERENCE — comments can grow unbounded</span>
+<span class="cm">// Post document:</span>
+{ _id: ObjectId(<span class="str">"post1"</span>), title: <span class="str">"React Native Tips"</span> }
+
+<span class="cm">// Comment document (separate collection):</span>
+{ postId: ObjectId(<span class="str">"post1"</span>), text: <span class="str">"Great post!"</span>, author: <span class="str">"Bob"</span> }
+
+<span class="cm">// ✅ REFERENCE — users shared across many entities</span>
+{ _id: ObjectId(<span class="str">"..."</span>), title: <span class="str">"Policy 101"</span>, ownerId: ObjectId(<span class="str">"user1"</span>) }</pre>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>Schema Design Rules of Thumb</h3>
+    <ul>
+      <li><strong>Embed when</strong>: data is read together, one-to-one or one-to-few, child data doesn't need to be accessed independently</li>
+      <li><strong>Reference when</strong>: many-to-many relationships, large arrays that grow unbounded, data shared across many documents, child data is accessed independently</li>
+      <li><strong>16MB BSON limit</strong>: if embedded arrays can grow unbounded (comments, logs, events), always reference</li>
+      <li><strong>Access pattern drives design</strong>: design schema around how you query, not how data is naturally related</li>
+    </ul>
+    <div class="interview-q">
+      <div class="q">Q: Design a schema for a blog with posts and comments</div>
+      <p>Posts collection with embedded author info (snapshot — denormalized for read speed). Comments in a separate collection referencing postId — comments can grow unbounded, users may want to query "all comments by user", and real-time updates to comments shouldn't require loading the whole post. Use $lookup or application-level join when rendering full post with comments.</p>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- ===== SECTION 6: TRANSACTIONS ===== -->
+<div class="section-label">Architecture & Consistency</div>
+
+<div class="topic" id="s6">
+  <div class="topic-header">
+    <span class="topic-num">06</span>
+    <h2 class="topic-title">Transactions & ACID</h2>
+    <span class="tag-pill tag-adv">Critical</span>
+  </div>
+
+  <div class="subtopic">
+    <h3>ACID in MongoDB</h3>
+    <table>
+      <tr><th>Property</th><th>Meaning</th><th>MongoDB Support</th></tr>
+      <tr><td>Atomicity</td><td>All or nothing</td><td>Single doc: always. Multi-doc: via transactions</td></tr>
+      <tr><td>Consistency</td><td>Data stays valid</td><td>Schema validation + app logic</td></tr>
+      <tr><td>Isolation</td><td>Transactions don't interfere</td><td>Snapshot isolation in transactions</td></tr>
+      <tr><td>Durability</td><td>Committed data survives crashes</td><td>Write concern + journaling</td></tr>
+    </table>
+  </div>
+
+  <div class="subtopic">
+    <h3>Multi-Document Transactions</h3>
+    <div class="code-block">
+      <div class="code-label"><span></span>Transaction — Bank Transfer</div>
+      <pre><span class="kw">const</span> session = client.<span class="fn">startSession</span>();
+
+<span class="kw">try</span> {
+  session.<span class="fn">startTransaction</span>({
+    readConcern: { level: <span class="str">'snapshot'</span> },
+    writeConcern: { w: <span class="str">'majority'</span> }
+  });
+
+  <span class="cm">// Debit sender</span>
+  <span class="kw">await</span> db.accounts.<span class="fn">updateOne</span>(
+    { userId: <span class="str">"sender"</span>, balance: { <span class="op">$gte</span>: <span class="num">1000</span> } },
+    { <span class="op">$inc</span>: { balance: -<span class="num">1000</span> } },
+    { session }
+  );
+
+  <span class="cm">// Credit receiver</span>
+  <span class="kw">await</span> db.accounts.<span class="fn">updateOne</span>(
+    { userId: <span class="str">"receiver"</span> },
+    { <span class="op">$inc</span>: { balance: <span class="num">1000</span> } },
+    { session }
+  );
+
+  <span class="cm">// Log transaction</span>
+  <span class="kw">await</span> db.txnLog.<span class="fn">insertOne</span>(
+    { from: <span class="str">"sender"</span>, to: <span class="str">"receiver"</span>, amount: <span class="num">1000</span>, date: <span class="kw">new</span> Date() },
+    { session }
+  );
+
+  <span class="kw">await</span> session.<span class="fn">commitTransaction</span>();
+} <span class="kw">catch</span> (err) {
+  <span class="kw">await</span> session.<span class="fn">abortTransaction</span>(); <span class="cm">// ← all changes rolled back</span>
+  <span class="kw">throw</span> err;
+} <span class="kw">finally</span> {
+  session.<span class="fn">endSession</span>();
+}</pre>
+    </div>
+    <div class="callout warn">
+      <strong>Transaction Cost</strong>
+      Multi-document transactions have significant performance overhead (locking, coordination across replica set). Use them only when necessary (financial ops, critical multi-step operations). Prefer single-document atomic operations when possible via embedding.
+    </div>
+    <div class="interview-q">
+      <div class="q">Q: What is write concern and read concern?</div>
+      <p>Write concern {w: 'majority'} = wait until majority of replica set members acknowledge the write. More durable but slower. Read concern 'snapshot' = reads data from a consistent snapshot across the transaction. 'local' = reads from primary without guaranteeing it was replicated. For financial ops, always use majority write concern.</p>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- ===== SECTION 7: REPLICATION ===== -->
+<div class="topic" id="s7">
+  <div class="topic-header">
+    <span class="topic-num">07</span>
+    <h2 class="topic-title">Replication</h2>
+    <span class="tag-pill tag-core">Core</span>
+  </div>
+
+  <div class="subtopic">
+    <h3>Replica Sets</h3>
+    <p>A replica set is a group of MongoDB instances that maintain the same dataset. Provides redundancy, high availability, and read scaling.</p>
+    <div class="arch-box">
+      <div style="color:var(--muted); font-size:11px; margin-bottom:12px; letter-spacing:2px;">REPLICA SET (3 MEMBERS)</div>
+      <div class="arch-row">
+        <div class="arch-node primary">PRIMARY<br><span style="font-size:10px;color:var(--muted)">Read + Write</span></div>
+        <div class="arch-arrow">→ oplog →</div>
+        <div class="arch-node">SECONDARY 1<br><span style="font-size:10px;color:var(--muted)">Read (optional)</span></div>
+        <div class="arch-arrow">→ oplog →</div>
+        <div class="arch-node">SECONDARY 2<br><span style="font-size:10px;color:var(--muted)">Read (optional)</span></div>
+      </div>
+      <div style="color:var(--muted); font-size:11px; margin-top:12px;">If Primary fails → automatic election → new Primary in seconds</div>
+    </div>
+    <ul>
+      <li><strong>Primary</strong> — receives all writes. Logs operations to oplog (operations log)</li>
+      <li><strong>Secondary</strong> — replicates from Primary's oplog asynchronously. Can serve reads</li>
+      <li><strong>Arbiter</strong> — participates in elections only, stores no data. Used for tie-breaking</li>
+      <li><strong>Minimum recommended</strong>: 3 members (1P + 2S) for majority election</li>
+    </ul>
+    <div class="interview-q">
+      <div class="q">Q: What is an oplog and how does replication work?</div>
+      <p>The oplog (operations log) is a special capped collection on the Primary that records all write operations in idempotent form. Secondaries tail the oplog and replay operations to stay in sync. Because it's capped, old entries roll off — if a Secondary falls too far behind, it needs a full resync (initial sync).</p>
+    </div>
+    <div class="interview-q">
+      <div class="q">Q: What happens during a failover?</div>
+      <p>1) Primary becomes unreachable. 2) Secondaries detect this via heartbeats (every 2s). 3) An election is triggered — each member votes (based on priority, oplog position). 4) Member with majority votes becomes new Primary. 5) Clients reconnect automatically (driver handles this). Typical downtime: 10-30 seconds.</p>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+
+<!-- ===== SECTION 8: SHARDING ===== -->
+<div class="topic" id="s8">
+  <div class="topic-header">
+    <span class="topic-num">08</span>
+    <h2 class="topic-title">Sharding — Very Deep</h2>
+    <span class="tag-pill tag-hot">🔥 Senior Level</span>
+  </div>
+
+  <div class="subtopic">
+    <h3>What is Sharding & Why Use It?</h3>
+    <p>Sharding is MongoDB's method for <strong>horizontal scaling</strong> — distributing data across multiple servers (shards). When a single machine can't handle the data volume or throughput, you shard.</p>
+    <ul>
+      <li><strong>Volume scaling</strong>: 10TB collection? Split across 10 shards = 1TB each</li>
+      <li><strong>Write scaling</strong>: distribute writes across multiple primaries</li>
+      <li><strong>Read scaling</strong>: targeted queries go to one shard, not all</li>
+    </ul>
+    <div class="callout tip">
+      <strong>Sharding vs Replication</strong>
+      Replication = same data on multiple nodes (availability + redundancy). Sharding = different data on different nodes (capacity + throughput). Production: you use BOTH — each shard is itself a replica set.
+    </div>
+  </div>
+
+  <div class="subtopic" id="s8-arch">
+    <h3>Sharding Architecture</h3>
+    <div class="arch-box">
+      <div style="color:var(--muted); font-size:11px; margin-bottom:16px; letter-spacing:2px;">SHARDED CLUSTER ARCHITECTURE</div>
+      <div class="arch-row">
+        <div class="arch-node">Client App</div>
+      </div>
+      <div style="color:var(--muted); margin:4px 0;">↓</div>
+      <div class="arch-row">
+        <div class="arch-node router">mongos (Router)<br><span style="font-size:10px">Routes queries</span></div>
+      </div>
+      <div style="display:flex; justify-content:center; gap:40px; margin:4px 0; color:var(--muted)">
+        <span>↙</span><span>↓</span><span>↘</span>
+      </div>
+      <div class="arch-row">
+        <div class="arch-node">Shard 1<br><span style="font-size:10px;color:var(--muted)">Replica Set<br>userId: 0-33</span></div>
+        <div class="arch-node">Shard 2<br><span style="font-size:10px;color:var(--muted)">Replica Set<br>userId: 34-66</span></div>
+        <div class="arch-node">Shard 3<br><span style="font-size:10px;color:var(--muted)">Replica Set<br>userId: 67-99</span></div>
+      </div>
+      <div style="color:var(--muted); margin:12px 0 4px;">↕ Chunk metadata</div>
+      <div class="arch-row">
+        <div class="arch-node config">Config Servers<br><span style="font-size:10px">(Replica Set)<br>Stores chunk map</span></div>
+      </div>
+    </div>
+    <ul>
+      <li><strong>Shards</strong> — each stores a subset of data. Each shard is a replica set</li>
+      <li><strong>mongos</strong> — query router. Clients connect to mongos, not shards directly. Reads chunk metadata from config servers to route queries</li>
+      <li><strong>Config Servers</strong> — a replica set storing the cluster metadata: which chunks live on which shard</li>
+    </ul>
+  </div>
+
+  <div class="subtopic" id="s8-shardkey">
+    <h3>Shard Key — The Most Critical Decision</h3>
+    <p>The shard key determines HOW data is distributed across shards. It is <strong>immutable</strong> — cannot be changed without resharding. A bad shard key will ruin performance forever.</p>
+    <div class="code-block">
+      <div class="code-label"><span></span>Enabling Sharding</div>
+      <pre><span class="cm">// Enable sharding on database</span>
+sh.<span class="fn">enableSharding</span>(<span class="str">"policybazaar"</span>);
+
+<span class="cm">// Create index on shard key (required first)</span>
+db.policies.<span class="fn">createIndex</span>({ userId: <span class="num">1</span> });
+
+<span class="cm">// Shard the collection</span>
+sh.<span class="fn">shardCollection</span>(<span class="str">"policybazaar.policies"</span>, { userId: <span class="num">1</span> });
+
+<span class="cm">// Check sharding status</span>
+sh.<span class="fn">status</span>();</pre>
+    </div>
+    <div class="interview-q">
+      <div class="q">Q: What makes a GOOD shard key?</div>
+      <p>Good shard key has: (1) High cardinality — enough distinct values to create many chunks. (2) Low frequency — no single value dominates (avoid "hot shard"). (3) Non-monotonically increasing — auto-incrementing IDs or timestamps create "hot spot" on one shard as all new writes go there. (4) Query targeted — if most queries filter by it, queries go to one shard not all.</p>
+    </div>
+    <table>
+      <tr><th>Shard Key</th><th>Problem</th><th>Why Bad</th></tr>
+      <tr><td>_id (ObjectId)</td><td>Hot shard on writes</td><td>Monotonically increasing → all new writes go to last shard</td></tr>
+      <tr><td>createdAt</td><td>Hot shard on writes</td><td>Same reason — time always increases</td></tr>
+      <tr><td>status (3 values)</td><td>Low cardinality</td><td>Only 3 possible chunks → can't scale beyond 3 shards</td></tr>
+      <tr><td>userId (high card)</td><td>None</td><td>✅ Good — high cardinality, distributed writes</td></tr>
+      <tr><td>{userId, productId}</td><td>None</td><td>✅ Compound — even better distribution</td></tr>
+    </table>
+  </div>
+
+  <div class="subtopic">
+    <h3>Range vs Hash Sharding</h3>
+    <table>
+      <tr><th></th><th>Range Sharding</th><th>Hash Sharding</th></tr>
+      <tr><td>How</td><td>Ranges of shard key values per shard</td><td>Hash of shard key → range of hash values</td></tr>
+      <tr><td>Write distribution</td><td>❌ Hot spots with sequential keys</td><td>✅ Uniform distribution</td></tr>
+      <tr><td>Range queries</td><td>✅ Targeted (shard 1 has userId 0-1000)</td><td>❌ Hash breaks locality — scatter gather</td></tr>
+      <tr><td>Best for</td><td>Range queries on shard key</td><td>High write throughput, random access</td></tr>
+    </table>
+    <div class="code-block">
+      <div class="code-label"><span></span>Hash Sharding</div>
+      <pre><span class="cm">// Hash sharding — distributes writes uniformly</span>
+sh.<span class="fn">shardCollection</span>(<span class="str">"db.events"</span>, { userId: <span class="str">"hashed"</span> });
+
+<span class="cm">// MongoDB hashes the userId value → uniform distribution</span>
+<span class="cm">// "user123" → hash → 7823647 → goes to shard 2</span>
+<span class="cm">// "user124" → hash → 1293847 → goes to shard 1  (random!)</span></pre>
+    </div>
+  </div>
+
+  <div class="subtopic" id="s8-routing">
+    <h3>Scatter-Gather Problem</h3>
+    <p>When a query does NOT include the shard key, mongos must broadcast it to ALL shards and gather results. This is called <strong>scatter-gather</strong> and is very expensive at scale.</p>
+    <div class="code-block">
+      <div class="code-label"><span></span>Targeted vs Scatter-Gather</div>
+      <pre><span class="cm">// Shard key: { userId: 1 }</span>
+
+<span class="cm">// ✅ TARGETED — mongos routes to exactly ONE shard</span>
+db.policies.<span class="fn">find</span>({ userId: <span class="str">"user123"</span> });
+
+<span class="cm">// ✅ TARGETED — shard key in query</span>
+db.policies.<span class="fn">find</span>({ userId: <span class="str">"user123"</span>, status: <span class="str">"active"</span> });
+
+<span class="cm">// ❌ SCATTER-GATHER — no shard key → all shards queried</span>
+db.policies.<span class="fn">find</span>({ status: <span class="str">"active"</span> }); <span class="cm">// goes to ALL shards</span>
+db.policies.<span class="fn">find</span>({ premium: { <span class="op">$gt</span>: <span class="num">5000</span> } }); <span class="cm">// goes to ALL shards</span></pre>
+    </div>
+    <div class="interview-q">
+      <div class="q">Q: Walk me through the query routing flow in a sharded cluster</div>
+      <p>1) App connects to mongos (router). 2) mongos parses the query — checks if shard key is in the filter. 3) If yes: reads chunk metadata from config servers cache → identifies which shard(s) own those ranges → routes to 1-2 shards. 4) If no: scatter-gather — sends query to ALL shards, waits for all responses, merges results, returns to client. 5) mongos handles sorting/limiting across merged results.</p>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>Chunks & Rebalancing</h3>
+    <ul>
+      <li>Data is divided into <strong>chunks</strong> — contiguous ranges of shard key values (default: 128MB)</li>
+      <li>When a chunk exceeds the limit, it <strong>splits</strong> into two smaller chunks</li>
+      <li>The <strong>balancer</strong> (runs on config server) monitors chunk distribution and migrates chunks between shards to keep counts balanced</li>
+      <li>Chunk migration impacts performance — schedule during off-peak hours</li>
+    </ul>
+    <div class="callout">
+      <strong>Interview Gold — Jumbo Chunks</strong>
+      A "jumbo chunk" cannot be split — all documents have the same shard key value. Example: if status is the shard key and 80% of docs have status="active", that chunk is jumbo and can't be distributed. This is why low-cardinality shard keys are dangerous.
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+
+<!-- ===== SECTION 9: PERFORMANCE ===== -->
+<div class="section-label">Production & Performance</div>
+
+<div class="topic" id="s9">
+  <div class="topic-header">
+    <span class="topic-num">09</span>
+    <h2 class="topic-title">Performance Optimization</h2>
+    <span class="tag-pill tag-perf">Performance</span>
+  </div>
+
+  <div class="subtopic">
+    <h3>explain() — Your Best Friend</h3>
+    <div class="code-block">
+      <div class="code-label"><span></span>explain() verbosity levels</div>
+      <pre><span class="cm">// 3 verbosity levels:</span>
+
+<span class="cm">// 1. queryPlanner — shows winning plan (no execution)</span>
+db.orders.<span class="fn">find</span>({ userId: <span class="str">"u123"</span> }).<span class="fn">explain</span>(<span class="str">"queryPlanner"</span>);
+
+<span class="cm">// 2. executionStats — runs query, shows stats (USE THIS)</span>
+<span class="kw">const</span> result = db.orders.<span class="fn">find</span>({ userId: <span class="str">"u123"</span> }).<span class="fn">explain</span>(<span class="str">"executionStats"</span>);
+
+<span class="cm">// Key metrics to check:</span>
+result.executionStats = {
+  nReturned: <span class="num">5</span>,             <span class="cm">// documents returned</span>
+  totalDocsExamined: <span class="num">5</span>,     <span class="cm">// ✅ should equal nReturned</span>
+  totalKeysExamined: <span class="num">5</span>,     <span class="cm">// ✅ should equal nReturned</span>
+  executionTimeMillis: <span class="num">2</span>    <span class="cm">// ✅ fast</span>
+}
+
+<span class="cm">// ❌ RED FLAG: nReturned=5 but totalDocsExamined=100000</span>
+<span class="cm">// → no index, or index not selective enough</span>
+
+<span class="cm">// 3. allPlansExecution — runs all candidate plans</span>
+db.orders.<span class="fn">find</span>({...}).<span class="fn">explain</span>(<span class="str">"allPlansExecution"</span>);</pre>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>Performance Checklist</h3>
+    <ul>
+      <li><strong>Index on query fields</strong> — every field in $match, $sort should be indexed</li>
+      <li><strong>$match early in pipeline</strong> — filter before $lookup, $unwind, $group</li>
+      <li><strong>Limit projection</strong> — only fetch needed fields (bandwidth savings)</li>
+      <li><strong>Covered queries</strong> — include projected fields in index</li>
+      <li><strong>Avoid $where</strong> — JS in queries is slow, bypasses indexes</li>
+      <li><strong>Use $exists sparingly</strong> — if checking a field exists on most docs, better to set a default value</li>
+      <li><strong>Partial indexes</strong> — index only subset of documents (e.g., only active users)</li>
+    </ul>
+    <div class="code-block">
+      <div class="code-label"><span></span>Partial Index — Index Only Active Users</div>
+      <pre><span class="cm">// Only index active users — smaller index, faster for active-user queries</span>
+db.users.<span class="fn">createIndex</span>(
+  { email: <span class="num">1</span> },
+  { partialFilterExpression: { active: <span class="kw">true</span> } }
+);
+
+<span class="cm">// ✅ Uses partial index</span>
+db.users.<span class="fn">find</span>({ email: <span class="str">"x@y.com"</span>, active: <span class="kw">true</span> });
+
+<span class="cm">// ❌ DOES NOT use partial index (active not specified)</span>
+db.users.<span class="fn">find</span>({ email: <span class="str">"x@y.com"</span> });</pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- ===== SECTION 10: NODE.JS / MONGOOSE ===== -->
+<div class="topic" id="s10">
+  <div class="topic-header">
+    <span class="topic-num">10</span>
+    <h2 class="topic-title">MongoDB with Node.js / Mongoose</h2>
+    <span class="tag-pill tag-core">Backend</span>
+  </div>
+
+  <div class="subtopic">
+    <h3>Native Driver vs Mongoose</h3>
+    <table>
+      <tr><th></th><th>Native Driver (mongodb)</th><th>Mongoose</th></tr>
+      <tr><td>Schema</td><td>Schemaless — raw documents</td><td>Schema enforcement + validation</td></tr>
+      <tr><td>Overhead</td><td>Minimal</td><td>Slightly more (schema parsing)</td></tr>
+      <tr><td>Features</td><td>Raw MongoDB operations</td><td>Schema, Middleware, Virtuals, Populate</td></tr>
+      <tr><td>Best for</td><td>Performance-critical, flexible</td><td>Structured apps, teams, TypeScript</td></tr>
+    </table>
+  </div>
+
+  <div class="subtopic">
+    <h3>Mongoose — Schema, Model, Queries</h3>
+    <div class="code-block">
+      <div class="code-label"><span></span>Mongoose Schema & Model</div>
+      <pre><span class="kw">const</span> mongoose = <span class="fn">require</span>(<span class="str">'mongoose'</span>);
+
+<span class="cm">// 1. Define Schema</span>
+<span class="kw">const</span> userSchema = <span class="kw">new</span> mongoose.Schema({
+  name: {
+    type: String,
+    required: [<span class="kw">true</span>, <span class="str">'Name is required'</span>],
+    trim: <span class="kw">true</span>,
+    minlength: <span class="num">2</span>
+  },
+  email: { type: String, required: <span class="kw">true</span>, unique: <span class="kw">true</span>, lowercase: <span class="kw">true</span> },
+  age: { type: Number, min: <span class="num">0</span>, max: <span class="num">120</span> },
+  role: { type: String, enum: [<span class="str">'user'</span>, <span class="str">'admin'</span>, <span class="str">'tech-lead'</span>], default: <span class="str">'user'</span> },
+  skills: [String],
+  address: {
+    city: String,
+    state: String
+  },
+  createdAt: { type: Date, default: Date.now }
+}, {
+  timestamps: <span class="kw">true</span>  <span class="cm">// auto-adds createdAt + updatedAt</span>
+});
+
+<span class="cm">// 2. Add index at schema level</span>
+userSchema.index({ email: <span class="num">1</span> }, { unique: <span class="kw">true</span> });
+userSchema.index({ <span class="str">'address.city'</span>: <span class="num">1</span>, role: <span class="num">1</span> });
+
+<span class="cm">// 3. Create Model</span>
+<span class="kw">const</span> User = mongoose.<span class="fn">model</span>(<span class="str">'User'</span>, userSchema);
+<span class="kw">module</span>.exports = User;</pre>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>Mongoose Middleware (Hooks)</h3>
+    <div class="code-block">
+      <div class="code-label"><span></span>Pre/Post Hooks</div>
+      <pre><span class="cm">// Pre-save: hash password before saving</span>
+userSchema.pre(<span class="str">'save'</span>, <span class="kw">async function</span>(next) {
+  <span class="kw">if</span> (!this.<span class="fn">isModified</span>(<span class="str">'password'</span>)) <span class="kw">return</span> <span class="fn">next</span>();
+  this.password = <span class="kw">await</span> bcrypt.<span class="fn">hash</span>(this.password, <span class="num">12</span>);
+  <span class="fn">next</span>();
+});
+
+<span class="cm">// Pre-find: automatically exclude inactive users</span>
+userSchema.pre(<span class="str">/^find/</span>, <span class="kw">function</span>(next) {
+  this.<span class="fn">find</span>({ active: { <span class="op">$ne</span>: <span class="kw">false</span> } });
+  <span class="fn">next</span>();
+});
+
+<span class="cm">// Post-save: send welcome email</span>
+userSchema.post(<span class="str">'save'</span>, <span class="kw">function</span>(doc, next) {
+  <span class="fn">sendWelcomeEmail</span>(doc.email);
+  <span class="fn">next</span>();
+});
+
+<span class="cm">// Virtual — not stored in DB, computed on-the-fly</span>
+userSchema.virtual(<span class="str">'fullName'</span>).<span class="fn">get</span>(<span class="kw">function</span>() {
+  <span class="kw">return</span> <span class="str">`${this.firstName} ${this.lastName}`</span>;
+});</pre>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>Mongoose Queries</h3>
+    <div class="code-block">
+      <div class="code-label"><span></span>CRUD with Mongoose</div>
+      <pre><span class="cm">// Create</span>
+<span class="kw">const</span> user = <span class="kw">await</span> User.<span class="fn">create</span>({ name: <span class="str">'Shailesh'</span>, email: <span class="str">'s@pb.com'</span> });
+
+<span class="cm">// Find</span>
+<span class="kw">const</span> users = <span class="kw">await</span> User.<span class="fn">find</span>({ role: <span class="str">'admin'</span> }).<span class="fn">select</span>(<span class="str">'name email'</span>).<span class="fn">lean</span>();
+<span class="kw">const</span> user = <span class="kw">await</span> User.<span class="fn">findById</span>(id);
+<span class="kw">const</span> user = <span class="kw">await</span> User.<span class="fn">findOne</span>({ email: <span class="str">'s@pb.com'</span> });
+
+<span class="cm">// Update</span>
+<span class="kw">await</span> User.<span class="fn">findByIdAndUpdate</span>(id, { <span class="op">$set</span>: { role: <span class="str">'admin'</span> } }, { new: <span class="kw">true</span> });
+<span class="kw">await</span> User.<span class="fn">updateMany</span>({ active: <span class="kw">false</span> }, { <span class="op">$set</span>: { deactivatedAt: <span class="kw">new</span> Date() } });
+
+<span class="cm">// Delete</span>
+<span class="kw">await</span> User.<span class="fn">findByIdAndDelete</span>(id);
+
+<span class="cm">// Populate — dereference ObjectId references</span>
+<span class="kw">const</span> order = <span class="kw">await</span> Order.<span class="fn">findById</span>(id).<span class="fn">populate</span>(<span class="str">'userId'</span>, <span class="str">'name email'</span>);
+
+<span class="cm">// .lean() — returns plain JS objects (not Mongoose documents)</span>
+<span class="cm">// 3-10x faster for read-only operations, no middleware runs</span>
+<span class="kw">const</span> users = <span class="kw">await</span> User.<span class="fn">find</span>({}).<span class="fn">lean</span>();</pre>
+    </div>
+    <div class="callout tip">
+      <strong>Use .lean() for Read APIs</strong>
+      Mongoose documents are heavy objects with many methods attached. .lean() returns plain JavaScript objects — much faster for read-only endpoints. Don't use .lean() if you need to save/update the document afterward.
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- ===== SECTION 11: ADVANCED ===== -->
+<div class="topic" id="s11">
+  <div class="topic-header">
+    <span class="topic-num">11</span>
+    <h2 class="topic-title">Advanced Concepts</h2>
+    <span class="tag-pill tag-adv">Advanced</span>
+  </div>
+
+  <div class="subtopic">
+    <h3>TTL Index — Auto-Delete Documents</h3>
+    <div class="code-block">
+      <div class="code-label"><span></span>TTL Index</div>
+      <pre><span class="cm">// Automatically delete documents after N seconds</span>
+db.sessions.<span class="fn">createIndex</span>(
+  { createdAt: <span class="num">1</span> },
+  { expireAfterSeconds: <span class="num">3600</span> }  <span class="cm">// delete 1 hour after createdAt</span>
+);
+
+<span class="cm">// Use cases: sessions, OTP tokens, temporary data, logs</span>
+<span class="cm">// MongoDB background thread checks every 60 seconds</span>
+<span class="cm">// Not exact — may expire up to 60s late</span>
+
+<span class="cm">// Dynamic TTL — expire at specific date/time</span>
+db.notifications.<span class="fn">createIndex</span>(
+  { expiresAt: <span class="num">1</span> },
+  { expireAfterSeconds: <span class="num">0</span> }  <span class="cm">// expire AT the date stored in expiresAt field</span>
+);
+
+<span class="cm">// Document: { message: "Your OTP", expiresAt: ISODate("2024-01-15T10:05:00Z") }</span></pre>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>Capped Collections — Fixed-Size FIFO</h3>
+    <div class="code-block">
+      <div class="code-label"><span></span>Capped Collection</div>
+      <pre><span class="cm">// Fixed-size collection — oldest docs auto-removed when full</span>
+db.<span class="fn">createCollection</span>(<span class="str">"auditLog"</span>, {
+  capped: <span class="kw">true</span>,
+  size: <span class="num">5242880</span>,  <span class="cm">// 5MB max size</span>
+  max: <span class="num">1000</span>        <span class="cm">// max 1000 documents</span>
+});
+
+<span class="cm">// Insertion order preserved. Oldest deleted first.</span>
+<span class="cm">// Use cases: logs, activity feeds, recent events</span>
+<span class="cm">// Limitation: cannot delete individual documents</span></pre>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>Change Streams — Real-Time Data</h3>
+    <div class="code-block">
+      <div class="code-label"><span></span>Change Streams (Node.js)</div>
+      <pre><span class="cm">// Watch for real-time changes to a collection</span>
+<span class="kw">const</span> changeStream = db.collection(<span class="str">'orders'</span>).<span class="fn">watch</span>([
+  { <span class="op">$match</span>: { operationType: <span class="str">'insert'</span> } }  <span class="cm">// filter events</span>
+]);
+
+changeStream.<span class="fn">on</span>(<span class="str">'change'</span>, (change) =&gt; {
+  console.<span class="fn">log</span>(<span class="str">'New order!'</span>, change.fullDocument);
+  <span class="fn">notifyDashboard</span>(change.fullDocument);
+});
+
+<span class="cm">// operationType values: insert, update, replace, delete, drop</span>
+<span class="cm">// Built on oplog — requires replica set or sharded cluster</span>
+<span class="cm">// Use cases: notifications, analytics, cache invalidation, audit logs</span></pre>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>Concurrency — Document-Level Locking</h3>
+    <p>MongoDB uses <strong>document-level locking</strong> (not table or database level). Multiple operations can run concurrently on different documents in the same collection.</p>
+    <ul>
+      <li>WiredTiger storage engine (default since MongoDB 3.2) uses document-level locking</li>
+      <li>Multiple readers can access same document simultaneously</li>
+      <li>Writers get exclusive lock on document only</li>
+      <li>Much better concurrency than MySQL table-level locks for high write workloads</li>
+    </ul>
+    <div class="interview-q">
+      <div class="q">Q: How does MongoDB prevent dirty reads in transactions?</div>
+      <p>MongoDB uses MVCC (Multi-Version Concurrency Control) — reads see a consistent snapshot of data at the start of the transaction. Uncommitted writes from other transactions are never visible. This is snapshot isolation, preventing dirty reads and non-repeatable reads.</p>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- ===== SECTION 12: SCENARIO BASED ===== -->
+<div class="section-label">Interview Scenarios</div>
+
+<div class="topic" id="s12">
+  <div class="topic-header">
+    <span class="topic-num">12</span>
+    <h2 class="topic-title">Scenario-Based Thinking</h2>
+    <span class="tag-pill tag-hot">🔥 System Design</span>
+  </div>
+
+  <div class="subtopic">
+    <h3>Scenario 1: Slow Query Debugging</h3>
+    <div class="callout info">
+      <strong>Interviewer says: "A MongoDB query is taking 10 seconds. Walk me through debugging it."</strong>
+    </div>
+    <ol>
+      <li><strong>Run explain("executionStats")</strong> on the query — check for COLLSCAN vs IXSCAN, totalDocsExamined vs nReturned ratio</li>
+      <li><strong>Check for missing index</strong> — if COLLSCAN on large collection, create index on filter fields</li>
+      <li><strong>Check query selectivity</strong> — if index exists but ratio is bad, the index may have low cardinality</li>
+      <li><strong>Check compound index order</strong> — ESR rule? Is the first field in index actually being used?</li>
+      <li><strong>Check if $regex is anchored</strong> — unanchored regex can't use index</li>
+      <li><strong>Check aggregation pipeline</strong> — is $match first? Is $lookup before $match (huge mistake)?</li>
+      <li><strong>Check for in-memory sort</strong> — explain shows SORT stage? Add sort field to index</li>
+      <li><strong>Check document size</strong> — very large documents slow everything down even with indexes</li>
+    </ol>
+    <div class="code-block">
+      <div class="code-label"><span></span>Slow Query Debugging Workflow</div>
+      <pre><span class="cm">// Step 1: Run explain</span>
+db.orders.<span class="fn">find</span>({ status: <span class="str">"active"</span>, userId: <span class="str">"u123"</span> })
+  .<span class="fn">sort</span>({ createdAt: -<span class="num">1</span> })
+  .<span class="fn">explain</span>(<span class="str">"executionStats"</span>);
+
+<span class="cm">// Step 2: Look for problems:</span>
+<span class="cm">// - stage: "COLLSCAN" → missing index</span>
+<span class="cm">// - stage: "SORT" → no index supporting sort (in-memory sort)</span>
+<span class="cm">// - totalDocsExamined >> nReturned → poor selectivity</span>
+<span class="cm">// - multiple FETCH stages → multiple random reads</span>
+
+<span class="cm">// Step 3: Create proper compound index (ESR rule)</span>
+<span class="cm">// E: userId (equality), R: createdAt (range/sort)</span>
+db.orders.<span class="fn">createIndex</span>({ userId: <span class="num">1</span>, status: <span class="num">1</span>, createdAt: -<span class="num">1</span> });
+
+<span class="cm">// Step 4: Re-run explain — confirm IXSCAN + no in-memory SORT</span></pre>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>Scenario 2: Chat App Schema Design</h3>
+    <div class="code-block">
+      <div class="code-label"><span></span>Chat App — Schema Design</div>
+      <pre><span class="cm">// USERS collection</span>
+{
+  _id: ObjectId,
+  name: <span class="str">"Shailesh"</span>,
+  avatar: <span class="str">"url"</span>,
+  lastSeen: Date,
+  status: <span class="str">"online"</span>
+}
+
+<span class="cm">// CONVERSATIONS collection</span>
+{
+  _id: ObjectId,
+  type: <span class="str">"direct"</span>,           <span class="cm">// or "group"</span>
+  participants: [ObjectId, ObjectId],  <span class="cm">// user IDs</span>
+  lastMessage: {              <span class="cm">// denormalized snapshot</span>
+    text: <span class="str">"Hey!"</span>,
+    senderId: ObjectId,
+    sentAt: Date
+  },
+  createdAt: Date
+}
+<span class="cm">// Index: { participants: 1 } — find all convos for a user</span>
+
+<span class="cm">// MESSAGES collection (separate — unbounded growth)</span>
+{
+  _id: ObjectId,
+  conversationId: ObjectId,  <span class="cm">// reference</span>
+  senderId: ObjectId,
+  text: <span class="str">"Hey, how are you?"</span>,
+  type: <span class="str">"text"</span>,             <span class="cm">// image, file, voice</span>
+  readBy: [ObjectId],        <span class="cm">// read receipts</span>
+  sentAt: Date
+}
+<span class="cm">// Compound index: { conversationId: 1, sentAt: -1 }</span>
+<span class="cm">// → load messages for a conversation, latest first</span>
+
+<span class="cm">// WHY separate collections?</span>
+<span class="cm">// Messages grow unboundedly → can't embed in conversation</span>
+<span class="cm">// 16MB document limit would be hit quickly</span>
+<span class="cm">// Messages queried independently (search, pagination)</span>
+<span class="cm">// lastMessage is denormalized in conversation for inbox view</span></pre>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>Scenario 3: SQL vs MongoDB Decision</h3>
+    <div class="interview-q">
+      <div class="q">Q: You're building a policy management system for Policybazaar. MongoDB or PostgreSQL?</div>
+      <p>This is nuanced. Use PostgreSQL for: core policy data with strict financial accuracy, premium calculations, multi-table joins across policies/users/payments, complex reporting. Use MongoDB for: user profiles (flexible fields per user type), product catalogs (each insurance product has different attributes), audit logs, session storage, real-time analytics events. Many production systems use both — PostgreSQL as primary DB, MongoDB for flexible/high-volume collections.</p>
+    </div>
+    <table>
+      <tr><th>Use Case</th><th>Choose MongoDB</th><th>Choose PostgreSQL</th></tr>
+      <tr><td>Product catalog</td><td>✅ Variable fields per product type</td><td></td></tr>
+      <tr><td>Financial transactions</td><td></td><td>✅ ACID, auditable, regulated</td></tr>
+      <tr><td>User activity logs</td><td>✅ High write volume, schemaless</td><td></td></tr>
+      <tr><td>Complex reports</td><td></td><td>✅ JOINs, CTEs, window functions</td></tr>
+      <tr><td>Real-time events</td><td>✅ Change streams, high throughput</td><td></td></tr>
+      <tr><td>Policy master data</td><td></td><td>✅ Relational, consistent</td></tr>
+    </table>
+  </div>
+
+  <div class="subtopic">
+    <h3>Rapid Fire Interview Q&A</h3>
+    <div class="interview-q">
+      <div class="q">Q: What is the maximum document size in MongoDB?</div>
+      <p>16MB BSON document limit. For larger data (images, PDFs), use GridFS which splits files into 255KB chunks stored in two collections: fs.files (metadata) and fs.chunks (data).</p>
+    </div>
+    <div class="interview-q">
+      <div class="q">Q: What is the _id field and can you customize it?</div>
+      <p>_id is the primary key — auto-generated as ObjectId if not specified. You CAN provide your own _id (any unique value — string, number, UUID). The _id is always indexed. Avoid using natural data (email, username) as _id — they change and cascading updates are painful.</p>
+    </div>
+    <div class="interview-q">
+      <div class="q">Q: Difference between $push and $addToSet?</div>
+      <p>$push always adds the element (allows duplicates). $addToSet only adds if the element doesn't already exist (like a set). Use $addToSet for tags, roles, unique array values. Use $push for ordered arrays where duplicates are valid (chat messages, history logs).</p>
+    </div>
+    <div class="interview-q">
+      <div class="q">Q: What is an atlas search? When would you use it over regular queries?</div>
+      <p>Atlas Search is MongoDB's full-text search built on Apache Lucene. Use for: fuzzy matching ("shailesh" matches "shailesh"), relevance ranking, autocomplete, language-aware search (stemming, stop words). Regular indexes for exact/range matches. Atlas Search for Google-like search experiences.</p>
+    </div>
+    <div class="interview-q">
+      <div class="q">Q: How do you handle schema migration in MongoDB?</div>
+      <p>MongoDB's flexible schema means migration is different from SQL. Options: (1) Lazy migration — update schema in app code, handle both old/new format, backfill gradually. (2) Bulk update — db.collection.updateMany({}, [migration pipeline]). (3) Use MongoDB schema versioning pattern — add a schemaVersion field, handle in app. No ALTER TABLE needed.</p>
+    </div>
+    <div class="interview-q">
+      <div class="q">Q: What is Read Preference in MongoDB?</div>
+      <p>Read preference controls where reads go in a replica set. Primary (default): all reads from primary. PrimaryPreferred: primary if available, else secondary. Secondary: always from secondary. SecondaryPreferred: secondary if available. Nearest: lowest latency member. Use Secondary/SecondaryPreferred for analytics to offload primary.</p>
+    </div>
+    <div class="interview-q">
+      <div class="q">Q: Can you update the shard key value of a document?</div>
+      <p>Yes, since MongoDB 4.2 you can update shard key values (except _id as shard key). However, it's a multi-document transaction internally and may require a document to move between shards (expensive). Choose a shard key that rarely needs updating. In older versions, you had to delete and re-insert.</p>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- FOOTER -->
+<div style="border-top:1px solid var(--border); padding:40px 0; margin-top:60px; text-align:center;">
+  <p style="color:var(--muted); font-family:'JetBrains Mono',monospace; font-size:12px;">
+    MongoDB Interview Mastery Guide · 12 Sections · 60+ Topics · Core → Indexing → Sharding → Production
+  </p>
+  <div class="badge-row" style="justify-content:center; margin-top:12px;">
+    <span class="badge badge-t">CRUD ✓</span>
+    <span class="badge badge-y">Indexing ✓</span>
+    <span class="badge badge-r">Sharding ✓</span>
+    <span class="badge badge-p">Scenarios ✓</span>
+  </div>
+</div>
+
+</main>
+</div>
+
+</body>
+</html>
