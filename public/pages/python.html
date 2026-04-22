@@ -1,0 +1,1939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python Interview Mastery — 2-3 Year Experience</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+   --bg: #0a0a0f;
+    --surface: #111118;
+    --surface2: #1a1a24;
+    --border: #2a2a3a;
+    --accent: #61dca3;
+    --accent2: #40c8e0;
+    --accent3: #ff6b6b;
+    --accent4: #a78bfa;
+    --text: #e8f0e8;
+    --muted: #8888a8;
+    --code-bg: #0d0d14;
+    --green: #4ade80;
+    --orange: #fb923c;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: 'Syne', sans-serif; line-height: 1.7; }
+
+header {
+  padding: 64px 44px 52px;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(155deg, #080c08 50%, #0b110b 80%, #090c0a);
+  position: relative; overflow: hidden;
+}
+header::before {
+  content: '';
+  position: absolute; top: -80px; right: -60px;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(74,222,128,0.08) 0%, transparent 65%);
+  pointer-events: none;
+}
+header::after {
+  content: '';
+  position: absolute; bottom: -80px; left: 18%;
+  width: 320px; height: 320px;
+  background: radial-gradient(circle, rgba(250,204,21,0.05) 0%, transparent 65%);
+  pointer-events: none;
+}
+.header-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--accent); border: 1px solid rgba(74,222,128,0.3);
+  background: rgba(74,222,128,0.06); padding: 4px 12px;
+  border-radius: 4px; margin-bottom: 16px; letter-spacing: 2px;
+}
+header h1 { font-size: clamp(28px, 4vw, 50px); font-weight: 800; letter-spacing: -1.5px; line-height: 1.1; }
+header h1 .py { color: var(--accent); }
+header h1 .sub { color: var(--accent2); font-weight: 400; font-size: 0.65em; }
+header p { color: var(--muted); margin-top: 12px; font-size: 14px; max-width: 560px; }
+.badge-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+.badge { padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; font-family: 'JetBrains Mono', monospace; }
+.b-g { background: rgba(74,222,128,0.12); color: var(--accent);  border: 1px solid rgba(74,222,128,0.3); }
+.b-y { background: rgba(250,204,21,0.10); color: var(--accent2); border: 1px solid rgba(250,204,21,0.25); }
+.b-b { background: rgba(56,189,248,0.10); color: var(--accent3); border: 1px solid rgba(56,189,248,0.22); }
+.b-p { background: rgba(244,114,182,0.10); color: var(--accent4); border: 1px solid rgba(244,114,182,0.22); }
+.b-o { background: rgba(251,146,60,0.10);  color: var(--accent5); border: 1px solid rgba(251,146,60,0.22); }
+
+.shell { display: flex; min-height: 100vh; }
+
+nav {
+  width: 258px; min-width: 258px; background: var(--surface);
+  padding: 20px 14px; position: sticky; top: 0;
+  height: 100vh; overflow-y: auto; border-right: 1px solid var(--border);
+}
+nav::-webkit-scrollbar { width: 3px; }
+nav::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+.nav-section { font-size: 9px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--accent); padding: 14px 8px 6px; font-family: 'JetBrains Mono', monospace; }
+.nav-link { display: block; color: var(--muted); margin: 1px 0; text-decoration: none; padding: 5px 8px; border-radius: 4px; font-size: 12.5px; transition: all 0.15s; }
+.nav-link:hover { color: var(--accent); background: rgba(74,222,128,0.07); }
+.nav-link.sub { padding-left: 18px; font-size: 11.5px; }
+
+main { flex: 1; padding: 44px 52px; max-width: 950px; }
+
+.section-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--accent); font-family: 'JetBrains Mono', monospace;
+  margin: 56px 0 26px; display: flex; align-items: center; gap: 12px;
+}
+.section-label::after { content: ''; flex: 1; height: 1px; background: linear-gradient(to right, rgba(74,222,128,0.3), transparent); }
+
+.topic { margin-bottom: 68px; scroll-margin-top: 20px; }
+.topic-header { display: flex; align-items: center; gap: 12px; padding-bottom: 14px; margin-bottom: 22px; border-bottom: 1px solid var(--border); }
+.topic-num { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--accent); background: rgba(74,222,128,0.07); border: 1px solid rgba(74,222,128,0.2); padding: 3px 10px; border-radius: 4px; }
+.topic-title { font-size: 21px; font-weight: 700; letter-spacing: -0.5px; }
+
+.subtopic { margin: 28px 0; }
+.subtopic h3 { font-size: 15px; font-weight: 700; color: var(--accent2); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+.subtopic h3::before { content: '>>'; color: var(--accent); font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; }
+.subtopic p, .subtopic li { font-size: 13.5px; color: var(--text); line-height: 1.85; }
+.subtopic ul, .subtopic ol { padding-left: 20px; margin: 8px 0; }
+.subtopic li { margin: 5px 0; }
+
+.callout { border-left: 3px solid var(--accent); background: rgba(74,222,128,0.04); padding: 12px 16px; margin: 14px 0; border-radius: 0 6px 6px 0; font-size: 13px; }
+.callout.info  { border-color: var(--accent3); background: rgba(56,189,248,0.04); }
+.callout.warn  { border-color: var(--accent5); background: rgba(251,146,60,0.04); }
+.callout.tip   { border-color: var(--accent2); background: rgba(250,204,21,0.04); }
+.callout.danger{ border-color: var(--accent4); background: rgba(244,114,182,0.04); }
+.callout strong { display: block; margin-bottom: 5px; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; }
+.callout > strong       { color: var(--accent); }
+.callout.info strong    { color: var(--accent3); }
+.callout.warn strong    { color: var(--accent5); }
+.callout.tip strong     { color: var(--accent2); }
+.callout.danger strong  { color: var(--accent4); }
+
+.code-block { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; margin: 14px 0; overflow: hidden; }
+.code-label { padding: 7px 14px; background: var(--surface2); font-size: 11px; font-family: 'JetBrains Mono', monospace; color: var(--muted); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
+.code-label .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); display: inline-block; }
+pre { padding: 18px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.75; color: #cbd5e1; }
+pre::-webkit-scrollbar { height: 4px; }
+pre::-webkit-scrollbar-thumb { background: var(--border); }
+
+.kw  { color: #c084fc; }
+.fn  { color: #60a5fa; }
+.str { color: #86efac; }
+.cm  { color: #3d5440; font-style: italic; }
+.num { color: #fdba74; }
+.bi  { color: #f472b6; }
+.dec { color: #facc15; }
+.op  { color: #4ade80; }
+.cls { color: #38bdf8; }
+.kw2 { color: #fb923c; }
+
+.iq { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 0 6px 6px 0; padding: 14px 16px; margin: 10px 0; }
+.iq .q { color: var(--accent); font-weight: 700; font-size: 11.5px; letter-spacing: 0.5px; margin-bottom: 8px; font-family: 'JetBrains Mono', monospace; }
+.iq p { color: var(--text); font-size: 13px; line-height: 1.8; }
+
+table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 13px; }
+th { background: var(--surface2); color: var(--accent); font-family: 'JetBrains Mono', monospace; font-size: 10.5px; text-transform: uppercase; letter-spacing: 1px; padding: 9px 12px; text-align: left; border: 1px solid var(--border); }
+td { padding: 9px 12px; border: 1px solid var(--border); color: var(--text); vertical-align: top; font-size: 13px; line-height: 1.6; }
+tr:nth-child(even) td { background: rgba(255,255,255,0.012); }
+
+.pill { display: inline-block; padding: 2px 8px; border-radius: 3px; font-size: 11px; font-family: 'JetBrains Mono', monospace; font-weight: 600; margin: 2px; }
+.p-hot  { background: rgba(244,114,182,0.12); color: var(--accent4); border: 1px solid rgba(244,114,182,0.3); }
+.p-core { background: rgba(74,222,128,0.10);  color: var(--accent);  border: 1px solid rgba(74,222,128,0.25); }
+.p-adv  { background: rgba(56,189,248,0.10);  color: var(--accent3); border: 1px solid rgba(56,189,248,0.22); }
+.p-perf { background: rgba(250,204,21,0.10);  color: var(--accent2); border: 1px solid rgba(250,204,21,0.22); }
+.p-new  { background: rgba(251,146,60,0.10);  color: var(--accent5); border: 1px solid rgba(251,146,60,0.22); }
+
+.back-top { display: inline-flex; align-items: center; gap: 6px; margin-top: 26px; color: var(--muted); text-decoration: none; font-size: 12px; font-family: 'JetBrains Mono', monospace; transition: color 0.2s; }
+.back-top:hover { color: var(--accent); }
+
+@media (max-width: 768px) { nav { display: none; } main { padding: 24px 20px; } header { padding: 40px 20px; } }
+</style>
+</head>
+<body>
+<header id="top">
+  <div class="header-tag">🐍 PYTHON INTERVIEW GUIDE</div>
+  <h1><span class="py">Python</span> Mastery<br><span class="sub">for 2–3 year developers</span></h1>
+  <p>Core types · OOP · Functional · Async · Memory · Decorators · Design Patterns · Interview Q&A</p>
+  <div class="badge-row">
+    <span class="badge b-g">Core Python</span>
+    <span class="badge b-y">OOP</span>
+    <span class="badge b-b">Functional</span>
+    <span class="badge b-p">Async / Concurrency</span>
+    <span class="badge b-o">Memory & Performance</span>
+    <span class="badge b-g">Decorators</span>
+    <span class="badge b-y">Design Patterns</span>
+    <span class="badge b-b">Interview Q&A</span>
+  </div>
+</header>
+
+<div class="shell">
+<nav>
+  <div class="nav-section">Core Python</div>
+  <a class="nav-link" href="#s1">1. Data Types & Mutability</a>
+  <a class="nav-link" href="#s2">2. Variables & Scope</a>
+  <a class="nav-link" href="#s3">3. Control Flow</a>
+  <a class="nav-link" href="#s4">4. Functions Deep Dive</a>
+  <a class="nav-link sub" href="#s4">args / kwargs</a>
+  <a class="nav-link sub" href="#s4">Closures</a>
+  <a class="nav-link sub" href="#s4">Lambda</a>
+  <a class="nav-link" href="#s5">5. Comprehensions</a>
+  <a class="nav-link" href="#s6">6. Iterators & Generators</a>
+  <a class="nav-link" href="#s7">7. String Operations</a>
+  <a class="nav-link" href="#s8">8. Exception Handling</a>
+
+  <div class="nav-section">OOP</div>
+  <a class="nav-link" href="#s9">9. Classes & Objects</a>
+  <a class="nav-link" href="#s10">10. Inheritance</a>
+  <a class="nav-link" href="#s11">11. Dunder Methods</a>
+  <a class="nav-link" href="#s12">12. Properties & Descriptors</a>
+  <a class="nav-link" href="#s13">13. Abstract Classes</a>
+  <a class="nav-link" href="#s14">14. Dataclasses</a>
+
+  <div class="nav-section">Advanced</div>
+  <a class="nav-link" href="#s15">15. Decorators</a>
+  <a class="nav-link" href="#s16">16. Context Managers</a>
+  <a class="nav-link" href="#s17">17. Functional Python</a>
+  <a class="nav-link" href="#s18">18. Type Hints</a>
+  <a class="nav-link" href="#s19">19. Modules & Packages</a>
+
+  <div class="nav-section">Concurrency</div>
+  <a class="nav-link" href="#s20">20. Threads & GIL</a>
+  <a class="nav-link" href="#s21">21. Multiprocessing</a>
+  <a class="nav-link" href="#s22">22. Async / Asyncio</a>
+
+  <div class="nav-section">Memory & Performance</div>
+  <a class="nav-link" href="#s23">23. Memory Model</a>
+  <a class="nav-link" href="#s24">24. Performance & Profiling</a>
+
+  <div class="nav-section">Stdlib & Tools</div>
+  <a class="nav-link" href="#s25">25. Key Stdlib Modules</a>
+  <a class="nav-link" href="#s26">26. Testing</a>
+  <a class="nav-link" href="#s27">27. Design Patterns</a>
+
+  <div class="nav-section">Interview Q&A</div>
+  <a class="nav-link" href="#qa">28. All Questions</a>
+</nav>
+
+<main>
+
+<div class="section-label">Core Python</div>
+
+<!-- S1: DATA TYPES -->
+<div class="topic" id="s1">
+  <div class="topic-header">
+    <span class="topic-num">01</span>
+    <h2 class="topic-title">Data Types & Mutability</h2>
+    <span class="pill p-hot">🔥 Most Asked</span>
+  </div>
+
+  <div class="subtopic">
+    <h3>Built-in Types Overview</h3>
+    <table>
+      <tr><th>Type</th><th>Mutable?</th><th>Ordered?</th><th>Duplicates?</th><th>Example</th></tr>
+      <tr><td>int, float, complex</td><td>❌ No</td><td>—</td><td>—</td><td>42, 3.14, 2+3j</td></tr>
+      <tr><td>str</td><td>❌ No</td><td>✅ Yes</td><td>✅ Yes</td><td>"hello"</td></tr>
+      <tr><td>bool</td><td>❌ No</td><td>—</td><td>—</td><td>True, False</td></tr>
+      <tr><td>list</td><td>✅ Yes</td><td>✅ Yes</td><td>✅ Yes</td><td>[1, 2, 3]</td></tr>
+      <tr><td>tuple</td><td>❌ No</td><td>✅ Yes</td><td>✅ Yes</td><td>(1, 2, 3)</td></tr>
+      <tr><td>dict</td><td>✅ Yes</td><td>✅ Yes (3.7+)</td><td>Keys: No</td><td>{"a": 1}</td></tr>
+      <tr><td>set</td><td>✅ Yes</td><td>❌ No</td><td>❌ No</td><td>{1, 2, 3}</td></tr>
+      <tr><td>frozenset</td><td>❌ No</td><td>❌ No</td><td>❌ No</td><td>frozenset({1,2})</td></tr>
+      <tr><td>bytes</td><td>❌ No</td><td>✅ Yes</td><td>✅ Yes</td><td>b"hello"</td></tr>
+      <tr><td>bytearray</td><td>✅ Yes</td><td>✅ Yes</td><td>✅ Yes</td><td>bytearray(b"hi")</td></tr>
+    </table>
+  </div>
+
+  <div class="subtopic">
+    <h3>Mutability — The Deep Truth</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>Mutability & Identity</div>
+      <pre><span class="cm"># id() returns memory address — same id = same object</span>
+a = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>]
+b = a           <span class="cm"># b points to SAME list</span>
+b.<span class="fn">append</span>(<span class="num">4</span>)
+<span class="fn">print</span>(a)        <span class="cm"># [1, 2, 3, 4]  ← mutated!</span>
+<span class="fn">print</span>(<span class="fn">id</span>(a) == <span class="fn">id</span>(b))  <span class="cm"># True</span>
+
+c = a.<span class="fn">copy</span>()    <span class="cm"># shallow copy — new object</span>
+c.<span class="fn">append</span>(<span class="num">5</span>)
+<span class="fn">print</span>(a)        <span class="cm"># [1, 2, 3, 4]  ← unchanged</span>
+
+<span class="cm"># Shallow vs Deep copy — critical for nested structures</span>
+<span class="kw">import</span> copy
+nested = [[<span class="num">1</span>, <span class="num">2</span>], [<span class="num">3</span>, <span class="num">4</span>]]
+shallow = nested.<span class="fn">copy</span>()      <span class="cm"># or list(nested) or nested[:]</span>
+deep    = copy.<span class="fn">deepcopy</span>(nested)
+
+shallow[<span class="num">0</span>].<span class="fn">append</span>(<span class="num">99</span>)
+<span class="fn">print</span>(nested[<span class="num">0</span>])  <span class="cm"># [1, 2, 99]  ← shallow shares inner lists</span>
+
+deep[<span class="num">0</span>].<span class="fn">append</span>(<span class="num">99</span>)
+<span class="fn">print</span>(nested[<span class="num">0</span>])  <span class="cm"># [1, 2]       ← deep copy is fully independent</span>
+
+<span class="cm"># Immutable objects — reassignment creates new object</span>
+s = <span class="str">"hello"</span>
+<span class="fn">print</span>(<span class="fn">id</span>(s))
+s += <span class="str">" world"</span>   <span class="cm"># NEW string object, s now points to new address</span>
+<span class="fn">print</span>(<span class="fn">id</span>(s))    <span class="cm"># different id!</span>
+
+<span class="cm"># Tuple containing mutable object</span>
+t = ([<span class="num">1</span>, <span class="num">2</span>], <span class="str">"hello"</span>)
+t[<span class="num">0</span>].<span class="fn">append</span>(<span class="num">3</span>)   <span class="cm"># ✅ valid — list inside tuple is mutable</span>
+<span class="fn">print</span>(t)           <span class="cm"># ([1, 2, 3], 'hello')</span>
+<span class="cm"># t[0] = [4,5]    ← ❌ TypeError — tuple itself is immutable</span></pre>
+    </div>
+    <div class="iq">
+      <div class="q">Q: What is the difference between == and is?</div>
+      <p>== checks value equality (calls __eq__). is checks identity — same object in memory (id(a) == id(b)). Common trap: small integers (-5 to 256) and interned strings are cached — "hello" is "hello" may be True due to string interning, but don't rely on this. Always use == for value comparison. is should only be used for None checks (x is None), True/False, or sentinel objects.</p>
+    </div>
+    <div class="iq">
+      <div class="q">Q: Why can't you use a list as a dictionary key?</div>
+      <p>Dictionary keys must be hashable. Hashable = immutable + has a __hash__ method returning a consistent value. Lists are mutable — if you could use a list as key then mutate it, the hash would change and the key would be "lost". Tuples (if containing only hashable elements) are hashable and can be dict keys. frozenset is the hashable version of set.</p>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>Lists — All Operations</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>List Operations & Slicing</div>
+      <pre><span class="cm"># Creation</span>
+lst = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>, <span class="num">5</span>]
+
+<span class="cm"># Slicing [start:stop:step] — creates new list</span>
+lst[<span class="num">1</span>:<span class="num">4</span>]      <span class="cm"># [2, 3, 4]</span>
+lst[::<span class="num">2</span>]      <span class="cm"># [1, 3, 5]  (every other)</span>
+lst[::-<span class="num">1</span>]     <span class="cm"># [5, 4, 3, 2, 1]  (reverse)</span>
+lst[:<span class="num">3</span>]       <span class="cm"># [1, 2, 3]</span>
+lst[-<span class="num">2</span>:]      <span class="cm"># [4, 5]  (last two)</span>
+
+<span class="cm"># Modification</span>
+lst.<span class="fn">append</span>(<span class="num">6</span>)              <span class="cm"># add to end: O(1)</span>
+lst.<span class="fn">insert</span>(<span class="num">0</span>, <span class="num">0</span>)           <span class="cm"># insert at index: O(n)</span>
+lst.<span class="fn">extend</span>([<span class="num">7</span>, <span class="num">8</span>])         <span class="cm"># add multiple items</span>
+lst.<span class="fn">remove</span>(<span class="num">3</span>)              <span class="cm"># remove first occurrence</span>
+popped = lst.<span class="fn">pop</span>()         <span class="cm"># remove & return last: O(1)</span>
+popped = lst.<span class="fn">pop</span>(<span class="num">0</span>)        <span class="cm"># remove & return index 0: O(n)</span>
+lst.<span class="fn">sort</span>(key=<span class="kw">lambda</span> x: -x) <span class="cm"># sort in-place (Timsort)</span>
+lst.<span class="fn">reverse</span>()              <span class="cm"># reverse in-place</span>
+
+<span class="cm"># Sorted — returns new list, original unchanged</span>
+new = <span class="fn">sorted</span>(lst, key=<span class="fn">str</span>, reverse=<span class="kw">True</span>)
+
+<span class="cm"># List complexity</span>
+<span class="cm"># append: O(1) amortized | insert(0,x): O(n) | in: O(n)</span>
+<span class="cm"># pop(): O(1) | pop(0): O(n) | index: O(1)</span></pre>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>Dictionaries — All Operations</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>Dict Operations</div>
+      <pre><span class="cm"># Creation methods</span>
+d = {<span class="str">"name"</span>: <span class="str">"Shailesh"</span>, <span class="str">"age"</span>: <span class="num">28</span>}
+d = <span class="fn">dict</span>(name=<span class="str">"Shailesh"</span>, age=<span class="num">28</span>)
+d = <span class="fn">dict</span>.<span class="fn">fromkeys</span>([<span class="str">"a"</span>, <span class="str">"b"</span>, <span class="str">"c"</span>], <span class="num">0</span>)  <span class="cm"># {a:0, b:0, c:0}</span>
+
+<span class="cm"># Access — safe methods</span>
+d.<span class="fn">get</span>(<span class="str">"age"</span>, <span class="num">0</span>)        <span class="cm"># returns default if key missing</span>
+d.<span class="fn">setdefault</span>(<span class="str">"city"</span>, <span class="str">"Delhi"</span>)  <span class="cm"># sets if missing, returns value</span>
+
+<span class="cm"># Iteration</span>
+<span class="kw">for</span> k <span class="kw">in</span> d:               <span class="cm"># iterate keys</span>
+<span class="kw">for</span> v <span class="kw">in</span> d.<span class="fn">values</span>():     <span class="cm"># values</span>
+<span class="kw">for</span> k, v <span class="kw">in</span> d.<span class="fn">items</span>():  <span class="cm"># key-value pairs</span>
+
+<span class="cm"># Merging (Python 3.9+)</span>
+merged = d1 | d2          <span class="cm"># new dict, d2 values win</span>
+d1 |= d2                  <span class="cm"># update d1 in-place</span>
+<span class="cm"># Older: {**d1, **d2}</span>
+
+<span class="cm"># Useful patterns</span>
+<span class="kw">from</span> collections <span class="kw">import</span> defaultdict, Counter, OrderedDict
+
+<span class="cm"># defaultdict: auto-create missing keys</span>
+word_count = <span class="fn">defaultdict</span>(<span class="fn">int</span>)
+<span class="kw">for</span> word <span class="kw">in</span> words: word_count[word] += <span class="num">1</span>
+
+<span class="cm"># Counter: count occurrences</span>
+c = <span class="fn">Counter</span>([<span class="str">"a"</span>, <span class="str">"b"</span>, <span class="str">"a"</span>])   <span class="cm"># Counter({'a': 2, 'b': 1})</span>
+c.<span class="fn">most_common</span>(<span class="num">2</span>)             <span class="cm"># [('a', 2), ('b', 1)]</span></pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- S2: SCOPE -->
+<div class="topic" id="s2">
+  <div class="topic-header">
+    <span class="topic-num">02</span>
+    <h2 class="topic-title">Variables, Scope & LEGB Rule</h2>
+    <span class="pill p-hot">🔥 Most Asked</span>
+  </div>
+  <div class="subtopic">
+    <h3>LEGB Scope Resolution</h3>
+    <p>Python resolves names in this order: <strong>L</strong>ocal → <strong>E</strong>nclosing → <strong>G</strong>lobal → <strong>B</strong>uilt-in</p>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>LEGB Rule</div>
+      <pre>x = <span class="str">"global"</span>          <span class="cm"># G — global scope</span>
+
+<span class="kw">def</span> <span class="fn">outer</span>():
+    x = <span class="str">"enclosing"</span>    <span class="cm"># E — enclosing scope</span>
+
+    <span class="kw">def</span> <span class="fn">inner</span>():
+        x = <span class="str">"local"</span>    <span class="cm"># L — local scope</span>
+        <span class="fn">print</span>(x)        <span class="cm"># "local" — L wins</span>
+    <span class="fn">inner</span>()
+    <span class="fn">print</span>(x)            <span class="cm"># "enclosing"</span>
+
+<span class="fn">outer</span>()
+<span class="fn">print</span>(x)                <span class="cm"># "global"</span>
+<span class="cm"># B: built-ins like print, len, range, etc.</span>
+
+<span class="cm"># global keyword — modify global from inside function</span>
+count = <span class="num">0</span>
+<span class="kw">def</span> <span class="fn">increment</span>():
+    <span class="kw">global</span> count       <span class="cm"># without this: UnboundLocalError</span>
+    count += <span class="num">1</span>
+
+<span class="cm"># nonlocal keyword — modify enclosing from inner function</span>
+<span class="kw">def</span> <span class="fn">make_counter</span>():
+    count = <span class="num">0</span>
+    <span class="kw">def</span> <span class="fn">increment</span>():
+        <span class="kw">nonlocal</span> count  <span class="cm"># access enclosing scope</span>
+        count += <span class="num">1</span>
+        <span class="kw">return</span> count
+    <span class="kw">return</span> increment
+
+counter = <span class="fn">make_counter</span>()
+<span class="fn">counter</span>()  <span class="cm"># 1</span>
+<span class="fn">counter</span>()  <span class="cm"># 2</span></pre>
+    </div>
+    <div class="iq">
+      <div class="q">Q: What is the mutable default argument trap?</div>
+      <p>Default argument values are evaluated ONCE when the function is defined, not each time it's called. Mutable defaults (list, dict) are shared across all calls. def f(lst=[]): lst.append(1); return lst — calling f() repeatedly returns [1], [1,1], [1,1,1]... Fix: use None as default and create fresh object inside: def f(lst=None): if lst is None: lst = []. This is one of Python's most famous gotchas.</p>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- S3: CONTROL FLOW -->
+<div class="topic" id="s3">
+  <div class="topic-header">
+    <span class="topic-num">03</span>
+    <h2 class="topic-title">Control Flow</h2>
+    <span class="pill p-core">Core</span>
+  </div>
+  <div class="subtopic">
+    <h3>Python-Specific Control Flow</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>for/else, while/else, match/case</div>
+      <pre><span class="cm"># for...else — else runs if loop completed WITHOUT break</span>
+<span class="kw">for</span> n <span class="kw">in</span> [<span class="num">2</span>, <span class="num">3</span>, <span class="num">5</span>]:
+    <span class="kw">if</span> n % <span class="num">2</span> == <span class="num">0</span>:
+        <span class="fn">print</span>(<span class="str">"Found even"</span>)
+        <span class="kw">break</span>
+<span class="kw">else</span>:
+    <span class="fn">print</span>(<span class="str">"No even number found"</span>)  <span class="cm"># runs only without break</span>
+
+<span class="cm"># Ternary expression</span>
+result = <span class="str">"adult"</span> <span class="kw">if</span> age >= <span class="num">18</span> <span class="kw">else</span> <span class="str">"minor"</span>
+
+<span class="cm"># Walrus operator := (Python 3.8+) — assign & test</span>
+<span class="kw">while</span> chunk := f.<span class="fn">read</span>(<span class="num">8192</span>):    <span class="cm"># read until empty</span>
+    <span class="fn">process</span>(chunk)
+
+<span class="kw">if</span> (n := <span class="fn">len</span>(data)) > <span class="num">10</span>:      <span class="cm"># compute once, use twice</span>
+    <span class="fn">print</span>(<span class="str">f"Too long: {n}"</span>)
+
+<span class="cm"># match/case (Python 3.10+) — structural pattern matching</span>
+<span class="kw">match</span> command:
+    <span class="kw">case</span> <span class="str">"quit"</span>:
+        <span class="fn">quit_game</span>()
+    <span class="kw">case</span> <span class="str">"go"</span>, direction:          <span class="cm"># sequence pattern</span>
+        <span class="fn">move</span>(direction)
+    <span class="kw">case</span> {<span class="str">"action"</span>: action, <span class="str">"object"</span>: obj}:  <span class="cm"># mapping pattern</span>
+        <span class="fn">do_action</span>(action, obj)
+    <span class="kw">case</span> _:                         <span class="cm"># wildcard</span>
+        <span class="fn">print</span>(<span class="str">"Unknown command"</span>)</pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- S4: FUNCTIONS -->
+<div class="topic" id="s4">
+  <div class="topic-header">
+    <span class="topic-num">04</span>
+    <h2 class="topic-title">Functions — Deep Dive</h2>
+    <span class="pill p-hot">🔥 Most Asked</span>
+  </div>
+  <div class="subtopic">
+    <h3>*args, **kwargs & Parameter Ordering</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>Function Parameters — Complete Reference</div>
+      <pre><span class="cm"># Complete parameter syntax — in this order ALWAYS:</span>
+<span class="cm"># positional | *args | keyword-only | **kwargs</span>
+<span class="kw">def</span> <span class="fn">full_example</span>(pos1, pos2, <span class="cm">*</span>args, kw_only, default=<span class="num">10</span>, <span class="cm">**</span>kwargs):
+    <span class="fn">print</span>(pos1, pos2)    <span class="cm"># positional</span>
+    <span class="fn">print</span>(args)          <span class="cm"># tuple of extra positional</span>
+    <span class="fn">print</span>(kw_only)       <span class="cm"># MUST be passed as keyword</span>
+    <span class="fn">print</span>(default)       <span class="cm"># keyword with default</span>
+    <span class="fn">print</span>(kwargs)        <span class="cm"># dict of extra keyword args</span>
+
+<span class="fn">full_example</span>(<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>, kw_only=<span class="str">"hi"</span>, x=<span class="num">10</span>)
+
+<span class="cm"># / forces positional-only (Python 3.8+)</span>
+<span class="kw">def</span> <span class="fn">pos_only</span>(x, y, /, z):
+    <span class="fn">print</span>(x, y, z)
+<span class="fn">pos_only</span>(<span class="num">1</span>, <span class="num">2</span>, z=<span class="num">3</span>)   <span class="cm"># ✅</span>
+<span class="cm"># pos_only(x=1, y=2, z=3)  ← ❌ x,y must be positional</span>
+
+<span class="cm"># Unpacking at call site</span>
+args = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>]
+kwargs = {<span class="str">"end"</span>: <span class="str">"!"</span>}
+<span class="fn">print</span>(*args, **kwargs)   <span class="cm"># unpack into call</span></pre>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>Closures — Functions Remembering State</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>Closures</div>
+      <pre><span class="kw">def</span> <span class="fn">make_multiplier</span>(factor):
+    <span class="cm"># 'factor' is a free variable — captured in closure</span>
+    <span class="kw">def</span> <span class="fn">multiply</span>(x):
+        <span class="kw">return</span> x * factor   <span class="cm"># remembers 'factor'</span>
+    <span class="kw">return</span> multiply
+
+double = <span class="fn">make_multiplier</span>(<span class="num">2</span>)
+triple = <span class="fn">make_multiplier</span>(<span class="num">3</span>)
+<span class="fn">print</span>(<span class="fn">double</span>(<span class="num">5</span>))  <span class="cm"># 10</span>
+<span class="fn">print</span>(<span class="fn">triple</span>(<span class="num">5</span>))  <span class="cm"># 15</span>
+
+<span class="cm"># Inspect closure</span>
+<span class="fn">print</span>(double.__closure__)      <span class="cm"># cell objects</span>
+<span class="fn">print</span>(double.__code__.co_freevars)  <span class="cm"># ('factor',)</span>
+
+<span class="cm"># Classic closure-in-loop bug</span>
+funcs = []
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">3</span>):
+    funcs.<span class="fn">append</span>(<span class="kw">lambda</span>: i)        <span class="cm"># ❌ all capture same 'i'</span>
+<span class="fn">print</span>([<span class="fn">f</span>() <span class="kw">for</span> f <span class="kw">in</span> funcs])  <span class="cm"># [2, 2, 2] — i is 2 at end!</span>
+
+<span class="cm"># Fix: capture current value with default arg</span>
+funcs = [(<span class="kw">lambda</span> x=i: x) <span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">3</span>)]
+<span class="fn">print</span>([<span class="fn">f</span>() <span class="kw">for</span> f <span class="kw">in</span> funcs])  <span class="cm"># [0, 1, 2] ✅</span></pre>
+    </div>
+    <div class="iq">
+      <div class="q">Q: What is a first-class function?</div>
+      <p>Functions are first-class objects in Python — they can be assigned to variables, passed as arguments, returned from functions, stored in data structures. This enables: decorators (wrapping functions), callbacks, functional patterns (map/filter), partial application. Everything that works with variables works with functions.</p>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- S5: COMPREHENSIONS -->
+<div class="topic" id="s5">
+  <div class="topic-header">
+    <span class="topic-num">05</span>
+    <h2 class="topic-title">Comprehensions</h2>
+    <span class="pill p-core">Core</span>
+  </div>
+  <div class="subtopic">
+    <h3>All Comprehension Types</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>List, Dict, Set, Generator Comprehensions</div>
+      <pre><span class="cm"># List comprehension: [expression for item in iterable if condition]</span>
+squares = [x**<span class="num">2</span> <span class="kw">for</span> x <span class="kw">in</span> <span class="fn">range</span>(<span class="num">10</span>) <span class="kw">if</span> x % <span class="num">2</span> == <span class="num">0</span>]
+<span class="cm"># [0, 4, 16, 36, 64]</span>
+
+<span class="cm"># Nested comprehension — matrix transpose</span>
+matrix = [[<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>], [<span class="num">4</span>,<span class="num">5</span>,<span class="num">6</span>]]
+transposed = [[row[i] <span class="kw">for</span> row <span class="kw">in</span> matrix] <span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">3</span>)]
+
+<span class="cm"># Dict comprehension</span>
+squared = {x: x**<span class="num">2</span> <span class="kw">for</span> x <span class="kw">in</span> <span class="fn">range</span>(<span class="num">5</span>)}
+inverted = {v: k <span class="kw">for</span> k, v <span class="kw">in</span> original.<span class="fn">items</span>()}  <span class="cm"># swap keys/values</span>
+
+<span class="cm"># Set comprehension — unique values</span>
+unique_lengths = {<span class="fn">len</span>(word) <span class="kw">for</span> word <span class="kw">in</span> words}
+
+<span class="cm"># Generator expression — lazy, memory efficient</span>
+gen = (x**<span class="num">2</span> <span class="kw">for</span> x <span class="kw">in</span> <span class="fn">range</span>(<span class="num">1_000_000</span>))  <span class="cm"># no memory used yet!</span>
+<span class="fn">next</span>(gen)   <span class="cm"># computes one value at a time</span>
+<span class="fn">sum</span>(x**<span class="num">2</span> <span class="kw">for</span> x <span class="kw">in</span> <span class="fn">range</span>(<span class="num">1_000_000</span>))     <span class="cm"># generator passed directly</span>
+
+<span class="cm"># When to use generator vs list comprehension:
+# - large data / streaming → generator (lazy)
+# - iterate multiple times or need len() → list
+# - pass to sum/max/min → generator expression (no [] needed)</span></pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- S6: ITERATORS & GENERATORS -->
+<div class="topic" id="s6">
+  <div class="topic-header">
+    <span class="topic-num">06</span>
+    <h2 class="topic-title">Iterators & Generators</h2>
+    <span class="pill p-hot">🔥 Most Asked</span>
+  </div>
+  <div class="subtopic">
+    <h3>Iterator Protocol</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>Iterator Protocol & Generator Functions</div>
+      <pre><span class="cm"># Iterable: has __iter__ → returns iterator</span>
+<span class="cm"># Iterator: has __next__ → returns next value, raises StopIteration</span>
+
+<span class="cm"># Custom iterator class</span>
+<span class="kw">class</span> <span class="cls">CountDown</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="bi">self</span>, start):
+        <span class="bi">self</span>.current = start
+
+    <span class="kw">def</span> <span class="fn">__iter__</span>(<span class="bi">self</span>):
+        <span class="kw">return</span> <span class="bi">self</span>     <span class="cm"># iterator IS the iterable</span>
+
+    <span class="kw">def</span> <span class="fn">__next__</span>(<span class="bi">self</span>):
+        <span class="kw">if</span> <span class="bi">self</span>.current <= <span class="num">0</span>:
+            <span class="kw">raise</span> <span class="bi">StopIteration</span>
+        <span class="bi">self</span>.current -= <span class="num">1</span>
+        <span class="kw">return</span> <span class="bi">self</span>.current + <span class="num">1</span>
+
+<span class="kw">for</span> n <span class="kw">in</span> <span class="fn">CountDown</span>(<span class="num">3</span>): <span class="fn">print</span>(n)  <span class="cm"># 3, 2, 1</span>
+
+<span class="cm"># Generator function — simpler, more Pythonic</span>
+<span class="kw">def</span> <span class="fn">count_down</span>(start):
+    <span class="kw">while</span> start > <span class="num">0</span>:
+        <span class="kw">yield</span> start    <span class="cm"># pauses here, returns value</span>
+        start -= <span class="num">1</span>    <span class="cm"># resumes here on next()</span>
+
+<span class="cm"># yield from — delegate to sub-generator</span>
+<span class="kw">def</span> <span class="fn">chain_generators</span>(*iterables):
+    <span class="kw">for</span> it <span class="kw">in</span> iterables:
+        <span class="kw">yield from</span> it  <span class="cm"># equivalent to: for item in it: yield item</span>
+
+<span class="kw">list</span>(<span class="fn">chain_generators</span>([<span class="num">1</span>,<span class="num">2</span>], [<span class="num">3</span>,<span class="num">4</span>]))  <span class="cm"># [1, 2, 3, 4]</span>
+
+<span class="cm"># Generator pipeline — memory efficient data processing</span>
+<span class="kw">def</span> <span class="fn">read_file</span>(path):
+    <span class="kw">with</span> <span class="fn">open</span>(path) <span class="kw">as</span> f:
+        <span class="kw">yield from</span> f            <span class="cm"># one line at a time</span>
+
+<span class="kw">def</span> <span class="fn">filter_lines</span>(lines, term):
+    <span class="kw">yield from</span> (l <span class="kw">for</span> l <span class="kw">in</span> lines <span class="kw">if</span> term <span class="kw">in</span> l)
+
+<span class="cm"># Process huge file line by line — constant memory!</span>
+lines = <span class="fn">read_file</span>(<span class="str">"huge.log"</span>)
+errors = <span class="fn">filter_lines</span>(lines, <span class="str">"ERROR"</span>)
+<span class="kw">for</span> err <span class="kw">in</span> errors: <span class="fn">process</span>(err)</pre>
+    </div>
+    <div class="iq">
+      <div class="q">Q: What is the difference between a generator and an iterator?</div>
+      <p>All generators are iterators, but not all iterators are generators. Iterator: any object with __iter__ and __next__ methods. Generator: a special iterator created by a function with yield OR a generator expression. Generators automatically implement __iter__ and __next__, handle StopIteration, and can pause/resume execution. They're the easiest way to create iterators.</p>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- S7: STRINGS -->
+<div class="topic" id="s7">
+  <div class="topic-header">
+    <span class="topic-num">07</span>
+    <h2 class="topic-title">String Operations</h2>
+    <span class="pill p-core">Core</span>
+  </div>
+  <div class="subtopic">
+    <h3>String Methods & Formatting</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>Essential String Operations</div>
+      <pre><span class="cm"># f-strings (preferred — Python 3.6+)</span>
+name, score = <span class="str">"Shailesh"</span>, <span class="num">98.5</span>
+<span class="fn">print</span>(<span class="str">f"Name: {name!r}, Score: {score:.2f}"</span>)
+<span class="fn">print</span>(<span class="str">f"{name = }"</span>)          <span class="cm"># f-string debugging: name = 'Shailesh'</span>
+<span class="fn">print</span>(<span class="str">f"{2**10 = }"</span>)         <span class="cm"># 2**10 = 1024</span>
+
+<span class="cm"># Common methods</span>
+s = <span class="str">"  Hello, World!  "</span>
+s.<span class="fn">strip</span>()             <span class="cm"># "Hello, World!"</span>
+s.<span class="fn">lower</span>()             <span class="cm"># "  hello, world!  "</span>
+s.<span class="fn">upper</span>()
+s.<span class="fn">title</span>()             <span class="cm"># "  Hello, World!  "</span>
+s.<span class="fn">split</span>(<span class="str">", "</span>)         <span class="cm"># ["  Hello", "World!  "]</span>
+<span class="str">" "</span>.<span class="fn">join</span>([<span class="str">"a"</span>, <span class="str">"b"</span>])  <span class="cm"># "a b" — join is on separator!</span>
+s.<span class="fn">replace</span>(<span class="str">"World"</span>, <span class="str">"Python"</span>)
+s.<span class="fn">startswith</span>(<span class="str">"Hello"</span>)
+s.<span class="fn">endswith</span>(<span class="str">"!"</span>)
+s.<span class="fn">find</span>(<span class="str">"World"</span>)       <span class="cm"># index or -1</span>
+s.<span class="fn">count</span>(<span class="str">"l"</span>)
+s.<span class="fn">isdigit</span>(), s.<span class="fn">isalpha</span>(), s.<span class="fn">isalnum</span>()
+s.<span class="fn">zfill</span>(<span class="num">10</span>)           <span class="cm"># "0" * pad + s (zero-pad)</span>
+s.<span class="fn">center</span>(<span class="num">20</span>, <span class="str">"-"</span>)      <span class="cm"># "---Hello, World!---"</span>
+
+<span class="cm"># Efficient string building — avoid repeated += (O(n²))</span>
+parts = []
+<span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(<span class="num">1000</span>):
+    parts.<span class="fn">append</span>(<span class="fn">str</span>(i))
+result = <span class="str">""</span>.<span class="fn">join</span>(parts)  <span class="cm"># ✅ O(n) — one allocation</span></pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- S8: EXCEPTIONS -->
+<div class="topic" id="s8">
+  <div class="topic-header">
+    <span class="topic-num">08</span>
+    <h2 class="topic-title">Exception Handling</h2>
+    <span class="pill p-core">Core</span>
+  </div>
+  <div class="subtopic">
+    <h3>Exception Hierarchy & Best Practices</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>Exception Handling — Full Reference</div>
+      <pre><span class="cm"># Full try/except/else/finally</span>
+<span class="kw">try</span>:
+    result = <span class="fn">int</span>(user_input)   <span class="cm"># might raise ValueError</span>
+    data = d[<span class="str">"key"</span>]           <span class="cm"># might raise KeyError</span>
+<span class="kw">except</span> <span class="bi">ValueError</span> <span class="kw">as</span> e:
+    <span class="fn">print</span>(<span class="str">f"Bad value: {e}"</span>)
+<span class="kw">except</span> (<span class="bi">KeyError</span>, <span class="bi">IndexError</span>):  <span class="cm"># catch multiple</span>
+    <span class="fn">print</span>(<span class="str">"Missing key or index"</span>)
+<span class="kw">except</span> <span class="bi">Exception</span> <span class="kw">as</span> e:        <span class="cm"># catch-all (avoid bare except)</span>
+    <span class="fn">print</span>(<span class="str">f"Unexpected: {e}"</span>)
+    <span class="kw">raise</span>                       <span class="cm"># re-raise original</span>
+<span class="kw">else</span>:
+    <span class="fn">process</span>(result)             <span class="cm"># runs ONLY if no exception</span>
+<span class="kw">finally</span>:
+    <span class="fn">cleanup</span>()                   <span class="cm"># ALWAYS runs</span>
+
+<span class="cm"># Custom exceptions</span>
+<span class="kw">class</span> <span class="cls">InsufficientFundsError</span>(<span class="bi">ValueError</span>):
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="bi">self</span>, amount, balance):
+        <span class="bi">self</span>.amount = amount
+        <span class="bi">self</span>.balance = balance
+        <span class="fn">super</span>().<span class="fn">__init__</span>(<span class="str">f"Need {amount}, have {balance}"</span>)
+
+<span class="cm"># Exception chaining</span>
+<span class="kw">try</span>:
+    <span class="fn">parse_config</span>()
+<span class="kw">except</span> <span class="bi">FileNotFoundError</span> <span class="kw">as</span> e:
+    <span class="kw">raise</span> <span class="bi">RuntimeError</span>(<span class="str">"Config missing"</span>) <span class="kw">from</span> e  <span class="cm"># chains original</span>
+
+<span class="cm"># suppress specific exceptions</span>
+<span class="kw">from</span> contextlib <span class="kw">import</span> suppress
+<span class="kw">with</span> <span class="fn">suppress</span>(<span class="bi">FileNotFoundError</span>):
+    os.<span class="fn">remove</span>(<span class="str">"maybe_exists.txt"</span>)  <span class="cm"># silently ignore</span></pre>
+    </div>
+    <div class="iq">
+      <div class="q">Q: Why is bare except bad? What about except Exception?</div>
+      <p>Bare except: catches SystemExit, KeyboardInterrupt, GeneratorExit — system-level signals you should NEVER swallow. User can't Ctrl+C. except Exception: catches most errors but not system signals — safer, still too broad. Best practice: catch the most specific exception possible. Use except Exception only as a last resort with logging and re-raise. Never use bare except in production code.</p>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+
+<div class="section-label">Object-Oriented Programming</div>
+
+<!-- S9: CLASSES -->
+<div class="topic" id="s9">
+  <div class="topic-header">
+    <span class="topic-num">09</span>
+    <h2 class="topic-title">Classes & Objects</h2>
+    <span class="pill p-hot">🔥 Most Asked</span>
+  </div>
+  <div class="subtopic">
+    <h3>Class Anatomy — Complete Reference</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>Full Class Reference</div>
+      <pre><span class="kw">class</span> <span class="cls">BankAccount</span>:
+    <span class="cm"># Class variable — shared by ALL instances</span>
+    interest_rate = <span class="num">0.05</span>
+    _accounts = []          <span class="cm"># "protected" (convention only)</span>
+
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="bi">self</span>, owner: <span class="fn">str</span>, balance: <span class="fn">float</span> = <span class="num">0</span>):
+        <span class="bi">self</span>.owner = owner        <span class="cm"># instance variable</span>
+        <span class="bi">self</span>.__balance = balance   <span class="cm"># "private" (name-mangled to _BankAccount__balance)</span>
+        <span class="cls">BankAccount</span>._accounts.<span class="fn">append</span>(<span class="bi">self</span>)
+
+    <span class="cm"># Instance method</span>
+    <span class="kw">def</span> <span class="fn">deposit</span>(<span class="bi">self</span>, amount):
+        <span class="kw">if</span> amount <= <span class="num">0</span>:
+            <span class="kw">raise</span> <span class="bi">ValueError</span>(<span class="str">"Amount must be positive"</span>)
+        <span class="bi">self</span>.__balance += amount
+
+    <span class="cm"># Class method — receives class, not instance</span>
+    <span class="dec">@classmethod</span>
+    <span class="kw">def</span> <span class="fn">set_rate</span>(<span class="cls">cls</span>, rate):
+        <span class="cls">cls</span>.interest_rate = rate
+
+    <span class="dec">@classmethod</span>
+    <span class="kw">def</span> <span class="fn">from_dict</span>(<span class="cls">cls</span>, data: <span class="fn">dict</span>):    <span class="cm"># alternative constructor</span>
+        <span class="kw">return</span> <span class="cls">cls</span>(data[<span class="str">"owner"</span>], data[<span class="str">"balance"</span>])
+
+    <span class="cm"># Static method — no self or cls — just a namespace function</span>
+    <span class="dec">@staticmethod</span>
+    <span class="kw">def</span> <span class="fn">validate_amount</span>(amount):
+        <span class="kw">return</span> <span class="fn">isinstance</span>(amount, (<span class="fn">int</span>, <span class="fn">float</span>)) <span class="kw">and</span> amount > <span class="num">0</span>
+
+    <span class="cm"># Property — computed attribute with getter</span>
+    <span class="dec">@property</span>
+    <span class="kw">def</span> <span class="fn">balance</span>(<span class="bi">self</span>):
+        <span class="kw">return</span> <span class="bi">self</span>.__balance
+
+    <span class="dec">@balance.setter</span>
+    <span class="kw">def</span> <span class="fn">balance</span>(<span class="bi">self</span>, value):
+        <span class="kw">if</span> value < <span class="num">0</span>:
+            <span class="kw">raise</span> <span class="bi">ValueError</span>(<span class="str">"Balance cannot be negative"</span>)
+        <span class="bi">self</span>.__balance = value
+
+    <span class="kw">def</span> <span class="fn">__repr__</span>(<span class="bi">self</span>):
+        <span class="kw">return</span> <span class="str">f"BankAccount(owner={self.owner!r}, balance={self.__balance})"</span>
+
+    <span class="kw">def</span> <span class="fn">__str__</span>(<span class="bi">self</span>):
+        <span class="kw">return</span> <span class="str">f"{self.owner}'s account: ₹{self.__balance:,.2f}"</span></pre>
+    </div>
+    <div class="iq">
+      <div class="q">Q: Difference between class method, static method, and instance method?</div>
+      <p>Instance method: takes self — operates on the instance. Most methods are this. Class method (@classmethod): takes cls — operates on the class, not instance. Use for alternative constructors (from_dict, from_string) or modifying class state. Static method (@staticmethod): takes neither — just a function in the class namespace, no access to class or instance. Use for utility functions logically related to the class. Can be called on class or instance.</p>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- S10: INHERITANCE -->
+<div class="topic" id="s10">
+  <div class="topic-header">
+    <span class="topic-num">10</span>
+    <h2 class="topic-title">Inheritance & MRO</h2>
+    <span class="pill p-hot">🔥 Most Asked</span>
+  </div>
+  <div class="subtopic">
+    <h3>Single & Multiple Inheritance</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>Inheritance & MRO (C3 Linearization)</div>
+      <pre><span class="kw">class</span> <span class="cls">Animal</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="bi">self</span>, name):
+        <span class="bi">self</span>.name = name
+
+    <span class="kw">def</span> <span class="fn">speak</span>(<span class="bi">self</span>):
+        <span class="kw">return</span> <span class="str">"..."</span>
+
+<span class="kw">class</span> <span class="cls">Dog</span>(<span class="cls">Animal</span>):
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="bi">self</span>, name, breed):
+        <span class="fn">super</span>().<span class="fn">__init__</span>(name)    <span class="cm"># call parent __init__</span>
+        <span class="bi">self</span>.breed = breed
+
+    <span class="kw">def</span> <span class="fn">speak</span>(<span class="bi">self</span>):               <span class="cm"># override</span>
+        <span class="kw">return</span> <span class="str">f"{self.name} says Woof!"</span>
+
+<span class="cm"># Multiple inheritance</span>
+<span class="kw">class</span> <span class="cls">Flyable</span>:
+    <span class="kw">def</span> <span class="fn">fly</span>(<span class="bi">self</span>): <span class="kw">return</span> <span class="str">"Flying"</span>
+
+<span class="kw">class</span> <span class="cls">Swimmable</span>:
+    <span class="kw">def</span> <span class="fn">swim</span>(<span class="bi">self</span>): <span class="kw">return</span> <span class="str">"Swimming"</span>
+
+<span class="kw">class</span> <span class="cls">Duck</span>(<span class="cls">Animal</span>, <span class="cls">Flyable</span>, <span class="cls">Swimmable</span>):
+    <span class="kw">def</span> <span class="fn">speak</span>(<span class="bi">self</span>): <span class="kw">return</span> <span class="str">"Quack"</span>
+
+<span class="cm"># MRO — Method Resolution Order (C3 algorithm)</span>
+<span class="fn">print</span>(Duck.<span class="fn">__mro__</span>)
+<span class="cm"># Duck → Animal → Flyable → Swimmable → object</span>
+<span class="cm"># Python searches left to right — first match wins</span>
+<span class="fn">print</span>(Duck.<span class="fn">mro</span>())      <span class="cm"># same as __mro__ but as list</span>
+
+<span class="cm"># Diamond problem — MRO resolves this</span>
+<span class="kw">class</span> <span class="cls">A</span>: <span class="kw">def</span> <span class="fn">method</span>(<span class="bi">self</span>): <span class="kw">return</span> <span class="str">"A"</span>
+<span class="kw">class</span> <span class="cls">B</span>(<span class="cls">A</span>): <span class="kw">def</span> <span class="fn">method</span>(<span class="bi">self</span>): <span class="kw">return</span> <span class="str">"B"</span>
+<span class="kw">class</span> <span class="cls">C</span>(<span class="cls">A</span>): <span class="kw">def</span> <span class="fn">method</span>(<span class="bi">self</span>): <span class="kw">return</span> <span class="str">"C"</span>
+<span class="kw">class</span> <span class="cls">D</span>(<span class="cls">B</span>, <span class="cls">C</span>): <span class="kw">pass</span>
+D().<span class="fn">method</span>()  <span class="cm"># "B" — MRO: D → B → C → A</span>
+
+<span class="cm"># isinstance / issubclass</span>
+<span class="fn">isinstance</span>(duck, Animal)   <span class="cm"># True — checks full hierarchy</span>
+<span class="fn">issubclass</span>(Duck, Animal)   <span class="cm"># True</span>
+<span class="fn">type</span>(duck) <span class="kw">is</span> Duck         <span class="cm"># True — exact type only</span>
+<span class="fn">type</span>(duck) <span class="kw">is</span> Animal       <span class="cm"># False — use isinstance instead</span></pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- S11: DUNDER METHODS -->
+<div class="topic" id="s11">
+  <div class="topic-header">
+    <span class="topic-num">11</span>
+    <h2 class="topic-title">Dunder (Magic) Methods</h2>
+    <span class="pill p-adv">Advanced</span>
+  </div>
+  <div class="subtopic">
+    <h3>Essential Magic Methods</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>Magic Methods Reference</div>
+      <pre><span class="kw">class</span> <span class="cls">Vector</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="bi">self</span>, x, y):
+        <span class="bi">self</span>.x, <span class="bi">self</span>.y = x, y
+
+    <span class="cm"># String representation</span>
+    <span class="kw">def</span> <span class="fn">__repr__</span>(<span class="bi">self</span>): <span class="kw">return</span> <span class="str">f"Vector({self.x}, {self.y})"</span>  <span class="cm"># for devs</span>
+    <span class="kw">def</span> <span class="fn">__str__</span>(<span class="bi">self</span>):  <span class="kw">return</span> <span class="str">f"({self.x}, {self.y})"</span>         <span class="cm"># for users</span>
+
+    <span class="cm"># Arithmetic operators</span>
+    <span class="kw">def</span> <span class="fn">__add__</span>(<span class="bi">self</span>, other):
+        <span class="kw">return</span> <span class="cls">Vector</span>(<span class="bi">self</span>.x + other.x, <span class="bi">self</span>.y + other.y)
+
+    <span class="kw">def</span> <span class="fn">__mul__</span>(<span class="bi">self</span>, scalar):  <span class="cm"># v * 3</span>
+        <span class="kw">return</span> <span class="cls">Vector</span>(<span class="bi">self</span>.x * scalar, <span class="bi">self</span>.y * scalar)
+
+    <span class="kw">def</span> <span class="fn">__rmul__</span>(<span class="bi">self</span>, scalar):  <span class="cm"># 3 * v (reverse)</span>
+        <span class="kw">return</span> <span class="bi">self</span>.<span class="fn">__mul__</span>(scalar)
+
+    <span class="cm"># Comparison</span>
+    <span class="kw">def</span> <span class="fn">__eq__</span>(<span class="bi">self</span>, other):
+        <span class="kw">return</span> <span class="bi">self</span>.x == other.x <span class="kw">and</span> <span class="bi">self</span>.y == other.y
+
+    <span class="kw">def</span> <span class="fn">__lt__</span>(<span class="bi">self</span>, other):  <span class="cm"># enables <, >, <=, >= with @total_ordering</span>
+        <span class="kw">return</span> <span class="fn">abs</span>(<span class="bi">self</span>) < <span class="fn">abs</span>(other)
+
+    <span class="cm"># Container protocol</span>
+    <span class="kw">def</span> <span class="fn">__len__</span>(<span class="bi">self</span>): <span class="kw">return</span> <span class="num">2</span>            <span class="cm"># len(v)</span>
+    <span class="kw">def</span> <span class="fn">__getitem__</span>(<span class="bi">self</span>, i):              <span class="cm"># v[0], v[1]</span>
+        <span class="kw">return</span> (<span class="bi">self</span>.x, <span class="bi">self</span>.y)[i]
+    <span class="kw">def</span> <span class="fn">__contains__</span>(<span class="bi">self</span>, val):          <span class="cm"># val in v</span>
+        <span class="kw">return</span> val <span class="kw">in</span> (<span class="bi">self</span>.x, <span class="bi">self</span>.y)
+    <span class="kw">def</span> <span class="fn">__iter__</span>(<span class="bi">self</span>):                    <span class="cm"># for val in v</span>
+        <span class="kw">yield</span> <span class="bi">self</span>.x; <span class="kw">yield</span> <span class="bi">self</span>.y
+
+    <span class="cm"># Numeric</span>
+    <span class="kw">def</span> <span class="fn">__abs__</span>(<span class="bi">self</span>):                     <span class="cm"># abs(v)</span>
+        <span class="kw">return</span> (<span class="bi">self</span>.x**<span class="num">2</span> + <span class="bi">self</span>.y**<span class="num">2</span>)**<span class="num">0.5</span>
+    <span class="kw">def</span> <span class="fn">__bool__</span>(<span class="bi">self</span>):                    <span class="cm"># bool(v), if v:</span>
+        <span class="kw">return</span> <span class="bi">self</span>.x != <span class="num">0</span> <span class="kw">or</span> <span class="bi">self</span>.y != <span class="num">0</span>
+    <span class="kw">def</span> <span class="fn">__hash__</span>(<span class="bi">self</span>):                    <span class="cm"># needed if __eq__ defined</span>
+        <span class="kw">return</span> <span class="fn">hash</span>((<span class="bi">self</span>.x, <span class="bi">self</span>.y))
+
+    <span class="cm"># Callable</span>
+    <span class="kw">def</span> <span class="fn">__call__</span>(<span class="bi">self</span>, *args):  <span class="cm"># v() — makes instance callable</span>
+        <span class="kw">return</span> <span class="str">f"Called with {args}"</span>
+
+    <span class="cm"># Context manager</span>
+    <span class="kw">def</span> <span class="fn">__enter__</span>(<span class="bi">self</span>): <span class="kw">return</span> <span class="bi">self</span>
+    <span class="kw">def</span> <span class="fn">__exit__</span>(<span class="bi">self</span>, exc_type, exc_val, exc_tb): <span class="kw">return</span> <span class="kw">False</span></pre>
+    </div>
+    <div class="iq">
+      <div class="q">Q: What is the difference between __repr__ and __str__?</div>
+      <p>__str__: human-readable, used by print() and str(). Should be descriptive and user-friendly. __repr__: unambiguous, used in REPL and repr(). Should ideally be valid Python that recreates the object: repr(obj) should allow eval(repr(obj)) == obj. If only one defined, __repr__ is used as fallback. Implement __repr__ always; __str__ optionally when you want different display.</p>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- S12-S14 -->
+<div class="topic" id="s12">
+  <div class="topic-header">
+    <span class="topic-num">12</span>
+    <h2 class="topic-title">Properties & Descriptors</h2>
+    <span class="pill p-adv">Advanced</span>
+  </div>
+  <div class="subtopic">
+    <h3>@property in depth</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>Property Decorator</div>
+      <pre><span class="kw">class</span> <span class="cls">Temperature</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="bi">self</span>, celsius=<span class="num">0</span>):
+        <span class="bi">self</span>._celsius = celsius
+
+    <span class="dec">@property</span>
+    <span class="kw">def</span> <span class="fn">celsius</span>(<span class="bi">self</span>): <span class="kw">return</span> <span class="bi">self</span>._celsius
+
+    <span class="dec">@celsius.setter</span>
+    <span class="kw">def</span> <span class="fn">celsius</span>(<span class="bi">self</span>, val):
+        <span class="kw">if</span> val < -<span class="num">273.15</span>: <span class="kw">raise</span> <span class="bi">ValueError</span>(<span class="str">"Below absolute zero"</span>)
+        <span class="bi">self</span>._celsius = val
+
+    <span class="dec">@celsius.deleter</span>
+    <span class="kw">def</span> <span class="fn">celsius</span>(<span class="bi">self</span>): <span class="kw">del</span> <span class="bi">self</span>._celsius
+
+    <span class="dec">@property</span>
+    <span class="kw">def</span> <span class="fn">fahrenheit</span>(<span class="bi">self</span>):        <span class="cm"># computed — no setter</span>
+        <span class="kw">return</span> <span class="bi">self</span>._celsius * <span class="num">9/5</span> + <span class="num">32</span>
+
+t = <span class="fn">Temperature</span>(<span class="num">100</span>)
+<span class="fn">print</span>(t.fahrenheit)  <span class="cm"># 212.0 — looks like attr, works like method</span>
+t.celsius = <span class="num">50</span>       <span class="cm"># validation runs</span></pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<div class="topic" id="s13">
+  <div class="topic-header">
+    <span class="topic-num">13</span>
+    <h2 class="topic-title">Abstract Classes & Interfaces</h2>
+    <span class="pill p-adv">Advanced</span>
+  </div>
+  <div class="subtopic">
+    <h3>ABC Module</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>Abstract Base Classes</div>
+      <pre><span class="kw">from</span> abc <span class="kw">import</span> ABC, abstractmethod
+
+<span class="kw">class</span> <span class="cls">Shape</span>(<span class="cls">ABC</span>):          <span class="cm"># cannot be instantiated</span>
+    <span class="dec">@abstractmethod</span>
+    <span class="kw">def</span> <span class="fn">area</span>(<span class="bi">self</span>) -> <span class="fn">float</span>:  <span class="cm"># MUST be implemented by subclass</span>
+        <span class="kw">pass</span>
+
+    <span class="dec">@abstractmethod</span>
+    <span class="kw">def</span> <span class="fn">perimeter</span>(<span class="bi">self</span>) -> <span class="fn">float</span>: <span class="kw">pass</span>
+
+    <span class="kw">def</span> <span class="fn">describe</span>(<span class="bi">self</span>):       <span class="cm"># concrete method (can be inherited)</span>
+        <span class="kw">return</span> <span class="str">f"Area: {self.area()}"</span>
+
+<span class="kw">class</span> <span class="cls">Circle</span>(<span class="cls">Shape</span>):
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="bi">self</span>, r): <span class="bi">self</span>.r = r
+    <span class="kw">def</span> <span class="fn">area</span>(<span class="bi">self</span>): <span class="kw">return</span> <span class="num">3.14159</span> * <span class="bi">self</span>.r**<span class="num">2</span>
+    <span class="kw">def</span> <span class="fn">perimeter</span>(<span class="bi">self</span>): <span class="kw">return</span> <span class="num">2</span> * <span class="num">3.14159</span> * <span class="bi">self</span>.r
+
+<span class="cm"># Shape()  ← TypeError: Can't instantiate abstract class</span>
+c = <span class="fn">Circle</span>(<span class="num">5</span>)   <span class="cm"># ✅ works</span></pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<div class="topic" id="s14">
+  <div class="topic-header">
+    <span class="topic-num">14</span>
+    <h2 class="topic-title">Dataclasses</h2>
+    <span class="pill p-new">Python 3.7+</span>
+  </div>
+  <div class="subtopic">
+    <h3>@dataclass — Auto-generate Boilerplate</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>Dataclass Features</div>
+      <pre><span class="kw">from</span> dataclasses <span class="kw">import</span> dataclass, field, KW_ONLY
+<span class="kw">from</span> typing <span class="kw">import</span> ClassVar
+
+<span class="dec">@dataclass</span>(order=<span class="kw">True</span>, frozen=<span class="kw">True</span>)  <span class="cm"># frozen=immutable, order=comparison</span>
+<span class="kw">class</span> <span class="cls">Policy</span>:
+    policy_id: <span class="fn">str</span>
+    premium: <span class="fn">float</span>
+    cover: <span class="fn">float</span> = <span class="num">1_000_000</span>       <span class="cm"># default value</span>
+    tags: <span class="fn">list</span> = <span class="fn">field</span>(default_factory=<span class="fn">list</span>)  <span class="cm"># mutable default!</span>
+    _sort_index: <span class="fn">float</span> = <span class="fn">field</span>(init=<span class="kw">False</span>, repr=<span class="kw">False</span>)
+    count: <span class="cls">ClassVar</span>[<span class="fn">int</span>] = <span class="num">0</span>        <span class="cm"># class variable, excluded from __init__</span>
+
+    <span class="kw">def</span> <span class="fn">__post_init__</span>(<span class="bi">self</span>):         <span class="cm"># runs after __init__</span>
+        <span class="kw">object</span>.<span class="fn">__setattr__</span>(<span class="bi">self</span>, <span class="str">'_sort_index'</span>, <span class="bi">self</span>.premium)
+
+<span class="cm"># Auto-generates: __init__, __repr__, __eq__
+# With order=True: __lt__, __le__, __gt__, __ge__
+# With frozen=True: __hash__ (immutable, hashable)</span>
+
+p1 = <span class="fn">Policy</span>(<span class="str">"POL-001"</span>, <span class="num">500.0</span>)
+p2 = <span class="fn">Policy</span>(<span class="str">"POL-002"</span>, <span class="num">800.0</span>)
+<span class="fn">print</span>(p1 < p2)   <span class="cm"># True (compares field by field)</span></pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+
+<div class="section-label">Advanced Python</div>
+
+<!-- S15: DECORATORS -->
+<div class="topic" id="s15">
+  <div class="topic-header">
+    <span class="topic-num">15</span>
+    <h2 class="topic-title">Decorators</h2>
+    <span class="pill p-hot">🔥 Most Asked</span>
+  </div>
+  <div class="subtopic">
+    <h3>Decorators from First Principles</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>Decorator Deep Dive</div>
+      <pre><span class="kw">import</span> functools, time
+
+<span class="cm"># A decorator is just a function that takes a function and returns a function</span>
+<span class="cm"># @decorator is syntactic sugar for: func = decorator(func)</span>
+
+<span class="cm"># Simple decorator</span>
+<span class="kw">def</span> <span class="fn">timer</span>(func):
+    <span class="dec">@functools.wraps</span>(func)   <span class="cm"># preserves func's __name__, __doc__</span>
+    <span class="kw">def</span> <span class="fn">wrapper</span>(*args, **kwargs):
+        start = time.<span class="fn">perf_counter</span>()
+        result = <span class="fn">func</span>(*args, **kwargs)
+        end = time.<span class="fn">perf_counter</span>()
+        <span class="fn">print</span>(<span class="str">f"{func.__name__} took {end-start:.4f}s"</span>)
+        <span class="kw">return</span> result
+    <span class="kw">return</span> wrapper
+
+<span class="dec">@timer</span>
+<span class="kw">def</span> <span class="fn">slow_function</span>(): time.<span class="fn">sleep</span>(<span class="num">1</span>)
+
+<span class="cm"># Decorator with arguments — factory pattern</span>
+<span class="kw">def</span> <span class="fn">retry</span>(max_attempts=<span class="num">3</span>, exceptions=(<span class="bi">Exception</span>,)):
+    <span class="kw">def</span> <span class="fn">decorator</span>(func):
+        <span class="dec">@functools.wraps</span>(func)
+        <span class="kw">def</span> <span class="fn">wrapper</span>(*args, **kwargs):
+            <span class="kw">for</span> attempt <span class="kw">in</span> <span class="fn">range</span>(max_attempts):
+                <span class="kw">try</span>:
+                    <span class="kw">return</span> <span class="fn">func</span>(*args, **kwargs)
+                <span class="kw">except</span> exceptions <span class="kw">as</span> e:
+                    <span class="kw">if</span> attempt == max_attempts - <span class="num">1</span>: <span class="kw">raise</span>
+                    time.<span class="fn">sleep</span>(<span class="num">2</span> ** attempt)  <span class="cm"># exponential backoff</span>
+        <span class="kw">return</span> wrapper
+    <span class="kw">return</span> decorator
+
+<span class="dec">@retry</span>(max_attempts=<span class="num">3</span>, exceptions=(<span class="bi">ConnectionError</span>, <span class="bi">TimeoutError</span>))
+<span class="kw">def</span> <span class="fn">fetch_data</span>(url): ...
+
+<span class="cm"># Class-based decorator</span>
+<span class="kw">class</span> <span class="cls">cache</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="bi">self</span>, func):
+        <span class="dec">@functools.wraps</span>(func)
+        <span class="bi">self</span>.func = func
+        <span class="bi">self</span>._cache = {}
+        functools.<span class="fn">update_wrapper</span>(<span class="bi">self</span>, func)
+
+    <span class="kw">def</span> <span class="fn">__call__</span>(<span class="bi">self</span>, *args):
+        <span class="kw">if</span> args <span class="kw">not in</span> <span class="bi">self</span>._cache:
+            <span class="bi">self</span>._cache[args] = <span class="bi">self</span>.<span class="fn">func</span>(*args)
+        <span class="kw">return</span> <span class="bi">self</span>._cache[args]
+
+<span class="cm"># Stacking decorators — bottom-up evaluation</span>
+<span class="dec">@timer</span>
+<span class="dec">@retry</span>(max_attempts=<span class="num">3</span>)
+<span class="kw">def</span> <span class="fn">network_call</span>(): ...
+<span class="cm"># equivalent to: timer(retry(3)(network_call))</span>
+<span class="cm"># execution order: timer wraps → retry wraps → network_call</span>
+
+<span class="cm"># Built-in useful decorators</span>
+<span class="kw">from</span> functools <span class="kw">import</span> lru_cache, cached_property, partial
+
+<span class="dec">@lru_cache</span>(maxsize=<span class="num">128</span>)   <span class="cm"># memoize with LRU eviction</span>
+<span class="kw">def</span> <span class="fn">fib</span>(n):
+    <span class="kw">if</span> n < <span class="num">2</span>: <span class="kw">return</span> n
+    <span class="kw">return</span> <span class="fn">fib</span>(n-<span class="num">1</span>) + <span class="fn">fib</span>(n-<span class="num">2</span>)</pre>
+    </div>
+    <div class="iq">
+      <div class="q">Q: Why use @functools.wraps inside a decorator?</div>
+      <p>Without @wraps, the wrapper function replaces the original — its __name__ becomes "wrapper", __doc__ is lost, and introspection breaks. @functools.wraps(func) copies __name__, __doc__, __annotations__, __qualname__, __dict__, and __module__ from func to wrapper. This matters for debugging, logging (prints correct function name), and tools like help() or sphinx documentation.</p>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- S16: CONTEXT MANAGERS -->
+<div class="topic" id="s16">
+  <div class="topic-header">
+    <span class="topic-num">16</span>
+    <h2 class="topic-title">Context Managers</h2>
+    <span class="pill p-adv">Advanced</span>
+  </div>
+  <div class="subtopic">
+    <h3>with statement & Custom Context Managers</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>Context Manager Patterns</div>
+      <pre><span class="cm"># Class-based context manager</span>
+<span class="kw">class</span> <span class="cls">Timer</span>:
+    <span class="kw">def</span> <span class="fn">__enter__</span>(<span class="bi">self</span>):
+        self.start = time.<span class="fn">perf_counter</span>()
+        <span class="kw">return</span> <span class="bi">self</span>    <span class="cm"># bound to 'as' variable</span>
+
+    <span class="kw">def</span> <span class="fn">__exit__</span>(<span class="bi">self</span>, exc_type, exc_val, traceback):
+        <span class="bi">self</span>.elapsed = time.<span class="fn">perf_counter</span>() - <span class="bi">self</span>.start
+        <span class="fn">print</span>(<span class="str">f"Elapsed: {self.elapsed:.3f}s"</span>)
+        <span class="kw">return</span> <span class="kw">False</span>   <span class="cm"># True would suppress exceptions</span>
+
+<span class="kw">with</span> <span class="fn">Timer</span>() <span class="kw">as</span> t:
+    <span class="cm"># do work</span>
+    time.<span class="fn">sleep</span>(<span class="num">1</span>)
+<span class="fn">print</span>(t.elapsed)   <span class="cm"># accessible after with block</span>
+
+<span class="cm"># Generator-based — simpler with contextlib</span>
+<span class="kw">from</span> contextlib <span class="kw">import</span> contextmanager
+
+<span class="dec">@contextmanager</span>
+<span class="kw">def</span> <span class="fn">managed_resource</span>(name):
+    <span class="fn">print</span>(<span class="str">f"Acquiring {name}"</span>)
+    resource = <span class="fn">acquire</span>(name)
+    <span class="kw">try</span>:
+        <span class="kw">yield</span> resource        <span class="cm"># everything BEFORE yield = __enter__</span>
+    <span class="kw">finally</span>:
+        <span class="fn">release</span>(resource)    <span class="cm"># everything AFTER yield = __exit__</span>
+
+<span class="kw">with</span> <span class="fn">managed_resource</span>(<span class="str">"db"</span>) <span class="kw">as</span> conn:
+    conn.<span class="fn">query</span>(...)
+
+<span class="cm"># Multiple context managers</span>
+<span class="kw">with</span> <span class="fn">open</span>(<span class="str">"in.txt"</span>) <span class="kw">as</span> src, <span class="fn">open</span>(<span class="str">"out.txt"</span>, <span class="str">"w"</span>) <span class="kw">as</span> dst:
+    dst.<span class="fn">write</span>(src.<span class="fn">read</span>())</pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- S17: FUNCTIONAL -->
+<div class="topic" id="s17">
+  <div class="topic-header">
+    <span class="topic-num">17</span>
+    <h2 class="topic-title">Functional Python</h2>
+    <span class="pill p-adv">Advanced</span>
+  </div>
+  <div class="subtopic">
+    <h3>map, filter, reduce, partial, functools</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>Functional Tools</div>
+      <pre><span class="kw">from</span> functools <span class="kw">import</span> reduce, partial
+<span class="kw">import</span> itertools
+
+nums = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>, <span class="num">5</span>]
+
+<span class="cm"># map — apply function to all items (lazy)</span>
+<span class="fn">list</span>(<span class="fn">map</span>(<span class="kw">lambda</span> x: x**<span class="num">2</span>, nums))     <span class="cm"># [1, 4, 9, 16, 25]</span>
+<span class="cm"># Prefer list comprehension: [x**2 for x in nums]</span>
+
+<span class="cm"># filter — keep items where function returns True</span>
+<span class="fn">list</span>(<span class="fn">filter</span>(<span class="kw">lambda</span> x: x > <span class="num">2</span>, nums))  <span class="cm"># [3, 4, 5]</span>
+<span class="cm"># Prefer: [x for x in nums if x > 2]</span>
+
+<span class="cm"># reduce — accumulate (fold)</span>
+<span class="fn">reduce</span>(<span class="kw">lambda</span> acc, x: acc * x, nums)  <span class="cm"># 120 (5!)</span>
+<span class="cm"># Use sum(), max(), min() instead when possible</span>
+
+<span class="cm"># partial — fix some arguments</span>
+<span class="kw">def</span> <span class="fn">power</span>(base, exp): <span class="kw">return</span> base ** exp
+square = <span class="fn">partial</span>(power, exp=<span class="num">2</span>)
+cube   = <span class="fn">partial</span>(power, exp=<span class="num">3</span>)
+<span class="fn">print</span>(<span class="fn">square</span>(<span class="num">4</span>))   <span class="cm"># 16</span>
+
+<span class="cm"># itertools — efficient combinatorics</span>
+<span class="kw">import</span> itertools <span class="kw">as</span> it
+
+it.<span class="fn">chain</span>([<span class="num">1</span>,<span class="num">2</span>], [<span class="num">3</span>,<span class="num">4</span>])               <span class="cm"># 1 2 3 4 (lazy concat)</span>
+it.<span class="fn">islice</span>(<span class="fn">range</span>(<span class="num">100</span>), <span class="num">10</span>)            <span class="cm"># first 10 items (lazy)</span>
+it.<span class="fn">groupby</span>(data, key=<span class="kw">lambda</span> x: x[<span class="str">'dept'</span>])  <span class="cm"># group sorted data</span>
+it.<span class="fn">combinations</span>([<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>], <span class="num">2</span>)          <span class="cm"># (1,2)(1,3)(2,3)</span>
+it.<span class="fn">permutations</span>([<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>], <span class="num">2</span>)          <span class="cm"># (1,2)(1,3)(2,1)...</span>
+it.<span class="fn">product</span>([<span class="num">1</span>,<span class="num">2</span>], [<span class="str">"a"</span>,<span class="str">"b"</span>])          <span class="cm"># cartesian product</span>
+it.<span class="fn">cycle</span>([<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>])                    <span class="cm"># infinite: 1 2 3 1 2 3...</span>
+it.<span class="fn">accumulate</span>([<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>,<span class="num">4</span>])            <span class="cm"># [1, 3, 6, 10] running sum</span></pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- S18: TYPE HINTS -->
+<div class="topic" id="s18">
+  <div class="topic-header">
+    <span class="topic-num">18</span>
+    <h2 class="topic-title">Type Hints & Annotations</h2>
+    <span class="pill p-new">Modern Python</span>
+  </div>
+  <div class="subtopic">
+    <h3>Type Annotations — Modern Style</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>Type Hints Reference</div>
+      <pre><span class="kw">from</span> typing <span class="kw">import</span> Optional, Union, Any, Callable, TypeVar
+<span class="kw">from</span> collections.abc <span class="kw">import</span> Sequence, Mapping, Iterator, Generator
+
+<span class="cm"># Basic annotations</span>
+<span class="kw">def</span> <span class="fn">greet</span>(name: <span class="fn">str</span>, age: <span class="fn">int</span> = <span class="num">0</span>) -> <span class="fn">str</span>:
+    <span class="kw">return</span> <span class="str">f"Hello {name}, age {age}"</span>
+
+<span class="cm"># Modern union syntax (Python 3.10+)</span>
+<span class="kw">def</span> <span class="fn">process</span>(val: <span class="fn">int</span> | <span class="fn">str</span> | <span class="kw">None</span>) -> <span class="fn">bool</span>: ...
+<span class="cm"># Older: Optional[str] = Union[str, None]</span>
+
+<span class="cm"># Collections (Python 3.9+ — built-in generics)</span>
+<span class="kw">def</span> <span class="fn">example</span>(
+    items: <span class="fn">list</span>[<span class="fn">int</span>],
+    mapping: <span class="fn">dict</span>[<span class="fn">str</span>, <span class="fn">Any</span>],
+    pair: <span class="fn">tuple</span>[<span class="fn">str</span>, <span class="fn">int</span>],
+    options: <span class="fn">set</span>[<span class="fn">str</span>]
+) -> <span class="kw">None</span>: ...
+
+<span class="cm"># Callable</span>
+<span class="kw">def</span> <span class="fn">apply</span>(func: <span class="cls">Callable</span>[[<span class="fn">int</span>, <span class="fn">int</span>], <span class="fn">int</span>], a: <span class="fn">int</span>, b: <span class="fn">int</span>): <span class="kw">return</span> <span class="fn">func</span>(a, b)
+
+<span class="cm"># TypeVar — generic functions</span>
+T = <span class="fn">TypeVar</span>(<span class="str">'T'</span>)
+<span class="kw">def</span> <span class="fn">first</span>(lst: <span class="fn">list</span>[T]) -> T:
+    <span class="kw">return</span> lst[<span class="num">0</span>]
+
+<span class="cm"># Protocol (structural typing / duck typing)</span>
+<span class="kw">from</span> typing <span class="kw">import</span> Protocol
+
+<span class="kw">class</span> <span class="cls">Drawable</span>(<span class="cls">Protocol</span>):
+    <span class="kw">def</span> <span class="fn">draw</span>(<span class="bi">self</span>) -> <span class="kw">None</span>: ...
+
+<span class="kw">def</span> <span class="fn">render</span>(item: <span class="cls">Drawable</span>): item.<span class="fn">draw</span>()  <span class="cm"># any class with .draw() works</span>
+
+<span class="cm"># Literal, Final, TypeAlias</span>
+<span class="kw">from</span> typing <span class="kw">import</span> Literal, Final, TypeAlias
+
+Direction: <span class="cls">TypeAlias</span> = Literal[<span class="str">"north"</span>, <span class="str">"south"</span>, <span class="str">"east"</span>, <span class="str">"west"</span>]
+MAX_SIZE: <span class="cls">Final</span> = <span class="num">100</span>  <span class="cm"># constant — mypy warns on reassignment</span></pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+
+<div class="section-label">Concurrency & Async</div>
+
+<!-- S19: MODULES -->
+<div class="topic" id="s19">
+  <div class="topic-header">
+    <span class="topic-num">19</span>
+    <h2 class="topic-title">Modules, Packages & Imports</h2>
+    <span class="pill p-core">Core</span>
+  </div>
+  <div class="subtopic">
+    <h3>Import System</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>Import Patterns</div>
+      <pre><span class="cm"># __init__.py makes a directory a package</span>
+<span class="cm"># __all__ controls what "from module import *" exports</span>
+__all__ = [<span class="str">"PublicClass"</span>, <span class="str">"public_func"</span>]
+
+<span class="cm"># Relative imports (within a package)</span>
+<span class="kw">from</span> . <span class="kw">import</span> sibling_module
+<span class="kw">from</span> .. <span class="kw">import</span> parent_module
+<span class="kw">from</span> .utils <span class="kw">import</span> helper
+
+<span class="cm"># __name__ and __main__</span>
+<span class="kw">if</span> __name__ == <span class="str">"__main__"</span>:
+    <span class="cm"># Runs only when executed directly, not when imported</span>
+    main()
+
+<span class="cm"># Lazy import — only when needed</span>
+<span class="kw">def</span> <span class="fn">process_image</span>():
+    <span class="kw">import</span> PIL              <span class="cm"># imported only when function called</span>
+    <span class="kw">return</span> PIL.<span class="fn">Image</span>.<span class="fn">open</span>(...)
+
+<span class="cm"># importlib — dynamic imports</span>
+<span class="kw">import</span> importlib
+module = importlib.<span class="fn">import_module</span>(<span class="str">"json"</span>)
+cls = <span class="fn">getattr</span>(module, <span class="str">"JSONDecoder"</span>)
+
+<span class="cm"># sys.path — Python's module search path</span>
+<span class="kw">import</span> sys
+sys.path.<span class="fn">insert</span>(<span class="num">0</span>, <span class="str">"/my/module/path"</span>)  <span class="cm"># add to search path</span></pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- S20: THREADS -->
+<div class="topic" id="s20">
+  <div class="topic-header">
+    <span class="topic-num">20</span>
+    <h2 class="topic-title">Threads & the GIL</h2>
+    <span class="pill p-hot">🔥 Most Asked</span>
+  </div>
+  <div class="subtopic">
+    <h3>GIL — Global Interpreter Lock</h3>
+    <div class="callout danger">
+      <strong>The GIL Explained</strong>
+      The GIL is a mutex that allows only ONE Python thread to execute Python bytecode at a time. It protects CPython's memory management (reference counting) from race conditions. Result: Python threads do NOT provide true parallelism for CPU-bound tasks. For I/O-bound tasks (waiting for network, disk), threads work fine — the GIL is released during I/O.
+    </div>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>Threading — I/O-bound Concurrency</div>
+      <pre><span class="kw">import</span> threading
+<span class="kw">from</span> concurrent.futures <span class="kw">import</span> ThreadPoolExecutor
+
+<span class="cm"># Basic thread</span>
+<span class="kw">def</span> <span class="fn">download</span>(url):
+    <span class="cm"># I/O — GIL released during network wait</span>
+    response = requests.<span class="fn">get</span>(url)
+    <span class="kw">return</span> response.text
+
+<span class="cm"># ThreadPoolExecutor — preferred over raw threads</span>
+urls = [<span class="str">"https://api.example.com/1"</span>, <span class="str">"https://api.example.com/2"</span>]
+<span class="kw">with</span> <span class="fn">ThreadPoolExecutor</span>(max_workers=<span class="num">4</span>) <span class="kw">as</span> pool:
+    results = <span class="fn">list</span>(pool.<span class="fn">map</span>(download, urls))
+
+<span class="cm"># Thread safety — shared state needs locks</span>
+counter = <span class="num">0</span>
+lock = threading.<span class="fn">Lock</span>()
+
+<span class="kw">def</span> <span class="fn">increment</span>():
+    <span class="kw">global</span> counter
+    <span class="kw">with</span> lock:         <span class="cm"># acquire and auto-release</span>
+        counter += <span class="num">1</span>   <span class="cm"># critical section</span>
+
+<span class="cm"># RLock — reentrant (same thread can acquire multiple times)</span>
+<span class="cm"># Semaphore — limit concurrent access to N threads</span>
+sem = threading.<span class="fn">Semaphore</span>(<span class="num">5</span>)   <span class="cm"># max 5 concurrent</span>
+<span class="kw">with</span> sem: <span class="fn">access_limited_resource</span>()
+
+<span class="cm"># Event — signal between threads</span>
+event = threading.<span class="fn">Event</span>()
+<span class="cm"># producer: event.set() — signals event</span>
+<span class="cm"># consumer: event.wait() — blocks until set</span>
+
+<span class="cm"># Thread-local storage — separate data per thread</span>
+local = threading.<span class="fn">local</span>()
+local.connection = <span class="fn">create_db_connection</span>()</pre>
+    </div>
+    <div class="iq">
+      <div class="q">Q: When to use threads vs processes vs asyncio?</div>
+      <p>Threads: I/O-bound tasks (HTTP requests, file I/O, DB queries) where GIL is released. Multiple tasks wait simultaneously. Processes: CPU-bound tasks (image processing, ML, data crunching) — each process has its own GIL and memory. True parallelism. Asyncio: I/O-bound with very many concurrent tasks (thousands of connections) — single thread, cooperative multitasking, most efficient. Rule: asyncio for async I/O, threads for sync I/O or when using blocking libraries, processes for CPU.</p>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- S21: MULTIPROCESSING -->
+<div class="topic" id="s21">
+  <div class="topic-header">
+    <span class="topic-num">21</span>
+    <h2 class="topic-title">Multiprocessing</h2>
+    <span class="pill p-adv">Advanced</span>
+  </div>
+  <div class="subtopic">
+    <h3>True Parallelism — CPU-bound</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>ProcessPoolExecutor</div>
+      <pre><span class="kw">from</span> concurrent.futures <span class="kw">import</span> ProcessPoolExecutor
+<span class="kw">import</span> multiprocessing <span class="kw">as</span> mp
+
+<span class="kw">def</span> <span class="fn">cpu_heavy</span>(n):
+    <span class="kw">return</span> <span class="fn">sum</span>(i**<span class="num">2</span> <span class="kw">for</span> i <span class="kw">in</span> <span class="fn">range</span>(n))
+
+<span class="cm"># ProcessPoolExecutor — preferred</span>
+<span class="kw">with</span> <span class="fn">ProcessPoolExecutor</span>(max_workers=<span class="fn">mp</span>.<span class="fn">cpu_count</span>()) <span class="kw">as</span> pool:
+    results = <span class="fn">list</span>(pool.<span class="fn">map</span>(cpu_heavy, [<span class="num">10000</span>, <span class="num">20000</span>, <span class="num">30000</span>]))
+
+<span class="cm"># Shared memory between processes</span>
+shared_val = mp.<span class="fn">Value</span>(<span class="str">'i'</span>, <span class="num">0</span>)       <span class="cm"># shared integer</span>
+shared_arr = mp.<span class="fn">Array</span>(<span class="str">'d'</span>, <span class="num">100</span>)     <span class="cm"># shared double array</span>
+
+<span class="cm"># Queue — safe inter-process communication</span>
+q = mp.<span class="fn">Queue</span>()
+<span class="cm"># Process 1: q.put(data)</span>
+<span class="cm"># Process 2: item = q.get()</span>
+
+<span class="cm"># Pool.starmap — multiple args</span>
+<span class="kw">with</span> mp.<span class="fn">Pool</span>() <span class="kw">as</span> pool:
+    results = pool.<span class="fn">starmap</span>(pow, [(x, <span class="num">2</span>) <span class="kw">for</span> x <span class="kw">in</span> <span class="fn">range</span>(<span class="num">10</span>)])</pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- S22: ASYNCIO -->
+<div class="topic" id="s22">
+  <div class="topic-header">
+    <span class="topic-num">22</span>
+    <h2 class="topic-title">Async / Asyncio</h2>
+    <span class="pill p-hot">🔥 Most Asked</span>
+  </div>
+  <div class="subtopic">
+    <h3>Asyncio — Cooperative Concurrency</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>Asyncio Deep Dive</div>
+      <pre><span class="kw">import</span> asyncio
+<span class="kw">import</span> aiohttp
+
+<span class="cm"># async def creates a coroutine (not called immediately)</span>
+<span class="kw">async def</span> <span class="fn">fetch</span>(session, url):
+    <span class="kw">async with</span> session.<span class="fn">get</span>(url) <span class="kw">as</span> response:  <span class="cm"># async context manager</span>
+        <span class="kw">return await</span> response.<span class="fn">text</span>()            <span class="cm"># await releases control</span>
+
+<span class="kw">async def</span> <span class="fn">main</span>():
+    urls = [<span class="str">"https://api.example.com/1"</span>, <span class="str">"https://api.example.com/2"</span>]
+
+    <span class="kw">async with</span> aiohttp.<span class="fn">ClientSession</span>() <span class="kw">as</span> session:
+        <span class="cm"># asyncio.gather — run multiple coroutines concurrently</span>
+        results = <span class="kw">await</span> asyncio.<span class="fn">gather</span>(
+            *[<span class="fn">fetch</span>(session, url) <span class="kw">for</span> url <span class="kw">in</span> urls]
+        )
+    <span class="kw">return</span> results
+
+<span class="cm"># Run the event loop</span>
+asyncio.<span class="fn">run</span>(main())  <span class="cm"># Python 3.7+</span>
+
+<span class="cm"># Tasks — schedule coroutines for concurrent execution</span>
+<span class="kw">async def</span> <span class="fn">with_tasks</span>():
+    task1 = asyncio.<span class="fn">create_task</span>(<span class="fn">fetch_user</span>(<span class="num">1</span>))
+    task2 = asyncio.<span class="fn">create_task</span>(<span class="fn">fetch_orders</span>(<span class="num">1</span>))
+    <span class="cm"># Both start immediately, we await both</span>
+    user, orders = <span class="kw">await</span> asyncio.<span class="fn">gather</span>(task1, task2)
+
+<span class="cm"># async for — async iteration</span>
+<span class="kw">async def</span> <span class="fn">read_stream</span>():
+    <span class="kw">async for</span> chunk <span class="kw">in</span> stream:
+        <span class="fn">process</span>(chunk)
+
+<span class="cm"># asyncio.wait_for — timeout</span>
+<span class="kw">try</span>:
+    result = <span class="kw">await</span> asyncio.<span class="fn">wait_for</span>(<span class="fn">fetch</span>(url), timeout=<span class="num">5.0</span>)
+<span class="kw">except</span> asyncio.<span class="bi">TimeoutError</span>:
+    <span class="fn">print</span>(<span class="str">"Request timed out"</span>)
+
+<span class="cm"># asyncio.Queue — producer/consumer</span>
+queue = asyncio.<span class="fn">Queue</span>(maxsize=<span class="num">10</span>)
+<span class="kw">await</span> queue.<span class="fn">put</span>(item)
+item = <span class="kw">await</span> queue.<span class="fn">get</span>()</pre>
+    </div>
+    <div class="iq">
+      <div class="q">Q: What is an event loop in asyncio?</div>
+      <p>The event loop is the core of asyncio — it runs coroutines, manages tasks, and handles I/O callbacks. It's a single-threaded scheduler: when a coroutine awaits an I/O operation, the loop pauses it and runs another ready coroutine. When I/O completes, the loop resumes the paused coroutine. asyncio.run() creates a fresh event loop, runs your coroutine, then closes the loop. Never use asyncio.get_event_loop() in new code.</p>
+    </div>
+    <div class="iq">
+      <div class="q">Q: What is the difference between asyncio.gather and asyncio.wait?</div>
+      <p>gather: collects all coroutines/tasks, runs concurrently, returns results in order, fails fast (if one fails, raises immediately). wait: more flexible — takes set of tasks, returns (done, pending) sets, accepts return_when (FIRST_COMPLETED, FIRST_EXCEPTION, ALL_COMPLETED), allows partial results. Use gather for "run all, get all results". Use wait for "run and check what finished first" or wanting results as they complete.</p>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- S23: MEMORY -->
+<div class="section-label">Memory & Performance</div>
+
+<div class="topic" id="s23">
+  <div class="topic-header">
+    <span class="topic-num">23</span>
+    <h2 class="topic-title">Memory Model & Management</h2>
+    <span class="pill p-hot">🔥 Senior Level</span>
+  </div>
+  <div class="subtopic">
+    <h3>Reference Counting & Garbage Collection</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>Memory Model</div>
+      <pre><span class="kw">import</span> sys, gc, weakref
+
+<span class="cm"># Everything in Python is an object on the heap</span>
+<span class="cm"># Variables are references (like pointers)</span>
+
+<span class="cm"># Reference counting</span>
+a = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>]             <span class="cm"># refcount = 1</span>
+b = a                      <span class="cm"># refcount = 2</span>
+<span class="fn">print</span>(sys.<span class="fn">getrefcount</span>(a)) <span class="cm"># shows 3 (includes arg to getrefcount)</span>
+<span class="kw">del</span> b                      <span class="cm"># refcount = 1</span>
+<span class="kw">del</span> a                      <span class="cm"># refcount = 0 → memory freed immediately</span>
+
+<span class="cm"># Garbage collector handles circular references</span>
+<span class="cm"># (reference counting can't handle cycles)</span>
+gc.<span class="fn">collect</span>()               <span class="cm"># force GC (usually automatic)</span>
+gc.<span class="fn">disable</span>()               <span class="cm"># disable for performance-critical sections</span>
+
+<span class="cm"># weakref — reference without incrementing refcount</span>
+<span class="kw">class</span> <span class="cls">Cache</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="bi">self</span>): <span class="bi">self</span>._items = weakref.<span class="fn">WeakValueDictionary</span>()
+
+<span class="cm"># __slots__ — reduce memory per instance</span>
+<span class="kw">class</span> <span class="cls">Point</span>:
+    __slots__ = [<span class="str">'x'</span>, <span class="str">'y'</span>]   <span class="cm"># no __dict__ — 50-60% less memory</span>
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="bi">self</span>, x, y): <span class="bi">self</span>.x = x; <span class="bi">self</span>.y = y
+
+<span class="cm"># Memory size</span>
+<span class="fn">print</span>(sys.<span class="fn">getsizeof</span>([]))           <span class="cm"># 56 bytes (empty list)</span>
+<span class="fn">print</span>(sys.<span class="fn">getsizeof</span>([<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>]))     <span class="cm"># 88 bytes</span>
+<span class="fn">print</span>(sys.<span class="fn">getsizeof</span>((<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>)))     <span class="cm"># 72 bytes (tuple is smaller!)</span>
+
+<span class="cm"># Generator vs list — memory comparison</span>
+<span class="kw">import</span> sys
+gen  = (x**<span class="num">2</span> <span class="kw">for</span> x <span class="kw">in</span> <span class="fn">range</span>(<span class="num">1_000_000</span>))
+lst  = [x**<span class="num">2</span> <span class="kw">for</span> x <span class="kw">in</span> <span class="fn">range</span>(<span class="num">1_000_000</span>)]
+<span class="fn">print</span>(sys.<span class="fn">getsizeof</span>(gen))   <span class="cm"># 112 bytes — always small!</span>
+<span class="fn">print</span>(sys.<span class="fn">getsizeof</span>(lst))   <span class="cm"># 8,448,728 bytes — 8MB!</span></pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- S24: PERFORMANCE -->
+<div class="topic" id="s24">
+  <div class="topic-header">
+    <span class="topic-num">24</span>
+    <h2 class="topic-title">Performance & Profiling</h2>
+    <span class="pill p-perf">Performance</span>
+  </div>
+  <div class="subtopic">
+    <h3>Measuring & Optimizing Python Code</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>Profiling Tools</div>
+      <pre><span class="kw">import</span> timeit, cProfile, pstats
+
+<span class="cm"># timeit — micro-benchmarking</span>
+timeit.<span class="fn">timeit</span>(<span class="str">"[x**2 for x in range(100)]"</span>, number=<span class="num">10000</span>)
+
+<span class="cm"># cProfile — full profiling</span>
+cProfile.<span class="fn">run</span>(<span class="str">"my_function()"</span>, <span class="str">"output.prof"</span>)
+stats = pstats.<span class="fn">Stats</span>(<span class="str">"output.prof"</span>)
+stats.<span class="fn">sort_stats</span>(<span class="str">"cumtime"</span>).<span class="fn">print_stats</span>(<span class="num">10</span>)
+
+<span class="cm"># line_profiler — line by line (pip install line_profiler)</span>
+<span class="cm">@profile  # add decorator, run: kernprof -l -v script.py</span>
+<span class="kw">def</span> <span class="fn">hot_function</span>(): ...
+
+<span class="cm"># Common optimizations:</span>
+<span class="cm"># 1. Use local vars in tight loops (local lookup faster than global)</span>
+<span class="kw">def</span> <span class="fn">fast_loop</span>(data):
+    append = [].append   <span class="cm"># cache method reference as local var</span>
+    <span class="kw">for</span> item <span class="kw">in</span> data: <span class="fn">append</span>(item**<span class="num">2</span>)
+
+<span class="cm"># 2. Set for membership testing — O(1) vs list O(n)</span>
+valid = {<span class="str">"admin"</span>, <span class="str">"moderator"</span>, <span class="str">"user"</span>}   <span class="cm"># set</span>
+<span class="kw">if</span> role <span class="kw">in</span> valid: ...                       <span class="cm"># O(1)</span>
+
+<span class="cm"># 3. Generator > list for large data pipelines</span>
+<span class="cm"># 4. Avoid repeated attribute lookups in loops</span>
+<span class="cm"># 5. Use NumPy for numerical array operations</span>
+<span class="cm"># 6. Use slots to reduce memory and speed attribute access</span>
+<span class="cm"># 7. String join > repeated += for building strings</span></pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- S25: STDLIB -->
+<div class="section-label">Stdlib & Tools</div>
+
+<div class="topic" id="s25">
+  <div class="topic-header">
+    <span class="topic-num">25</span>
+    <h2 class="topic-title">Key Standard Library Modules</h2>
+    <span class="pill p-core">Core</span>
+  </div>
+  <div class="subtopic">
+    <h3>Must-Know Stdlib</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>Essential stdlib modules</div>
+      <pre><span class="cm"># os / pathlib — file system</span>
+<span class="kw">from</span> pathlib <span class="kw">import</span> Path
+p = <span class="fn">Path</span>(<span class="str">"/home/claude"</span>)
+p.<span class="fn">exists</span>(), p.<span class="fn">is_dir</span>(), p.<span class="fn">suffix</span>      <span class="cm"># .py</span>
+p / <span class="str">"subdir"</span> / <span class="str">"file.txt"</span>              <span class="cm"># path joining</span>
+p.<span class="fn">read_text</span>(), p.<span class="fn">write_text</span>(<span class="str">"..."</span>)
+<span class="fn">list</span>(p.<span class="fn">glob</span>(<span class="str">"**/*.py"</span>))               <span class="cm"># recursive glob</span>
+
+<span class="cm"># datetime</span>
+<span class="kw">from</span> datetime <span class="kw">import</span> datetime, timedelta, timezone
+now = datetime.<span class="fn">now</span>(tz=timezone.utc)
+yesterday = now - timedelta(days=<span class="num">1</span>)
+<span class="fn">str</span>(now.isoformat())                    <span class="cm"># "2024-01-15T10:30:00+00:00"</span>
+datetime.<span class="fn">strptime</span>(<span class="str">"2024-01-15"</span>, <span class="str">"%Y-%m-%d"</span>)
+
+<span class="cm"># json</span>
+<span class="kw">import</span> json
+data = json.<span class="fn">loads</span>(<span class="str">'{"key": "value"}'</span>)  <span class="cm"># str → dict</span>
+text = json.<span class="fn">dumps</span>(data, indent=<span class="num">2</span>)     <span class="cm"># dict → str</span>
+<span class="kw">with</span> <span class="fn">open</span>(<span class="str">"file.json"</span>) <span class="kw">as</span> f: json.<span class="fn">load</span>(f)   <span class="cm"># file → dict</span>
+
+<span class="cm"># re — regular expressions</span>
+<span class="kw">import</span> re
+pattern = re.<span class="fn">compile</span>(<span class="str">r'\d{4}-\d{2}-\d{2}'</span>)
+match = pattern.<span class="fn">search</span>(text)
+<span class="kw">if</span> match: <span class="fn">print</span>(match.<span class="fn">group</span>())
+<span class="fn">re.findall</span>(<span class="str">r'\w+'</span>, text)               <span class="cm"># all matches</span>
+<span class="fn">re.sub</span>(<span class="str">r'[aeiou]'</span>, <span class="str">'*'</span>, text)         <span class="cm"># replace</span>
+
+<span class="cm"># collections</span>
+<span class="kw">from</span> collections <span class="kw">import</span> deque, namedtuple, ChainMap
+dq = <span class="fn">deque</span>(maxlen=<span class="num">5</span>)                  <span class="cm"># O(1) append/pop both ends</span>
+Point = <span class="fn">namedtuple</span>(<span class="str">'Point'</span>, [<span class="str">'x'</span>, <span class="str">'y'</span>])
+p = <span class="fn">Point</span>(<span class="num">1</span>, <span class="num">2</span>)
+<span class="fn">print</span>(p.x, p[<span class="num">0</span>])                       <span class="cm"># both work</span>
+
+<span class="cm"># contextlib</span>
+<span class="kw">from</span> contextlib <span class="kw">import</span> suppress, redirect_stdout, ExitStack
+<span class="kw">with</span> <span class="fn">suppress</span>(<span class="bi">FileNotFoundError</span>): os.<span class="fn">remove</span>(<span class="str">"maybe.txt"</span>)
+
+<span class="cm"># heapq — priority queue</span>
+<span class="kw">import</span> heapq
+heap = []
+heapq.<span class="fn">heappush</span>(heap, (<span class="num">3</span>, <span class="str">"task"</span>))    <span class="cm"># (priority, item)</span>
+priority, task = heapq.<span class="fn">heappop</span>(heap) <span class="cm"># smallest first</span>
+top3 = heapq.<span class="fn">nsmallest</span>(<span class="num">3</span>, data)      <span class="cm"># efficient top-N</span></pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- S26: TESTING -->
+<div class="topic" id="s26">
+  <div class="topic-header">
+    <span class="topic-num">26</span>
+    <h2 class="topic-title">Testing with pytest</h2>
+    <span class="pill p-adv">Advanced</span>
+  </div>
+  <div class="subtopic">
+    <h3>pytest Patterns</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>pytest — Modern Testing</div>
+      <pre><span class="kw">import</span> pytest
+<span class="kw">from</span> unittest.mock <span class="kw">import</span> Mock, patch, MagicMock
+
+<span class="cm"># Basic test</span>
+<span class="kw">def</span> <span class="fn">test_addition</span>():
+    <span class="kw">assert</span> <span class="num">1</span> + <span class="num">1</span> == <span class="num">2</span>
+
+<span class="cm"># Fixtures — reusable setup/teardown</span>
+<span class="dec">@pytest.fixture</span>
+<span class="kw">def</span> <span class="fn">user</span>():
+    u = <span class="fn">User</span>(<span class="str">"Shailesh"</span>, <span class="str">"shailesh@pb.com"</span>)
+    <span class="kw">yield</span> u              <span class="cm"># setup above, teardown below</span>
+    u.<span class="fn">cleanup</span>()
+
+<span class="kw">def</span> <span class="fn">test_user_email</span>(user):  <span class="cm"># fixture injected</span>
+    <span class="kw">assert</span> user.email == <span class="str">"shailesh@pb.com"</span>
+
+<span class="cm"># Parametrize — run test with multiple inputs</span>
+<span class="dec">@pytest.mark.parametrize</span>(<span class="str">"input,expected"</span>, [
+    (<span class="str">"hello"</span>, <span class="num">5</span>),
+    (<span class="str">"world"</span>, <span class="num">5</span>),
+    (<span class="str">""</span>,      <span class="num">0</span>),
+])
+<span class="kw">def</span> <span class="fn">test_length</span>(input, expected):
+    <span class="kw">assert</span> <span class="fn">len</span>(input) == expected
+
+<span class="cm"># Exceptions</span>
+<span class="kw">def</span> <span class="fn">test_raises</span>():
+    <span class="kw">with</span> pytest.<span class="fn">raises</span>(<span class="bi">ValueError</span>, match=<span class="str">"positive"</span>):
+        <span class="fn">BankAccount</span>(<span class="str">"Alice"</span>).<span class="fn">deposit</span>(-<span class="num">100</span>)
+
+<span class="cm"># Mocking</span>
+<span class="kw">def</span> <span class="fn">test_with_mock</span>():
+    <span class="kw">with</span> <span class="fn">patch</span>(<span class="str">"requests.get"</span>) <span class="kw">as</span> mock_get:
+        mock_get.<span class="fn">return_value</span>.<span class="fn">json</span>.<span class="fn">return_value</span> = {<span class="str">"id"</span>: <span class="num">1</span>}
+        result = <span class="fn">fetch_user</span>(<span class="num">1</span>)
+        <span class="kw">assert</span> result[<span class="str">"id"</span>] == <span class="num">1</span>
+        mock_get.<span class="fn">assert_called_once_with</span>(<span class="str">"https://api/users/1"</span>)</pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- S27: DESIGN PATTERNS -->
+<div class="topic" id="s27">
+  <div class="topic-header">
+    <span class="topic-num">27</span>
+    <h2 class="topic-title">Design Patterns in Python</h2>
+    <span class="pill p-adv">Senior Level</span>
+  </div>
+  <div class="subtopic">
+    <h3>Common Patterns</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>Singleton, Factory, Observer, Strategy</div>
+      <pre><span class="cm"># ── Singleton ─────────────────────────────────────</span>
+<span class="kw">class</span> <span class="cls">Singleton</span>:
+    _instance = <span class="kw">None</span>
+    <span class="kw">def</span> <span class="fn">__new__</span>(<span class="cls">cls</span>):
+        <span class="kw">if</span> <span class="cls">cls</span>._instance <span class="kw">is None</span>:
+            <span class="cls">cls</span>._instance = <span class="fn">super</span>().<span class="fn">__new__</span>(<span class="cls">cls</span>)
+        <span class="kw">return</span> <span class="cls">cls</span>._instance
+
+<span class="cm"># Python Singleton using module — simplest way</span>
+<span class="cm"># config.py: settings = Settings()  ← imported once, shared everywhere</span>
+
+<span class="cm"># ── Factory ───────────────────────────────────────</span>
+<span class="kw">def</span> <span class="fn">create_payment</span>(method: <span class="fn">str</span>, amount: <span class="fn">float</span>):
+    payments = {
+        <span class="str">"upi"</span>:   <span class="fn">UPIPayment</span>,
+        <span class="str">"card"</span>:  <span class="fn">CardPayment</span>,
+        <span class="str">"netbanking"</span>: <span class="fn">NetBanking</span>
+    }
+    <span class="kw">return</span> payments[method](amount)  <span class="cm"># open for extension</span>
+
+<span class="cm"># ── Observer ──────────────────────────────────────</span>
+<span class="kw">class</span> <span class="cls">EventEmitter</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="bi">self</span>):
+        <span class="bi">self</span>._listeners = <span class="fn">defaultdict</span>(<span class="fn">list</span>)
+
+    <span class="kw">def</span> <span class="fn">on</span>(<span class="bi">self</span>, event, callback):
+        <span class="bi">self</span>._listeners[event].<span class="fn">append</span>(callback)
+
+    <span class="kw">def</span> <span class="fn">emit</span>(<span class="bi">self</span>, event, *args, **kwargs):
+        <span class="kw">for</span> cb <span class="kw">in</span> <span class="bi">self</span>._listeners[event]:
+            <span class="fn">cb</span>(*args, **kwargs)
+
+<span class="cm"># ── Strategy ──────────────────────────────────────</span>
+<span class="kw">from</span> typing <span class="kw">import</span> Callable
+
+<span class="kw">def</span> <span class="fn">sort_data</span>(data: <span class="fn">list</span>, strategy: <span class="cls">Callable</span> = <span class="fn">sorted</span>):
+    <span class="kw">return</span> <span class="fn">strategy</span>(data)
+
+<span class="cm"># In Python, functions are first-class — strategy is just a callable</span>
+<span class="fn">sort_data</span>(data, strategy=<span class="kw">lambda</span> x: <span class="fn">sorted</span>(x, key=<span class="fn">abs</span>, reverse=<span class="kw">True</span>))
+
+<span class="cm"># ── Decorator Pattern ─────────────────────────────</span>
+<span class="cm"># Python's @decorator IS the decorator pattern — already covered in S15</span>
+
+<span class="cm"># ── Context Manager = RAII ────────────────────────</span>
+<span class="cm"># with statement ensures resource cleanup regardless of exceptions</span></pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+
+<div class="section-label">Complete Interview Q&A</div>
+
+<div class="topic" id="qa">
+  <div class="topic-header">
+    <span class="topic-num">28</span>
+    <h2 class="topic-title">All Interview Questions — 2-3 Year Level</h2>
+    <span class="pill p-hot">100% Prepare</span>
+  </div>
+
+  <div class="subtopic">
+    <h3>Core Language</h3>
+
+    <div class="iq">
+      <div class="q">Q: What is Python's memory management model?</div>
+      <p>Python uses reference counting as primary memory management — every object tracks how many references point to it. When refcount reaches 0, memory is freed immediately. For circular references (A → B → A), Python has a cyclic garbage collector that periodically detects and breaks cycles. The gc module controls this. Objects smaller than 256 bytes use a memory allocator (obmalloc) for efficiency instead of malloc. Integers -5 to 256 and short strings are interned (cached) for performance.</p>
+    </div>
+
+    <div class="iq">
+      <div class="q">Q: What is Python's GIL and how does it affect concurrency?</div>
+      <p>GIL (Global Interpreter Lock) is a mutex in CPython that ensures only one thread executes Python bytecode at a time. It protects CPython's reference counting from race conditions. Impact: threads cannot achieve true CPU parallelism — no speedup from threading on CPU-bound tasks. But: GIL is released during I/O operations and C extensions — so threads work well for I/O-bound work. Workaround for CPU-bound: multiprocessing (separate GIL per process) or Jython/PyPy. Python 3.13 adds experimental "no-GIL" mode.</p>
+    </div>
+
+    <div class="iq">
+      <div class="q">Q: What are Python's data model protocols (duck typing)?</div>
+      <p>Python uses structural typing ("duck typing") — if an object implements the right methods, it works. Protocols are defined by dunder methods: __len__ makes len() work, __iter__ makes for-loops work, __getitem__ enables indexing, __enter__/__exit__ enables with statement. You don't inherit from a base class — you just implement the methods. This enables mixins and the Protocol type hint for static checking without inheritance.</p>
+    </div>
+
+    <div class="iq">
+      <div class="q">Q: What is the difference between deepcopy and shallow copy?</div>
+      <p>Shallow copy (copy.copy(), list.copy(), dict.copy(), slicing): creates a new outer container but elements are the same objects (shared references). Changing a nested mutable object affects both copies. Deep copy (copy.deepcopy()): recursively copies everything — completely independent. Use deepcopy when: nested mutable structures that will be modified independently. Use shallow copy when: top-level container needs separate identity but elements are immutable or shared intentionally.</p>
+    </div>
+
+    <div class="iq">
+      <div class="q">Q: Explain Python's integer interning and string interning.</div>
+      <p>CPython interns (caches) small integers from -5 to 256 — every reference to 42 is the same object. Also interns "compile-time" strings that look like identifiers (no spaces, valid variable names). This is why "hello" is "hello" might be True but "hello world" is "hello world" might be False. Never rely on is for value comparison — use == always. These are implementation details of CPython that don't apply to PyPy or Jython.</p>
+    </div>
+
+    <div class="iq">
+      <div class="q">Q: What is a metaclass?</div>
+      <p>A metaclass is a class of a class — it defines how a class behaves. type is the default metaclass of all classes. class MyClass: pass is equivalent to MyClass = type('MyClass', (), {}). Custom metaclass: class Meta(type): def __new__(mcs, name, bases, namespace): ... — called when the class is created. Use cases: ORMs (Django models), API frameworks, auto-registering classes, enforcing interfaces. For most code: use class decorators or __init_subclass__ instead of metaclasses.</p>
+    </div>
+
+    <div class="iq">
+      <div class="q">Q: What is __init__ vs __new__?</div>
+      <p>__new__(cls): static method called FIRST, creates and returns the new instance. Rarely overridden except for immutable types (like subclassing int or str) and singleton patterns. __init__(self): initializer called SECOND, receives the instance created by __new__, sets up attributes. For 99% of cases, only __init__ is needed. Override __new__ when you need to control instance creation itself — e.g., returning an existing instance (Singleton) or creating a different type.</p>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>OOP Questions</h3>
+
+    <div class="iq">
+      <div class="q">Q: What is MRO and how does Python resolve multiple inheritance?</div>
+      <p>MRO (Method Resolution Order) determines which class's method is called in multiple inheritance. Python uses the C3 Linearization algorithm — creates a consistent, deterministic ordering. For class D(B, C): MRO is D → B → C → A (where A is shared base). super() follows MRO — doesn't just call the immediate parent, it calls the next in MRO. View with Class.__mro__ or Class.mro(). If C3 can't create a consistent ordering (ambiguous hierarchy), Python raises TypeError.</p>
+    </div>
+
+    <div class="iq">
+      <div class="q">Q: What is the difference between composition and inheritance?</div>
+      <p>Inheritance ("is-a"): Dog is-a Animal. Creates tight coupling — changes to parent affect all children. Use for genuine subtype relationships. Composition ("has-a"): Car has-a Engine. More flexible — swap implementations without changing interface. Generally preferred over inheritance (Gang of Four: "favor composition over inheritance"). Python supports both — prefer composition when you just need behaviour, inheritance when you need IS-A semantics and Liskov Substitution.</p>
+    </div>
+
+    <div class="iq">
+      <div class="q">Q: What is a descriptor in Python?</div>
+      <p>A descriptor is an object that defines __get__, __set__, or __delete__ — it controls attribute access on another class. @property is a descriptor built into Python. Descriptors are how Python implements methods, classmethod, staticmethod, and property internally. Data descriptors define both __get__ and __set__ — take priority over instance __dict__. Non-data descriptors only __get__ — instance __dict__ takes priority. Use for: reusable validation logic across multiple attributes/classes.</p>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>Functions & Decorators</h3>
+
+    <div class="iq">
+      <div class="q">Q: What is the difference between generator and coroutine?</div>
+      <p>Generator: produces values with yield — caller receives values from the generator. One-way data flow out. Coroutine: can receive values via yield expression (value = yield) and via send(). Two-way communication. Async coroutines (async def) are built on top of generators but work differently — they're paused and resumed by the event loop, not by next(). In modern Python: generators for data pipelines, async coroutines for async I/O.</p>
+    </div>
+
+    <div class="iq">
+      <div class="q">Q: What is functools.lru_cache and when would you use it?</div>
+      <p>lru_cache is a decorator that caches function results based on arguments using a Least Recently Used policy. When called with the same arguments, returns cached result without recomputing. maxsize controls cache size — None means unbounded. Use when: pure functions called repeatedly with same inputs (fibonacci, expensive DB queries with same params). Gotchas: only works with hashable arguments, can cause memory leaks with large caches, cached results persist for lifetime of function. @cached_property caches a computed property value on the instance.</p>
+    </div>
+
+    <div class="iq">
+      <div class="q">Q: How do you handle Python's mutable default argument trap?</div>
+      <p>Default arguments are evaluated once at function definition, not per call. So def f(lst=[]): uses the SAME list every call — mutations persist. Fix: use None as sentinel: def f(lst=None): if lst is None: lst = []. This creates a fresh list each call. Same applies to dict, set, and any mutable object as a default. This is fundamental Python — it trips up even experienced developers. Dataclasses handle this with field(default_factory=list).</p>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>Performance & Concurrency</h3>
+
+    <div class="iq">
+      <div class="q">Q: How would you make a Python function thread-safe?</div>
+      <p>Use threading.Lock() around critical sections — with lock: prevents race conditions. RLock for reentrant code (same thread acquires multiple times). threading.local() for thread-local state (each thread gets its own copy). Queue for inter-thread communication (thread-safe by design). Avoid sharing mutable state when possible — immutable objects and local variables are always safe. Use concurrent.futures.ThreadPoolExecutor for managed thread pools. Atomic operations in Python (like dict updates) are thread-safe due to GIL, but don't rely on this.</p>
+    </div>
+
+    <div class="iq">
+      <div class="q">Q: When would you use asyncio.gather vs asyncio.wait?</div>
+      <p>gather: runs coroutines concurrently, returns results as list in original order, fails immediately if any raises (return_exceptions=True to collect all results). For "run all, get all". wait: returns (done, pending) sets, specify when to return via return_when parameter (FIRST_COMPLETED, FIRST_EXCEPTION, ALL_COMPLETED). More control — useful for "process as they complete" patterns. gather is simpler for most cases; wait for complex coordination.</p>
+    </div>
+
+    <div class="iq">
+      <div class="q">Q: What are Python's options for true parallelism?</div>
+      <p>multiprocessing: separate processes, each with own GIL and memory. True parallelism. Overhead: process creation, IPC. concurrent.futures.ProcessPoolExecutor: clean API over multiprocessing. C extensions: NumPy, Pandas release the GIL for their operations — threading achieves real parallelism. Cython, ctypes: write C code/extensions. Jython: JVM-based Python, no GIL. PyPy STM: experimental. For most workloads: multiprocessing for CPU-bound, asyncio for I/O-bound.</p>
+    </div>
+
+    <div class="iq">
+      <div class="q">Q: How do you profile a Python application?</div>
+      <p>cProfile: built-in, function-level profiling. Run with: python -m cProfile -o output.prof script.py. Analyze with pstats or snakeviz (visualization). line_profiler: line-by-line timing with @profile decorator. memory_profiler: memory usage per line. timeit: micro-benchmarking single statements. tracemalloc: built-in memory allocation tracking. py-spy: sampling profiler that attaches to running processes (no code changes). Process: profile first, optimize bottlenecks only — "premature optimization is the root of all evil".</p>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>Practical & Scenario Questions</h3>
+
+    <div class="iq">
+      <div class="q">Q: How would you implement a simple in-memory cache with TTL?</div>
+      <p>Use a dict storing (value, expiry_timestamp) tuples. On get: check if current time exceeds expiry — return None if expired. On set: store (value, time.time() + ttl). For thread-safety in multi-threaded context: use threading.Lock. For production: use functools.lru_cache for simple cases, or Redis for distributed/persistent caching. Consider cachetools library for TTL, LRU, and LFU caches with clean APIs.</p>
+    </div>
+
+    <div class="iq">
+      <div class="q">Q: What is the difference between list.sort() and sorted()?</div>
+      <p>list.sort(): in-place sort, modifies original, returns None, only works on lists. sorted(): returns new sorted list, original unchanged, works on any iterable (tuples, dicts, generators). Both use Timsort — O(n log n) average and worst case, O(n) for nearly sorted data, stable (equal elements maintain relative order). Both accept key and reverse parameters. Use list.sort() when you want to modify in place and don't need the original. Use sorted() when working with any iterable or need to preserve original.</p>
+    </div>
+
+    <div class="iq">
+      <div class="q">Q: How does Python's import system work? What is sys.modules?</div>
+      <p>When you import module: Python checks sys.modules cache first (dict of all loaded modules). If found, returns cached module — this is why importing multiple times doesn't re-execute module code. If not found: searches sys.path for the module (current dir, PYTHONPATH, standard library, site-packages). Executes module code once, stores result in sys.modules. Circular imports: can cause issues if module A imports B and B imports A — they each see a partially initialized module. Fix by moving imports inside functions or using importlib.reload() carefully.</p>
+    </div>
+
+    <div class="iq">
+      <div class="q">Q: What is __slots__ and when would you use it?</div>
+      <p>By default, instances store attributes in __dict__ (a dict per instance). __slots__ = ['x', 'y'] replaces per-instance __dict__ with a fixed set of descriptors — much less memory (50-60% for small objects). Also slightly faster attribute access. Tradeoffs: can't add arbitrary attributes, can't use weakref without adding '__weakref__' to slots, complicates multiple inheritance. Use when: creating millions of instances (data structures, game entities, scientific simulations) where memory matters. Don't use for regular application classes.</p>
+    </div>
+
+    <div class="iq">
+      <div class="q">Q: Explain Python's with statement and context managers.</div>
+      <p>with statement calls __enter__ on entry (binds return value to as variable) and __exit__ on exit — even if exceptions occur. __exit__ receives exception info (type, value, traceback) — return True to suppress the exception. Use cases: file handling (auto-close), DB connections (commit/rollback), locks (auto-release), timers, temporary directory/env changes. @contextmanager generator form: code before yield = __enter__, code after = __exit__. Everything between yield is the with block body.</p>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- FOOTER -->
+<div style="border-top:1px solid var(--border); padding:44px 0; margin-top:64px; text-align:center;">
+  <p style="color:var(--muted); font-family:'JetBrains Mono',monospace; font-size:12px; line-height:1.9;">
+    Python Interview Mastery · 28 Sections · 100+ Topics<br>
+    Core Types · OOP · Decorators · Async · Memory · GIL · Design Patterns · Interview Q&A
+  </p>
+  <div class="badge-row" style="justify-content:center; margin-top:14px;">
+    <span class="badge b-g">Core Python ✓</span>
+    <span class="badge b-y">OOP ✓</span>
+    <span class="badge b-b">Async ✓</span>
+    <span class="badge b-p">Concurrency ✓</span>
+    <span class="badge b-o">Interview Ready ✓</span>
+  </div>
+</div>
+
+</main>
+</div>
+</body>
+</html>

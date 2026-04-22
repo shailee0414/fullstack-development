@@ -1,0 +1,1706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HTML Interview Mastery — 2-3 Year Experience</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #080b10;
+  --surface: #0e1219;
+  --surface2: #161d28;
+  --border: #1e2d3d;
+  --accent: #f97316;
+  --accent2: #38bdf8;
+  --accent3: #4ade80;
+  --accent4: #fb923c;
+  --accent5: #e879f9;
+  --text: #e2e8f0;
+  --muted: #64748b;
+  --code-bg: #070a0e;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: 'Syne', sans-serif; }
+
+header {
+  padding: 64px 44px 52px;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(160deg, #080b10 50%, #0c1018 80%, #0e0c10);
+  position: relative; overflow: hidden;
+}
+header::before {
+  content: '';
+  position: absolute; top: -100px; right: -60px;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(249,115,22,0.09) 0%, transparent 65%);
+  pointer-events: none;
+}
+header::after {
+  content: '';
+  position: absolute; bottom: -80px; left: 20%;
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(56,189,248,0.06) 0%, transparent 65%);
+  pointer-events: none;
+}
+.header-tag {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--accent);
+  border: 1px solid rgba(249,115,22,0.3);
+  background: rgba(249,115,22,0.06);
+  padding: 4px 12px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  letter-spacing: 2px;
+}
+header h1 { font-size: clamp(28px, 4vw, 50px); font-weight: 800; letter-spacing: -1.5px; line-height: 1.1; }
+header h1 .hi { color: var(--accent); }
+header h1 .tag { color: var(--accent2); font-weight: 400; }
+header p { color: var(--muted); margin-top: 12px; font-size: 14px; max-width: 540px; }
+.badge-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+.badge { padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; font-family: 'JetBrains Mono', monospace; }
+.b-o { background: rgba(249,115,22,0.15); color: var(--accent); border: 1px solid rgba(249,115,22,0.3); }
+.b-b { background: rgba(56,189,248,0.12); color: var(--accent2); border: 1px solid rgba(56,189,248,0.25); }
+.b-g { background: rgba(74,222,128,0.12); color: var(--accent3); border: 1px solid rgba(74,222,128,0.25); }
+.b-p { background: rgba(232,121,249,0.12); color: var(--accent5); border: 1px solid rgba(232,121,249,0.25); }
+
+.shell { display: flex; min-height: 100vh; }
+
+nav {
+  width: 256px; min-width: 256px;
+  background: var(--surface);
+  padding: 20px 14px;
+  position: sticky; top: 0;
+  height: 100vh; overflow-y: auto;
+  border-right: 1px solid var(--border);
+}
+nav::-webkit-scrollbar { width: 3px; }
+nav::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+.nav-section { font-size: 9px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--accent); padding: 14px 8px 6px; font-family: 'JetBrains Mono', monospace; }
+.nav-link { display: block; color: var(--muted); margin: 1px 0; text-decoration: none; padding: 5px 8px; border-radius: 4px; font-size: 12.5px; transition: all 0.15s; }
+.nav-link:hover { color: var(--accent); background: rgba(249,115,22,0.07); }
+.nav-link.sub { padding-left: 18px; font-size: 11.5px; }
+
+main { flex: 1; padding: 44px 52px; max-width: 940px; }
+
+.section-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--accent); font-family: 'JetBrains Mono', monospace;
+  margin: 56px 0 26px;
+  display: flex; align-items: center; gap: 12px;
+}
+.section-label::after { content: ''; flex: 1; height: 1px; background: linear-gradient(to right, rgba(249,115,22,0.3), transparent); }
+
+.topic { margin-bottom: 68px; scroll-margin-top: 20px; }
+.topic-header { display: flex; align-items: center; gap: 12px; padding-bottom: 14px; margin-bottom: 22px; border-bottom: 1px solid var(--border); }
+.topic-num { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--accent); background: rgba(249,115,22,0.08); border: 1px solid rgba(249,115,22,0.2); padding: 3px 10px; border-radius: 4px; }
+.topic-title { font-size: 21px; font-weight: 700; letter-spacing: -0.5px; }
+
+.subtopic { margin: 28px 0; }
+.subtopic h3 { font-size: 15px; font-weight: 700; color: var(--accent2); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; font-family: 'Syne', sans-serif; }
+.subtopic h3::before { content: '//'; color: var(--accent); font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 400; }
+.subtopic p, .subtopic li { font-size: 13.5px; color: var(--text); line-height: 1.85; }
+.subtopic ul, .subtopic ol { padding-left: 20px; margin: 8px 0; }
+.subtopic li { margin: 5px 0; }
+
+.callout { border-left: 3px solid var(--accent); background: rgba(249,115,22,0.04); padding: 12px 16px; margin: 14px 0; border-radius: 0 6px 6px 0; font-size: 13px; }
+.callout.info { border-color: var(--accent2); background: rgba(56,189,248,0.04); }
+.callout.good { border-color: var(--accent3); background: rgba(74,222,128,0.04); }
+.callout.warn { border-color: #f43f5e; background: rgba(244,63,94,0.04); }
+.callout strong { display: block; margin-bottom: 5px; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; }
+.callout > strong { color: var(--accent); }
+.callout.info strong { color: var(--accent2); }
+.callout.good strong { color: var(--accent3); }
+.callout.warn strong { color: #f43f5e; }
+
+.code-block { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; margin: 14px 0; overflow: hidden; }
+.code-label { padding: 7px 14px; background: var(--surface2); font-size: 11px; font-family: 'JetBrains Mono', monospace; color: var(--muted); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
+.code-label .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); display: inline-block; }
+pre { padding: 18px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.75; color: #cbd5e1; }
+pre::-webkit-scrollbar { height: 4px; }
+pre::-webkit-scrollbar-thumb { background: var(--border); }
+
+.kw  { color: #c084fc; }
+.fn  { color: #60a5fa; }
+.str { color: #86efac; }
+.cm  { color: #475569; font-style: italic; }
+.num { color: #fdba74; }
+.tag { color: #f87171; }
+.attr{ color: #7dd3fc; }
+.val { color: #86efac; }
+.op  { color: #facc15; }
+.ent { color: #fb923c; }
+
+.iq { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 0 6px 6px 0; padding: 14px 16px; margin: 10px 0; }
+.iq .q { color: var(--accent); font-weight: 700; font-size: 11.5px; letter-spacing: 0.5px; margin-bottom: 8px; font-family: 'JetBrains Mono', monospace; }
+.iq p { color: var(--text); font-size: 13px; line-height: 1.8; }
+
+table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 13px; }
+th { background: var(--surface2); color: var(--accent); font-family: 'JetBrains Mono', monospace; font-size: 10.5px; text-transform: uppercase; letter-spacing: 1px; padding: 9px 12px; text-align: left; border: 1px solid var(--border); }
+td { padding: 9px 12px; border: 1px solid var(--border); color: var(--text); vertical-align: top; font-size: 13px; line-height: 1.6; }
+tr:nth-child(even) td { background: rgba(255,255,255,0.015); }
+
+.pill { display: inline-block; padding: 2px 8px; border-radius: 3px; font-size: 11px; font-family: 'JetBrains Mono', monospace; font-weight: 600; }
+.p-hot { background: rgba(244,63,94,0.12); color: #f43f5e; border: 1px solid rgba(244,63,94,0.25); }
+.p-core { background: rgba(249,115,22,0.1); color: var(--accent); border: 1px solid rgba(249,115,22,0.25); }
+.p-new { background: rgba(56,189,248,0.1); color: var(--accent2); border: 1px solid rgba(56,189,248,0.2); }
+.p-perf { background: rgba(74,222,128,0.1); color: var(--accent3); border: 1px solid rgba(74,222,128,0.2); }
+.p-acc { background: rgba(232,121,249,0.1); color: var(--accent5); border: 1px solid rgba(232,121,249,0.2); }
+
+.back-top { display: inline-flex; align-items: center; gap: 6px; margin-top: 26px; color: var(--muted); text-decoration: none; font-size: 12px; font-family: 'JetBrains Mono', monospace; transition: color 0.2s; }
+.back-top:hover { color: var(--accent); }
+
+@media (max-width: 768px) { nav { display: none; } main { padding: 24px 20px; } header { padding: 40px 20px; } }
+</style>
+</head>
+<body>
+<header id="top">
+  <div class="header-tag">&lt;HTML /&gt; INTERVIEW GUIDE</div>
+  <h1><span class="hi">HTML</span> Core Concepts<br><span class="tag">&lt;for 2–3 year devs /&gt;</span></h1>
+  <p>Semantics · Accessibility · Forms · Storage · Performance · Web APIs · Interview Q&A</p>
+  <div class="badge-row">
+    <span class="badge b-o">Semantic HTML</span>
+    <span class="badge b-b">Accessibility</span>
+    <span class="badge b-g">Forms & Validation</span>
+    <span class="badge b-p">Web APIs</span>
+    <span class="badge b-o">Performance</span>
+    <span class="badge b-b">SEO</span>
+    <span class="badge b-g">Security</span>
+    <span class="badge b-p">Interview Q&A</span>
+  </div>
+</header>
+
+<div class="shell">
+<nav>
+  <div class="nav-section">Fundamentals</div>
+  <a class="nav-link" href="#s1">1. How Browsers Work</a>
+  <a class="nav-link" href="#s2">2. DOCTYPE & Head</a>
+  <a class="nav-link" href="#s3">3. Semantic HTML</a>
+  <a class="nav-link" href="#s4">4. Block vs Inline</a>
+  <a class="nav-link" href="#s5">5. HTML Entities</a>
+
+  <div class="nav-section">Core Elements</div>
+  <a class="nav-link" href="#s6">6. Links & Navigation</a>
+  <a class="nav-link" href="#s7">7. Images & Media</a>
+  <a class="nav-link" href="#s8">8. Tables</a>
+  <a class="nav-link" href="#s9">9. Lists</a>
+  <a class="nav-link" href="#s10">10. Forms Deep Dive</a>
+  <a class="nav-link sub" href="#s10">Input Types</a>
+  <a class="nav-link sub" href="#s10">Validation</a>
+  <a class="nav-link sub" href="#s10">Fieldset & Label</a>
+
+  <div class="nav-section">HTML5 & Modern</div>
+  <a class="nav-link" href="#s11">11. HTML5 APIs</a>
+  <a class="nav-link" href="#s12">12. Canvas vs SVG</a>
+  <a class="nav-link" href="#s13">13. Web Storage</a>
+  <a class="nav-link" href="#s14">14. Web Workers</a>
+  <a class="nav-link" href="#s15">15. Custom Elements</a>
+
+  <div class="nav-section">Performance</div>
+  <a class="nav-link" href="#s16">16. Critical Render Path</a>
+  <a class="nav-link" href="#s17">17. script loading</a>
+  <a class="nav-link" href="#s18">18. Resource Hints</a>
+  <a class="nav-link" href="#s19">19. Lazy Loading</a>
+
+  <div class="nav-section">Accessibility & SEO</div>
+  <a class="nav-link" href="#s20">20. Accessibility (a11y)</a>
+  <a class="nav-link" href="#s21">21. ARIA</a>
+  <a class="nav-link" href="#s22">22. SEO & Meta Tags</a>
+  <a class="nav-link" href="#s23">23. Open Graph</a>
+
+  <div class="nav-section">Security</div>
+  <a class="nav-link" href="#s24">24. Security Basics</a>
+  <a class="nav-link" href="#s25">25. iFrame & Sandbox</a>
+
+  <div class="nav-section">Interview Q&A</div>
+  <a class="nav-link" href="#qa">26. All Questions</a>
+</nav>
+
+<main>
+
+<!-- ===== SECTION 1: HOW BROWSERS WORK ===== -->
+<div class="section-label">Fundamentals</div>
+
+<div class="topic" id="s1">
+  <div class="topic-header">
+    <span class="topic-num">01</span>
+    <h2 class="topic-title">How Browsers Parse & Render HTML</h2>
+    <span class="pill p-hot">🔥 Most Asked</span>
+  </div>
+
+  <div class="subtopic">
+    <h3>Critical Rendering Path — Step by Step</h3>
+    <p>Understanding this is what separates mid-level from senior developers. Every HTML page goes through these exact steps:</p>
+    <ol>
+      <li><strong>Bytes → Characters</strong> — browser decodes raw bytes into characters using charset (UTF-8)</li>
+      <li><strong>Characters → Tokens</strong> — tokenizer converts text into HTML tokens (<code>&lt;html&gt;</code>, <code>&lt;body&gt;</code>, text nodes)</li>
+      <li><strong>Tokens → Nodes</strong> — each token becomes a node object with properties</li>
+      <li><strong>Nodes → DOM</strong> — nodes linked into the Document Object Model tree</li>
+      <li><strong>CSS → CSSOM</strong> — same process for stylesheets: bytes → CSSOM tree</li>
+      <li><strong>DOM + CSSOM → Render Tree</strong> — only visible elements (no <code>display:none</code>, no <code>&lt;head&gt;</code>)</li>
+      <li><strong>Layout (Reflow)</strong> — calculate exact position and size of every element</li>
+      <li><strong>Paint</strong> — fill in pixels for each element (color, text, images)</li>
+      <li><strong>Composite</strong> — layer painted sections, GPU handles transforms/opacity</li>
+    </ol>
+    <div class="callout info">
+      <strong>Interview Gold</strong>
+      Layout → Paint → Composite. Animations using transform and opacity skip Layout and Paint (GPU composited) — this is why they're 60fps. Animations using width/height/top/left trigger full Layout recalculation — expensive!
+    </div>
+    <div class="iq">
+      <div class="q">Q: What is "reflow" and "repaint"?</div>
+      <p>Reflow (Layout): recalculates geometry — position, size — of affected elements and all their children. Triggered by: changing width/height/margin/padding, adding/removing elements, changing font size, window resize. Repaint: redraws pixels without changing geometry — triggered by color, background, visibility changes. Reflow is more expensive because it always causes repaint, but repaint doesn't always cause reflow.</p>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>DOM vs BOM vs CSSOM</h3>
+    <table>
+      <tr><th>Object Model</th><th>What It Is</th><th>Examples</th></tr>
+      <tr><td>DOM</td><td>Document Object Model — the HTML structure</td><td>document, document.getElementById, Element</td></tr>
+      <tr><td>BOM</td><td>Browser Object Model — browser window APIs</td><td>window, navigator, location, history, screen</td></tr>
+      <tr><td>CSSOM</td><td>CSS Object Model — parsed stylesheets</td><td>document.styleSheets, CSSRule, getComputedStyle</td></tr>
+    </table>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- ===== SECTION 2: DOCTYPE & HEAD ===== -->
+<div class="topic" id="s2">
+  <div class="topic-header">
+    <span class="topic-num">02</span>
+    <h2 class="topic-title">DOCTYPE, Head & Meta Tags</h2>
+    <span class="pill p-core">Core</span>
+  </div>
+
+  <div class="subtopic">
+    <h3>DOCTYPE — Why It Matters</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>Modern vs Legacy DOCTYPE</div>
+      <pre><span class="cm">&lt;!-- HTML5 DOCTYPE — always use this --&gt;</span>
+<span class="tag">&lt;!DOCTYPE html&gt;</span>
+
+<span class="cm">&lt;!-- Legacy HTML4 (never write this) --&gt;</span>
+<span class="cm">&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"</span>
+<span class="cm">   "http://www.w3.org/TR/html4/strict.dtd"&gt;</span></pre>
+    </div>
+    <p>Without DOCTYPE, browsers enter <strong>Quirks Mode</strong> — they emulate old IE behaviour with broken box model and inconsistent rendering. DOCTYPE is not an HTML tag — it's a declaration telling the browser which HTML version to expect.</p>
+    <div class="iq">
+      <div class="q">Q: What happens without DOCTYPE? What is Quirks Mode?</div>
+      <p>Without DOCTYPE, browser enters Quirks Mode — emulates bugs from IE5. Box model is broken: width/height include padding and border (opposite of CSS standard). Many CSS properties behave differently. Always include &lt;!DOCTYPE html&gt; as the very first line — nothing, not even a space, should come before it.</p>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>Essential Head Tags</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>Complete Head Template</div>
+      <pre><span class="tag">&lt;head&gt;</span>
+  <span class="cm">&lt;!-- Character encoding — MUST be first --&gt;</span>
+  <span class="tag">&lt;meta</span> <span class="attr">charset</span>=<span class="val">"UTF-8"</span><span class="tag">&gt;</span>
+
+  <span class="cm">&lt;!-- Viewport — essential for responsive design --&gt;</span>
+  <span class="tag">&lt;meta</span> <span class="attr">name</span>=<span class="val">"viewport"</span> <span class="attr">content</span>=<span class="val">"width=device-width, initial-scale=1.0"</span><span class="tag">&gt;</span>
+
+  <span class="cm">&lt;!-- Page title — shown in tab + SEO --&gt;</span>
+  <span class="tag">&lt;title&gt;</span>Page Title — Site Name<span class="tag">&lt;/title&gt;</span>
+
+  <span class="cm">&lt;!-- SEO description --&gt;</span>
+  <span class="tag">&lt;meta</span> <span class="attr">name</span>=<span class="val">"description"</span> <span class="attr">content</span>=<span class="val">"150-160 char description for search results"</span><span class="tag">&gt;</span>
+
+  <span class="cm">&lt;!-- Robots control --&gt;</span>
+  <span class="tag">&lt;meta</span> <span class="attr">name</span>=<span class="val">"robots"</span> <span class="attr">content</span>=<span class="val">"index, follow"</span><span class="tag">&gt;</span>
+
+  <span class="cm">&lt;!-- Canonical URL — prevent duplicate content --&gt;</span>
+  <span class="tag">&lt;link</span> <span class="attr">rel</span>=<span class="val">"canonical"</span> <span class="attr">href</span>=<span class="val">"https://example.com/page"</span><span class="tag">&gt;</span>
+
+  <span class="cm">&lt;!-- Open Graph --&gt;</span>
+  <span class="tag">&lt;meta</span> <span class="attr">property</span>=<span class="val">"og:title"</span>       <span class="attr">content</span>=<span class="val">"..."</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;meta</span> <span class="attr">property</span>=<span class="val">"og:description"</span>  <span class="attr">content</span>=<span class="val">"..."</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;meta</span> <span class="attr">property</span>=<span class="val">"og:image"</span>        <span class="attr">content</span>=<span class="val">"https://..."</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;meta</span> <span class="attr">property</span>=<span class="val">"og:url"</span>          <span class="attr">content</span>=<span class="val">"https://..."</span><span class="tag">&gt;</span>
+
+  <span class="cm">&lt;!-- Favicon --&gt;</span>
+  <span class="tag">&lt;link</span> <span class="attr">rel</span>=<span class="val">"icon"</span> <span class="attr">type</span>=<span class="val">"image/svg+xml"</span> <span class="attr">href</span>=<span class="val">"/favicon.svg"</span><span class="tag">&gt;</span>
+
+  <span class="cm">&lt;!-- CSS — render-blocking, put in head --&gt;</span>
+  <span class="tag">&lt;link</span> <span class="attr">rel</span>=<span class="val">"stylesheet"</span> <span class="attr">href</span>=<span class="val">"styles.css"</span><span class="tag">&gt;</span>
+
+  <span class="cm">&lt;!-- Preconnect for external resources --&gt;</span>
+  <span class="tag">&lt;link</span> <span class="attr">rel</span>=<span class="val">"preconnect"</span> <span class="attr">href</span>=<span class="val">"https://fonts.googleapis.com"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;/head&gt;</span></pre>
+    </div>
+    <div class="callout warn">
+      <strong>Charset Must Be First</strong>
+      &lt;meta charset="UTF-8"&gt; must appear within the first 1024 bytes of the HTML file. If the browser encounters characters before knowing the charset, it may misinterpret them (especially for non-ASCII characters). Place it as the very first child of &lt;head&gt;.
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- ===== SECTION 3: SEMANTIC HTML ===== -->
+<div class="topic" id="s3">
+  <div class="topic-header">
+    <span class="topic-num">03</span>
+    <h2 class="topic-title">Semantic HTML</h2>
+    <span class="pill p-hot">🔥 Most Asked</span>
+  </div>
+
+  <div class="subtopic">
+    <h3>What is Semantic HTML & Why Does It Matter?</h3>
+    <p>Semantic HTML uses elements that describe their <strong>meaning</strong>, not just their appearance. A <code>&lt;div&gt;</code> means nothing. A <code>&lt;nav&gt;</code> means "this is navigation". Three stakeholders benefit:</p>
+    <ul>
+      <li><strong>Accessibility</strong> — screen readers announce elements correctly ("navigation landmark", "main content")</li>
+      <li><strong>SEO</strong> — search engines understand page structure and content hierarchy</li>
+      <li><strong>Developers</strong> — code is self-documenting and easier to maintain</li>
+    </ul>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>Non-semantic vs Semantic</div>
+      <pre><span class="cm">&lt;!-- ❌ Non-semantic — div soup --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"header"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"nav"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"nav-link"</span><span class="tag">&gt;</span>Home<span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"main"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"article"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"heading"</span><span class="tag">&gt;</span>Title<span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/div&gt;</span>
+
+<span class="cm">&lt;!-- ✅ Semantic — meaningful structure --&gt;</span>
+<span class="tag">&lt;header&gt;</span>
+  <span class="tag">&lt;nav&gt;</span>
+    <span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="val">"/"</span><span class="tag">&gt;</span>Home<span class="tag">&lt;/a&gt;</span>
+  <span class="tag">&lt;/nav&gt;</span>
+<span class="tag">&lt;/header&gt;</span>
+<span class="tag">&lt;main&gt;</span>
+  <span class="tag">&lt;article&gt;</span>
+    <span class="tag">&lt;h1&gt;</span>Title<span class="tag">&lt;/h1&gt;</span>
+  <span class="tag">&lt;/article&gt;</span>
+<span class="tag">&lt;/main&gt;</span></pre>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>All Semantic Elements & When to Use Each</h3>
+    <table>
+      <tr><th>Element</th><th>Meaning</th><th>Notes</th></tr>
+      <tr><td>&lt;header&gt;</td><td>Introductory content for page or section</td><td>Can appear multiple times (once per section)</td></tr>
+      <tr><td>&lt;nav&gt;</td><td>Primary navigation links</td><td>Not every link group — major navigation only</td></tr>
+      <tr><td>&lt;main&gt;</td><td>Primary content of document</td><td>Only ONE per page. Skip-to-main links target this</td></tr>
+      <tr><td>&lt;article&gt;</td><td>Self-contained, reusable content</td><td>Blog post, news item, forum post, product card</td></tr>
+      <tr><td>&lt;section&gt;</td><td>Thematic grouping of content</td><td>Should have a heading. Not a generic wrapper</td></tr>
+      <tr><td>&lt;aside&gt;</td><td>Content tangentially related to main</td><td>Sidebar, pull quote, related links</td></tr>
+      <tr><td>&lt;footer&gt;</td><td>Footer for page or section</td><td>Can appear multiple times</td></tr>
+      <tr><td>&lt;figure&gt;</td><td>Self-contained content with optional caption</td><td>Images, diagrams, code examples</td></tr>
+      <tr><td>&lt;figcaption&gt;</td><td>Caption for figure</td><td>First or last child of &lt;figure&gt;</td></tr>
+      <tr><td>&lt;mark&gt;</td><td>Highlighted/relevant text</td><td>Search term highlighting</td></tr>
+      <tr><td>&lt;time&gt;</td><td>Date or time</td><td>datetime attribute for machine-readable format</td></tr>
+      <tr><td>&lt;address&gt;</td><td>Contact info for nearest article/body</td><td>Not for postal addresses — for author contact</td></tr>
+      <tr><td>&lt;details&gt; / &lt;summary&gt;</td><td>Disclosure widget (accordion)</td><td>No JS needed — browser handles open/close</td></tr>
+      <tr><td>&lt;dialog&gt;</td><td>Modal or popup dialog</td><td>showModal() / close() — native focus trap</td></tr>
+      <tr><td>&lt;progress&gt;</td><td>Task completion progress</td><td>value + max attributes</td></tr>
+      <tr><td>&lt;meter&gt;</td><td>Scalar measurement within range</td><td>Disk usage, password strength</td></tr>
+    </table>
+    <div class="iq">
+      <div class="q">Q: What is the difference between article, section, and div?</div>
+      <p>article: self-contained content that makes sense alone and could be syndicated (blog post, tweet, product). If you can take it out and it still makes sense — it's an article. section: thematic grouping that belongs to a larger whole — chapters, tab panels, steps in a guide. Always needs a heading. div: absolutely no semantic meaning — pure styling/scripting container. Rule: reach for semantic elements first; use div only when nothing semantic fits.</p>
+    </div>
+    <div class="iq">
+      <div class="q">Q: Can you use header and footer multiple times?</div>
+      <p>Yes! header and footer are scoped to their nearest sectioning element (article, section, aside, nav). A page can have a main header/footer AND individual article header/footers. Only main is restricted to one per page.</p>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>Heading Hierarchy — Critical for Accessibility & SEO</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>Correct Heading Hierarchy</div>
+      <pre><span class="cm">&lt;!-- ✅ Logical hierarchy -- don't skip levels --&gt;</span>
+<span class="tag">&lt;h1&gt;</span>Insurance Guide<span class="tag">&lt;/h1&gt;</span>        <span class="cm">&lt;!-- one per page --&gt;</span>
+  <span class="tag">&lt;h2&gt;</span>Term Insurance<span class="tag">&lt;/h2&gt;</span>
+    <span class="tag">&lt;h3&gt;</span>Benefits<span class="tag">&lt;/h3&gt;</span>
+    <span class="tag">&lt;h3&gt;</span>How to Apply<span class="tag">&lt;/h3&gt;</span>
+  <span class="tag">&lt;h2&gt;</span>Health Insurance<span class="tag">&lt;/h2&gt;</span>
+
+<span class="cm">&lt;!-- ❌ Wrong -- skipped h2 --&gt;</span>
+<span class="tag">&lt;h1&gt;</span>Title<span class="tag">&lt;/h1&gt;</span>
+<span class="tag">&lt;h3&gt;</span>Subtitle<span class="tag">&lt;/h3&gt;</span>  <span class="cm">&lt;!-- screen readers confused --&gt;</span>
+
+<span class="cm">&lt;!-- ❌ Wrong -- multiple h1 (bad for SEO) --&gt;</span>
+<span class="tag">&lt;h1&gt;</span>First Heading<span class="tag">&lt;/h1&gt;</span>
+<span class="tag">&lt;h1&gt;</span>Second Heading<span class="tag">&lt;/h1&gt;</span></pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- ===== SECTION 4: BLOCK vs INLINE ===== -->
+<div class="topic" id="s4">
+  <div class="topic-header">
+    <span class="topic-num">04</span>
+    <h2 class="topic-title">Block vs Inline vs Inline-Block</h2>
+    <span class="pill p-core">Core</span>
+  </div>
+  <div class="subtopic">
+    <h3>The Three Display Behaviours</h3>
+    <table>
+      <tr><th></th><th>Block</th><th>Inline</th><th>Inline-Block</th></tr>
+      <tr><td>New line?</td><td>Yes — forces line break</td><td>No — flows in text</td><td>No — flows in text</td></tr>
+      <tr><td>Width</td><td>100% of parent by default</td><td>Content width only</td><td>Content width (settable)</td></tr>
+      <tr><td>Height/Width CSS</td><td>✅ Respected</td><td>❌ Ignored</td><td>✅ Respected</td></tr>
+      <tr><td>Padding/Margin</td><td>All sides</td><td>Left/Right only (vertical visual)</td><td>All sides</td></tr>
+      <tr><td>Examples</td><td>div, p, h1-h6, ul, li, section</td><td>span, a, strong, em, img, input</td><td>button, label</td></tr>
+    </table>
+    <div class="callout warn">
+      <strong>Interview Trap — Inline Elements</strong>
+      &lt;img&gt; and &lt;input&gt; are inline but accept width/height — they are "replaced elements" with intrinsic dimensions. Also: you CANNOT put a block element inside an inline element (e.g. &lt;a&gt;&lt;div&gt;…&lt;/div&gt;&lt;/a&gt; is invalid HTML — except in HTML5 where &lt;a&gt; can wrap block content if it has no interactive content inside).
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- ===== SECTION 5: HTML ENTITIES ===== -->
+<div class="topic" id="s5">
+  <div class="topic-header">
+    <span class="topic-num">05</span>
+    <h2 class="topic-title">HTML Entities & Special Characters</h2>
+    <span class="pill p-core">Core</span>
+  </div>
+  <div class="subtopic">
+    <h3>Common Entities</h3>
+    <table>
+      <tr><th>Entity</th><th>Name</th><th>Result</th><th>When to Use</th></tr>
+      <tr><td>&amp;lt;</td><td>Less than</td><td>&lt;</td><td>Display &lt; in HTML content</td></tr>
+      <tr><td>&amp;gt;</td><td>Greater than</td><td>&gt;</td><td>Display &gt; in HTML content</td></tr>
+      <tr><td>&amp;amp;</td><td>Ampersand</td><td>&amp;</td><td>Literal & in text</td></tr>
+      <tr><td>&amp;quot;</td><td>Quote</td><td>"</td><td>Quotes inside attribute values</td></tr>
+      <tr><td>&amp;nbsp;</td><td>Non-breaking space</td><td>(no-break space)</td><td>Prevent line break between words</td></tr>
+      <tr><td>&amp;copy;</td><td>Copyright</td><td>©</td><td>Copyright symbol</td></tr>
+      <tr><td>&amp;mdash;</td><td>Em dash</td><td>—</td><td>Punctuation</td></tr>
+      <tr><td>&amp;hellip;</td><td>Ellipsis</td><td>…</td><td>Truncation indicator</td></tr>
+    </table>
+    <div class="callout">
+      <strong>XSS Prevention</strong>
+      Always escape user-generated content before inserting into HTML. &lt; becomes &amp;lt;, &gt; becomes &amp;gt;, " becomes &amp;quot;. Never use innerHTML with unescaped user content — this is the #1 cause of XSS attacks.
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+
+<!-- ===== SECTION 6: LINKS ===== -->
+<div class="section-label">Core Elements</div>
+
+<div class="topic" id="s6">
+  <div class="topic-header">
+    <span class="topic-num">06</span>
+    <h2 class="topic-title">Links & Navigation</h2>
+    <span class="pill p-core">Core</span>
+  </div>
+  <div class="subtopic">
+    <h3>anchor &lt;a&gt; — All Attributes</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>Anchor Element Complete Reference</div>
+      <pre><span class="cm">&lt;!-- Basic link --&gt;</span>
+<span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="val">"https://example.com"</span><span class="tag">&gt;</span>External Link<span class="tag">&lt;/a&gt;</span>
+
+<span class="cm">&lt;!-- Open in new tab --&gt;</span>
+<span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="val">"https://example.com"</span>
+   <span class="attr">target</span>=<span class="val">"_blank"</span>
+   <span class="attr">rel</span>=<span class="val">"noopener noreferrer"</span><span class="tag">&gt;</span>New Tab<span class="tag">&lt;/a&gt;</span>
+<span class="cm">&lt;!-- noopener: prevents new tab accessing window.opener (security)
+     noreferrer: doesn't send Referer header + implies noopener --&gt;</span>
+
+<span class="cm">&lt;!-- Download link --&gt;</span>
+<span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="val">"/report.pdf"</span> <span class="attr">download</span>=<span class="val">"Annual-Report-2024.pdf"</span><span class="tag">&gt;</span>Download<span class="tag">&lt;/a&gt;</span>
+
+<span class="cm">&lt;!-- Email / phone / SMS --&gt;</span>
+<span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="val">"mailto:hello@example.com?subject=Hello"</span><span class="tag">&gt;</span>Email<span class="tag">&lt;/a&gt;</span>
+<span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="val">"tel:+919876543210"</span><span class="tag">&gt;</span>Call Us<span class="tag">&lt;/a&gt;</span>
+<span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="val">"sms:+919876543210"</span><span class="tag">&gt;</span>SMS<span class="tag">&lt;/a&gt;</span>
+
+<span class="cm">&lt;!-- Jump to section (in-page navigation) --&gt;</span>
+<span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="val">"#section-id"</span><span class="tag">&gt;</span>Jump to Section<span class="tag">&lt;/a&gt;</span>
+
+<span class="cm">&lt;!-- Skip link (accessibility) --&gt;</span>
+<span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="val">"#main-content"</span> <span class="attr">class</span>=<span class="val">"skip-link"</span><span class="tag">&gt;</span>Skip to main content<span class="tag">&lt;/a&gt;</span></pre>
+    </div>
+    <div class="iq">
+      <div class="q">Q: Why use rel="noopener noreferrer" on target="_blank"?</div>
+      <p>Security: without noopener, the new tab can access the original page via window.opener and redirect it to a malicious URL (reverse tabnapping attack). noopener sets window.opener to null. noreferrer additionally prevents the Referer header being sent (privacy) and implies noopener. Always add both when opening external links in new tabs.</p>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- ===== SECTION 7: IMAGES & MEDIA ===== -->
+<div class="topic" id="s7">
+  <div class="topic-header">
+    <span class="topic-num">07</span>
+    <h2 class="topic-title">Images & Media</h2>
+    <span class="pill p-hot">🔥 Most Asked</span>
+  </div>
+  <div class="subtopic">
+    <h3>img — All Critical Attributes</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>Image Best Practices</div>
+      <pre><span class="cm">&lt;!-- Always include alt (accessibility + SEO) --&gt;</span>
+<span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="val">"hero.jpg"</span>
+     <span class="attr">alt</span>=<span class="val">"Shailesh presenting at tech conference"</span>
+     <span class="attr">width</span>=<span class="val">"800"</span>
+     <span class="attr">height</span>=<span class="val">"450"</span>
+     <span class="attr">loading</span>=<span class="val">"lazy"</span>
+     <span class="attr">decoding</span>=<span class="val">"async"</span><span class="tag">&gt;</span>
+
+<span class="cm">&lt;!-- Decorative image — empty alt (screen reader skips it) --&gt;</span>
+<span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="val">"divider.svg"</span> <span class="attr">alt</span>=<span class="val">""</span> <span class="attr">role</span>=<span class="val">"presentation"</span><span class="tag">&gt;</span>
+
+<span class="cm">&lt;!-- Responsive images with srcset --&gt;</span>
+<span class="tag">&lt;img</span>
+  <span class="attr">src</span>=<span class="val">"image-800.jpg"</span>
+  <span class="attr">srcset</span>=<span class="val">"image-400.jpg 400w,
+          image-800.jpg 800w,
+          image-1200.jpg 1200w"</span>
+  <span class="attr">sizes</span>=<span class="val">"(max-width: 600px) 400px,
+         (max-width: 1000px) 800px,
+         1200px"</span>
+  <span class="attr">alt</span>=<span class="val">"Responsive image"</span><span class="tag">&gt;</span>
+
+<span class="cm">&lt;!-- picture — art direction (different crops) + format fallback --&gt;</span>
+<span class="tag">&lt;picture&gt;</span>
+  <span class="tag">&lt;source</span> <span class="attr">type</span>=<span class="val">"image/avif"</span> <span class="attr">srcset</span>=<span class="val">"hero.avif"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;source</span> <span class="attr">type</span>=<span class="val">"image/webp"</span> <span class="attr">srcset</span>=<span class="val">"hero.webp"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;source</span> <span class="attr">media</span>=<span class="val">"(max-width: 600px)"</span> <span class="attr">srcset</span>=<span class="val">"hero-mobile.jpg"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="val">"hero.jpg"</span> <span class="attr">alt</span>=<span class="val">"Hero image"</span><span class="tag">&gt;</span>  <span class="cm">&lt;!-- fallback --&gt;</span>
+<span class="tag">&lt;/picture&gt;</span></pre>
+    </div>
+    <div class="iq">
+      <div class="q">Q: Why set width and height attributes on images?</div>
+      <p>Setting explicit width/height on &lt;img&gt; allows the browser to reserve space before the image loads, preventing Cumulative Layout Shift (CLS) — a Core Web Vitals metric. Without dimensions, page content jumps as images load. The browser calculates the aspect ratio from the attributes and holds that space. You can still override with CSS — the attribute values just define the aspect ratio hint.</p>
+    </div>
+    <div class="iq">
+      <div class="q">Q: Difference between srcset and picture?</div>
+      <p>srcset: same image in different resolutions/sizes — browser picks the best based on screen density and viewport. Good for resolution switching. picture: different images for different contexts — art direction (mobile crop vs desktop), format selection (avif → webp → jpg). Use srcset for "same image, different sizes". Use picture when you need completely different images or format fallbacks.</p>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>Audio & Video</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>Audio & Video Elements</div>
+      <pre><span class="cm">&lt;!-- Video with multiple sources + accessibility --&gt;</span>
+<span class="tag">&lt;video</span>
+  <span class="attr">controls</span>
+  <span class="attr">width</span>=<span class="val">"800"</span>
+  <span class="attr">poster</span>=<span class="val">"thumbnail.jpg"</span>
+  <span class="attr">preload</span>=<span class="val">"metadata"</span>
+  <span class="attr">muted</span>
+  <span class="attr">playsinline</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;source</span> <span class="attr">src</span>=<span class="val">"video.webm"</span> <span class="attr">type</span>=<span class="val">"video/webm"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;source</span> <span class="attr">src</span>=<span class="val">"video.mp4"</span>  <span class="attr">type</span>=<span class="val">"video/mp4"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;track</span> <span class="attr">kind</span>=<span class="val">"subtitles"</span> <span class="attr">src</span>=<span class="val">"en.vtt"</span> <span class="attr">srclang</span>=<span class="val">"en"</span> <span class="attr">label</span>=<span class="val">"English"</span> <span class="attr">default</span><span class="tag">&gt;</span>
+  Your browser does not support video.
+<span class="tag">&lt;/video&gt;</span>
+
+<span class="cm">&lt;!-- preload: none | metadata | auto --&gt;</span>
+<span class="cm">&lt;!-- poster: shown before playback --&gt;</span>
+<span class="cm">&lt;!-- playsinline: required for iOS inline playback --&gt;</span>
+<span class="cm">&lt;!-- muted: required for autoplay on mobile --&gt;</span></pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- ===== SECTION 8 & 9: TABLES & LISTS ===== -->
+<div class="topic" id="s8">
+  <div class="topic-header">
+    <span class="topic-num">08</span>
+    <h2 class="topic-title">Tables — Accessible & Semantic</h2>
+    <span class="pill p-core">Core</span>
+  </div>
+  <div class="subtopic">
+    <h3>Accessible Table Structure</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>Full Accessible Table</div>
+      <pre><span class="tag">&lt;table&gt;</span>
+  <span class="tag">&lt;caption&gt;</span>Insurance Policy Comparison 2024<span class="tag">&lt;/caption&gt;</span>
+
+  <span class="tag">&lt;thead&gt;</span>
+    <span class="tag">&lt;tr&gt;</span>
+      <span class="tag">&lt;th</span> <span class="attr">scope</span>=<span class="val">"col"</span><span class="tag">&gt;</span>Plan<span class="tag">&lt;/th&gt;</span>          <span class="cm">&lt;!-- scope tells screen reader direction --&gt;</span>
+      <span class="tag">&lt;th</span> <span class="attr">scope</span>=<span class="val">"col"</span><span class="tag">&gt;</span>Premium<span class="tag">&lt;/th&gt;</span>
+      <span class="tag">&lt;th</span> <span class="attr">scope</span>=<span class="val">"col"</span><span class="tag">&gt;</span>Cover<span class="tag">&lt;/th&gt;</span>
+    <span class="tag">&lt;/tr&gt;</span>
+  <span class="tag">&lt;/thead&gt;</span>
+
+  <span class="tag">&lt;tbody&gt;</span>
+    <span class="tag">&lt;tr&gt;</span>
+      <span class="tag">&lt;th</span> <span class="attr">scope</span>=<span class="val">"row"</span><span class="tag">&gt;</span>Basic<span class="tag">&lt;/th&gt;</span>        <span class="cm">&lt;!-- row header --&gt;</span>
+      <span class="tag">&lt;td&gt;</span>₹500/month<span class="tag">&lt;/td&gt;</span>
+      <span class="tag">&lt;td&gt;</span>₹10 Lakh<span class="tag">&lt;/td&gt;</span>
+    <span class="tag">&lt;/tr&gt;</span>
+  <span class="tag">&lt;/tbody&gt;</span>
+
+  <span class="tag">&lt;tfoot&gt;</span>
+    <span class="tag">&lt;tr&gt;</span><span class="tag">&lt;td</span> <span class="attr">colspan</span>=<span class="val">"3"</span><span class="tag">&gt;</span>*GST applicable<span class="tag">&lt;/td&gt;</span><span class="tag">&lt;/tr&gt;</span>
+  <span class="tag">&lt;/tfoot&gt;</span>
+<span class="tag">&lt;/table&gt;</span>
+
+<span class="cm">&lt;!-- Use tables ONLY for tabular data — never for layout --&gt;</span></pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<div class="topic" id="s9">
+  <div class="topic-header">
+    <span class="topic-num">09</span>
+    <h2 class="topic-title">Lists</h2>
+    <span class="pill p-core">Core</span>
+  </div>
+  <div class="subtopic">
+    <h3>ul, ol, dl — When to Use Each</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>List Types</div>
+      <pre><span class="cm">&lt;!-- ul: unordered — order doesn't matter --&gt;</span>
+<span class="tag">&lt;ul&gt;</span>
+  <span class="tag">&lt;li&gt;</span>React Native<span class="tag">&lt;/li&gt;</span>
+  <span class="tag">&lt;li&gt;</span>Node.js<span class="tag">&lt;/li&gt;</span>
+<span class="tag">&lt;/ul&gt;</span>
+
+<span class="cm">&lt;!-- ol: ordered — sequence matters (steps, rankings) --&gt;</span>
+<span class="tag">&lt;ol&gt;</span>
+  <span class="tag">&lt;li&gt;</span>Create account<span class="tag">&lt;/li&gt;</span>
+  <span class="tag">&lt;li&gt;</span>Fill details<span class="tag">&lt;/li&gt;</span>
+  <span class="tag">&lt;li&gt;</span>Pay premium<span class="tag">&lt;/li&gt;</span>
+<span class="tag">&lt;/ol&gt;</span>
+
+<span class="cm">&lt;!-- dl: description list — term + definition pairs --&gt;</span>
+<span class="tag">&lt;dl&gt;</span>
+  <span class="tag">&lt;dt&gt;</span>IDV<span class="tag">&lt;/dt&gt;</span>
+  <span class="tag">&lt;dd&gt;</span>Insured Declared Value — market value of vehicle<span class="tag">&lt;/dd&gt;</span>
+  <span class="tag">&lt;dt&gt;</span>NCB<span class="tag">&lt;/dt&gt;</span>
+  <span class="tag">&lt;dd&gt;</span>No Claim Bonus — discount for claim-free years<span class="tag">&lt;/dd&gt;</span>
+<span class="tag">&lt;/dl&gt;</span></pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- ===== SECTION 10: FORMS ===== -->
+<div class="topic" id="s10">
+  <div class="topic-header">
+    <span class="topic-num">10</span>
+    <h2 class="topic-title">Forms — Deep Dive</h2>
+    <span class="pill p-hot">🔥 Most Asked</span>
+  </div>
+
+  <div class="subtopic">
+    <h3>Form Fundamentals</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>Form Attributes</div>
+      <pre><span class="cm">&lt;!-- method: GET (visible in URL, bookmarkable) vs POST (body, sensitive) --&gt;</span>
+<span class="tag">&lt;form</span>
+  <span class="attr">action</span>=<span class="val">"/submit"</span>
+  <span class="attr">method</span>=<span class="val">"POST"</span>
+  <span class="attr">enctype</span>=<span class="val">"multipart/form-data"</span>  <span class="cm">&lt;!-- required for file upload --&gt;</span>
+  <span class="attr">novalidate</span>                        <span class="cm">&lt;!-- disable browser validation for custom --&gt;</span>
+  <span class="attr">autocomplete</span>=<span class="val">"off"</span><span class="tag">&gt;</span>
+
+  <span class="cm">&lt;!-- enctype values:
+    application/x-www-form-urlencoded (default)
+    multipart/form-data (file uploads)
+    text/plain (debugging only) --&gt;</span>
+<span class="tag">&lt;/form&gt;</span>
+
+<span class="cm">&lt;!-- GET vs POST:
+  GET: data in URL, cached, bookmarkable, idempotent → search, filters
+  POST: data in body, not cached, not bookmarkable → login, payment, create --&gt;</span></pre>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>Input Types — All HTML5 Types</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>All Input Types</div>
+      <pre><span class="cm">&lt;!-- Text inputs --&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"text"</span>     <span class="attr">placeholder</span>=<span class="val">"Full name"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"email"</span>    <span class="attr">placeholder</span>=<span class="val">"user@example.com"</span><span class="tag">&gt;</span>  <span class="cm">&lt;!-- validates format --&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"password"</span> <span class="attr">autocomplete</span>=<span class="val">"current-password"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"tel"</span>      <span class="attr">pattern</span>=<span class="val">"[0-9]{10}"</span><span class="tag">&gt;</span>  <span class="cm">&lt;!-- numeric keyboard on mobile --&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"url"</span>      <span class="attr">placeholder</span>=<span class="val">"https://..."</span><span class="tag">&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"search"</span>   <span class="attr">placeholder</span>=<span class="val">"Search..."</span><span class="tag">&gt;</span>  <span class="cm">&lt;!-- clear button in some browsers --&gt;</span>
+
+<span class="cm">&lt;!-- Number inputs --&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"number"</span>  <span class="attr">min</span>=<span class="val">"0"</span> <span class="attr">max</span>=<span class="val">"100"</span> <span class="attr">step</span>=<span class="val">"5"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"range"</span>   <span class="attr">min</span>=<span class="val">"0"</span> <span class="attr">max</span>=<span class="val">"100"</span> <span class="attr">value</span>=<span class="val">"50"</span><span class="tag">&gt;</span>  <span class="cm">&lt;!-- slider --&gt;</span>
+
+<span class="cm">&lt;!-- Date/time inputs --&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"date"</span>           <span class="attr">min</span>=<span class="val">"2024-01-01"</span> <span class="attr">max</span>=<span class="val">"2030-12-31"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"time"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"datetime-local"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"month"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"week"</span><span class="tag">&gt;</span>
+
+<span class="cm">&lt;!-- Selection inputs --&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"checkbox"</span> <span class="attr">name</span>=<span class="val">"agree"</span> <span class="attr">id</span>=<span class="val">"agree"</span> <span class="attr">value</span>=<span class="val">"yes"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"radio"</span>    <span class="attr">name</span>=<span class="val">"gender"</span> <span class="attr">value</span>=<span class="val">"male"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"color"</span><span class="tag">&gt;</span>  <span class="cm">&lt;!-- color picker --&gt;</span>
+
+<span class="cm">&lt;!-- File & hidden --&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"file"</span> <span class="attr">accept</span>=<span class="val">"image/*,.pdf"</span> <span class="attr">multiple</span><span class="tag">&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"hidden"</span> <span class="attr">name</span>=<span class="val">"csrf_token"</span> <span class="attr">value</span>=<span class="val">"abc123"</span><span class="tag">&gt;</span>
+
+<span class="cm">&lt;!-- Submit variants --&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"submit"</span> <span class="attr">value</span>=<span class="val">"Submit"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"reset"</span>  <span class="attr">value</span>=<span class="val">"Reset"</span><span class="tag">&gt;</span>   <span class="cm">&lt;!-- rarely used --&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"image"</span>  <span class="attr">src</span>=<span class="val">"btn.png"</span> <span class="attr">alt</span>=<span class="val">"Submit"</span><span class="tag">&gt;</span>  <span class="cm">&lt;!-- image as submit --&gt;</span></pre>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>Built-in HTML Validation</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>Constraint Validation Attributes</div>
+      <pre><span class="tag">&lt;input</span>
+  <span class="attr">type</span>=<span class="val">"email"</span>
+  <span class="attr">required</span>                           <span class="cm">&lt;!-- must have value --&gt;</span>
+  <span class="attr">minlength</span>=<span class="val">"5"</span>                     <span class="cm">&lt;!-- min characters --&gt;</span>
+  <span class="attr">maxlength</span>=<span class="val">"100"</span>                   <span class="cm">&lt;!-- max characters --&gt;</span>
+  <span class="attr">pattern</span>=<span class="val">"[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"</span>  <span class="cm">&lt;!-- regex --&gt;</span>
+  <span class="attr">autocomplete</span>=<span class="val">"email"</span><span class="tag">&gt;</span>
+
+<span class="cm">&lt;!-- Validation CSS pseudo-classes --&gt;</span>
+<span class="cm">input:valid   { border-color: green; }  /* valid input */</span>
+<span class="cm">input:invalid { border-color: red; }    /* invalid */</span>
+<span class="cm">input:required { background: lightyellow; }</span>
+<span class="cm">input:optional { /* not required */ }</span>
+
+<span class="cm">&lt;!-- JS Constraint Validation API --&gt;</span>
+<span class="cm">input.validity.valueMissing   // required but empty</span>
+<span class="cm">input.validity.typeMismatch   // wrong format (email, url)</span>
+<span class="cm">input.validity.patternMismatch // regex failed</span>
+<span class="cm">input.validity.tooShort / tooLong</span>
+<span class="cm">input.checkValidity()         // returns boolean</span>
+<span class="cm">input.setCustomValidity('Error msg')  // custom error</span></pre>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>Label, Fieldset & Accessible Forms</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>Accessible Form Patterns</div>
+      <pre><span class="cm">&lt;!-- Explicit label (preferred) --&gt;</span>
+<span class="tag">&lt;label</span> <span class="attr">for</span>=<span class="val">"email"</span><span class="tag">&gt;</span>Email Address <span class="tag">&lt;span</span> <span class="attr">aria-hidden</span>=<span class="val">"true"</span><span class="tag">&gt;</span>*<span class="tag">&lt;/span&gt;&lt;/label&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"email"</span> <span class="attr">id</span>=<span class="val">"email"</span> <span class="attr">aria-required</span>=<span class="val">"true"</span><span class="tag">&gt;</span>
+
+<span class="cm">&lt;!-- Implicit label (input is child of label) --&gt;</span>
+<span class="tag">&lt;label&gt;</span>
+  Email
+  <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"email"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;/label&gt;</span>
+
+<span class="cm">&lt;!-- Fieldset groups related inputs --&gt;</span>
+<span class="tag">&lt;fieldset&gt;</span>
+  <span class="tag">&lt;legend&gt;</span>Gender<span class="tag">&lt;/legend&gt;</span>  <span class="cm">&lt;!-- announced by screen reader --&gt;</span>
+  <span class="tag">&lt;label&gt;&lt;input</span> <span class="attr">type</span>=<span class="val">"radio"</span> <span class="attr">name</span>=<span class="val">"gender"</span> <span class="attr">value</span>=<span class="val">"male"</span><span class="tag">&gt;</span> Male<span class="tag">&lt;/label&gt;</span>
+  <span class="tag">&lt;label&gt;&lt;input</span> <span class="attr">type</span>=<span class="val">"radio"</span> <span class="attr">name</span>=<span class="val">"gender"</span> <span class="attr">value</span>=<span class="val">"female"</span><span class="tag">&gt;</span> Female<span class="tag">&lt;/label&gt;</span>
+<span class="tag">&lt;/fieldset&gt;</span>
+
+<span class="cm">&lt;!-- Error message pattern --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">role</span>=<span class="val">"group"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;label</span> <span class="attr">for</span>=<span class="val">"phone"</span><span class="tag">&gt;</span>Phone<span class="tag">&lt;/label&gt;</span>
+  <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"tel"</span> <span class="attr">id</span>=<span class="val">"phone"</span>
+         <span class="attr">aria-describedby</span>=<span class="val">"phone-error"</span>
+         <span class="attr">aria-invalid</span>=<span class="val">"true"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;span</span> <span class="attr">id</span>=<span class="val">"phone-error"</span> <span class="attr">role</span>=<span class="val">"alert"</span><span class="tag">&gt;</span>Please enter a valid 10-digit number<span class="tag">&lt;/span&gt;</span>
+<span class="tag">&lt;/div&gt;</span>
+
+<span class="cm">&lt;!-- select and datalist --&gt;</span>
+<span class="tag">&lt;select</span> <span class="attr">name</span>=<span class="val">"state"</span> <span class="attr">id</span>=<span class="val">"state"</span> <span class="attr">multiple</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;optgroup</span> <span class="attr">label</span>=<span class="val">"North India"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;option</span> <span class="attr">value</span>=<span class="val">"DL"</span><span class="tag">&gt;</span>Delhi<span class="tag">&lt;/option&gt;</span>
+    <span class="tag">&lt;option</span> <span class="attr">value</span>=<span class="val">"HR"</span><span class="tag">&gt;</span>Haryana<span class="tag">&lt;/option&gt;</span>
+  <span class="tag">&lt;/optgroup&gt;</span>
+<span class="tag">&lt;/select&gt;</span>
+
+<span class="cm">&lt;!-- datalist: autocomplete suggestions --&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">list</span>=<span class="val">"cities"</span> <span class="attr">id</span>=<span class="val">"city"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;datalist</span> <span class="attr">id</span>=<span class="val">"cities"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;option</span> <span class="attr">value</span>=<span class="val">"Delhi"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;option</span> <span class="attr">value</span>=<span class="val">"Faridabad"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;/datalist&gt;</span></pre>
+    </div>
+    <div class="iq">
+      <div class="q">Q: What is the difference between button type="submit", type="button", and type="reset"?</div>
+      <p>type="submit" (default): submits the form. type="button": does nothing by default — needs JavaScript onclick. type="reset": resets all inputs to default values (rarely useful, never use in critical flows — users accidentally reset forms). Important: always specify type on button — without it, a button inside a form defaults to type="submit" and accidentally submits the form.</p>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+
+<!-- ===== SECTION 11-15: HTML5 & MODERN ===== -->
+<div class="section-label">HTML5 & Modern APIs</div>
+
+<div class="topic" id="s11">
+  <div class="topic-header">
+    <span class="topic-num">11</span>
+    <h2 class="topic-title">HTML5 APIs</h2>
+    <span class="pill p-new">HTML5</span>
+  </div>
+  <div class="subtopic">
+    <h3>Geolocation API</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>Geolocation</div>
+      <pre><span class="kw">if</span> (<span class="str">'geolocation'</span> <span class="kw">in</span> navigator) {
+  navigator.geolocation.<span class="fn">getCurrentPosition</span>(
+    (pos) =&gt; {
+      <span class="kw">const</span> { latitude, longitude, accuracy } = pos.coords;
+      console.<span class="fn">log</span>(<span class="str">`${latitude}, ${longitude}`</span>);
+    },
+    (err) =&gt; console.<span class="fn">error</span>(err.message), <span class="cm">// user denied or unavailable</span>
+    { enableHighAccuracy: <span class="kw">true</span>, timeout: <span class="num">5000</span> }
+  );
+
+  <span class="cm">// Watch position continuously</span>
+  <span class="kw">const</span> watchId = navigator.geolocation.<span class="fn">watchPosition</span>(callback);
+  navigator.geolocation.<span class="fn">clearWatch</span>(watchId); <span class="cm">// cleanup</span>
+}</pre>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>Drag & Drop API</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>Native Drag & Drop</div>
+      <pre><span class="cm">&lt;!-- Make element draggable --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">draggable</span>=<span class="val">"true"</span> <span class="attr">id</span>=<span class="val">"card"</span><span class="tag">&gt;</span>Drag me<span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">id</span>=<span class="val">"dropzone"</span><span class="tag">&gt;</span>Drop here<span class="tag">&lt;/div&gt;</span>
+
+<span class="cm">// Drag source</span>
+card.<span class="fn">addEventListener</span>(<span class="str">'dragstart'</span>, (e) =&gt; {
+  e.dataTransfer.<span class="fn">setData</span>(<span class="str">'text/plain'</span>, e.target.id);
+  e.dataTransfer.effectAllowed = <span class="str">'move'</span>;
+});
+
+<span class="cm">// Drop target</span>
+dropzone.<span class="fn">addEventListener</span>(<span class="str">'dragover'</span>, (e) =&gt; {
+  e.<span class="fn">preventDefault</span>(); <span class="cm">// ← required to allow dropping</span>
+  e.dataTransfer.dropEffect = <span class="str">'move'</span>;
+});
+dropzone.<span class="fn">addEventListener</span>(<span class="str">'drop'</span>, (e) =&gt; {
+  e.<span class="fn">preventDefault</span>();
+  <span class="kw">const</span> id = e.dataTransfer.<span class="fn">getData</span>(<span class="str">'text/plain'</span>);
+  dropzone.<span class="fn">appendChild</span>(document.<span class="fn">getElementById</span>(id));
+});</pre>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>Intersection Observer API</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>Intersection Observer — Lazy Load / Infinite Scroll</div>
+      <pre><span class="kw">const</span> observer = <span class="kw">new</span> <span class="fn">IntersectionObserver</span>((entries) =&gt; {
+  entries.<span class="fn">forEach</span>(entry =&gt; {
+    <span class="kw">if</span> (entry.isIntersecting) {
+      <span class="cm">// Element is visible in viewport</span>
+      entry.target.src = entry.target.dataset.src; <span class="cm">// lazy load image</span>
+      observer.<span class="fn">unobserve</span>(entry.target); <span class="cm">// stop watching</span>
+    }
+  });
+}, {
+  root: <span class="kw">null</span>,         <span class="cm">// null = viewport</span>
+  rootMargin: <span class="str">'200px'</span>, <span class="cm">// trigger 200px before visible</span>
+  threshold: <span class="num">0.1</span>       <span class="cm">// 10% visible = trigger</span>
+});
+
+document.<span class="fn">querySelectorAll</span>(<span class="str">'img[data-src]'</span>).<span class="fn">forEach</span>(img =&gt; observer.<span class="fn">observe</span>(img));
+
+<span class="cm">// Better than scroll events — no performance hit, browser-optimized</span></pre>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>MutationObserver API</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>MutationObserver — Watch DOM Changes</div>
+      <pre><span class="kw">const</span> observer = <span class="kw">new</span> <span class="fn">MutationObserver</span>((mutations) =&gt; {
+  mutations.<span class="fn">forEach</span>(mutation =&gt; {
+    <span class="kw">if</span> (mutation.type === <span class="str">'childList'</span>) {
+      console.<span class="fn">log</span>(<span class="str">'Children added/removed'</span>, mutation.addedNodes);
+    }
+    <span class="kw">if</span> (mutation.type === <span class="str">'attributes'</span>) {
+      console.<span class="fn">log</span>(<span class="str">'Attribute changed:'</span>, mutation.attributeName);
+    }
+  });
+});
+
+observer.<span class="fn">observe</span>(targetElement, {
+  childList: <span class="kw">true</span>,    <span class="cm">// watch child add/remove</span>
+  attributes: <span class="kw">true</span>,   <span class="cm">// watch attribute changes</span>
+  subtree: <span class="kw">true</span>,       <span class="cm">// watch all descendants</span>
+  characterData: <span class="kw">true</span>  <span class="cm">// watch text content</span>
+});
+observer.<span class="fn">disconnect</span>(); <span class="cm">// cleanup</span></pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- S12: CANVAS vs SVG -->
+<div class="topic" id="s12">
+  <div class="topic-header">
+    <span class="topic-num">12</span>
+    <h2 class="topic-title">Canvas vs SVG</h2>
+    <span class="pill p-hot">🔥 Must Know</span>
+  </div>
+  <div class="subtopic">
+    <h3>Canvas vs SVG Comparison</h3>
+    <table>
+      <tr><th></th><th>Canvas</th><th>SVG</th></tr>
+      <tr><td>Type</td><td>Raster (pixel-based bitmap)</td><td>Vector (mathematical shapes)</td></tr>
+      <tr><td>DOM Access</td><td>No — just pixels, no DOM nodes</td><td>Yes — every shape is a DOM element</td></tr>
+      <tr><td>Scalability</td><td>Blurry when scaled up</td><td>Perfectly crisp at any size</td></tr>
+      <tr><td>Performance</td><td>Better for thousands of objects, animations</td><td>Slower with many elements</td></tr>
+      <tr><td>Events</td><td>Must calculate coordinates manually</td><td>Native event listeners on elements</td></tr>
+      <tr><td>Accessibility</td><td>Poor — needs ARIA overlay</td><td>Good — text is real text</td></tr>
+      <tr><td>Export</td><td>toDataURL() → PNG/JPEG</td><td>Can export as SVG file</td></tr>
+      <tr><td>Best for</td><td>Games, photo editing, data viz, animation</td><td>Icons, logos, charts, illustrations</td></tr>
+    </table>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>Canvas Basics</div>
+      <pre><span class="tag">&lt;canvas</span> <span class="attr">id</span>=<span class="val">"myCanvas"</span> <span class="attr">width</span>=<span class="val">"400"</span> <span class="attr">height</span>=<span class="val">"200"</span><span class="tag">&gt;</span>
+  Fallback content for no-canvas browsers
+<span class="tag">&lt;/canvas&gt;</span>
+
+<span class="kw">const</span> canvas = document.<span class="fn">getElementById</span>(<span class="str">'myCanvas'</span>);
+<span class="kw">const</span> ctx = canvas.<span class="fn">getContext</span>(<span class="str">'2d'</span>); <span class="cm">// or 'webgl' for 3D</span>
+
+ctx.fillStyle = <span class="str">'#f97316'</span>;
+ctx.<span class="fn">fillRect</span>(<span class="num">10</span>, <span class="num">10</span>, <span class="num">100</span>, <span class="num">50</span>);  <span class="cm">// x, y, width, height</span>
+
+ctx.<span class="fn">beginPath</span>();
+ctx.<span class="fn">arc</span>(<span class="num">200</span>, <span class="num">100</span>, <span class="num">50</span>, <span class="num">0</span>, Math.PI * <span class="num">2</span>); <span class="cm">// circle</span>
+ctx.fillStyle = <span class="str">'#38bdf8'</span>;
+ctx.<span class="fn">fill</span>();</pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- S13: WEB STORAGE -->
+<div class="topic" id="s13">
+  <div class="topic-header">
+    <span class="topic-num">13</span>
+    <h2 class="topic-title">Web Storage APIs</h2>
+    <span class="pill p-hot">🔥 Most Asked</span>
+  </div>
+  <div class="subtopic">
+    <h3>localStorage vs sessionStorage vs Cookies vs IndexedDB</h3>
+    <table>
+      <tr><th></th><th>localStorage</th><th>sessionStorage</th><th>Cookie</th><th>IndexedDB</th></tr>
+      <tr><td>Capacity</td><td>~5-10MB</td><td>~5MB</td><td>~4KB</td><td>GBs</td></tr>
+      <tr><td>Expiry</td><td>Never (manual)</td><td>Tab close</td><td>Set expiry</td><td>Never (manual)</td></tr>
+      <tr><td>Sent with requests?</td><td>❌ No</td><td>❌ No</td><td>✅ Yes (auto)</td><td>❌ No</td></tr>
+      <tr><td>Accessible from JS?</td><td>✅ Yes</td><td>✅ Yes</td><td>✅ (if not HttpOnly)</td><td>✅ Yes</td></tr>
+      <tr><td>Scope</td><td>Origin</td><td>Origin + tab</td><td>Domain + path</td><td>Origin</td></tr>
+      <tr><td>Best for</td><td>User prefs, theme, non-sensitive</td><td>Form data, temp state</td><td>Auth tokens, session</td><td>Large structured data, offline</td></tr>
+    </table>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>Storage API Usage</div>
+      <pre><span class="cm">// localStorage — survives browser close</span>
+localStorage.<span class="fn">setItem</span>(<span class="str">'theme'</span>, <span class="str">'dark'</span>);
+localStorage.<span class="fn">getItem</span>(<span class="str">'theme'</span>);          <span class="cm">// 'dark'</span>
+localStorage.<span class="fn">removeItem</span>(<span class="str">'theme'</span>);
+localStorage.<span class="fn">clear</span>();                   <span class="cm">// remove all</span>
+
+<span class="cm">// Store objects (must stringify)</span>
+localStorage.<span class="fn">setItem</span>(<span class="str">'user'</span>, <span class="fn">JSON.stringify</span>({ name: <span class="str">'Shailesh'</span> }));
+<span class="kw">const</span> user = <span class="fn">JSON.parse</span>(localStorage.<span class="fn">getItem</span>(<span class="str">'user'</span>));
+
+<span class="cm">// sessionStorage — same API, different scope</span>
+sessionStorage.<span class="fn">setItem</span>(<span class="str">'step'</span>, <span class="str">'2'</span>); <span class="cm">// gone when tab closes</span>
+
+<span class="cm">// storage event — listen for changes from OTHER tabs</span>
+window.<span class="fn">addEventListener</span>(<span class="str">'storage'</span>, (e) =&gt; {
+  console.<span class="fn">log</span>(e.key, e.oldValue, e.newValue, e.storageArea);
+});</pre>
+    </div>
+    <div class="iq">
+      <div class="q">Q: Why shouldn't you store auth tokens in localStorage?</div>
+      <p>localStorage is accessible by ANY JavaScript on the page — including injected third-party scripts. If the page has XSS vulnerability, tokens can be stolen. Cookies with HttpOnly flag are NOT accessible by JavaScript at all — even if XSS injects code, it can't read HttpOnly cookies. For auth tokens: use HttpOnly, Secure, SameSite=Strict cookies. For non-sensitive user preferences (theme, language): localStorage is fine.</p>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- S14: WEB WORKERS -->
+<div class="topic" id="s14">
+  <div class="topic-header">
+    <span class="topic-num">14</span>
+    <h2 class="topic-title">Web Workers</h2>
+    <span class="pill p-new">Advanced</span>
+  </div>
+  <div class="subtopic">
+    <h3>Running JS Off the Main Thread</h3>
+    <p>JavaScript is single-threaded. Expensive computation blocks the UI. Web Workers run in a separate thread — no DOM access, communicate via message passing.</p>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>Web Worker Example</div>
+      <pre><span class="cm">// main.js — create worker</span>
+<span class="kw">const</span> worker = <span class="kw">new</span> <span class="fn">Worker</span>(<span class="str">'worker.js'</span>);
+
+worker.<span class="fn">postMessage</span>({ data: largeArray }); <span class="cm">// send to worker</span>
+
+worker.<span class="fn">onmessage</span> = (e) =&gt; {
+  console.<span class="fn">log</span>(<span class="str">'Result:'</span>, e.data); <span class="cm">// receive from worker</span>
+};
+worker.<span class="fn">onerror</span> = (e) =&gt; console.<span class="fn">error</span>(e);
+worker.<span class="fn">terminate</span>(); <span class="cm">// stop worker when done</span>
+
+<span class="cm">// worker.js — runs in separate thread</span>
+self.<span class="fn">onmessage</span> = (e) =&gt; {
+  <span class="kw">const</span> result = e.data.data.<span class="fn">reduce</span>((sum, n) =&gt; sum + n, <span class="num">0</span>); <span class="cm">// heavy compute</span>
+  self.<span class="fn">postMessage</span>(result); <span class="cm">// send back to main</span>
+};
+<span class="cm">// Workers can: fetch, use IndexedDB, import scripts
+// Workers CANNOT: access DOM, window, document</span></pre>
+    </div>
+    <div class="iq">
+      <div class="q">Q: Difference between Web Workers, Service Workers, and Shared Workers?</div>
+      <p>Web Worker: one tab, dedicated to that page, dies with page. Service Worker: intercepts network requests, enables offline/PWA, runs independently of any tab (background). Shared Worker: shared across multiple tabs from same origin. Use Web Workers for CPU-intensive computation, Service Workers for caching/offline/push notifications, Shared Workers for cross-tab communication.</p>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- S15: CUSTOM ELEMENTS -->
+<div class="topic" id="s15">
+  <div class="topic-header">
+    <span class="topic-num">15</span>
+    <h2 class="topic-title">Custom Elements & Shadow DOM</h2>
+    <span class="pill p-new">Advanced</span>
+  </div>
+  <div class="subtopic">
+    <h3>Web Components</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>Custom Element</div>
+      <pre><span class="cm">// Define a custom element</span>
+<span class="kw">class</span> <span class="fn">UserCard</span> <span class="kw">extends</span> HTMLElement {
+  <span class="fn">constructor</span>() {
+    <span class="kw">super</span>();
+    <span class="kw">const</span> shadow = this.<span class="fn">attachShadow</span>({ mode: <span class="str">'open'</span> }); <span class="cm">// scoped DOM</span>
+    shadow.innerHTML = <span class="str">`
+      &lt;style&gt; /* styles only affect this component */ &lt;/style&gt;
+      &lt;div&gt;&lt;slot name="name"&gt;&lt;/slot&gt;&lt;/div&gt;
+    `</span>;
+  }
+
+  <span class="fn">connectedCallback</span>()    { <span class="cm">/* added to DOM */</span> }
+  <span class="fn">disconnectedCallback</span>() { <span class="cm">/* removed from DOM */</span> }
+  <span class="kw">static</span> get <span class="fn">observedAttributes</span>() { <span class="kw">return</span> [<span class="str">'name'</span>]; }
+  <span class="fn">attributeChangedCallback</span>(name, oldVal, newVal) { <span class="cm">/* attr changed */</span> }
+}
+
+customElements.<span class="fn">define</span>(<span class="str">'user-card'</span>, UserCard); <span class="cm">// must contain hyphen</span>
+
+<span class="cm">&lt;!-- Usage --&gt;</span>
+<span class="tag">&lt;user-card&gt;</span>
+  <span class="tag">&lt;span</span> <span class="attr">slot</span>=<span class="val">"name"</span><span class="tag">&gt;</span>Shailesh<span class="tag">&lt;/span&gt;</span>
+<span class="tag">&lt;/user-card&gt;</span></pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+
+<!-- ===== SECTIONS 16-19: PERFORMANCE ===== -->
+<div class="section-label">Performance</div>
+
+<div class="topic" id="s16">
+  <div class="topic-header">
+    <span class="topic-num">16</span>
+    <h2 class="topic-title">Critical Rendering Path Optimization</h2>
+    <span class="pill p-perf">Performance</span>
+  </div>
+  <div class="subtopic">
+    <h3>What Blocks Rendering</h3>
+    <ul>
+      <li><strong>CSS is render-blocking</strong> — browser won't paint until CSSOM is built. Put all CSS in &lt;head&gt; so it downloads early. Inline critical CSS for above-the-fold content.</li>
+      <li><strong>JS is parser-blocking</strong> — by default, &lt;script&gt; pauses HTML parsing while it downloads and executes. Use async or defer.</li>
+      <li><strong>Font loading</strong> — can cause FOUT (Flash of Unstyled Text) or FOIT (Flash of Invisible Text). Use font-display: swap.</li>
+    </ul>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<div class="topic" id="s17">
+  <div class="topic-header">
+    <span class="topic-num">17</span>
+    <h2 class="topic-title">Script Loading — async vs defer</h2>
+    <span class="pill p-hot">🔥 Most Asked</span>
+  </div>
+  <div class="subtopic">
+    <h3>async vs defer vs normal</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>Script Loading Comparison</div>
+      <pre><span class="cm">&lt;!-- Normal: parser BLOCKS while downloading + executing --&gt;</span>
+<span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="val">"script.js"</span><span class="tag">&gt;&lt;/script&gt;</span>
+
+<span class="cm">&lt;!-- async: downloads parallel, executes ASAP (may interrupt parsing) --&gt;</span>
+<span class="tag">&lt;script</span> <span class="attr">async</span> <span class="attr">src</span>=<span class="val">"analytics.js"</span><span class="tag">&gt;&lt;/script&gt;</span>
+
+<span class="cm">&lt;!-- defer: downloads parallel, executes AFTER HTML parsed, IN ORDER --&gt;</span>
+<span class="tag">&lt;script</span> <span class="attr">defer</span> <span class="attr">src</span>=<span class="val">"app.js"</span><span class="tag">&gt;&lt;/script&gt;</span>
+
+<span class="cm">&lt;!-- type="module": defer by default, strict mode, own scope --&gt;</span>
+<span class="tag">&lt;script</span> <span class="attr">type</span>=<span class="val">"module"</span> <span class="attr">src</span>=<span class="val">"main.js"</span><span class="tag">&gt;&lt;/script&gt;</span></pre>
+    </div>
+    <table>
+      <tr><th></th><th>Normal</th><th>async</th><th>defer</th></tr>
+      <tr><td>Download</td><td>Blocks parsing</td><td>Parallel to parsing</td><td>Parallel to parsing</td></tr>
+      <tr><td>Execute when</td><td>Immediately (blocks)</td><td>As soon as downloaded</td><td>After HTML fully parsed</td></tr>
+      <tr><td>Order guaranteed</td><td>Yes</td><td>❌ No — whichever downloads first</td><td>✅ Yes — in document order</td></tr>
+      <tr><td>DOMContentLoaded</td><td>Waits for script</td><td>Does NOT wait</td><td>Fires after deferred scripts</td></tr>
+      <tr><td>Best for</td><td>Avoid (legacy)</td><td>Independent scripts (analytics, ads)</td><td>App scripts that need DOM</td></tr>
+    </table>
+    <div class="iq">
+      <div class="q">Q: Where should you put script tags — head or end of body?</div>
+      <p>Modern answer: in &lt;head&gt; with defer (preferred). This starts downloading early but doesn't block parsing. Old answer: end of &lt;body&gt; — same effect as defer but delays download start. Never put scripts in &lt;head&gt; without async/defer — it blocks parsing. Use async for independent third-party scripts (Google Analytics). Use defer for your app scripts that need the DOM.</p>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<div class="topic" id="s18">
+  <div class="topic-header">
+    <span class="topic-num">18</span>
+    <h2 class="topic-title">Resource Hints — preload, prefetch, preconnect</h2>
+    <span class="pill p-perf">Performance</span>
+  </div>
+  <div class="subtopic">
+    <h3>Hint the Browser What to Load</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>Resource Hints</div>
+      <pre><span class="cm">&lt;!-- preload: MUST have this resource soon for THIS page --&gt;</span>
+<span class="cm">&lt;!-- High priority download, does NOT execute (needs as= attribute) --&gt;</span>
+<span class="tag">&lt;link</span> <span class="attr">rel</span>=<span class="val">"preload"</span> <span class="attr">href</span>=<span class="val">"hero.jpg"</span>     <span class="attr">as</span>=<span class="val">"image"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;link</span> <span class="attr">rel</span>=<span class="val">"preload"</span> <span class="attr">href</span>=<span class="val">"font.woff2"</span>   <span class="attr">as</span>=<span class="val">"font"</span> <span class="attr">crossorigin</span><span class="tag">&gt;</span>
+<span class="tag">&lt;link</span> <span class="attr">rel</span>=<span class="val">"preload"</span> <span class="attr">href</span>=<span class="val">"critical.css"</span> <span class="attr">as</span>=<span class="val">"style"</span><span class="tag">&gt;</span>
+
+<span class="cm">&lt;!-- prefetch: likely needed on NEXT navigation --&gt;</span>
+<span class="cm">&lt;!-- Low priority, good for pre-loading next page --&gt;</span>
+<span class="tag">&lt;link</span> <span class="attr">rel</span>=<span class="val">"prefetch"</span> <span class="attr">href</span>=<span class="val">"/checkout.js"</span><span class="tag">&gt;</span>
+
+<span class="cm">&lt;!-- preconnect: establish TCP+TLS connection early --&gt;</span>
+<span class="cm">&lt;!-- Saves 100-500ms on cross-origin requests --&gt;</span>
+<span class="tag">&lt;link</span> <span class="attr">rel</span>=<span class="val">"preconnect"</span> <span class="attr">href</span>=<span class="val">"https://fonts.googleapis.com"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;link</span> <span class="attr">rel</span>=<span class="val">"preconnect"</span> <span class="attr">href</span>=<span class="val">"https://api.example.com"</span> <span class="attr">crossorigin</span><span class="tag">&gt;</span>
+
+<span class="cm">&lt;!-- dns-prefetch: DNS lookup only (weaker than preconnect, wider support) --&gt;</span>
+<span class="tag">&lt;link</span> <span class="attr">rel</span>=<span class="val">"dns-prefetch"</span> <span class="attr">href</span>=<span class="val">"https://cdn.example.com"</span><span class="tag">&gt;</span></pre>
+    </div>
+    <table>
+      <tr><th>Hint</th><th>When</th><th>Priority</th></tr>
+      <tr><td>preload</td><td>Critical resources for current page (LCP image, hero font)</td><td>High</td></tr>
+      <tr><td>prefetch</td><td>Resources for likely next navigation</td><td>Low</td></tr>
+      <tr><td>preconnect</td><td>Establish connection to known cross-origin servers</td><td>Medium</td></tr>
+      <tr><td>dns-prefetch</td><td>DNS lookup for likely future requests</td><td>Low</td></tr>
+    </table>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<div class="topic" id="s19">
+  <div class="topic-header">
+    <span class="topic-num">19</span>
+    <h2 class="topic-title">Lazy Loading</h2>
+    <span class="pill p-perf">Performance</span>
+  </div>
+  <div class="subtopic">
+    <h3>Native Lazy Loading</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>loading="lazy"</div>
+      <pre><span class="cm">&lt;!-- Images: don't load until near viewport --&gt;</span>
+<span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="val">"below-fold.jpg"</span> <span class="attr">loading</span>=<span class="val">"lazy"</span> <span class="attr">alt</span>=<span class="val">"..."</span><span class="tag">&gt;</span>
+
+<span class="cm">&lt;!-- iFrames: same --&gt;</span>
+<span class="tag">&lt;iframe</span> <span class="attr">src</span>=<span class="val">"map.html"</span> <span class="attr">loading</span>=<span class="val">"lazy"</span><span class="tag">&gt;&lt;/iframe&gt;</span>
+
+<span class="cm">&lt;!-- loading values:
+  eager (default): load immediately
+  lazy: defer until near viewport
+  auto: browser decides --&gt;</span>
+
+<span class="cm">&lt;!-- Never lazy-load above-the-fold / LCP images --&gt;</span>
+<span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="val">"hero.jpg"</span> <span class="attr">loading</span>=<span class="val">"eager"</span> <span class="attr">fetchpriority</span>=<span class="val">"high"</span> <span class="attr">alt</span>=<span class="val">"Hero"</span><span class="tag">&gt;</span>
+<span class="cm">&lt;!-- fetchpriority="high" tells browser this is the LCP image --&gt;</span></pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- ===== SECTIONS 20-23: ACCESSIBILITY & SEO ===== -->
+<div class="section-label">Accessibility & SEO</div>
+
+<div class="topic" id="s20">
+  <div class="topic-header">
+    <span class="topic-num">20</span>
+    <h2 class="topic-title">Accessibility (a11y)</h2>
+    <span class="pill p-acc">🔥 Senior Must-Know</span>
+  </div>
+  <div class="subtopic">
+    <h3>WCAG & Core Principles</h3>
+    <p>WCAG (Web Content Accessibility Guidelines) defines accessibility standards. The four principles are <strong>POUR</strong>:</p>
+    <ul>
+      <li><strong>Perceivable</strong> — info must be presentable in different ways (alt text, captions, sufficient color contrast)</li>
+      <li><strong>Operable</strong> — all functionality available via keyboard, enough time, no seizure risks</li>
+      <li><strong>Understandable</strong> — readable, predictable, input assistance</li>
+      <li><strong>Robust</strong> — compatible with assistive technologies (proper HTML, ARIA)</li>
+    </ul>
+  </div>
+
+  <div class="subtopic">
+    <h3>Keyboard Navigation</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>Keyboard Accessibility</div>
+      <pre><span class="cm">&lt;!-- tabindex values --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">tabindex</span>=<span class="val">"0"</span><span class="tag">&gt;</span>Focusable in natural order<span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">tabindex</span>=<span class="val">"-1"</span><span class="tag">&gt;</span>Focusable via JS only (focus())<span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">tabindex</span>=<span class="val">"2"</span><span class="tag">&gt;</span>Jumps order (avoid — use natural DOM order)<span class="tag">&lt;/div&gt;</span>
+
+<span class="cm">&lt;!-- Skip link — first focusable element --&gt;</span>
+<span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="val">"#main"</span> <span class="attr">class</span>=<span class="val">"sr-only focus:not-sr-only"</span><span class="tag">&gt;</span>Skip to main content<span class="tag">&lt;/a&gt;</span>
+
+<span class="cm">&lt;!-- Custom interactive element --&gt;</span>
+<span class="tag">&lt;div</span>
+  <span class="attr">role</span>=<span class="val">"button"</span>
+  <span class="attr">tabindex</span>=<span class="val">"0"</span>
+  <span class="attr">aria-pressed</span>=<span class="val">"false"</span>
+  <span class="attr">onclick</span>=<span class="val">"toggle()"</span>
+  <span class="attr">onkeydown</span>=<span class="val">"if(e.key==='Enter'||e.key===' ')toggle()"</span><span class="tag">&gt;</span>
+  Toggle  <span class="cm">&lt;!-- Must handle both click AND keyboard --&gt;</span>
+<span class="tag">&lt;/div&gt;</span>
+<span class="cm">&lt;!-- Prefer real &lt;button&gt; — gets all this for free --&gt;</span>
+
+<span class="cm">&lt;!-- Focus management in modals --&gt;</span>
+<span class="cm">// When modal opens: move focus to first element inside</span>
+<span class="cm">// Trap focus inside modal (Tab cycles within)</span>
+<span class="cm">// When modal closes: return focus to trigger element</span></pre>
+    </div>
+    <div class="iq">
+      <div class="q">Q: What is color contrast ratio and why does it matter?</div>
+      <p>WCAG 2.1 requires: normal text ≥ 4.5:1, large text (18pt or 14pt bold) ≥ 3:1, UI components ≥ 3:1. Poor contrast affects colorblind users and people in bright light. Check with tools: WebAIM Contrast Checker, Chrome DevTools accessibility panel. The orange-on-white combinations often fail — test everything.</p>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<div class="topic" id="s21">
+  <div class="topic-header">
+    <span class="topic-num">21</span>
+    <h2 class="topic-title">ARIA — Accessible Rich Internet Applications</h2>
+    <span class="pill p-hot">🔥 Most Asked</span>
+  </div>
+  <div class="subtopic">
+    <h3>ARIA Rules & Common Attributes</h3>
+    <div class="callout warn">
+      <strong>First Rule of ARIA</strong>
+      Don't use ARIA if you can use a native HTML element. &lt;button&gt; is always better than &lt;div role="button"&gt;. ARIA only changes what is announced — it doesn't add keyboard behavior or focus. You still need JS for that.
+    </div>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>Essential ARIA Attributes</div>
+      <pre><span class="cm">&lt;!-- Roles: what is this element? --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">role</span>=<span class="val">"alert"</span><span class="tag">&gt;</span>Error: Invalid email<span class="tag">&lt;/div&gt;</span>   <span class="cm">&lt;!-- auto-announced --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">role</span>=<span class="val">"dialog"</span> <span class="attr">aria-modal</span>=<span class="val">"true"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;nav</span>  <span class="attr">role</span>=<span class="val">"navigation"</span><span class="tag">&gt;</span> <span class="cm">&lt;!-- redundant on &lt;nav&gt; — already has implicit role --&gt;</span>
+
+<span class="cm">&lt;!-- States --&gt;</span>
+<span class="tag">&lt;button</span> <span class="attr">aria-expanded</span>=<span class="val">"false"</span><span class="tag">&gt;</span>Menu<span class="tag">&lt;/button&gt;</span>      <span class="cm">&lt;!-- accordion, dropdown --&gt;</span>
+<span class="tag">&lt;button</span> <span class="attr">aria-pressed</span>=<span class="val">"true"</span><span class="tag">&gt;</span>Bold<span class="tag">&lt;/button&gt;</span>        <span class="cm">&lt;!-- toggle button --&gt;</span>
+<span class="tag">&lt;input</span>  <span class="attr">aria-invalid</span>=<span class="val">"true"</span><span class="tag">&gt;</span>                     <span class="cm">&lt;!-- validation error --&gt;</span>
+<span class="tag">&lt;li</span>     <span class="attr">aria-selected</span>=<span class="val">"true"</span><span class="tag">&gt;</span>Option<span class="tag">&lt;/li&gt;</span>          <span class="cm">&lt;!-- listbox selection --&gt;</span>
+<span class="tag">&lt;div</span>    <span class="attr">aria-busy</span>=<span class="val">"true"</span><span class="tag">&gt;</span>Loading...<span class="tag">&lt;/div&gt;</span>         <span class="cm">&lt;!-- content loading --&gt;</span>
+<span class="tag">&lt;input</span>  <span class="attr">aria-disabled</span>=<span class="val">"true"</span><span class="tag">&gt;</span>                    <span class="cm">&lt;!-- semantic disabled --&gt;</span>
+
+<span class="cm">&lt;!-- Labeling --&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">aria-label</span>=<span class="val">"Search products"</span><span class="tag">&gt;</span>             <span class="cm">&lt;!-- no visible label --&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">aria-labelledby</span>=<span class="val">"heading-id"</span><span class="tag">&gt;</span>            <span class="cm">&lt;!-- visible label elsewhere --&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">aria-describedby</span>=<span class="val">"hint-id error-id"</span><span class="tag">&gt;</span>     <span class="cm">&lt;!-- additional context --&gt;</span>
+
+<span class="cm">&lt;!-- Live regions --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">aria-live</span>=<span class="val">"polite"</span><span class="tag">&gt;</span>  <span class="cm">&lt;!-- announce change when idle --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">aria-live</span>=<span class="val">"assertive"</span><span class="tag">&gt;</span>  <span class="cm">&lt;!-- announce immediately --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">aria-live</span>=<span class="val">"off"</span><span class="tag">&gt;</span>        <span class="cm">&lt;!-- don't announce (default) --&gt;</span>
+
+<span class="cm">&lt;!-- Hide from screen reader --&gt;</span>
+<span class="tag">&lt;span</span> <span class="attr">aria-hidden</span>=<span class="val">"true"</span><span class="tag">&gt;</span>★★★☆☆<span class="tag">&lt;/span&gt;</span>
+<span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="val">"sr-only"</span><span class="tag">&gt;</span>3 out of 5 stars<span class="tag">&lt;/span&gt;</span>  <span class="cm">&lt;!-- visible to SR only --&gt;</span></pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<div class="topic" id="s22">
+  <div class="topic-header">
+    <span class="topic-num">22</span>
+    <h2 class="topic-title">SEO & Meta Tags</h2>
+    <span class="pill p-core">SEO</span>
+  </div>
+  <div class="subtopic">
+    <h3>SEO Best Practices</h3>
+    <ul>
+      <li><strong>Title tag</strong>: 50-60 characters, unique per page, keyword near front</li>
+      <li><strong>Meta description</strong>: 150-160 chars, compelling, includes keywords naturally</li>
+      <li><strong>One H1</strong> per page — matches search intent</li>
+      <li><strong>Heading hierarchy</strong> — h1 → h2 → h3, never skip levels</li>
+      <li><strong>Canonical tag</strong> — prevents duplicate content penalty</li>
+      <li><strong>Alt text</strong> — describes image content, include keywords naturally</li>
+      <li><strong>Structured data</strong> (Schema.org JSON-LD) — enables rich snippets</li>
+      <li><strong>Page speed</strong> — Core Web Vitals (LCP, FID/INP, CLS) directly affect ranking</li>
+    </ul>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>Structured Data — JSON-LD</div>
+      <pre><span class="tag">&lt;script</span> <span class="attr">type</span>=<span class="val">"application/ld+json"</span><span class="tag">&gt;</span>
+{
+  <span class="str">"@context"</span>: <span class="str">"https://schema.org"</span>,
+  <span class="str">"@type"</span>: <span class="str">"Product"</span>,
+  <span class="str">"name"</span>: <span class="str">"Term Life Insurance"</span>,
+  <span class="str">"description"</span>: <span class="str">"Comprehensive coverage for your family"</span>,
+  <span class="str">"offers"</span>: {
+    <span class="str">"@type"</span>: <span class="str">"Offer"</span>,
+    <span class="str">"price"</span>: <span class="str">"500"</span>,
+    <span class="str">"priceCurrency"</span>: <span class="str">"INR"</span>
+  },
+  <span class="str">"aggregateRating"</span>: {
+    <span class="str">"@type"</span>: <span class="str">"AggregateRating"</span>,
+    <span class="str">"ratingValue"</span>: <span class="str">"4.8"</span>,
+    <span class="str">"reviewCount"</span>: <span class="str">"2847"</span>
+  }
+}
+<span class="tag">&lt;/script&gt;</span></pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<div class="topic" id="s23">
+  <div class="topic-header">
+    <span class="topic-num">23</span>
+    <h2 class="topic-title">Open Graph & Twitter Cards</h2>
+    <span class="pill p-core">Social SEO</span>
+  </div>
+  <div class="subtopic">
+    <h3>Social Sharing Meta Tags</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>Complete Social Meta Tags</div>
+      <pre><span class="cm">&lt;!-- Open Graph (Facebook, LinkedIn, WhatsApp, Slack) --&gt;</span>
+<span class="tag">&lt;meta</span> <span class="attr">property</span>=<span class="val">"og:type"</span>        <span class="attr">content</span>=<span class="val">"website"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;meta</span> <span class="attr">property</span>=<span class="val">"og:url"</span>         <span class="attr">content</span>=<span class="val">"https://policybazaar.com/"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;meta</span> <span class="attr">property</span>=<span class="val">"og:title"</span>       <span class="attr">content</span>=<span class="val">"Compare Insurance — PolicyBazaar"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;meta</span> <span class="attr">property</span>=<span class="val">"og:description"</span>  <span class="attr">content</span>=<span class="val">"India's #1 insurance comparison platform"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;meta</span> <span class="attr">property</span>=<span class="val">"og:image"</span>        <span class="attr">content</span>=<span class="val">"https://cdn.pb.com/social.jpg"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;meta</span> <span class="attr">property</span>=<span class="val">"og:image:width"</span>  <span class="attr">content</span>=<span class="val">"1200"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;meta</span> <span class="attr">property</span>=<span class="val">"og:image:height"</span> <span class="attr">content</span>=<span class="val">"630"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;meta</span> <span class="attr">property</span>=<span class="val">"og:locale"</span>       <span class="attr">content</span>=<span class="val">"en_IN"</span><span class="tag">&gt;</span>
+
+<span class="cm">&lt;!-- Twitter Cards --&gt;</span>
+<span class="tag">&lt;meta</span> <span class="attr">name</span>=<span class="val">"twitter:card"</span>        <span class="attr">content</span>=<span class="val">"summary_large_image"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;meta</span> <span class="attr">name</span>=<span class="val">"twitter:site"</span>        <span class="attr">content</span>=<span class="val">"@PolicyBazaar"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;meta</span> <span class="attr">name</span>=<span class="val">"twitter:title"</span>       <span class="attr">content</span>=<span class="val">"Compare Insurance"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;meta</span> <span class="attr">name</span>=<span class="val">"twitter:description"</span>  <span class="attr">content</span>=<span class="val">"..."</span><span class="tag">&gt;</span>
+<span class="tag">&lt;meta</span> <span class="attr">name</span>=<span class="val">"twitter:image"</span>       <span class="attr">content</span>=<span class="val">"https://cdn.pb.com/social.jpg"</span><span class="tag">&gt;</span></pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- ===== SECTIONS 24-25: SECURITY ===== -->
+<div class="section-label">Security</div>
+
+<div class="topic" id="s24">
+  <div class="topic-header">
+    <span class="topic-num">24</span>
+    <h2 class="topic-title">Security — XSS, CSRF, CSP</h2>
+    <span class="pill p-hot">🔥 Senior Must-Know</span>
+  </div>
+  <div class="subtopic">
+    <h3>XSS — Cross-Site Scripting</h3>
+    <p>XSS: attacker injects malicious scripts into your page. When other users load the page, the script runs in their browser — can steal cookies, redirect, keylog.</p>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>XSS Prevention</div>
+      <pre><span class="cm">// ❌ DANGEROUS — innerHTML with user content</span>
+element.innerHTML = userInput; <span class="cm">// XSS if input = "&lt;script&gt;steal()&lt;/script&gt;"</span>
+
+<span class="cm">// ✅ SAFE — textContent (escapes HTML)</span>
+element.textContent = userInput;
+
+<span class="cm">// ✅ SAFE — createElement (never interprets as HTML)</span>
+<span class="kw">const</span> p = document.<span class="fn">createElement</span>(<span class="str">'p'</span>);
+p.textContent = userInput;
+
+<span class="cm">// ✅ SAFE — DOMPurify for rich content</span>
+element.innerHTML = DOMPurify.<span class="fn">sanitize</span>(userInput);
+
+<span class="cm">// CSP Header — whitelist what can run</span>
+<span class="cm">// Content-Security-Policy: default-src 'self'; script-src 'self' cdn.example.com</span>
+<span class="tag">&lt;meta</span> <span class="attr">http-equiv</span>=<span class="val">"Content-Security-Policy"</span>
+      <span class="attr">content</span>=<span class="val">"default-src 'self'; img-src https:; script-src 'self'"</span><span class="tag">&gt;</span></pre>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>CSRF & Security Headers</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>Security Headers via meta</div>
+      <pre><span class="cm">&lt;!-- X-Frame-Options: prevent clickjacking (server header preferred) --&gt;</span>
+<span class="tag">&lt;meta</span> <span class="attr">http-equiv</span>=<span class="val">"X-Frame-Options"</span> <span class="attr">content</span>=<span class="val">"SAMEORIGIN"</span><span class="tag">&gt;</span>
+
+<span class="cm">&lt;!-- Referrer Policy --&gt;</span>
+<span class="tag">&lt;meta</span> <span class="attr">name</span>=<span class="val">"referrer"</span> <span class="attr">content</span>=<span class="val">"strict-origin-when-cross-origin"</span><span class="tag">&gt;</span>
+
+<span class="cm">&lt;!-- CSRF protection: hidden token in forms --&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"hidden"</span> <span class="attr">name</span>=<span class="val">"csrf_token"</span> <span class="attr">value</span>=<span class="val">"server-generated-token"</span><span class="tag">&gt;</span>
+
+<span class="cm">&lt;!-- Subresource Integrity (SRI) — verify CDN files not tampered --&gt;</span>
+<span class="tag">&lt;script</span>
+  <span class="attr">src</span>=<span class="val">"https://cdn.example.com/lib.js"</span>
+  <span class="attr">integrity</span>=<span class="val">"sha384-abc123..."</span>
+  <span class="attr">crossorigin</span>=<span class="val">"anonymous"</span><span class="tag">&gt;&lt;/script&gt;</span></pre>
+    </div>
+    <div class="iq">
+      <div class="q">Q: What is clickjacking and how do you prevent it?</div>
+      <p>Clickjacking: attacker loads your site in a transparent iframe on their site. User thinks they're clicking the attacker's content but actually clicking your site (like/buy/transfer buttons). Prevention: X-Frame-Options: DENY or SAMEORIGIN header prevents your page from being embedded in iframes. Or CSP: frame-ancestors 'none'. Also use framebusting JS as fallback.</p>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<div class="topic" id="s25">
+  <div class="topic-header">
+    <span class="topic-num">25</span>
+    <h2 class="topic-title">iframe & sandbox</h2>
+    <span class="pill p-core">Core</span>
+  </div>
+  <div class="subtopic">
+    <h3>Secure iFrame Usage</h3>
+    <div class="code-block">
+      <div class="code-label"><span class="dot"></span>iframe with sandbox</div>
+      <pre><span class="cm">&lt;!-- sandbox restricts iframe capabilities --&gt;</span>
+<span class="tag">&lt;iframe</span>
+  <span class="attr">src</span>=<span class="val">"https://trusted-widget.com"</span>
+  <span class="attr">sandbox</span>=<span class="val">"allow-scripts allow-same-origin"</span>
+  <span class="attr">loading</span>=<span class="val">"lazy"</span>
+  <span class="attr">title</span>=<span class="val">"Payment widget"</span>
+  <span class="attr">width</span>=<span class="val">"400"</span>
+  <span class="attr">height</span>=<span class="val">"300"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;/iframe&gt;</span>
+
+<span class="cm">&lt;!-- sandbox values:
+  allow-scripts         — allow JS execution
+  allow-same-origin     — maintain origin (needed for cookies)
+  allow-forms           — allow form submission
+  allow-popups          — allow window.open()
+  allow-top-navigation  — allow changing parent URL
+  (empty sandbox)       — maximum restrictions --&gt;</span>
+
+<span class="cm">&lt;!-- Communication with iframe via postMessage --&gt;</span>
+<span class="cm">// Parent → iframe</span>
+iframe.contentWindow.<span class="fn">postMessage</span>({ type: <span class="str">'data'</span>, payload: data }, <span class="str">'https://trusted.com'</span>);
+
+<span class="cm">// iframe → Parent</span>
+window.parent.<span class="fn">postMessage</span>({ type: <span class="str">'response'</span> }, <span class="str">'https://parent.com'</span>);
+
+<span class="cm">// Always verify origin</span>
+window.<span class="fn">addEventListener</span>(<span class="str">'message'</span>, (e) =&gt; {
+  <span class="kw">if</span> (e.origin !== <span class="str">'https://trusted.com'</span>) <span class="kw">return</span>;
+  <span class="fn">handleMessage</span>(e.data);
+});</pre>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+
+<!-- ===== SECTION 26: ALL INTERVIEW Q&A ===== -->
+<div class="section-label">Interview Q&A</div>
+
+<div class="topic" id="qa">
+  <div class="topic-header">
+    <span class="topic-num">26</span>
+    <h2 class="topic-title">Complete Interview Q&A — 2-3 Year Level</h2>
+    <span class="pill p-hot">100% Prepare</span>
+  </div>
+
+  <div class="subtopic">
+    <h3>Rendering & Browser</h3>
+    <div class="iq">
+      <div class="q">Q: What is the difference between DOMContentLoaded and load events?</div>
+      <p>DOMContentLoaded fires when HTML is fully parsed and DOM is ready — stylesheets, images, subframes may still be loading. This is when most JS that manipulates DOM should run. load fires when EVERYTHING is loaded: images, stylesheets, scripts, iframes. Use DOMContentLoaded for UI initialization. Use load for things that need full page including images (e.g., measuring image dimensions).</p>
+    </div>
+
+    <div class="iq">
+      <div class="q">Q: What is the difference between window.onload and document.addEventListener('DOMContentLoaded')?</div>
+      <p>window.onload = DOMContentLoaded fires earlier, covers only HTML parsing. window.onload fires after all resources load. Also: onload can only have ONE handler (it's a property — last assignment wins). addEventListener allows multiple handlers. Always prefer addEventListener over onevent properties.</p>
+    </div>
+
+    <div class="iq">
+      <div class="q">Q: What causes layout thrashing and how do you prevent it?</div>
+      <p>Layout thrashing: reading layout properties (offsetWidth, scrollTop, getBoundingClientRect) after writing styles in a loop. Each read forces the browser to recalculate layout synchronously. Fix: batch all reads before writes, or use requestAnimationFrame, or use FastDOM library. Example — wrong: for each el, setWidth(el) then readWidth(el). Right: read all first, then write all.</p>
+    </div>
+
+    <div class="iq">
+      <div class="q">Q: What is the difference between innerHTML, textContent, and innerText?</div>
+      <p>innerHTML: gets/sets HTML including tags — XSS risk with user content, triggers parsing. textContent: gets/sets text only — no HTML parsing, all tags stripped, includes hidden elements, fastest. innerText: like textContent but CSS-aware — respects display:none (hidden text excluded), triggers reflow, slower. Use textContent for reading/writing plain text (safe), innerHTML only for trusted HTML content.</p>
+    </div>
+
+    <div class="iq">
+      <div class="q">Q: How does the browser handle render-blocking resources?</div>
+      <p>CSS: always render-blocking — browser won't paint until CSSOM built. Minimize by inlining critical CSS, using media attributes for non-critical CSS, preloading. JS: parser-blocking by default — stops HTML parsing. Fix with async (independent scripts) or defer (ordered, after parsing). Fonts: can block text rendering — use font-display: swap in @font-face to show text immediately with fallback font.</p>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>HTML Elements & Semantics</h3>
+    <div class="iq">
+      <div class="q">Q: When would you use a button vs an anchor tag?</div>
+      <p>anchor (&lt;a href&gt;): navigates somewhere — different page, section, download. Has URL, can be right-clicked (open in new tab), bookmarked, shows in browser history. button: performs an action — submit form, toggle modal, trigger JS. No URL, no right-click menu. Rule: if it goes somewhere → anchor. If it does something → button. Never use &lt;a href="#"&gt; for actions — use button. Never use &lt;div onclick&gt; — keyboard users can't use it.</p>
+    </div>
+
+    <div class="iq">
+      <div class="q">Q: What is the difference between strong, b, em, and i?</div>
+      <p>strong: semantic importance — content has strong importance, screen readers may add emphasis. b: stylistically bold without extra importance — product names, keywords. em: stress emphasis — changes meaning of sentence (I didn't say HE did it vs I didn't SAY he did it). i: alternate voice — technical terms, foreign words, thoughts. Use semantic elements (strong, em) when meaning matters; use CSS for purely visual styling.</p>
+    </div>
+
+    <div class="iq">
+      <div class="q">Q: What are data attributes and when do you use them?</div>
+      <p>data-* attributes store custom data on HTML elements without affecting rendering. data-user-id="123", data-action="delete". Access via JS: element.dataset.userId (camelCase conversion auto). Use for: storing IDs for event delegation, passing config to widgets, communication between HTML and JS without class manipulation. Don't use for sensitive data — visible in HTML source.</p>
+    </div>
+
+    <div class="iq">
+      <div class="q">Q: What is the difference between disabled and readonly on inputs?</div>
+      <p>disabled: visually grayed out, not focusable, not submitted with form, excluded from tab order, value ignored. readonly: can be focused, included in form submission, cannot be edited by user (but can be changed by JS). Use disabled for fields that shouldn't participate at all. Use readonly for displaying values that shouldn't be changed but must be submitted (like a confirmation of selected plan).</p>
+    </div>
+
+    <div class="iq">
+      <div class="q">Q: What is the difference between &lt;script&gt;, &lt;script async&gt;, and &lt;script defer&gt;?</div>
+      <p>Normal: HTML parsing pauses, script downloads and executes, then parsing resumes. Async: downloads in parallel, executes immediately when done (interrupts parsing), no order guarantee. Defer: downloads in parallel, executes after HTML is fully parsed, in document order. For app code that needs DOM → defer. For independent analytics/ads → async. Both are better than placing scripts at end of body (they start downloading sooner).</p>
+    </div>
+
+    <div class="iq">
+      <div class="q">Q: What is the purpose of the lang attribute on &lt;html&gt;?</div>
+      <p>&lt;html lang="en"&gt; tells browser and screen readers the language of the page. Screen readers use correct pronunciation and language-specific voice. Search engines use it for language targeting. Browsers apply correct hyphenation rules. Spell checkers use correct dictionary. Use language subtags for regional variants: lang="en-IN" (Indian English), lang="hi" (Hindi). Critical for internationalized apps.</p>
+    </div>
+
+    <div class="iq">
+      <div class="q">Q: What are void elements / self-closing tags?</div>
+      <p>Void elements cannot have children and don't need a closing tag: &lt;br&gt;, &lt;hr&gt;, &lt;img&gt;, &lt;input&gt;, &lt;link&gt;, &lt;meta&gt;, &lt;area&gt;, &lt;base&gt;, &lt;col&gt;, &lt;embed&gt;, &lt;source&gt;, &lt;track&gt;, &lt;wbr&gt;. In HTML5, the slash is optional: &lt;br&gt; and &lt;br /&gt; are both valid. In JSX (React), the slash is required.</p>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>Forms & Inputs</h3>
+    <div class="iq">
+      <div class="q">Q: What is the difference between GET and POST in forms?</div>
+      <p>GET: data appended to URL as query string — visible in URL, cached, bookmarkable, can be shared, browser can prefetch, limited length (~2000 chars). Use for: search, filters, pagination. POST: data in request body — not in URL, not cached, more secure for sensitive data, no length limit. Use for: login, signup, payment, data creation/modification. Key point: GET is idempotent (same result repeatedly), POST is not.</p>
+    </div>
+
+    <div class="iq">
+      <div class="q">Q: What is autocomplete on forms and when should you disable it?</div>
+      <p>autocomplete="on/off" controls browser autofill. Use specific values for best UX: autocomplete="email", "current-password", "new-password", "name", "tel", "address-line1", "cc-number". Disable for: OTP fields (autocomplete="one-time-code" instead), security-critical new passwords, fields that confuse autofill. Never disable for login forms — users rely on password managers (autocomplete="off" breaks them).</p>
+    </div>
+
+    <div class="iq">
+      <div class="q">Q: How does form enctype work?</div>
+      <p>enctype defines how form data is encoded when submitted. application/x-www-form-urlencoded (default): key=value pairs URL-encoded, & separated — good for text data. multipart/form-data: sends each field as a separate part with boundary — REQUIRED for file uploads, slightly larger. text/plain: no encoding — only for debugging, never in production. In React: forms use fetch/axios so enctype matters less, but the underlying concept remains.</p>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>Performance & Core Web Vitals</h3>
+    <div class="iq">
+      <div class="q">Q: What are Core Web Vitals?</div>
+      <p>Google's metrics for page experience: (1) LCP (Largest Contentful Paint): how fast the main content loads — target &lt;2.5s. Affected by: slow server, render-blocking resources, large images. (2) INP (Interaction to Next Paint, replaced FID): how fast the page responds to interactions — target &lt;200ms. (3) CLS (Cumulative Layout Shift): how much content moves unexpectedly — target &lt;0.1. Caused by: images without dimensions, dynamic content insertion, web fonts. All three directly affect Google search ranking.</p>
+    </div>
+
+    <div class="iq">
+      <div class="q">Q: How do you optimize images for the web?</div>
+      <p>Format: use AVIF (best compression) → WebP → JPEG/PNG via &lt;picture&gt;. Size: serve appropriately sized images using srcset — don't serve 1200px images to mobile. Compression: lossy for photos, lossless for graphics with text/transparency. Loading: lazy load below-fold images (loading="lazy"), fetchpriority="high" for LCP image. Dimensions: always set width and height to prevent CLS. CDN: serve from CDN for caching and edge delivery.</p>
+    </div>
+
+    <div class="iq">
+      <div class="q">Q: What is CLS (Cumulative Layout Shift) and how do you fix it?</div>
+      <p>CLS measures unexpected layout shifts — content jumping around as page loads. Causes and fixes: (1) Images without dimensions → always set width/height attributes. (2) Ads/embeds — reserve space with min-height. (3) Web fonts causing FOUT → use font-display: optional or size-adjust to match fallback metrics. (4) Dynamically injected content above existing content → insert below or use fixed dimensions. (5) CSS animations using top/left → use transform instead.</p>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>Accessibility</h3>
+    <div class="iq">
+      <div class="q">Q: What is the difference between aria-label, aria-labelledby, and aria-describedby?</div>
+      <p>aria-label: provides a text label directly (string) — for elements with no visible text (icon buttons). aria-labelledby: references another element's text as the label (ID of visible label) — better than aria-label when there's visible text. aria-describedby: additional descriptive text beyond the label (hint, error message, instructions) — read after the label. Priority: native &lt;label for&gt; &gt; aria-labelledby &gt; aria-label. describedby supplements, doesn't replace labeling.</p>
+    </div>
+
+    <div class="iq">
+      <div class="q">Q: How do you make a modal dialog accessible?</div>
+      <p>When modal opens: (1) Set aria-modal="true" on dialog element. (2) Move focus to first focusable element inside modal. (3) Trap Tab key — cycle through focusable elements inside modal only. (4) Close on Escape key. When modal closes: (5) Return focus to the element that triggered the modal. Also: role="dialog" with aria-labelledby pointing to modal title. aria-live="assertive" for urgent messages. Never remove content from DOM while dialog is open.</p>
+    </div>
+
+    <div class="iq">
+      <div class="q">Q: What is the purpose of the alt attribute on images?</div>
+      <p>alt provides text alternative for images. Screen readers read alt text for users who can't see images. Also displayed when image fails to load. Empty alt="" (not missing): tells screen reader to skip — for decorative images. Missing alt attribute: screen reader reads filename ("hero-image-2024.jpg") — confusing. Descriptive alt: describe what the image shows and its context. For images of text: alt must match the text. For charts: describe the data, not "chart of sales".</p>
+    </div>
+  </div>
+
+  <div class="subtopic">
+    <h3>Security & Storage</h3>
+    <div class="iq">
+      <div class="q">Q: What is the difference between first-party and third-party cookies?</div>
+      <p>First-party: set by the domain you're visiting (example.com sets cookie for example.com). Used for: session management, preferences, auth. Third-party: set by a different domain (ad.tracker.com sets cookie on example.com) — used for cross-site tracking, ads. Modern browsers increasingly block third-party cookies (Safari, Firefox block by default, Chrome phasing out). SameSite=Strict/Lax cookie attribute prevents cross-site requests from including the cookie.</p>
+    </div>
+
+    <div class="iq">
+      <div class="q">Q: What is CORS and how does it relate to HTML?</div>
+      <p>CORS (Cross-Origin Resource Sharing): browser security prevents JS from requesting resources from different origins. Browser sends preflight OPTIONS request, server responds with Access-Control-Allow-Origin header. HTML elements bypass CORS by default: &lt;img src="cross-origin"&gt;, &lt;script src="cdn"&gt;, &lt;link href="cdn.css"&gt;. Adding crossorigin attribute opts into CORS for credentials/SRI. fetch() and XMLHttpRequest are subject to CORS. Solution is server-side headers, not HTML.</p>
+    </div>
+
+    <div class="iq">
+      <div class="q">Q: How do you implement a Progressive Web App (PWA) with HTML?</div>
+      <p>Three requirements: (1) HTTPS. (2) Web App Manifest: &lt;link rel="manifest" href="/manifest.json"&gt; — defines name, icons, start_url, display mode (standalone). (3) Service Worker registered via JS: navigator.serviceWorker.register('/sw.js'). Service Worker intercepts fetch requests for offline caching. Add &lt;meta name="apple-mobile-web-app-capable" content="yes"&gt; for iOS. meta theme-color sets browser chrome color on mobile.</p>
+    </div>
+
+    <div class="iq">
+      <div class="q">Q: What is the difference between Canvas and SVG for building UI elements?</div>
+      <p>SVG is the right choice for UI elements — it's DOM-based (CSS styling, event listeners work), vector (sharp at all scales), accessible (text is real text, ARIA works), easy to animate with CSS. Canvas is for: games, image processing, complex real-time visualizations with thousands of objects, pixel manipulation (filters, WebGL). For charts: SVG for up to ~1000 data points. Canvas/WebGL for real-time financial charts with continuous updates.</p>
+    </div>
+
+    <div class="iq">
+      <div class="q">Q: How do you prevent a form from submitting and validate manually?</div>
+      <p>e.preventDefault() stops default form submission. Then: (1) Use browser's built-in checkValidity() — returns false if any required/pattern/type validation fails. (2) Access validity object per input: input.validity.valueMissing, patternMismatch, etc. (3) Set custom messages: input.setCustomValidity('Error') then reportValidity(). (4) Or use novalidate on form to disable browser UI and handle everything in JS. Libraries like React Hook Form or Zod give much better DX.</p>
+    </div>
+  </div>
+  <a class="back-top" href="#top">↑ Back to top</a>
+</div>
+
+<!-- FOOTER -->
+<div style="border-top:1px solid var(--border); padding:44px 0; margin-top:64px; text-align:center;">
+  <p style="color:var(--muted); font-family:'JetBrains Mono',monospace; font-size:12px; line-height:1.8;">
+    HTML Interview Mastery · 26 Sections · 100+ Topics<br>
+    Browser Internals · Semantic HTML · Forms · Web APIs · Performance · Accessibility · Security · SEO
+  </p>
+  <div class="badge-row" style="justify-content:center; margin-top:14px;">
+    <span class="badge b-o">Semantics ✓</span>
+    <span class="badge b-b">Accessibility ✓</span>
+    <span class="badge b-g">Performance ✓</span>
+    <span class="badge b-p">Security ✓</span>
+  </div>
+</div>
+
+</main>
+</div>
+</body>
+</html>

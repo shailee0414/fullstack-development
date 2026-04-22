@@ -2,10 +2,6 @@ import React from 'react';
 import '../styles/PageContent.css';
 
 export default function JavaScriptPage() {
-
-
-
-  
   return (
     <div className="content">
       

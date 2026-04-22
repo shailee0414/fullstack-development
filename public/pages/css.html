@@ -1,0 +1,2558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSS & SCSS — Complete Mastery Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,800;1,9..144,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #080c10;
+  --surface: #0d1117;
+  --surface2: #161b22;
+  --surface3: #1e2530;
+  --border: #21293a;
+  --border2: #2d3a4d;
+  --accent: #58e5c4;
+  --accent2: #e85d9e;
+  --accent3: #f5a623;
+  --accent4: #7c9ef8;
+  --accent5: #b07ef8;
+  --text: #d4dce8;
+  --muted: #6b7d93;
+  --muted2: #4a5568;
+  --code-bg: #060a0e;
+  --green: #56d364;
+  --red: #ff7b72;
+  --yellow: #e3b341;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Syne', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.7;
+}
+
+/* ── HEADER ── */
+header {
+  position: relative;
+  padding: 80px 48px 56px;
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+  background: radial-gradient(ellipse 80% 60% at 10% 0%, rgba(88,229,196,0.06) 0%, transparent 60%),
+              radial-gradient(ellipse 60% 50% at 90% 100%, rgba(232,93,158,0.06) 0%, transparent 60%),
+              var(--bg);
+}
+header::before {
+  content: 'CSS';
+  position: absolute;
+  right: -40px; top: -20px;
+  font-size: 340px;
+  font-weight: 800;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--accent);
+  opacity: 0.025;
+  line-height: 1;
+  pointer-events: none;
+  letter-spacing: -20px;
+}
+.header-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--accent);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.header-eyebrow::before { content: '//'; color: var(--muted); }
+header h1 {
+  font-size: clamp(2.8rem, 6vw, 5rem);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -3px;
+}
+header h1 em { font-style: normal; color: var(--accent); }
+header h1 span { color: var(--accent2); }
+.header-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin-top: 20px;
+  line-height: 1.6;
+}
+.badge-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 24px; }
+.badge {
+  padding: 5px 14px;
+  border-radius: 3px;
+  font-size: 0.65rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  border: 1px solid;
+}
+.badge-c { border-color: var(--accent);  color: var(--accent);  background: rgba(88,229,196,0.08); }
+.badge-p { border-color: var(--accent2); color: var(--accent2); background: rgba(232,93,158,0.08); }
+.badge-o { border-color: var(--accent3); color: var(--accent3); background: rgba(245,166,35,0.08); }
+.badge-b { border-color: var(--accent4); color: var(--accent4); background: rgba(124,158,248,0.08); }
+.badge-v { border-color: var(--accent5); color: var(--accent5); background: rgba(176,126,248,0.08); }
+
+/* ── LAYOUT ── */
+.shell { display: flex; min-height: calc(100vh - 280px); }
+
+/* ── SIDEBAR ── */
+nav {
+  width: 270px;
+  flex-shrink: 0;
+  border-right: 1px solid var(--border);
+  padding: 28px 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  background: var(--surface);
+}
+nav::-webkit-scrollbar { width: 3px; }
+nav::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+.nav-section { padding: 0 14px; margin-bottom: 4px; }
+.nav-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem;
+  color: var(--muted2);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 10px 8px 4px;
+  display: flex; align-items: center; gap: 8px;
+}
+.nav-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.nav-link {
+  display: block;
+  padding: 5px 10px;
+  color: var(--muted);
+  text-decoration: none;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  border-radius: 4px;
+  transition: all 0.15s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-left: 2px solid transparent;
+}
+.nav-link:hover { color: var(--accent); background: rgba(88,229,196,0.05); border-left-color: var(--accent); }
+
+/* ── MAIN ── */
+main { flex: 1; padding: 48px; max-width: 960px; }
+
+/* ── SECTION DIVIDER ── */
+.sec-div {
+  display: flex; align-items: center; gap: 20px;
+  margin: 64px 0 40px;
+}
+.sec-div-line { flex: 1; height: 1px; background: linear-gradient(90deg, var(--accent), transparent); }
+.sec-div-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--accent);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* ── TOPIC ── */
+.topic { margin-bottom: 72px; scroll-margin-top: 24px; }
+.topic-hdr {
+  display: flex; align-items: baseline; gap: 14px;
+  margin-bottom: 22px; padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+.topic-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  color: var(--accent);
+  background: rgba(88,229,196,0.08);
+  border: 1px solid rgba(88,229,196,0.2);
+  padding: 2px 8px; border-radius: 3px;
+  flex-shrink: 0;
+}
+.topic-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+.topic-tag {
+  margin-left: auto;
+  font-size: 0.58rem;
+  font-family: 'JetBrains Mono', monospace;
+  padding: 2px 8px; border-radius: 3px;
+  text-transform: uppercase; letter-spacing: 1px;
+}
+
+.explain {
+  color: #a8b9cc;
+  line-height: 1.85;
+  font-size: 0.97rem;
+  margin-bottom: 18px;
+}
+.explain strong { color: var(--accent); font-weight: 600; font-style: normal; }
+.explain em { color: var(--accent3); font-style: normal; }
+.explain code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82em;
+  background: var(--surface2);
+  padding: 1px 6px;
+  border-radius: 3px;
+  color: var(--accent4);
+}
+
+/* ── CODE BLOCK ── */
+.code-block {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin: 18px 0;
+  overflow: hidden;
+  position: relative;
+}
+.code-label {
+  padding: 7px 16px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  color: var(--muted);
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+  letter-spacing: 0.5px;
+}
+.code-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); opacity: 0.6; }
+pre {
+  padding: 20px;
+  overflow-x: auto;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  line-height: 1.75;
+  color: #abb2bf;
+  tab-size: 2;
+}
+pre::-webkit-scrollbar { height: 3px; }
+pre::-webkit-scrollbar-thumb { background: var(--border2); }
+
+/* syntax colors */
+.p   { color: #e06c75; }   /* property  */
+.v   { color: #98c379; }   /* value     */
+.s   { color: #56b6c2; }   /* selector  */
+.at  { color: #c678dd; }   /* at-rule   */
+.cm  { color: #5c6370; } /* comment */
+.k   { color: #c678dd; }   /* keyword   */
+.n   { color: #e5c07b; }   /* number    */
+.fn  { color: #61afef; }   /* function  */
+.str { color: #98c379; }   /* string    */
+.var { color: #e5c07b; }   /* variable  */
+.punc{ color: #abb2bf; }   /* punctuation */
+
+/* ── CALLOUT ── */
+.callout {
+  border-left: 3px solid var(--accent);
+  background: rgba(88,229,196,0.04);
+  padding: 14px 18px;
+  margin: 18px 0;
+  border-radius: 0 6px 6px 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  color: #98b8b0;
+  line-height: 1.7;
+}
+.callout.warn { border-color: var(--accent3); background: rgba(245,166,35,0.04); color: #b8a878; }
+.callout.info { border-color: var(--accent4); background: rgba(124,158,248,0.04); color: #8898c8; }
+.callout.hot  { border-color: var(--accent2); background: rgba(232,93,158,0.04); color: #b888a8; }
+.callout strong { color: var(--accent); }
+.callout.warn strong { color: var(--accent3); }
+.callout.info strong { color: var(--accent4); }
+.callout.hot strong { color: var(--accent2); }
+
+/* ── TABLE ── */
+.tbl-wrap { overflow-x: auto; margin: 18px 0; border-radius: 8px; border: 1px solid var(--border); }
+table { width: 100%; border-collapse: collapse; font-size: 0.84rem; }
+th {
+  background: var(--surface2);
+  padding: 11px 16px;
+  text-align: left;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--accent);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--border);
+}
+td {
+  padding: 10px 16px;
+  border-bottom: 1px solid rgba(33,41,58,0.6);
+  color: #98aabb;
+  line-height: 1.5;
+  vertical-align: top;
+}
+td code { font-family: 'JetBrains Mono', monospace; font-size: 0.82em; color: var(--accent4); background: var(--surface2); padding: 1px 5px; border-radius: 3px; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(255,255,255,0.015); }
+
+/* ── GRID ── */
+.g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 18px 0; }
+.g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 18px 0; }
+@media (max-width: 680px) { .g2,.g3 { grid-template-columns: 1fr; } }
+
+.card {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px 18px;
+}
+.card-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 8px;
+  letter-spacing: 0.3px;
+}
+.card p { font-size: 0.84rem; color: var(--muted); line-height: 1.6; }
+.card code { font-family: 'JetBrains Mono', monospace; font-size: 0.82em; color: var(--accent4); }
+
+/* ── DEMO BOX ── */
+.demo {
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  padding: 24px;
+  margin: 18px 0;
+  position: relative;
+}
+.demo-label {
+  position: absolute; top: -10px; left: 16px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  background: var(--accent2);
+  color: #000;
+  padding: 1px 8px;
+  border-radius: 3px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+/* ── Q&A ── */
+.qa { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; margin: 14px 0; overflow: hidden; }
+.qa-q { padding: 14px 18px; background: rgba(88,229,196,0.06); font-weight: 600; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--accent); border-bottom: 1px solid var(--border); display: flex; gap: 10px; align-items: baseline; }
+.qa-q::before { content: 'Q:'; color: var(--accent2); flex-shrink: 0; }
+.qa-a { padding: 14px 18px; font-size: 0.88rem; color: #98aabb; line-height: 1.75; }
+.qa-a strong { color: var(--accent3); }
+.qa-a code { font-family: 'JetBrains Mono', monospace; font-size: 0.82em; color: var(--accent4); background: var(--surface3); padding: 1px 5px; border-radius: 3px; }
+
+/* ── PILL ── */
+.pills { display: flex; flex-wrap: wrap; gap: 7px; margin: 12px 0; }
+.pill { padding: 3px 12px; background: var(--surface3); border: 1px solid var(--border2); border-radius: 100px; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--accent2); }
+
+/* ── BACK TO TOP ── */
+.back { display: inline-block; margin-top: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: var(--muted2); text-decoration: none; border: 1px solid var(--border); padding: 3px 10px; border-radius: 3px; transition: all 0.15s; }
+.back:hover { color: var(--accent); border-color: var(--accent); }
+
+@media (max-width: 768px) { nav { display: none; } main { padding: 24px; } header { padding: 32px 24px; } }
+</style>
+</head>
+<body>
+
+<header id="top">
+  <div class="header-eyebrow">Complete Interview Guide</div>
+  <h1>CSS <em>&</em> <span>SCSS</span><br>Mastery</h1>
+  <p class="header-sub">// Every concept · Deep explanations · Code examples · Interview Q&amp;A<br>// From selectors to architecture — zero gaps</p>
+  <div class="badge-row">
+    <span class="badge badge-c">Selectors</span>
+    <span class="badge badge-p">Box Model</span>
+    <span class="badge badge-o">Flexbox</span>
+    <span class="badge badge-b">Grid</span>
+    <span class="badge badge-v">Animations</span>
+    <span class="badge badge-c">SCSS</span>
+    <span class="badge badge-p">Performance</span>
+    <span class="badge badge-o">Interview Q&amp;A</span>
+  </div>
+</header>
+
+<div class="shell">
+
+<!-- SIDEBAR -->
+<nav>
+  <div class="nav-section">
+    <div class="nav-label">Foundations</div>
+    <a class="nav-link" href="#cascade">Cascade & Specificity</a>
+    <a class="nav-link" href="#selectors">Selectors (All Types)</a>
+    <a class="nav-link" href="#box-model">Box Model</a>
+    <a class="nav-link" href="#display">Display Property</a>
+    <a class="nav-link" href="#positioning">Positioning</a>
+    <a class="nav-link" href="#units">Units & Values</a>
+    <a class="nav-link" href="#colors">Colors</a>
+    <a class="nav-link" href="#typography">Typography</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Layout</div>
+    <a class="nav-link" href="#flexbox">Flexbox (Deep Dive)</a>
+    <a class="nav-link" href="#grid">CSS Grid (Deep Dive)</a>
+    <a class="nav-link" href="#responsive">Responsive Design</a>
+    <a class="nav-link" href="#media-queries">Media Queries</a>
+    <a class="nav-link" href="#container-queries">Container Queries</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Visual</div>
+    <a class="nav-link" href="#backgrounds">Backgrounds</a>
+    <a class="nav-link" href="#shadows">Shadows & Filters</a>
+    <a class="nav-link" href="#transforms">Transforms</a>
+    <a class="nav-link" href="#transitions">Transitions</a>
+    <a class="nav-link" href="#animations">Animations</a>
+    <a class="nav-link" href="#gradients">Gradients</a>
+    <a class="nav-link" href="#clip-mask">Clip & Mask</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Modern CSS</div>
+    <a class="nav-link" href="#variables">CSS Variables</a>
+    <a class="nav-link" href="#pseudo">Pseudo-classes & Elements</a>
+    <a class="nav-link" href="#functions">CSS Functions</a>
+    <a class="nav-link" href="#logical">Logical Properties</a>
+    <a class="nav-link" href="#scroll">Scroll Snap & Behavior</a>
+    <a class="nav-link" href="#aspect-ratio">Aspect Ratio</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">SCSS / Sass</div>
+    <a class="nav-link" href="#scss-intro">SCSS Introduction</a>
+    <a class="nav-link" href="#scss-variables">Variables & Maps</a>
+    <a class="nav-link" href="#scss-nesting">Nesting</a>
+    <a class="nav-link" href="#scss-mixins">Mixins</a>
+    <a class="nav-link" href="#scss-extends">Extends & Placeholders</a>
+    <a class="nav-link" href="#scss-functions">Functions</a>
+    <a class="nav-link" href="#scss-control">Control Directives</a>
+    <a class="nav-link" href="#scss-modules">Modules & Partials</a>
+    <a class="nav-link" href="#scss-architecture">7-1 Architecture</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Advanced</div>
+    <a class="nav-link" href="#stacking">Stacking Context</a>
+    <a class="nav-link" href="#bfc">Block Formatting Context</a>
+    <a class="nav-link" href="#performance">CSS Performance</a>
+    <a class="nav-link" href="#accessibility">Accessibility in CSS</a>
+    <a class="nav-link" href="#methodologies">BEM, OOCSS, SMACSS</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Interview Q&A</div>
+    <a class="nav-link" href="#interview">Top Interview Questions</a>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main>
+
+<!-- ═══════════ FOUNDATIONS ═══════════ -->
+<div class="sec-div">
+  <div class="sec-div-line"></div>
+  <div class="sec-div-label">⬡ Foundations</div>
+  <div class="sec-div-line" style="background:linear-gradient(90deg,transparent,var(--accent))"></div>
+</div>
+
+<!-- 01. Cascade & Specificity -->
+<div class="topic" id="cascade">
+  <div class="topic-hdr">
+    <span class="topic-num">01</span>
+    <h2 class="topic-title">Cascade & Specificity</h2>
+    <span class="topic-tag badge badge-c">Core</span>
+  </div>
+  <p class="explain">
+    The <strong>Cascade</strong> is the algorithm CSS uses to decide which rule "wins" when multiple rules target the same element. It has four stages evaluated in order: <em>Origin & Importance</em> → <em>Specificity</em> → <em>Order of Appearance</em>.
+  </p>
+  <div class="g2">
+    <div class="card">
+      <div class="card-title">1. Origin Priority (high → low)</div>
+      <p>Inline <code>!important</code> > User agent <code>!important</code> > Author <code>!important</code> > Inline styles > Author stylesheets > User preferences > Browser defaults</p>
+    </div>
+    <div class="card">
+      <div class="card-title">2. Specificity Score</div>
+      <p>Calculated as (a, b, c) — a = IDs, b = classes/attrs/pseudo-classes, c = elements/pseudo-elements. Higher score wins.</p>
+    </div>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Selector</th><th>Specificity</th><th>Score (a,b,c)</th></tr>
+      <tr><td><code>*</code></td><td>Universal — zero specificity</td><td>(0,0,0)</td></tr>
+      <tr><td><code>div</code></td><td>Element</td><td>(0,0,1)</td></tr>
+      <tr><td><code>.class</code></td><td>Class</td><td>(0,1,0)</td></tr>
+      <tr><td><code>[type="text"]</code></td><td>Attribute</td><td>(0,1,0)</td></tr>
+      <tr><td><code>:hover</code></td><td>Pseudo-class</td><td>(0,1,0)</td></tr>
+      <tr><td><code>::before</code></td><td>Pseudo-element</td><td>(0,0,1)</td></tr>
+      <tr><td><code>#id</code></td><td>ID</td><td>(1,0,0)</td></tr>
+      <tr><td><code>style=""</code></td><td>Inline style</td><td>(1,0,0,0) beats all</td></tr>
+      <tr><td><code>!important</code></td><td>Overrides everything</td><td>Nuclear option ☢</td></tr>
+    </table>
+  </div>
+  <div class="code-block">
+    <div class="code-label"><div class="code-dot"></div>specificity-examples.css</div>
+<pre><span class="cm">/* Specificity: (0,0,1) */</span>
+<span class="s">p</span> { <span class="p">color</span>: <span class="v">blue</span>; }
+
+<span class="cm">/* Specificity: (0,1,0) — wins over element */</span>
+<span class="s">.text</span> { <span class="p">color</span>: <span class="v">red</span>; }
+
+<span class="cm">/* Specificity: (0,1,1) */</span>
+<span class="s">p.text</span> { <span class="p">color</span>: <span class="v">green</span>; }
+
+<span class="cm">/* Specificity: (1,0,0) — ID wins */</span>
+<span class="s">#main</span> { <span class="p">color</span>: <span class="v">purple</span>; }
+
+<span class="cm">/* Specificity: (1,1,1) — ID + class + element */</span>
+<span class="s">#main .text p</span> { <span class="p">color</span>: <span class="v">orange</span>; }
+
+<span class="cm">/* :is() and :not() take specificity of their MOST specific argument */</span>
+<span class="s">:is(#id, .class)</span> { <span class="p">color</span>: <span class="v">pink</span>; }  <span class="cm">/* specificity: (1,0,0) */</span>
+
+<span class="cm">/* :where() always has 0 specificity — great for resets */</span>
+<span class="s">:where(#id, .class)</span> { <span class="p">color</span>: <span class="v">gray</span>; }  <span class="cm">/* specificity: (0,0,0) */</span></pre>
+  </div>
+  <div class="callout warn"><strong>Avoid !important:</strong> It breaks the natural cascade and makes debugging very difficult. Use it only for utility classes or overriding third-party styles you can't change.</div>
+  <a class="back" href="#top">↑ Top</a>
+</div>
+
+<!-- 02. Selectors -->
+<div class="topic" id="selectors">
+  <div class="topic-hdr">
+    <span class="topic-num">02</span>
+    <h2 class="topic-title">Selectors — All Types</h2>
+    <span class="topic-tag badge badge-c">Core</span>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Type</th><th>Syntax</th><th>Selects</th></tr>
+      <tr><td>Universal</td><td><code>*</code></td><td>Every element</td></tr>
+      <tr><td>Type / Element</td><td><code>div, p, h1</code></td><td>All elements of that type</td></tr>
+      <tr><td>Class</td><td><code>.card</code></td><td>Elements with class="card"</td></tr>
+      <tr><td>ID</td><td><code>#main</code></td><td>Element with id="main"</td></tr>
+      <tr><td>Attribute</td><td><code>[href], [type="text"]</code></td><td>Elements with matching attribute</td></tr>
+      <tr><td>Descendant</td><td><code>div p</code></td><td>All p inside div (any depth)</td></tr>
+      <tr><td>Child</td><td><code>ul > li</code></td><td>Direct li children of ul only</td></tr>
+      <tr><td>Adjacent Sibling</td><td><code>h2 + p</code></td><td>p immediately after h2</td></tr>
+      <tr><td>General Sibling</td><td><code>h2 ~ p</code></td><td>All p after h2 (same parent)</td></tr>
+      <tr><td>Grouping</td><td><code>h1, h2, h3</code></td><td>Any of the listed elements</td></tr>
+    </table>
+  </div>
+  <div class="code-block">
+    <div class="code-label"><div class="code-dot"></div>attribute-selectors.css</div>
+<pre><span class="cm">/* Exact match */</span>
+<span class="s">[type="submit"]</span> { ... }
+
+<span class="cm">/* Contains word (space-separated) */</span>
+<span class="s">[class~="highlight"]</span> { ... }
+
+<span class="cm">/* Starts with */</span>
+<span class="s">[href^="https"]</span> { <span class="p">color</span>: <span class="v">green</span>; }   <span class="cm">/* secure links */</span>
+
+<span class="cm">/* Ends with */</span>
+<span class="s">[href$=".pdf"]</span> { <span class="p">color</span>: <span class="v">red</span>; }      <span class="cm">/* PDF links */</span>
+
+<span class="cm">/* Contains substring */</span>
+<span class="s">[href*="github"]</span> { ... }
+
+<span class="cm">/* Hyphen-separated (lang attributes) */</span>
+<span class="s">[lang|="en"]</span> { ... }  <span class="cm">/* matches en, en-US, en-GB */</span>
+
+<span class="cm">/* Case-insensitive match */</span>
+<span class="s">[type="EMAIL" i]</span> { ... }</pre>
+  </div>
+  <div class="code-block">
+    <div class="code-label"><div class="code-dot"></div>combinator-selectors.css</div>
+<pre><span class="cm">/* Descendant — any depth */</span>
+<span class="s">.card p</span> { <span class="p">color</span>: <span class="v">gray</span>; }
+
+<span class="cm">/* Child — direct only */</span>
+<span class="s">.nav > li</span> { <span class="p">display</span>: <span class="v">inline-block</span>; }
+
+<span class="cm">/* Adjacent sibling — immediately follows */</span>
+<span class="s">label + input</span> { <span class="p">margin-top</span>: <span class="n">0</span>; }
+
+<span class="cm">/* General sibling — all after */</span>
+<span class="s">h2 ~ p</span> { <span class="p">font-size</span>: <span class="v">0.9rem</span>; }
+
+<span class="cm">/* Modern: :is() groups selectors with max specificity of args */</span>
+<span class="s">:is(h1, h2, h3)</span> { <span class="p">font-weight</span>: <span class="v">bold</span>; }
+
+<span class="cm">/* :has() — parent selector (CSS 4, widely supported now) */</span>
+<span class="s">.card:has(img)</span> { <span class="p">padding</span>: <span class="n">0</span>; }           <span class="cm">/* card that contains an image */</span>
+<span class="s">form:has(input:invalid)</span> { <span class="p">border</span>: <span class="v">1px solid red</span>; }</pre>
+  </div>
+  <a class="back" href="#top">↑ Top</a>
+</div>
+
+<!-- 03. Box Model -->
+<div class="topic" id="box-model">
+  <div class="topic-hdr">
+    <span class="topic-num">03</span>
+    <h2 class="topic-title">Box Model</h2>
+    <span class="topic-tag badge badge-c">Critical</span>
+  </div>
+  <p class="explain">
+    Every HTML element is a rectangular box made of four layers from inside out: <strong>Content</strong> → <strong>Padding</strong> → <strong>Border</strong> → <strong>Margin</strong>. Understanding this is fundamental to all CSS layout.
+  </p>
+  <div class="code-block">
+    <div class="code-label"><div class="code-dot"></div>box-model.css</div>
+<pre><span class="s">.box</span> {
+  <span class="p">width</span>: <span class="n">200px</span>;          <span class="cm">/* content area width */</span>
+  <span class="p">height</span>: <span class="n">100px</span>;
+
+  <span class="p">padding</span>: <span class="n">20px</span>;         <span class="cm">/* space INSIDE border */</span>
+  <span class="p">border</span>: <span class="n">2px</span> <span class="v">solid blue</span>;
+  <span class="p">margin</span>: <span class="n">16px</span>;          <span class="cm">/* space OUTSIDE border */</span>
+
+  <span class="cm">/* content-box (default): total = 200+40+4 = 244px wide */</span>
+  <span class="p">box-sizing</span>: <span class="v">content-box</span>;
+
+  <span class="cm">/* border-box: width INCLUDES padding + border */</span>
+  <span class="cm">/* total = exactly 200px. Much more intuitive! */</span>
+  <span class="p">box-sizing</span>: <span class="v">border-box</span>;
+}
+
+<span class="cm">/* Universal border-box reset — use in EVERY project */</span>
+<span class="s">*, *::before, *::after</span> {
+  <span class="p">box-sizing</span>: <span class="v">border-box</span>;
+}
+
+<span class="cm">/* Margin collapsing — adjacent margins merge */</span>
+<span class="cm">/* p has margin-bottom:16px, next p has margin-top:16px */</span>
+<span class="cm">/* Gap between them = 16px (not 32px) — they COLLAPSE */</span>
+<span class="s">p</span> { <span class="p">margin</span>: <span class="n">16px 0</span>; }
+
+<span class="cm">/* outline — like border but doesn't affect layout/box model */</span>
+<span class="s">.focused</span> { <span class="p">outline</span>: <span class="n">2px</span> <span class="v">solid blue</span>; <span class="p">outline-offset</span>: <span class="n">2px</span>; }</pre>
+  </div>
+  <div class="callout info"><strong>Margin Collapsing Rules:</strong> Vertical margins between block elements collapse to the larger of the two values. Margins collapse between parent and first/last child if no border/padding/BFC separates them. Horizontal margins never collapse.</div>
+  <a class="back" href="#top">↑ Top</a>
+</div>
+
+<!-- 04. Display -->
+<div class="topic" id="display">
+  <div class="topic-hdr">
+    <span class="topic-num">04</span>
+    <h2 class="topic-title">Display Property</h2>
+    <span class="topic-tag badge badge-c">Core</span>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Value</th><th>Behavior</th><th>Width/Height?</th><th>Margin/Padding?</th></tr>
+      <tr><td><code>block</code></td><td>Full width, new line before/after</td><td>✅ Yes</td><td>✅ All sides</td></tr>
+      <tr><td><code>inline</code></td><td>Flows with text, no line break</td><td>❌ No</td><td>⚠ H only (V ignored)</td></tr>
+      <tr><td><code>inline-block</code></td><td>Flows inline but accepts dimensions</td><td>✅ Yes</td><td>✅ All sides</td></tr>
+      <tr><td><code>flex</code></td><td>Flex container, 1D layout</td><td>✅ Block-level</td><td>✅ Yes</td></tr>
+      <tr><td><code>inline-flex</code></td><td>Flex container, flows inline</td><td>✅ Fits content</td><td>✅ Yes</td></tr>
+      <tr><td><code>grid</code></td><td>Grid container, 2D layout</td><td>✅ Block-level</td><td>✅ Yes</td></tr>
+      <tr><td><code>inline-grid</code></td><td>Grid container, flows inline</td><td>✅ Fits content</td><td>✅ Yes</td></tr>
+      <tr><td><code>none</code></td><td>Element removed from layout + visually</td><td>—</td><td>—</td></tr>
+      <tr><td><code>contents</code></td><td>Element's box disappears, children remain</td><td>—</td><td>—</td></tr>
+      <tr><td><code>table</code></td><td>Behaves like &lt;table&gt;</td><td>✅</td><td>✅</td></tr>
+      <tr><td><code>list-item</code></td><td>Adds list marker (bullet/number)</td><td>✅</td><td>✅</td></tr>
+    </table>
+  </div>
+  <div class="callout"><strong>display:none vs visibility:hidden:</strong> <code>none</code> removes the element from layout entirely (takes no space). <code>visibility:hidden</code> hides it but keeps its space. <code>opacity:0</code> makes invisible but keeps space AND still receives events.</div>
+  <a class="back" href="#top">↑ Top</a>
+</div>
+
+<!-- 05. Positioning -->
+<div class="topic" id="positioning">
+  <div class="topic-hdr">
+    <span class="topic-num">05</span>
+    <h2 class="topic-title">Positioning</h2>
+    <span class="topic-tag badge badge-c">Critical</span>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Value</th><th>In flow?</th><th>Positioned relative to</th><th>Use case</th></tr>
+      <tr><td><code>static</code></td><td>✅ Yes</td><td>Normal document flow (default)</td><td>Default state</td></tr>
+      <tr><td><code>relative</code></td><td>✅ Yes</td><td>Its own normal position</td><td>Offset without removing from flow; creates stacking context</td></tr>
+      <tr><td><code>absolute</code></td><td>❌ No</td><td>Nearest positioned ancestor (non-static)</td><td>Tooltips, dropdowns, overlays</td></tr>
+      <tr><td><code>fixed</code></td><td>❌ No</td><td>Viewport (browser window)</td><td>Sticky headers, floating buttons</td></tr>
+      <tr><td><code>sticky</code></td><td>✅ Yes</td><td>Scroll container, sticks at threshold</td><td>Sticky table headers, nav</td></tr>
+    </table>
+  </div>
+  <div class="code-block">
+    <div class="code-label"><div class="code-dot"></div>positioning.css</div>
+<pre><span class="cm">/* relative — offset from where it would normally be */</span>
+<span class="s">.badge</span> {
+  <span class="p">position</span>: <span class="v">relative</span>;
+  <span class="p">top</span>: <span class="n">-4px</span>;   <span class="cm">/* moves up 4px (still in flow) */</span>
+}
+
+<span class="cm">/* absolute — positioned in nearest non-static ancestor */</span>
+<span class="s">.parent</span> { <span class="p">position</span>: <span class="v">relative</span>; }
+<span class="s">.tooltip</span> {
+  <span class="p">position</span>: <span class="v">absolute</span>;
+  <span class="p">top</span>: <span class="n">100%</span>;    <span class="cm">/* just below parent */</span>
+  <span class="p">left</span>: <span class="n">50%</span>;
+  <span class="p">transform</span>: <span class="fn">translateX</span>(<span class="n">-50%</span>); <span class="cm">/* center horizontally */</span>
+}
+
+<span class="cm">/* fixed — always in viewport */</span>
+<span class="s">.navbar</span> {
+  <span class="p">position</span>: <span class="v">fixed</span>;
+  <span class="p">top</span>: <span class="n">0</span>; <span class="p">left</span>: <span class="n">0</span>; <span class="p">right</span>: <span class="n">0</span>;
+}
+
+<span class="cm">/* sticky — scrolls normally, then "sticks" */</span>
+<span class="s">.section-header</span> {
+  <span class="p">position</span>: <span class="v">sticky</span>;
+  <span class="p">top</span>: <span class="n">60px</span>;  <span class="cm">/* sticks 60px from viewport top */</span>
+  <span class="p">z-index</span>: <span class="n">10</span>;
+}
+
+<span class="cm">/* Centering with absolute — classic technique */</span>
+<span class="s">.centered</span> {
+  <span class="p">position</span>: <span class="v">absolute</span>;
+  <span class="p">top</span>: <span class="n">50%</span>; <span class="p">left</span>: <span class="n">50%</span>;
+  <span class="p">transform</span>: <span class="fn">translate</span>(<span class="n">-50%</span>, <span class="n">-50%</span>);
+}</pre>
+  </div>
+  <div class="callout warn"><strong>Sticky gotcha:</strong> <code>position: sticky</code> requires a defined <code>top/bottom/left/right</code> value to work. It also won't work if any ancestor has <code>overflow: hidden</code> or <code>overflow: auto</code> — this is a very common bug.</div>
+  <a class="back" href="#top">↑ Top</a>
+</div>
+
+<!-- 06. Units -->
+<div class="topic" id="units">
+  <div class="topic-hdr">
+    <span class="topic-num">06</span>
+    <h2 class="topic-title">Units & Values</h2>
+    <span class="topic-tag badge badge-c">Core</span>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Unit</th><th>Type</th><th>Relative to</th><th>Use case</th></tr>
+      <tr><td><code>px</code></td><td>Absolute</td><td>Screen pixels (1/96 of inch)</td><td>Borders, shadows, fixed elements</td></tr>
+      <tr><td><code>em</code></td><td>Relative</td><td>Parent's font-size</td><td>Component-level spacing (scales with font)</td></tr>
+      <tr><td><code>rem</code></td><td>Relative</td><td>Root (&lt;html&gt;) font-size</td><td>Consistent type scale across app</td></tr>
+      <tr><td><code>%</code></td><td>Relative</td><td>Parent's dimension</td><td>Responsive widths, heights</td></tr>
+      <tr><td><code>vw</code></td><td>Viewport</td><td>1% of viewport width</td><td>Full-width elements, fluid type</td></tr>
+      <tr><td><code>vh</code></td><td>Viewport</td><td>1% of viewport height</td><td>Full-height sections, hero</td></tr>
+      <tr><td><code>svh/dvh/lvh</code></td><td>Viewport</td><td>Small/dynamic/large viewport</td><td>Mobile-safe full height</td></tr>
+      <tr><td><code>ch</code></td><td>Relative</td><td>Width of "0" character</td><td>Ideal line length (~60-75ch)</td></tr>
+      <tr><td><code>fr</code></td><td>Grid unit</td><td>Available space fraction</td><td>CSS Grid column/row sizing</td></tr>
+      <tr><td><code>min-content</code></td><td>Intrinsic</td><td>Smallest content can be</td><td>Shrink-to-content columns</td></tr>
+      <tr><td><code>max-content</code></td><td>Intrinsic</td><td>Largest without wrapping</td><td>One-line sizing</td></tr>
+      <tr><td><code>fit-content</code></td><td>Intrinsic</td><td>Clamps between min and max</td><td>Responsive-ish sizing</td></tr>
+    </table>
+  </div>
+  <div class="code-block">
+    <div class="code-label"><div class="code-dot"></div>units-examples.css</div>
+<pre><span class="cm">/* rem — consistent scale, respects user font-size settings */</span>
+<span class="s">html</span> { <span class="p">font-size</span>: <span class="n">16px</span>; }
+<span class="s">h1</span> { <span class="p">font-size</span>: <span class="n">2.5rem</span>; }    <span class="cm">/* = 40px */</span>
+<span class="s">p</span>  { <span class="p">font-size</span>: <span class="n">1rem</span>; }      <span class="cm">/* = 16px */</span>
+
+<span class="cm">/* em — compounds! Useful for padding relative to font size */</span>
+<span class="s">.btn</span> { <span class="p">padding</span>: <span class="n">0.75em 1.5em</span>; }  <span class="cm">/* scales with button font-size */</span>
+
+<span class="cm">/* Fluid typography — scales smoothly */</span>
+<span class="s">h1</span> { <span class="p">font-size</span>: <span class="fn">clamp</span>(<span class="n">1.8rem</span>, <span class="n">4vw</span>, <span class="n">3.5rem</span>); }
+
+<span class="cm">/* dvh — accounts for mobile browser chrome */</span>
+<span class="s">.hero</span> { <span class="p">height</span>: <span class="v">100dvh</span>; }  <span class="cm">/* preferred over 100vh on mobile */</span>
+
+<span class="cm">/* ch — ideal readable line length */</span>
+<span class="s">article</span> { <span class="p">max-width</span>: <span class="v">65ch</span>; }</pre>
+  </div>
+  <a class="back" href="#top">↑ Top</a>
+</div>
+
+<!-- 07. Colors -->
+<div class="topic" id="colors">
+  <div class="topic-hdr">
+    <span class="topic-num">07</span>
+    <h2 class="topic-title">Colors</h2>
+    <span class="topic-tag badge badge-c">Core</span>
+  </div>
+  <div class="code-block">
+    <div class="code-label"><div class="code-dot"></div>colors.css</div>
+<pre><span class="cm">/* Named colors */</span>
+<span class="s">.a</span> { <span class="p">color</span>: <span class="v">tomato</span>; }
+
+<span class="cm">/* Hex — #RRGGBB or shorthand #RGB */</span>
+<span class="s">.b</span> { <span class="p">color</span>: <span class="v">#ff6347</span>; <span class="p">background</span>: <span class="v">#f00</span>; }
+
+<span class="cm">/* Hex with alpha — #RRGGBBAA */</span>
+<span class="s">.c</span> { <span class="p">background</span>: <span class="v">#ff634780</span>; }   <span class="cm">/* 50% opacity */</span>
+
+<span class="cm">/* RGB — rgb(r, g, b) or rgb(r g b) modern syntax */</span>
+<span class="s">.d</span> { <span class="p">color</span>: <span class="fn">rgb</span>(<span class="n">255</span>, <span class="n">99</span>, <span class="n">71</span>); }
+<span class="s">.e</span> { <span class="p">color</span>: <span class="fn">rgb</span>(<span class="n">255</span> <span class="n">99</span> <span class="n">71</span> / <span class="n">0.5</span>); }  <span class="cm">/* with opacity */</span>
+
+<span class="cm">/* HSL — hsl(hue, saturation%, lightness%) */</span>
+<span class="s">.f</span> { <span class="p">color</span>: <span class="fn">hsl</span>(<span class="n">9</span>, <span class="n">100%</span>, <span class="n">64%</span>); }
+<span class="s">.g</span> { <span class="p">color</span>: <span class="fn">hsl</span>(<span class="n">9</span> <span class="n">100%</span> <span class="n">64%</span> / <span class="n">0.8</span>); }  <span class="cm">/* HSL great for theming */</span>
+
+<span class="cm">/* oklch — perceptually uniform, vivid, modern */</span>
+<span class="s">.h</span> { <span class="p">color</span>: <span class="fn">oklch</span>(<span class="n">0.7</span> <span class="n">0.2</span> <span class="n">200deg</span>); }
+
+<span class="cm">/* currentColor — inherits color property value */</span>
+<span class="s">.icon svg</span> { <span class="p">fill</span>: <span class="v">currentColor</span>; }  <span class="cm">/* icon matches text color */</span>
+
+<span class="cm">/* transparent */</span>
+<span class="s">.overlay</span> { <span class="p">background</span>: <span class="v">transparent</span>; }</pre>
+  </div>
+  <a class="back" href="#top">↑ Top</a>
+</div>
+
+<!-- 08. Typography -->
+<div class="topic" id="typography">
+  <div class="topic-hdr">
+    <span class="topic-num">08</span>
+    <h2 class="topic-title">Typography</h2>
+    <span class="topic-tag badge badge-c">Core</span>
+  </div>
+  <div class="code-block">
+    <div class="code-label"><div class="code-dot"></div>typography.css</div>
+<pre><span class="s">body</span> {
+  <span class="p">font-family</span>: <span class="str">'Inter'</span>, system-ui, sans-serif;
+  <span class="p">font-size</span>: <span class="n">1rem</span>;          <span class="cm">/* base = 16px */</span>
+  <span class="p">line-height</span>: <span class="n">1.6</span>;         <span class="cm">/* unitless — relative to font-size */</span>
+  <span class="p">font-weight</span>: <span class="n">400</span>;          <span class="cm">/* normal */</span>
+  <span class="p">color</span>: <span class="v">#1a1a2e</span>;
+  <span class="p">letter-spacing</span>: <span class="v">normal</span>;
+  <span class="p">word-spacing</span>: <span class="v">normal</span>;
+}
+
+<span class="cm">/* @font-face — load custom fonts */</span>
+<span class="at">@font-face</span> {
+  <span class="p">font-family</span>: <span class="str">'MyFont'</span>;
+  <span class="p">src</span>: <span class="fn">url</span>(<span class="str">'myfont.woff2'</span>) <span class="v">format</span>(<span class="str">'woff2'</span>);
+  <span class="p">font-weight</span>: <span class="n">100 900</span>;    <span class="cm">/* variable font range */</span>
+  <span class="p">font-display</span>: <span class="v">swap</span>;      <span class="cm">/* show fallback while loading */</span>
+}
+
+<span class="cm">/* Text manipulation */</span>
+<span class="s">.heading</span> {
+  <span class="p">text-transform</span>: <span class="v">uppercase</span>;
+  <span class="p">text-decoration</span>: <span class="v">underline wavy red</span>;
+  <span class="p">text-indent</span>: <span class="n">2em</span>;
+  <span class="p">text-align</span>: <span class="v">justify</span>;
+  <span class="p">text-overflow</span>: <span class="v">ellipsis</span>;    <span class="cm">/* needs overflow:hidden + white-space:nowrap */</span>
+}
+
+<span class="cm">/* Truncate single line */</span>
+<span class="s">.truncate</span> {
+  <span class="p">white-space</span>: <span class="v">nowrap</span>;
+  <span class="p">overflow</span>: <span class="v">hidden</span>;
+  <span class="p">text-overflow</span>: <span class="v">ellipsis</span>;
+}
+
+<span class="cm">/* Multi-line clamp (CSS) */</span>
+<span class="s">.clamp</span> {
+  <span class="p">display</span>: <span class="v">-webkit-box</span>;
+  <span class="p">-webkit-line-clamp</span>: <span class="n">3</span>;
+  <span class="p">-webkit-box-orient</span>: <span class="v">vertical</span>;
+  <span class="p">overflow</span>: <span class="v">hidden</span>;
+}
+
+<span class="cm">/* font-variant for small caps, numbers */</span>
+<span class="s">.lede</span> {
+  <span class="p">font-variant-caps</span>: <span class="v">small-caps</span>;
+  <span class="p">font-variant-numeric</span>: <span class="v">oldstyle-nums</span>;
+}</pre>
+  </div>
+  <a class="back" href="#top">↑ Top</a>
+</div>
+
+<!-- ═══════════ LAYOUT ═══════════ -->
+<div class="sec-div">
+  <div class="sec-div-line"></div>
+  <div class="sec-div-label">⬡ Layout</div>
+  <div class="sec-div-line" style="background:linear-gradient(90deg,transparent,var(--accent))"></div>
+</div>
+
+<!-- 09. Flexbox -->
+<div class="topic" id="flexbox">
+  <div class="topic-hdr">
+    <span class="topic-num">09</span>
+    <h2 class="topic-title">Flexbox — Deep Dive</h2>
+    <span class="topic-tag badge badge-o">Layout</span>
+  </div>
+  <p class="explain">
+    Flexbox is a <strong>one-dimensional</strong> layout system. You define a main axis (row or column) and items are placed along it. The container controls alignment; children control their own growth/shrink. It excels at <em>distributing space</em> among items in a single direction.
+  </p>
+  <div class="code-block">
+    <div class="code-label"><div class="code-dot"></div>flexbox-container.css</div>
+<pre><span class="s">.flex-container</span> {
+  <span class="p">display</span>: <span class="v">flex</span>;
+
+  <span class="cm">/* MAIN AXIS DIRECTION */</span>
+  <span class="p">flex-direction</span>: <span class="v">row</span>;           <span class="cm">/* row | row-reverse | column | column-reverse */</span>
+
+  <span class="cm">/* WRAPPING */</span>
+  <span class="p">flex-wrap</span>: <span class="v">nowrap</span>;            <span class="cm">/* nowrap | wrap | wrap-reverse */</span>
+  <span class="p">flex-flow</span>: <span class="v">row wrap</span>;          <span class="cm">/* shorthand: direction + wrap */</span>
+
+  <span class="cm">/* MAIN AXIS ALIGNMENT (horizontal when row) */</span>
+  <span class="p">justify-content</span>: <span class="v">flex-start</span>;  <span class="cm">/* flex-start | flex-end | center */</span>
+                                   <span class="cm">/* space-between | space-around | space-evenly */</span>
+
+  <span class="cm">/* CROSS AXIS ALIGNMENT (vertical when row) */</span>
+  <span class="p">align-items</span>: <span class="v">stretch</span>;         <span class="cm">/* stretch | flex-start | flex-end | center | baseline */</span>
+
+  <span class="cm">/* MULTI-LINE CROSS AXIS (only when flex-wrap: wrap) */</span>
+  <span class="p">align-content</span>: <span class="v">flex-start</span>;    <span class="cm">/* same values as justify-content */</span>
+
+  <span class="cm">/* GAP between items */</span>
+  <span class="p">gap</span>: <span class="n">16px</span>;                     <span class="cm">/* row-gap + column-gap */</span>
+  <span class="p">gap</span>: <span class="n">16px 24px</span>;                <span class="cm">/* row-gap column-gap */</span>
+}</pre>
+  </div>
+  <div class="code-block">
+    <div class="code-label"><div class="code-dot"></div>flexbox-children.css</div>
+<pre><span class="s">.flex-item</span> {
+  <span class="cm">/* flex-grow: how much free space to absorb (default 0) */</span>
+  <span class="p">flex-grow</span>: <span class="n">1</span>;    <span class="cm">/* item grows to fill available space */</span>
+
+  <span class="cm">/* flex-shrink: how much to shrink when overflowing (default 1) */</span>
+  <span class="p">flex-shrink</span>: <span class="n">0</span>;  <span class="cm">/* item won't shrink */</span>
+
+  <span class="cm">/* flex-basis: initial size before growing/shrinking */</span>
+  <span class="p">flex-basis</span>: <span class="n">200px</span>;  <span class="cm">/* or auto, 0, 30%, etc. */</span>
+
+  <span class="cm">/* Shorthand: flex: grow shrink basis */</span>
+  <span class="p">flex</span>: <span class="n">1 1 auto</span>;   <span class="cm">/* = flex: 1 */</span>
+  <span class="p">flex</span>: <span class="n">0 0 200px</span>;  <span class="cm">/* fixed size, no grow/shrink */</span>
+
+  <span class="cm">/* Override align-items for individual item */</span>
+  <span class="p">align-self</span>: <span class="v">flex-end</span>;
+
+  <span class="cm">/* Order — default 0, negative moves earlier */</span>
+  <span class="p">order</span>: <span class="n">-1</span>;  <span class="cm">/* moves to start */</span>
+}
+
+<span class="cm">/* Common patterns */</span>
+<span class="cm">/* Center anything: */</span>
+<span class="s">.center</span> { <span class="p">display</span>: <span class="v">flex</span>; <span class="p">align-items</span>: <span class="v">center</span>; <span class="p">justify-content</span>: <span class="v">center</span>; }
+
+<span class="cm">/* Sticky footer: */</span>
+<span class="s">body</span> { <span class="p">display</span>: <span class="v">flex</span>; <span class="p">flex-direction</span>: <span class="v">column</span>; <span class="p">min-height</span>: <span class="n">100vh</span>; }
+<span class="s">main</span> { <span class="p">flex</span>: <span class="n">1</span>; }  <span class="cm">/* grows to push footer down */</span>
+
+<span class="cm">/* Space between nav items, one item pushed right: */</span>
+<span class="s">.last-item</span> { <span class="p">margin-left</span>: <span class="v">auto</span>; }</pre>
+  </div>
+  <a class="back" href="#top">↑ Top</a>
+</div>
+
+<!-- 10. CSS Grid -->
+<div class="topic" id="grid">
+  <div class="topic-hdr">
+    <span class="topic-num">10</span>
+    <h2 class="topic-title">CSS Grid — Deep Dive</h2>
+    <span class="topic-tag badge badge-o">Layout</span>
+  </div>
+  <p class="explain">
+    CSS Grid is a <strong>two-dimensional</strong> layout system — it handles both rows and columns simultaneously. While Flexbox is best for one direction, Grid excels when you need to control placement across both axes at once.
+  </p>
+  <div class="code-block">
+    <div class="code-label"><div class="code-dot"></div>css-grid-container.css</div>
+<pre><span class="s">.grid</span> {
+  <span class="p">display</span>: <span class="v">grid</span>;
+
+  <span class="cm">/* Define columns */</span>
+  <span class="p">grid-template-columns</span>: <span class="n">200px 1fr 1fr</span>;     <span class="cm">/* fixed + 2 equal fractions */</span>
+  <span class="p">grid-template-columns</span>: <span class="fn">repeat</span>(<span class="n">3</span>, <span class="n">1fr</span>);   <span class="cm">/* 3 equal columns */</span>
+  <span class="p">grid-template-columns</span>: <span class="fn">repeat</span>(<span class="v">auto-fill</span>, <span class="fn">minmax</span>(<span class="n">200px</span>, <span class="n">1fr</span>));  <span class="cm">/* responsive! */</span>
+
+  <span class="cm">/* Define rows */</span>
+  <span class="p">grid-template-rows</span>: <span class="n">auto 1fr auto</span>;        <span class="cm">/* header, content, footer */</span>
+
+  <span class="cm">/* Named areas — visual layout! */</span>
+  <span class="p">grid-template-areas</span>:
+    <span class="str">"header header header"</span>
+    <span class="str">"sidebar main main"</span>
+    <span class="str">"footer footer footer"</span>;
+
+  <span class="p">gap</span>: <span class="n">24px</span>;            <span class="cm">/* gap between tracks */</span>
+  <span class="p">row-gap</span>: <span class="n">16px</span>;
+  <span class="p">column-gap</span>: <span class="n">24px</span>;
+
+  <span class="cm">/* Align all items in cells */</span>
+  <span class="p">justify-items</span>: <span class="v">start</span>;   <span class="cm">/* inline axis: start|end|center|stretch */</span>
+  <span class="p">align-items</span>: <span class="v">stretch</span>;   <span class="cm">/* block axis */</span>
+
+  <span class="cm">/* Align the grid itself in its container */</span>
+  <span class="p">justify-content</span>: <span class="v">center</span>;
+  <span class="p">align-content</span>: <span class="v">start</span>;
+
+  <span class="cm">/* Implicit tracks — auto-created rows when items overflow */</span>
+  <span class="p">grid-auto-rows</span>: <span class="n">200px</span>;
+  <span class="p">grid-auto-flow</span>: <span class="v">dense</span>;  <span class="cm">/* fill gaps automatically */</span>
+}</pre>
+  </div>
+  <div class="code-block">
+    <div class="code-label"><div class="code-dot"></div>css-grid-items.css</div>
+<pre><span class="cm">/* Place items by line number */</span>
+<span class="s">.header</span> {
+  <span class="p">grid-column</span>: <span class="n">1 / -1</span>;    <span class="cm">/* span full width (1 to last line) */</span>
+  <span class="p">grid-row</span>: <span class="n">1</span>;
+}
+
+<span class="cm">/* Place by area name */</span>
+<span class="s">.sidebar</span> { <span class="p">grid-area</span>: <span class="v">sidebar</span>; }
+<span class="s">.main</span>    { <span class="p">grid-area</span>: <span class="v">main</span>; }
+
+<span class="cm">/* Span multiple tracks */</span>
+<span class="s">.wide-card</span> {
+  <span class="p">grid-column</span>: <span class="v">span 2</span>;   <span class="cm">/* spans 2 columns */</span>
+  <span class="p">grid-row</span>: <span class="v">span 3</span>;      <span class="cm">/* spans 3 rows */</span>
+}
+
+<span class="cm">/* Override container alignment for one item */</span>
+<span class="s">.special</span> {
+  <span class="p">justify-self</span>: <span class="v">center</span>;
+  <span class="p">align-self</span>: <span class="v">end</span>;
+}
+
+<span class="cm">/* Holy Grail Layout in 10 lines */</span>
+<span class="s">.page</span> {
+  <span class="p">display</span>: <span class="v">grid</span>;
+  <span class="p">grid-template</span>:
+    <span class="str">"header"</span> <span class="n">60px</span>
+    <span class="str">"nav main aside"</span> <span class="n">1fr</span>
+    <span class="str">"footer"</span> <span class="n">40px</span>
+    / <span class="n">200px 1fr 160px</span>;
+  <span class="p">min-height</span>: <span class="v">100vh</span>;
+}</pre>
+  </div>
+  <div class="callout info"><strong>auto-fill vs auto-fit:</strong> Both create as many columns as fit. With <code>auto-fill</code>, empty tracks are preserved (grid stays the same width). With <code>auto-fit</code>, empty tracks collapse and items stretch to fill the space. Use <code>auto-fit</code> when you want items to grow and fill the container.</div>
+  <a class="back" href="#top">↑ Top</a>
+</div>
+
+<!-- 11. Responsive Design -->
+<div class="topic" id="responsive">
+  <div class="topic-hdr">
+    <span class="topic-num">11</span>
+    <h2 class="topic-title">Responsive Design</h2>
+    <span class="topic-tag badge badge-o">Layout</span>
+  </div>
+  <p class="explain">
+    <strong>Mobile-first</strong> means writing your base styles for small screens, then using <code>min-width</code> media queries to add styles as the screen gets larger. This is the preferred modern approach because it starts with constraints and progressively enhances.
+  </p>
+  <div class="code-block">
+    <div class="code-label"><div class="code-dot"></div>responsive.css</div>
+<pre><span class="cm">/* Mobile first — base styles are for mobile */</span>
+<span class="s">.container</span> {
+  <span class="p">width</span>: <span class="n">100%</span>;
+  <span class="p">padding</span>: <span class="n">0 16px</span>;
+}
+
+<span class="cm">/* Tablet and up */</span>
+<span class="at">@media</span> (<span class="p">min-width</span>: <span class="n">768px</span>) {
+  <span class="s">.container</span> { <span class="p">max-width</span>: <span class="n">720px</span>; <span class="p">margin</span>: <span class="n">0 auto</span>; }
+  <span class="s">.grid</span> { <span class="p">grid-template-columns</span>: <span class="fn">repeat</span>(<span class="n">2</span>, <span class="n">1fr</span>); }
+}
+
+<span class="cm">/* Desktop */</span>
+<span class="at">@media</span> (<span class="p">min-width</span>: <span class="n">1024px</span>) {
+  <span class="s">.container</span> { <span class="p">max-width</span>: <span class="n">960px</span>; }
+  <span class="s">.grid</span> { <span class="p">grid-template-columns</span>: <span class="fn">repeat</span>(<span class="n">3</span>, <span class="n">1fr</span>); }
+}
+
+<span class="cm">/* Common breakpoints */</span>
+<span class="cm">/* sm:  640px  — small phones landscape */</span>
+<span class="cm">/* md:  768px  — tablets */</span>
+<span class="cm">/* lg:  1024px — laptops */</span>
+<span class="cm">/* xl:  1280px — large screens */</span>
+<span class="cm">/* 2xl: 1536px — very large screens */</span>
+
+<span class="cm">/* Intrinsically responsive grid — no media queries needed! */</span>
+<span class="s">.auto-grid</span> {
+  <span class="p">display</span>: <span class="v">grid</span>;
+  <span class="p">grid-template-columns</span>: <span class="fn">repeat</span>(<span class="v">auto-fit</span>, <span class="fn">minmax</span>(<span class="fn">min</span>(<span class="n">280px</span>, <span class="n">100%</span>), <span class="n">1fr</span>));
+  <span class="p">gap</span>: <span class="n">24px</span>;
+}</pre>
+  </div>
+  <a class="back" href="#top">↑ Top</a>
+</div>
+
+<!-- 12. Media Queries -->
+<div class="topic" id="media-queries">
+  <div class="topic-hdr">
+    <span class="topic-num">12</span>
+    <h2 class="topic-title">Media Queries</h2>
+    <span class="topic-tag badge badge-o">Layout</span>
+  </div>
+  <div class="code-block">
+    <div class="code-label"><div class="code-dot"></div>media-queries.css</div>
+<pre><span class="cm">/* Width-based */</span>
+<span class="at">@media</span> (<span class="p">min-width</span>: <span class="n">768px</span>) { ... }
+<span class="at">@media</span> (<span class="p">max-width</span>: <span class="n">767px</span>) { ... }
+<span class="at">@media</span> (<span class="n">768px</span> &lt;= <span class="p">width</span> &lt;= <span class="n">1024px</span>) { ... }  <span class="cm">/* range syntax (modern) */</span>
+
+<span class="cm">/* Orientation */</span>
+<span class="at">@media</span> (<span class="p">orientation</span>: <span class="v">landscape</span>) { ... }
+<span class="at">@media</span> (<span class="p">orientation</span>: <span class="v">portrait</span>) { ... }
+
+<span class="cm">/* Print styles */</span>
+<span class="at">@media</span> <span class="v">print</span> {
+  <span class="s">nav, .ads, button</span> { <span class="p">display</span>: <span class="v">none</span>; }
+  <span class="s">body</span> { <span class="p">font-size</span>: <span class="n">12pt</span>; <span class="p">color</span>: <span class="v">black</span>; }
+}
+
+<span class="cm">/* Dark mode preference */</span>
+<span class="at">@media</span> (<span class="p">prefers-color-scheme</span>: <span class="v">dark</span>) {
+  <span class="s">:root</span> { --bg: <span class="v">#111</span>; --text: <span class="v">#eee</span>; }
+}
+
+<span class="cm">/* Reduced motion — VERY important for accessibility */</span>
+<span class="at">@media</span> (<span class="p">prefers-reduced-motion</span>: <span class="v">reduce</span>) {
+  <span class="s">*, *::before, *::after</span> {
+    <span class="p">animation-duration</span>: <span class="n">0.01ms</span> <span class="v">!important</span>;
+    <span class="p">transition-duration</span>: <span class="n">0.01ms</span> <span class="v">!important</span>;
+  }
+}
+
+<span class="cm">/* Hover capability (true pointer device) */</span>
+<span class="at">@media</span> (<span class="p">hover</span>: <span class="v">hover</span>) { ... }  <span class="cm">/* only on devices with real hover */</span>
+
+<span class="cm">/* High resolution (Retina) */</span>
+<span class="at">@media</span> (<span class="p">min-resolution</span>: <span class="n">2dppx</span>) {
+  <span class="s">.logo</span> { <span class="p">background-image</span>: <span class="fn">url</span>(<span class="str">'logo@2x.png'</span>); }
+}
+
+<span class="cm">/* Logical AND: comma = OR, and = AND */</span>
+<span class="at">@media</span> (<span class="p">min-width</span>: <span class="n">768px</span>) and (<span class="p">orientation</span>: <span class="v">landscape</span>) { ... }
+<span class="at">@media</span> (<span class="p">max-width</span>: <span class="n">480px</span>), (<span class="p">min-width</span>: <span class="n">900px</span>) { ... }  <span class="cm">/* OR */</span>
+<span class="at">@media</span> not (<span class="p">max-width</span>: <span class="n">767px</span>) { ... }  <span class="cm">/* NOT */</span></pre>
+  </div>
+  <a class="back" href="#top">↑ Top</a>
+</div>
+
+<!-- 13. Container Queries -->
+<div class="topic" id="container-queries">
+  <div class="topic-hdr">
+    <span class="topic-num">13</span>
+    <h2 class="topic-title">Container Queries</h2>
+    <span class="topic-tag badge badge-o">Modern CSS</span>
+  </div>
+  <p class="explain">
+    <strong>Container Queries</strong> are a game-changer. Instead of responding to the viewport size, components respond to the size of their <em>own container</em>. A card can be wide in a sidebar and narrow in a grid — same component, different layout.
+  </p>
+  <div class="code-block">
+    <div class="code-label"><div class="code-dot"></div>container-queries.css</div>
+<pre><span class="cm">/* 1. Define a containment context on the parent */</span>
+<span class="s">.card-wrapper</span> {
+  <span class="p">container-type</span>: <span class="v">inline-size</span>;  <span class="cm">/* or: size, normal */</span>
+  <span class="p">container-name</span>: <span class="v">card</span>;          <span class="cm">/* optional name */</span>
+}
+
+<span class="cm">/* 2. Query the container, not the viewport */</span>
+<span class="at">@container</span> (<span class="p">min-width</span>: <span class="n">400px</span>) {
+  <span class="s">.card</span> {
+    <span class="p">display</span>: <span class="v">flex</span>;
+    <span class="p">flex-direction</span>: <span class="v">row</span>;   <span class="cm">/* horizontal when container is wide */</span>
+  }
+}
+
+<span class="cm">/* 3. Target a named container */</span>
+<span class="at">@container</span> <span class="v">card</span> (<span class="p">min-width</span>: <span class="n">600px</span>) {
+  <span class="s">.card__image</span> { <span class="p">width</span>: <span class="n">40%</span>; }
+}
+
+<span class="cm">/* Container query units — relative to container size */</span>
+<span class="s">.card h2</span> { <span class="p">font-size</span>: <span class="v">5cqi</span>; }  <span class="cm">/* 5% of container inline size */</span>
+<span class="cm">/* cqi = container inline size */</span>
+<span class="cm">/* cqb = container block size */</span>
+<span class="cm">/* cqw = container width */</span>
+<span class="cm">/* cqh = container height */</span></pre>
+  </div>
+  <a class="back" href="#top">↑ Top</a>
+</div>
+
+<!-- ═══════════ VISUAL ═══════════ -->
+<div class="sec-div">
+  <div class="sec-div-line"></div>
+  <div class="sec-div-label">⬡ Visual & Effects</div>
+  <div class="sec-div-line" style="background:linear-gradient(90deg,transparent,var(--accent))"></div>
+</div>
+
+<!-- 14. Backgrounds -->
+<div class="topic" id="backgrounds">
+  <div class="topic-hdr">
+    <span class="topic-num">14</span>
+    <h2 class="topic-title">Backgrounds</h2>
+    <span class="topic-tag badge badge-p">Visual</span>
+  </div>
+  <div class="code-block">
+    <div class="code-label"><div class="code-dot"></div>backgrounds.css</div>
+<pre><span class="s">.hero</span> {
+  <span class="p">background-color</span>: <span class="v">#f0f0f0</span>;
+
+  <span class="p">background-image</span>: <span class="fn">url</span>(<span class="str">'hero.jpg'</span>);
+  <span class="p">background-size</span>: <span class="v">cover</span>;         <span class="cm">/* cover | contain | 100px | 50% */</span>
+  <span class="p">background-position</span>: <span class="v">center center</span>;
+  <span class="p">background-repeat</span>: <span class="v">no-repeat</span>;   <span class="cm">/* repeat | repeat-x | repeat-y */</span>
+  <span class="p">background-attachment</span>: <span class="v">fixed</span>;   <span class="cm">/* parallax effect */</span>
+  <span class="p">background-origin</span>: <span class="v">content-box</span>; <span class="cm">/* where bg starts */</span>
+  <span class="p">background-clip</span>: <span class="v">padding-box</span>;   <span class="cm">/* where bg is clipped */</span>
+}
+
+<span class="cm">/* background-clip: text — gradient text */</span>
+<span class="s">.gradient-text</span> {
+  <span class="p">background</span>: <span class="fn">linear-gradient</span>(<span class="n">45deg</span>, <span class="v">#f06</span>, <span class="v">#09f</span>);
+  <span class="p">-webkit-background-clip</span>: <span class="v">text</span>;
+  <span class="p">background-clip</span>: <span class="v">text</span>;
+  <span class="p">color</span>: <span class="v">transparent</span>;
+}
+
+<span class="cm">/* Multiple backgrounds — layered! */</span>
+<span class="s">.layered</span> {
+  <span class="p">background</span>:
+    <span class="fn">url</span>(<span class="str">'overlay.png'</span>) center/cover no-repeat,
+    <span class="fn">linear-gradient</span>(<span class="n">to bottom</span>, <span class="fn">rgba</span>(<span class="n">0,0,0,0</span>), <span class="fn">rgba</span>(<span class="n">0,0,0,.6</span>)),
+    <span class="fn">url</span>(<span class="str">'photo.jpg'</span>) center/cover no-repeat;
+    <span class="cm">/* stacked front-to-back */</span>
+}</pre>
+  </div>
+  <a class="back" href="#top">↑ Top</a>
+</div>
+
+<!-- 15. Shadows & Filters -->
+<div class="topic" id="shadows">
+  <div class="topic-hdr">
+    <span class="topic-num">15</span>
+    <h2 class="topic-title">Shadows & Filters</h2>
+    <span class="topic-tag badge badge-p">Visual</span>
+  </div>
+  <div class="code-block">
+    <div class="code-label"><div class="code-dot"></div>shadows-filters.css</div>
+<pre><span class="cm">/* box-shadow: offset-x offset-y blur spread color */</span>
+<span class="s">.card</span> {
+  <span class="p">box-shadow</span>: <span class="n">0 4px 6px -1px</span> <span class="fn">rgba</span>(<span class="n">0,0,0,0.1</span>),
+              <span class="n">0 2px 4px -2px</span> <span class="fn">rgba</span>(<span class="n">0,0,0,0.1</span>);  <span class="cm">/* layered */</span>
+
+  <span class="cm">/* Inset shadow (inside the element) */</span>
+  <span class="p">box-shadow</span>: <span class="v">inset</span> <span class="n">0 2px 4px</span> <span class="fn">rgba</span>(<span class="n">0,0,0,0.1</span>);
+}
+
+<span class="cm">/* text-shadow: offset-x offset-y blur color */</span>
+<span class="s">h1</span> { <span class="p">text-shadow</span>: <span class="n">0 2px 4px</span> <span class="fn">rgba</span>(<span class="n">0,0,0,0.3</span>); }
+
+<span class="cm">/* drop-shadow — follows element's alpha (clips to shape) */</span>
+<span class="s">.icon</span> { <span class="p">filter</span>: <span class="fn">drop-shadow</span>(<span class="n">0 4px 6px</span> <span class="fn">rgba</span>(<span class="n">0,0,0,0.3</span>)); }
+
+<span class="cm">/* CSS filter functions */</span>
+<span class="s">.image</span> {
+  <span class="p">filter</span>: <span class="fn">blur</span>(<span class="n">4px</span>);
+  <span class="p">filter</span>: <span class="fn">brightness</span>(<span class="n">0.8</span>);   <span class="cm">/* 0 = black, 1 = normal, 2 = double */</span>
+  <span class="p">filter</span>: <span class="fn">contrast</span>(<span class="n">1.5</span>);
+  <span class="p">filter</span>: <span class="fn">grayscale</span>(<span class="n">100%</span>);
+  <span class="p">filter</span>: <span class="fn">sepia</span>(<span class="n">60%</span>);
+  <span class="p">filter</span>: <span class="fn">invert</span>(<span class="n">100%</span>);
+  <span class="p">filter</span>: <span class="fn">saturate</span>(<span class="n">200%</span>);
+  <span class="p">filter</span>: <span class="fn">hue-rotate</span>(<span class="n">45deg</span>);
+  <span class="p">filter</span>: <span class="fn">blur</span>(<span class="n">2px</span>) <span class="fn">brightness</span>(<span class="n">0.9</span>); <span class="cm">/* combine multiple */</span>
+}
+
+<span class="cm">/* backdrop-filter — blurs what's BEHIND element */</span>
+<span class="s">.glass</span> {
+  <span class="p">background</span>: <span class="fn">rgba</span>(<span class="n">255,255,255,0.1</span>);
+  <span class="p">backdrop-filter</span>: <span class="fn">blur</span>(<span class="n">12px</span>) <span class="fn">saturate</span>(<span class="n">180%</span>);
+}</pre>
+  </div>
+  <a class="back" href="#top">↑ Top</a>
+</div>
+
+<!-- 16. Transforms -->
+<div class="topic" id="transforms">
+  <div class="topic-hdr">
+    <span class="topic-num">16</span>
+    <h2 class="topic-title">Transforms</h2>
+    <span class="topic-tag badge badge-p">Visual</span>
+  </div>
+  <div class="code-block">
+    <div class="code-label"><div class="code-dot"></div>transforms.css</div>
+<pre><span class="s">.element</span> {
+  <span class="cm">/* 2D Transforms */</span>
+  <span class="p">transform</span>: <span class="fn">translateX</span>(<span class="n">50px</span>);
+  <span class="p">transform</span>: <span class="fn">translateY</span>(<span class="n">-20px</span>);
+  <span class="p">transform</span>: <span class="fn">translate</span>(<span class="n">50px</span>, <span class="n">-20px</span>);
+  <span class="p">transform</span>: <span class="fn">scale</span>(<span class="n">1.5</span>);         <span class="cm">/* scale(x, y) */</span>
+  <span class="p">transform</span>: <span class="fn">rotate</span>(<span class="n">45deg</span>);
+  <span class="p">transform</span>: <span class="fn">skew</span>(<span class="n">10deg</span>, <span class="n">5deg</span>);
+
+  <span class="cm">/* Chain multiple transforms — right to left order! */</span>
+  <span class="p">transform</span>: <span class="fn">translate</span>(<span class="n">-50%</span>, <span class="n">-50%</span>) <span class="fn">rotate</span>(<span class="n">45deg</span>) <span class="fn">scale</span>(<span class="n">1.2</span>);
+
+  <span class="cm">/* 3D Transforms */</span>
+  <span class="p">transform</span>: <span class="fn">rotateX</span>(<span class="n">45deg</span>);
+  <span class="p">transform</span>: <span class="fn">rotateY</span>(<span class="n">180deg</span>);    <span class="cm">/* flip effect */</span>
+  <span class="p">transform</span>: <span class="fn">rotate3d</span>(<span class="n">1</span>, <span class="n">1</span>, <span class="n">0</span>, <span class="n">45deg</span>);
+  <span class="p">transform</span>: <span class="fn">perspective</span>(<span class="n">500px</span>) <span class="fn">rotateY</span>(<span class="n">30deg</span>);
+
+  <span class="cm">/* Transform origin — pivot point */</span>
+  <span class="p">transform-origin</span>: <span class="v">top left</span>;   <span class="cm">/* default: center center */</span>
+  <span class="p">transform-origin</span>: <span class="n">0% 0%</span>;
+
+  <span class="cm">/* 3D perspective on parent */</span>
+  <span class="p">perspective</span>: <span class="n">1000px</span>;
+  <span class="p">transform-style</span>: <span class="v">preserve-3d</span>;
+
+  <span class="cm">/* GPU-accelerated: prefer translate/scale/rotate over top/left */</span>
+  <span class="cm">/* will-change hints browser for optimization */</span>
+  <span class="p">will-change</span>: <span class="v">transform</span>;  <span class="cm">/* use sparingly — consumes memory */</span>
+}</pre>
+  </div>
+  <a class="back" href="#top">↑ Top</a>
+</div>
+
+<!-- 17. Transitions -->
+<div class="topic" id="transitions">
+  <div class="topic-hdr">
+    <span class="topic-num">17</span>
+    <h2 class="topic-title">Transitions</h2>
+    <span class="topic-tag badge badge-p">Visual</span>
+  </div>
+  <div class="code-block">
+    <div class="code-label"><div class="code-dot"></div>transitions.css</div>
+<pre><span class="s">.btn</span> {
+  <span class="p">background</span>: <span class="v">blue</span>;
+  <span class="p">transform</span>: <span class="fn">scale</span>(<span class="n">1</span>);
+
+  <span class="cm">/* property | duration | timing-function | delay */</span>
+  <span class="p">transition</span>: <span class="v">background</span> <span class="n">200ms</span> <span class="v">ease</span>,
+              <span class="v">transform</span> <span class="n">150ms</span> <span class="v">ease-out</span>;
+
+  <span class="cm">/* Transition all (use with caution — expensive) */</span>
+  <span class="p">transition</span>: <span class="v">all</span> <span class="n">300ms</span> <span class="v">ease</span>;
+}
+
+<span class="s">.btn:hover</span> {
+  <span class="p">background</span>: <span class="v">darkblue</span>;
+  <span class="p">transform</span>: <span class="fn">scale</span>(<span class="n">1.05</span>);
+}
+
+<span class="cm">/* Timing functions */</span>
+<span class="s">.a</span> { <span class="p">transition-timing-function</span>: <span class="v">ease</span>; }          <span class="cm">/* slow-fast-slow (default) */</span>
+<span class="s">.b</span> { <span class="p">transition-timing-function</span>: <span class="v">ease-in</span>; }       <span class="cm">/* slow start */</span>
+<span class="s">.c</span> { <span class="p">transition-timing-function</span>: <span class="v">ease-out</span>; }      <span class="cm">/* slow end */</span>
+<span class="s">.d</span> { <span class="p">transition-timing-function</span>: <span class="v">ease-in-out</span>; }   <span class="cm">/* slow both */</span>
+<span class="s">.e</span> { <span class="p">transition-timing-function</span>: <span class="v">linear</span>; }        <span class="cm">/* constant */</span>
+<span class="s">.f</span> { <span class="p">transition-timing-function</span>: <span class="fn">cubic-bezier</span>(<span class="n">0.34</span>,<span class="n">1.56</span>,<span class="n">0.64</span>,<span class="n">1</span>); } <span class="cm">/* spring! */</span>
+<span class="s">.g</span> { <span class="p">transition-timing-function</span>: <span class="fn">steps</span>(<span class="n">4</span>, <span class="v">end</span>); } <span class="cm">/* frame by frame */</span>
+
+<span class="cm">/* Properties that can be transitioned: */</span>
+<span class="cm">/* transform, opacity, color, background, border, box-shadow */</span>
+<span class="cm">/* width/height (use max-height hack or transform instead) */</span>
+<span class="cm">/* NOT: display, visibility (use opacity + pointer-events) */</span></pre>
+  </div>
+  <a class="back" href="#top">↑ Top</a>
+</div>
+
+<!-- 18. Animations -->
+<div class="topic" id="animations">
+  <div class="topic-hdr">
+    <span class="topic-num">18</span>
+    <h2 class="topic-title">CSS Animations</h2>
+    <span class="topic-tag badge badge-p">Visual</span>
+  </div>
+  <div class="code-block">
+    <div class="code-label"><div class="code-dot"></div>animations.css</div>
+<pre><span class="cm">/* 1. Define keyframes */</span>
+<span class="at">@keyframes</span> <span class="fn">slideIn</span> {
+  <span class="k">from</span> { <span class="p">transform</span>: <span class="fn">translateY</span>(<span class="n">-20px</span>); <span class="p">opacity</span>: <span class="n">0</span>; }
+  <span class="k">to</span>   { <span class="p">transform</span>: <span class="fn">translateY</span>(<span class="n">0</span>); <span class="p">opacity</span>: <span class="n">1</span>; }
+}
+
+<span class="at">@keyframes</span> <span class="fn">pulse</span> {
+  <span class="n">0%</span>   { <span class="p">transform</span>: <span class="fn">scale</span>(<span class="n">1</span>); }
+  <span class="n">50%</span>  { <span class="p">transform</span>: <span class="fn">scale</span>(<span class="n">1.1</span>); }
+  <span class="n">100%</span> { <span class="p">transform</span>: <span class="fn">scale</span>(<span class="n">1</span>); }
+}
+
+<span class="at">@keyframes</span> <span class="fn">spin</span> {
+  <span class="k">to</span> { <span class="p">transform</span>: <span class="fn">rotate</span>(<span class="n">360deg</span>); }
+}
+
+<span class="cm">/* 2. Apply animation */</span>
+<span class="s">.alert</span> {
+  <span class="cm">/* name | duration | timing | delay | iteration | direction | fill-mode | play-state */</span>
+  <span class="p">animation</span>: <span class="fn">slideIn</span> <span class="n">400ms</span> <span class="v">ease-out</span> <span class="n">0s</span> <span class="n">1</span> <span class="v">normal</span> <span class="v">both</span> <span class="v">running</span>;
+
+  <span class="cm">/* Shorthand examples */</span>
+  <span class="p">animation</span>: <span class="fn">slideIn</span> <span class="n">400ms</span> <span class="v">ease-out</span>;
+  <span class="p">animation</span>: <span class="fn">pulse</span> <span class="n">1s</span> <span class="v">ease-in-out</span> <span class="v">infinite</span>;
+}
+
+<span class="cm">/* Multiple animations */</span>
+<span class="s">.loader</span> { <span class="p">animation</span>: <span class="fn">spin</span> <span class="n">1s</span> <span class="v">linear</span> <span class="v">infinite</span>, <span class="fn">pulse</span> <span class="n">2s</span> <span class="v">ease</span> <span class="v">infinite</span>; }
+
+<span class="cm">/* fill-mode values */</span>
+<span class="cm">/* none     — element returns to initial state before/after */</span>
+<span class="cm">/* forwards — keeps last keyframe state after ending */</span>
+<span class="cm">/* backwards— applies first keyframe during delay */</span>
+<span class="cm">/* both     — forwards + backwards */</span>
+
+<span class="cm">/* Pause/resume animation */</span>
+<span class="s">.paused</span> { <span class="p">animation-play-state</span>: <span class="v">paused</span>; }
+
+<span class="cm">/* Staggered animations with CSS custom properties */</span>
+<span class="s">.item</span> { <span class="p">animation</span>: <span class="fn">fadeUp</span> <span class="n">0.4s</span> <span class="v">ease</span> <span class="k">var</span>(<span class="var">--delay</span>) <span class="v">both</span>; }
+<span class="s">.item:nth-child(1)</span> { <span class="var">--delay</span>: <span class="n">0ms</span>; }
+<span class="s">.item:nth-child(2)</span> { <span class="var">--delay</span>: <span class="n">100ms</span>; }
+<span class="s">.item:nth-child(3)</span> { <span class="var">--delay</span>: <span class="n">200ms</span>; }</pre>
+  </div>
+  <a class="back" href="#top">↑ Top</a>
+</div>
+
+<!-- 19. Gradients -->
+<div class="topic" id="gradients">
+  <div class="topic-hdr">
+    <span class="topic-num">19</span>
+    <h2 class="topic-title">Gradients</h2>
+    <span class="topic-tag badge badge-p">Visual</span>
+  </div>
+  <div class="code-block">
+    <div class="code-label"><div class="code-dot"></div>gradients.css</div>
+<pre><span class="cm">/* Linear gradient */</span>
+<span class="s">.a</span> { <span class="p">background</span>: <span class="fn">linear-gradient</span>(<span class="v">to right</span>, <span class="v">#f06</span>, <span class="v">#09f</span>); }
+<span class="s">.b</span> { <span class="p">background</span>: <span class="fn">linear-gradient</span>(<span class="n">135deg</span>, <span class="v">#667eea</span> <span class="n">0%</span>, <span class="v">#764ba2</span> <span class="n">100%</span>); }
+
+<span class="cm">/* Radial gradient */</span>
+<span class="s">.c</span> { <span class="p">background</span>: <span class="fn">radial-gradient</span>(<span class="v">circle</span>, <span class="v">#f06</span>, <span class="v">#09f</span>); }
+<span class="s">.d</span> { <span class="p">background</span>: <span class="fn">radial-gradient</span>(<span class="v">ellipse at top left</span>, <span class="v">#f06</span>, <span class="v">transparent</span>); }
+
+<span class="cm">/* Conic gradient */</span>
+<span class="s">.e</span> { <span class="p">background</span>: <span class="fn">conic-gradient</span>(<span class="v">red</span> <span class="n">90deg</span>, <span class="v">blue</span> <span class="n">90deg</span> <span class="n">180deg</span>, <span class="v">green</span> <span class="n">180deg</span>); }
+<span class="s">.pie</span> { <span class="p">background</span>: <span class="fn">conic-gradient</span>(<span class="v">tomato</span> <span class="n">30%</span>, <span class="v">gold</span> <span class="n">30%</span> <span class="n">60%</span>, <span class="v">steelblue</span> <span class="n">60%</span>); }
+
+<span class="cm">/* Repeating gradient */</span>
+<span class="s">.stripes</span> {
+  <span class="p">background</span>: <span class="fn">repeating-linear-gradient</span>(
+    <span class="n">45deg</span>,
+    <span class="v">transparent</span>,
+    <span class="v">transparent</span> <span class="n">10px</span>,
+    <span class="fn">rgba</span>(<span class="n">0,0,0,0.1</span>) <span class="n">10px</span>,
+    <span class="fn">rgba</span>(<span class="n">0,0,0,0.1</span>) <span class="n">20px</span>
+  );
+}
+
+<span class="cm">/* Hard color stops — no blending */</span>
+<span class="s">.checkerboard</span> {
+  <span class="p">background</span>:
+    <span class="fn">conic-gradient</span>(<span class="v">#fff</span> <span class="n">90deg</span>, <span class="v">#ddd</span> <span class="n">90deg</span>)
+    <span class="n">0 0</span> / <span class="n">20px 20px</span>;
+}</pre>
+  </div>
+  <a class="back" href="#top">↑ Top</a>
+</div>
+
+<!-- 20. Clip & Mask -->
+<div class="topic" id="clip-mask">
+  <div class="topic-hdr">
+    <span class="topic-num">20</span>
+    <h2 class="topic-title">Clip Path & Mask</h2>
+    <span class="topic-tag badge badge-p">Visual</span>
+  </div>
+  <div class="code-block">
+    <div class="code-label"><div class="code-dot"></div>clip-mask.css</div>
+<pre><span class="cm">/* clip-path — clip element to a shape */</span>
+<span class="s">.circle</span>   { <span class="p">clip-path</span>: <span class="fn">circle</span>(<span class="n">50%</span>); }
+<span class="s">.ellipse</span>  { <span class="p">clip-path</span>: <span class="fn">ellipse</span>(<span class="n">60%</span> <span class="n">40%</span> <span class="v">at center</span>); }
+<span class="s">.inset</span>    { <span class="p">clip-path</span>: <span class="fn">inset</span>(<span class="n">10px</span> <span class="n">20px</span> <span class="v">round</span> <span class="n">8px</span>); }
+<span class="s">.triangle</span> { <span class="p">clip-path</span>: <span class="fn">polygon</span>(<span class="n">50%</span> <span class="n">0%</span>, <span class="n">100%</span> <span class="n">100%</span>, <span class="n">0%</span> <span class="n">100%</span>); }
+<span class="s">.hex</span>      { <span class="p">clip-path</span>: <span class="fn">polygon</span>(<span class="n">25%</span> <span class="n">0%</span>, <span class="n">75%</span> <span class="n">0%</span>, <span class="n">100%</span> <span class="n">50%</span>, <span class="n">75%</span> <span class="n">100%</span>, <span class="n">25%</span> <span class="n">100%</span>, <span class="n">0%</span> <span class="n">50%</span>); }
+
+<span class="cm">/* Can animate clip-path! */</span>
+<span class="s">.reveal</span> {
+  <span class="p">clip-path</span>: <span class="fn">inset</span>(<span class="n">0 100% 0 0</span>);
+  <span class="p">transition</span>: <span class="v">clip-path</span> <span class="n">600ms</span> <span class="v">ease</span>;
+}
+<span class="s">.reveal:hover</span> { <span class="p">clip-path</span>: <span class="fn">inset</span>(<span class="n">0 0% 0 0</span>); }
+
+<span class="cm">/* mask — like clip-path but uses image/gradient for masking */</span>
+<span class="s">.fade-out</span> {
+  <span class="p">mask-image</span>: <span class="fn">linear-gradient</span>(<span class="v">to bottom</span>, <span class="v">black</span> <span class="n">60%</span>, <span class="v">transparent</span>);
+}
+<span class="s">.shape-mask</span> {
+  <span class="p">mask-image</span>: <span class="fn">url</span>(<span class="str">'mask.svg'</span>);
+  <span class="p">mask-size</span>: <span class="v">cover</span>;
+}</pre>
+  </div>
+  <a class="back" href="#top">↑ Top</a>
+</div>
+
+<!-- ═══════════ MODERN CSS ═══════════ -->
+<div class="sec-div">
+  <div class="sec-div-line"></div>
+  <div class="sec-div-label">⬡ Modern CSS</div>
+  <div class="sec-div-line" style="background:linear-gradient(90deg,transparent,var(--accent))"></div>
+</div>
+
+<!-- 21. CSS Variables -->
+<div class="topic" id="variables">
+  <div class="topic-hdr">
+    <span class="topic-num">21</span>
+    <h2 class="topic-title">CSS Custom Properties (Variables)</h2>
+    <span class="topic-tag badge badge-v">Modern</span>
+  </div>
+  <p class="explain">
+    CSS Custom Properties (variables) are defined with <code>--name</code> and accessed with <code>var(--name)</code>. Unlike Sass variables, they are <strong>live in the browser</strong>, cascade, inherit, and can be changed with JavaScript.
+  </p>
+  <div class="code-block">
+    <div class="code-label"><div class="code-dot"></div>css-variables.css</div>
+<pre><span class="cm">/* Define on :root — globally available */</span>
+<span class="s">:root</span> {
+  <span class="var">--color-primary</span>: <span class="v">#6c63ff</span>;
+  <span class="var">--color-text</span>: <span class="v">#1a1a2e</span>;
+  <span class="var">--space-md</span>: <span class="n">16px</span>;
+  <span class="var">--radius</span>: <span class="n">8px</span>;
+  <span class="var">--shadow</span>: <span class="n">0 4px 6px</span> <span class="fn">rgba</span>(<span class="n">0,0,0,0.1</span>);
+  <span class="var">--font-size-base</span>: <span class="n">1rem</span>;
+}
+
+<span class="s">.btn</span> {
+  <span class="p">background</span>: <span class="k">var</span>(<span class="var">--color-primary</span>);
+  <span class="p">padding</span>: <span class="k">var</span>(<span class="var">--space-md</span>);
+  <span class="p">border-radius</span>: <span class="k">var</span>(<span class="var">--radius</span>);
+
+  <span class="cm">/* Fallback value if variable not defined */</span>
+  <span class="p">color</span>: <span class="k">var</span>(<span class="var">--color-on-primary</span>, white);
+}
+
+<span class="cm">/* Variables are scoped — can override locally */</span>
+<span class="s">.dark-theme</span> {
+  <span class="var">--color-primary</span>: <span class="v">#a78bfa</span>;
+  <span class="var">--color-text</span>: <span class="v">#e2e8f0</span>;
+}
+
+<span class="cm">/* Dark mode with variables — clean! */</span>
+<span class="at">@media</span> (<span class="p">prefers-color-scheme</span>: <span class="v">dark</span>) {
+  <span class="s">:root</span> {
+    <span class="var">--color-text</span>: <span class="v">#e2e8f0</span>;
+    <span class="var">--bg</span>: <span class="v">#1a1a2e</span>;
+  }
+}
+
+<span class="cm">/* Use in calculations */</span>
+<span class="s">.spaced</span> { <span class="p">margin</span>: <span class="fn">calc</span>(<span class="k">var</span>(<span class="var">--space-md</span>) * <span class="n">2</span>); }
+
+<span class="cm">/* JavaScript can read/write CSS variables */</span>
+<span class="cm">// document.documentElement.style.setProperty('--color-primary', '#ff0000');</span>
+<span class="cm">// getComputedStyle(el).getPropertyValue('--color-primary');</span></pre>
+  </div>
+  <a class="back" href="#top">↑ Top</a>
+</div>
+
+<!-- 22. Pseudo -->
+<div class="topic" id="pseudo">
+  <div class="topic-hdr">
+    <span class="topic-num">22</span>
+    <h2 class="topic-title">Pseudo-classes & Pseudo-elements</h2>
+    <span class="topic-tag badge badge-v">Modern</span>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Pseudo-class</th><th>Meaning</th></tr>
+      <tr><td><code>:hover</code></td><td>Mouse over element</td></tr>
+      <tr><td><code>:focus</code></td><td>Element has keyboard/tab focus</td></tr>
+      <tr><td><code>:focus-visible</code></td><td>Focus from keyboard only (not mouse)</td></tr>
+      <tr><td><code>:active</code></td><td>Being clicked</td></tr>
+      <tr><td><code>:visited</code></td><td>Visited link</td></tr>
+      <tr><td><code>:checked</code></td><td>Checked checkbox/radio</td></tr>
+      <tr><td><code>:disabled</code></td><td>Disabled form element</td></tr>
+      <tr><td><code>:invalid / :valid</code></td><td>Form validation state</td></tr>
+      <tr><td><code>:empty</code></td><td>No children or text</td></tr>
+      <tr><td><code>:nth-child(n)</code></td><td>nth sibling (1-indexed)</td></tr>
+      <tr><td><code>:nth-of-type(n)</code></td><td>nth of element type among siblings</td></tr>
+      <tr><td><code>:first-child / :last-child</code></td><td>First/last sibling</td></tr>
+      <tr><td><code>:not(selector)</code></td><td>Elements NOT matching selector</td></tr>
+      <tr><td><code>:is()</code></td><td>Forgiving group (max specificity of args)</td></tr>
+      <tr><td><code>:where()</code></td><td>Zero-specificity group</td></tr>
+      <tr><td><code>:has()</code></td><td>Element that contains a matching child</td></tr>
+    </table>
+  </div>
+  <div class="code-block">
+    <div class="code-label"><div class="code-dot"></div>pseudo-elements.css</div>
+<pre><span class="cm">/* Pseudo-elements — create virtual elements */</span>
+<span class="s">.card::before</span> {
+  <span class="p">content</span>: <span class="str">""</span>;    <span class="cm">/* required! even if empty */</span>
+  <span class="p">display</span>: <span class="v">block</span>;
+  <span class="p">width</span>: <span class="n">40px</span>; <span class="p">height</span>: <span class="n">4px</span>;
+  <span class="p">background</span>: <span class="k">var</span>(<span class="var">--color-primary</span>);
+}
+
+<span class="cm">/* ::after */</span>
+<span class="s">.required::after</span> {
+  <span class="p">content</span>: <span class="str">" *"</span>;
+  <span class="p">color</span>: <span class="v">red</span>;
+}
+
+<span class="cm">/* ::first-line, ::first-letter */</span>
+<span class="s">p::first-letter</span> { <span class="p">font-size</span>: <span class="n">2em</span>; <span class="p">float</span>: <span class="v">left</span>; }
+<span class="s">p::first-line</span>   { <span class="p">font-weight</span>: <span class="v">bold</span>; }
+
+<span class="cm">/* ::selection — user text selection */</span>
+<span class="s">::selection</span> { <span class="p">background</span>: <span class="v">purple</span>; <span class="p">color</span>: <span class="v">white</span>; }
+
+<span class="cm">/* ::placeholder */</span>
+<span class="s">input::placeholder</span> { <span class="p">color</span>: }
+
+<span class="cm">/* ::marker — list bullet/number */</span>
+<span class="s">li::marker</span> { <span class="p">color</span>: <span class="v">blue</span>; <span class="p">font-size</span>: <span class="n">1.2em</span>; }
+
+<span class="cm">/* nth-child formulas */</span>
+<span class="s">li:nth-child(odd)</span>   { <span class="p">background</span>: <span class="v">#f5f5f5</span>; }  <span class="cm">/* 2n+1 */</span>
+<span class="s">li:nth-child(3n)</span>    { ... }  <span class="cm">/* every 3rd */</span>
+<span class="s">li:nth-child(n+4)</span>   { ... }  <span class="cm">/* 4th and beyond */</span>
+<span class="s">li:nth-last-child(2)</span>{ ... }  <span class="cm">/* 2nd from end */</span></pre>
+  </div>
+  <a class="back" href="#top">↑ Top</a>
+</div>
+
+<!-- 23. CSS Functions -->
+<div class="topic" id="functions">
+  <div class="topic-hdr">
+    <span class="topic-num">23</span>
+    <h2 class="topic-title">CSS Functions</h2>
+    <span class="topic-tag badge badge-v">Modern</span>
+  </div>
+  <div class="code-block">
+    <div class="code-label"><div class="code-dot"></div>css-functions.css</div>
+<pre><span class="cm">/* calc() — mix units */</span>
+<span class="s">.sidebar</span> { <span class="p">width</span>: <span class="fn">calc</span>(<span class="n">100%</span> - <span class="n">280px</span> - <span class="n">32px</span>); }
+
+<span class="cm">/* min() — smallest of values */</span>
+<span class="s">.box</span> { <span class="p">width</span>: <span class="fn">min</span>(<span class="n">90%</span>, <span class="n">600px</span>); }  <span class="cm">/* responsive max width */</span>
+
+<span class="cm">/* max() — largest of values */</span>
+<span class="s">.text</span> { <span class="p">font-size</span>: <span class="fn">max</span>(<span class="n">1rem</span>, <span class="n">2vw</span>); }  <span class="cm">/* minimum readable size */</span>
+
+<span class="cm">/* clamp(min, ideal, max) — fluid values */</span>
+<span class="s">h1</span> { <span class="p">font-size</span>: <span class="fn">clamp</span>(<span class="n">1.5rem</span>, <span class="n">4vw</span>, <span class="n">4rem</span>); }
+<span class="s">.container</span> { <span class="p">padding</span>: <span class="fn">clamp</span>(<span class="n">1rem</span>, <span class="n">3vw</span>, <span class="n">3rem</span>); }
+
+<span class="cm">/* env() — environment variables (safe areas on iOS) */</span>
+<span class="s">.fixed-bar</span> {
+  <span class="p">padding-bottom</span>: <span class="fn">env</span>(<span class="v">safe-area-inset-bottom</span>);
+}
+
+<span class="cm">/* attr() — use HTML attribute as CSS value */</span>
+<span class="s">[data-tooltip]::after</span> {
+  <span class="p">content</span>: <span class="fn">attr</span>(<span class="v">data-tooltip</span>);  <span class="cm">/* reads data-tooltip attribute */</span>
+}
+
+<span class="cm">/* counter() — CSS counters */</span>
+<span class="s">ol</span> { <span class="p">counter-reset</span>: <span class="v">section</span>; }
+<span class="s">li</span> { <span class="p">counter-increment</span>: <span class="v">section</span>; }
+<span class="s">li::before</span> { <span class="p">content</span>: <span class="fn">counter</span>(<span class="v">section</span>) <span class="str">". "</span>; }
+
+<span class="cm">/* color-mix() — mix two colors */</span>
+<span class="s">.hover</span> { <span class="p">background</span>: <span class="fn">color-mix</span>(<span class="v">in srgb</span>, <span class="v">blue</span> <span class="n">30%</span>, <span class="v">white</span>); }
+
+<span class="cm">/* light-dark() — automatic dark mode */</span>
+<span class="s">:root</span> { <span class="p">color-scheme</span>: <span class="v">light dark</span>; }
+<span class="s">.auto</span> { <span class="p">color</span>: <span class="fn">light-dark</span>(<span class="v">#000</span>, <span class="v">#fff</span>); }</pre>
+  </div>
+  <a class="back" href="#top">↑ Top</a>
+</div>
+
+<!-- 24. Logical Properties -->
+<div class="topic" id="logical">
+  <div class="topic-hdr">
+    <span class="topic-num">24</span>
+    <h2 class="topic-title">Logical Properties</h2>
+    <span class="topic-tag badge badge-v">Modern</span>
+  </div>
+  <p class="explain">
+    Logical properties use <strong>flow-relative directions</strong> (inline/block, start/end) instead of physical ones (top/right/bottom/left). This makes your CSS automatically work correctly for RTL (right-to-left) languages like Arabic and Hebrew.
+  </p>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Physical</th><th>Logical Equivalent</th><th>Meaning</th></tr>
+      <tr><td><code>width</code></td><td><code>inline-size</code></td><td>Horizontal in LTR</td></tr>
+      <tr><td><code>height</code></td><td><code>block-size</code></td><td>Vertical in LTR</td></tr>
+      <tr><td><code>margin-top</code></td><td><code>margin-block-start</code></td><td>Before in reading direction</td></tr>
+      <tr><td><code>margin-bottom</code></td><td><code>margin-block-end</code></td><td>After in reading direction</td></tr>
+      <tr><td><code>margin-left</code></td><td><code>margin-inline-start</code></td><td>Start of inline direction</td></tr>
+      <tr><td><code>margin-right</code></td><td><code>margin-inline-end</code></td><td>End of inline direction</td></tr>
+      <tr><td><code>padding-left/right</code></td><td><code>padding-inline</code></td><td>Shorthand both inline sides</td></tr>
+      <tr><td><code>border-top</code></td><td><code>border-block-start</code></td><td>Top in LTR</td></tr>
+      <tr><td><code>text-align: left</code></td><td><code>text-align: start</code></td><td>Start of inline direction</td></tr>
+    </table>
+  </div>
+  <a class="back" href="#top">↑ Top</a>
+</div>
+
+<!-- 25. Scroll -->
+<div class="topic" id="scroll">
+  <div class="topic-hdr">
+    <span class="topic-num">25</span>
+    <h2 class="topic-title">Scroll Snap & Behavior</h2>
+    <span class="topic-tag badge badge-v">Modern</span>
+  </div>
+  <div class="code-block">
+    <div class="code-label"><div class="code-dot"></div>scroll.css</div>
+<pre><span class="cm">/* Smooth scrolling */</span>
+<span class="s">html</span> { <span class="p">scroll-behavior</span>: <span class="v">smooth</span>; }
+
+<span class="cm">/* scroll-margin — offset for anchor links */</span>
+<span class="s">.section</span> { <span class="p">scroll-margin-top</span>: <span class="n">80px</span>; }  <span class="cm">/* fixed header height */</span>
+
+<span class="cm">/* Scroll Snap — carousel, pages, galleries */</span>
+<span class="s">.slider</span> {
+  <span class="p">display</span>: <span class="v">flex</span>;
+  <span class="p">overflow-x</span>: <span class="v">auto</span>;
+  <span class="p">scroll-snap-type</span>: <span class="v">x mandatory</span>;   <span class="cm">/* x|y|both, mandatory|proximity */</span>
+  <span class="p">scroll-padding</span>: <span class="n">16px</span>;            <span class="cm">/* gap before snapping */</span>
+}
+<span class="s">.slide</span> {
+  <span class="p">flex-shrink</span>: <span class="n">0</span>;
+  <span class="p">width</span>: <span class="n">100%</span>;
+  <span class="p">scroll-snap-align</span>: <span class="v">start</span>;         <span class="cm">/* start | center | end */</span>
+  <span class="p">scroll-snap-stop</span>: <span class="v">always</span>;         <span class="cm">/* force stop on every slide */</span>
+}
+
+<span class="cm">/* overscroll-behavior — prevent scroll chaining */</span>
+<span class="s">.modal</span> { <span class="p">overscroll-behavior</span>: <span class="v">contain</span>; }  <span class="cm">/* don't scroll page behind modal */</span>
+
+<span class="cm">/* scrollbar customization (Chrome/Edge/Safari) */</span>
+<span class="s">::-webkit-scrollbar</span> { <span class="p">width</span>: <span class="n">8px</span>; }
+<span class="s">::-webkit-scrollbar-track</span> { <span class="p">background</span>: <span class="v">#f1f1f1</span>; }
+<span class="s">::-webkit-scrollbar-thumb</span> { <span class="p">background</span>: <span class="v">#888</span>; <span class="p">border-radius</span>: <span class="n">4px</span>; }</pre>
+  </div>
+  <a class="back" href="#top">↑ Top</a>
+</div>
+
+<!-- ═══════════ SCSS ═══════════ -->
+<div class="sec-div">
+  <div class="sec-div-line"></div>
+  <div class="sec-div-label">⬡ SCSS / Sass</div>
+  <div class="sec-div-line" style="background:linear-gradient(90deg,transparent,var(--accent))"></div>
+</div>
+
+<!-- 26. SCSS Intro -->
+<div class="topic" id="scss-intro">
+  <div class="topic-hdr">
+    <span class="topic-num">26</span>
+    <h2 class="topic-title">SCSS Introduction</h2>
+    <span class="topic-tag badge badge-b">SCSS</span>
+  </div>
+  <p class="explain">
+    <strong>SCSS (Sassy CSS)</strong> is a CSS preprocessor — it adds programming features to CSS and compiles to regular CSS. There are two syntaxes: <em>SCSS</em> (uses <code>{}</code> and <code>;</code> — looks like CSS) and <em>Sass</em> (indented, no braces). SCSS is more popular because it's a superset of CSS — any valid CSS is valid SCSS.
+  </p>
+  <div class="g2">
+    <div class="card"><div class="card-title">SCSS Advantages</div><p>Variables, nesting, mixins, functions, loops, conditionals, partials, modules. DRY code. Better organization. Compile-time errors. Everything compiles to plain CSS.</p></div>
+    <div class="card"><div class="card-title">CSS Variables vs SCSS Variables</div><p>SCSS variables (<code>$var</code>) are compile-time — they disappear after compilation. CSS variables (<code>--var</code>) are runtime — they live in the browser, can be changed with JS, respond to media queries. Modern preference: use both!</p></div>
+  </div>
+  <a class="back" href="#top">↑ Top</a>
+</div>
+
+<!-- 27. SCSS Variables -->
+<div class="topic" id="scss-variables">
+  <div class="topic-hdr">
+    <span class="topic-num">27</span>
+    <h2 class="topic-title">SCSS Variables & Maps</h2>
+    <span class="topic-tag badge badge-b">SCSS</span>
+  </div>
+  <div class="code-block">
+    <div class="code-label"><div class="code-dot"></div>_variables.scss</div>
+<pre><span class="cm">// SCSS variables — prefix with $</span>
+<span class="var">$color-primary</span>: #6c63ff;
+<span class="var">$color-secondary</span>: #ff6584;
+<span class="var">$font-size-base</span>: 16px;
+<span class="var">$spacing-unit</span>: 8px;
+<span class="var">$border-radius</span>: 6px;
+<span class="var">$transition</span>: all 200ms ease;
+
+<span class="cm">// !default — only set if not already defined (for library defaults)</span>
+<span class="var">$primary</span>: blue <span class="k">!default</span>;
+
+<span class="cm">// Computed variables</span>
+<span class="var">$spacing-lg</span>: <span class="var">$spacing-unit</span> * 3;   <span class="cm">// 24px</span>
+<span class="var">$spacing-xl</span>: <span class="var">$spacing-unit</span> * 5;   <span class="cm">// 40px</span>
+
+<span class="cm">// Maps — key-value collections</span>
+<span class="var">$colors</span>: (
+  <span class="str">'primary'</span>: #6c63ff,
+  <span class="str">'secondary'</span>: #ff6584,
+  <span class="str">'success'</span>: #22c55e,
+  <span class="str">'danger'</span>: #ef4444,
+  <span class="str">'warning'</span>: #f59e0b,
+);
+
+<span class="var">$breakpoints</span>: (
+  <span class="str">'sm'</span>: 640px,
+  <span class="str">'md'</span>: 768px,
+  <span class="str">'lg'</span>: 1024px,
+  <span class="str">'xl'</span>: 1280px,
+);
+
+<span class="cm">// Access map values</span>
+<span class="s">.btn-primary</span> {
+  <span class="p">background</span>: <span class="fn">map.get</span>(<span class="var">$colors</span>, <span class="str">'primary'</span>);
+  <span class="cm">// or: map-get($colors, 'primary') — legacy</span>
+}
+
+<span class="cm">// Nested maps</span>
+<span class="var">$typography</span>: (
+  <span class="str">'heading'</span>: (
+    <span class="str">'size'</span>: 2rem,
+    <span class="str">'weight'</span>: 700,
+  ),
+);
+<span class="var">$h-size</span>: <span class="fn">map.get</span>(<span class="fn">map.get</span>(<span class="var">$typography</span>, <span class="str">'heading'</span>), <span class="str">'size'</span>);</pre>
+  </div>
+  <a class="back" href="#top">↑ Top</a>
+</div>
+
+<!-- 28. SCSS Nesting -->
+<div class="topic" id="scss-nesting">
+  <div class="topic-hdr">
+    <span class="topic-num">28</span>
+    <h2 class="topic-title">SCSS Nesting</h2>
+    <span class="topic-tag badge badge-b">SCSS</span>
+  </div>
+  <div class="code-block">
+    <div class="code-label"><div class="code-dot"></div>nesting.scss</div>
+<pre><span class="cm">// SCSS nesting compiles to separate selectors</span>
+<span class="s">.nav</span> {
+  <span class="p">display</span>: flex;
+  <span class="p">gap</span>: 16px;
+
+  <span class="s">.nav__item</span> {           <span class="cm">// → .nav .nav__item { }</span>
+    <span class="p">padding</span>: 8px 16px;
+
+    <span class="s">a</span> {                  <span class="cm">// → .nav .nav__item a { }</span>
+      <span class="p">color</span>: inherit;
+      <span class="p">text-decoration</span>: none;
+
+      <span class="cm">// & = parent selector reference</span>
+      <span class="s">&:hover</span> {           <span class="cm">// → .nav .nav__item a:hover { }</span>
+        <span class="p">color</span>: <span class="var">$color-primary</span>;
+      }
+    }
+  }
+
+  <span class="cm">// & at the start = parent</span>
+  <span class="s">&--vertical</span> {          <span class="cm">// → .nav--vertical { } (BEM modifier)</span>
+    <span class="p">flex-direction</span>: column;
+  }
+
+  <span class="cm">// & at the end — ancestor suffix (less common)</span>
+  <span class="s">.dark-theme &</span> {        <span class="cm">// → .dark-theme .nav { }</span>
+    <span class="p">background</span>: #1a1a2e;
+  }
+}
+
+<span class="cm">// Nesting media queries</span>
+<span class="s">.card</span> {
+  <span class="p">font-size</span>: 14px;
+
+  <span class="at">@media</span> (min-width: 768px) {  <span class="cm">// nested inside .card!</span>
+    <span class="p">font-size</span>: 16px;
+  }
+}
+
+<span class="cm">// ⚠ Don't over-nest — 3 levels max is a good rule</span>
+<span class="cm">// Deep nesting creates overly specific selectors</span></pre>
+  </div>
+  <a class="back" href="#top">↑ Top</a>
+</div>
+
+<!-- 29. SCSS Mixins -->
+<div class="topic" id="scss-mixins">
+  <div class="topic-hdr">
+    <span class="topic-num">29</span>
+    <h2 class="topic-title">SCSS Mixins</h2>
+    <span class="topic-tag badge badge-b">SCSS</span>
+  </div>
+  <p class="explain">
+    <strong>Mixins</strong> are reusable blocks of CSS that can accept parameters. Use them when you need to repeat a group of declarations — like a media query helper, flex center, or clearfix.
+  </p>
+  <div class="code-block">
+    <div class="code-label"><div class="code-dot"></div>_mixins.scss</div>
+<pre><span class="cm">// Basic mixin — no parameters</span>
+<span class="at">@mixin</span> <span class="fn">flex-center</span> {
+  <span class="p">display</span>: flex;
+  <span class="p">align-items</span>: center;
+  <span class="p">justify-content</span>: center;
+}
+<span class="s">.hero</span> { <span class="at">@include</span> <span class="fn">flex-center</span>; }
+
+<span class="cm">// Mixin with parameters and defaults</span>
+<span class="at">@mixin</span> <span class="fn">button</span>(<span class="var">$bg</span>: <span class="var">$color-primary</span>, <span class="var">$color</span>: white, <span class="var">$size</span>: md) {
+  <span class="p">background</span>: <span class="var">$bg</span>;
+  <span class="p">color</span>: <span class="var">$color</span>;
+  <span class="p">padding</span>: if(<span class="var">$size</span> == sm, <span class="fn">8px 16px</span>, <span class="fn">12px 24px</span>);
+  <span class="p">border-radius</span>: <span class="var">$border-radius</span>;
+  <span class="p">border</span>: none;
+  <span class="p">cursor</span>: pointer;
+}
+<span class="s">.btn-primary</span> { <span class="at">@include</span> <span class="fn">button</span>; }
+<span class="s">.btn-danger</span>  { <span class="at">@include</span> <span class="fn">button</span>(#ef4444); }
+<span class="s">.btn-small</span>   { <span class="at">@include</span> <span class="fn">button</span>(<span class="var">$size</span>: sm); }
+
+<span class="cm">// Responsive breakpoint mixin</span>
+<span class="at">@mixin</span> <span class="fn">respond-to</span>(<span class="var">$breakpoint</span>) {
+  <span class="var">$value</span>: <span class="fn">map.get</span>(<span class="var">$breakpoints</span>, <span class="var">$breakpoint</span>);
+  <span class="at">@if</span> <span class="var">$value</span> != null {
+    <span class="at">@media</span> (min-width: <span class="var">$value</span>) { <span class="at">@content</span>; }
+  }
+}
+<span class="s">.grid</span> {
+  <span class="p">grid-template-columns</span>: 1fr;
+  <span class="at">@include</span> <span class="fn">respond-to</span>(md) { <span class="p">grid-template-columns</span>: repeat(2, 1fr); }
+  <span class="at">@include</span> <span class="fn">respond-to</span>(lg) { <span class="p">grid-template-columns</span>: repeat(3, 1fr); }
+}
+
+<span class="cm">// @content — mixin with block content</span>
+<span class="at">@mixin</span> <span class="fn">hover-lift</span> {
+  <span class="p">transition</span>: transform 200ms ease;
+  <span class="s">&:hover</span> {
+    <span class="p">transform</span>: translateY(-4px);
+    <span class="at">@content</span>;  <span class="cm">// caller can add more hover styles</span>
+  }
+}
+<span class="s">.card</span> {
+  <span class="at">@include</span> <span class="fn">hover-lift</span> {
+    <span class="p">box-shadow</span>: 0 8px 24px rgba(0,0,0,0.2);  <span class="cm">// added inside &:hover</span>
+  }
+}
+
+<span class="cm">// Variadic — accept any number of args</span>
+<span class="at">@mixin</span> <span class="fn">shadows</span>(<span class="var">$shadows</span>...) {
+  <span class="p">box-shadow</span>: <span class="var">$shadows</span>;
+}
+<span class="s">.deep</span> { <span class="at">@include</span> <span class="fn">shadows</span>(0 2px 4px rgba(0,0,0,.1), 0 8px 24px rgba(0,0,0,.2)); }</pre>
+  </div>
+  <a class="back" href="#top">↑ Top</a>
+</div>
+
+<!-- 30. SCSS Extends -->
+<div class="topic" id="scss-extends">
+  <div class="topic-hdr">
+    <span class="topic-num">30</span>
+    <h2 class="topic-title">Extends & Placeholder Selectors</h2>
+    <span class="topic-tag badge badge-b">SCSS</span>
+  </div>
+  <div class="code-block">
+    <div class="code-label"><div class="code-dot"></div>extends.scss</div>
+<pre><span class="cm">// Placeholder — like a mixin but uses @extend, not copied</span>
+<span class="cm">// Placeholder doesn't output CSS by itself</span>
+<span class="s">%flex-center</span> {
+  <span class="p">display</span>: flex;
+  <span class="p">align-items</span>: center;
+  <span class="p">justify-content</span>: center;
+}
+
+<span class="s">.hero</span>   { <span class="at">@extend</span> %flex-center; }
+<span class="s">.dialog</span> { <span class="at">@extend</span> %flex-center; }
+
+<span class="cm">// Compiles to: .hero, .dialog { display: flex; ... }</span>
+<span class="cm">// Rules are MERGED — more efficient than mixin (no repetition)</span>
+
+<span class="cm">// Extend a real class</span>
+<span class="s">.error</span> { <span class="p">border</span>: 1px solid red; }
+<span class="s">.fatal-error</span> {
+  <span class="at">@extend</span> .error;
+  <span class="p">font-weight</span>: bold;
+}
+<span class="cm">// Compiles to: .error, .fatal-error { border: 1px solid red; }</span>
+<span class="cm">// .fatal-error { font-weight: bold; }</span></pre>
+  </div>
+  <div class="callout warn"><strong>@extend vs @mixin:</strong> Use <code>@mixin</code> when you need parameters or when used in complex selectors. Use <code>@extend</code>/<code>%placeholder</code> for simple shared base styles without parameters. Avoid extending from inside media queries — it causes errors.</div>
+  <a class="back" href="#top">↑ Top</a>
+</div>
+
+<!-- 31. SCSS Functions -->
+<div class="topic" id="scss-functions">
+  <div class="topic-hdr">
+    <span class="topic-num">31</span>
+    <h2 class="topic-title">SCSS Functions</h2>
+    <span class="topic-tag badge badge-b">SCSS</span>
+  </div>
+  <div class="code-block">
+    <div class="code-label"><div class="code-dot"></div>functions.scss</div>
+<pre><span class="cm">// Custom function — returns a value (no CSS output)</span>
+<span class="at">@function</span> <span class="fn">rem</span>(<span class="var">$px</span>, <span class="var">$base</span>: 16) {
+  <span class="at">@return</span> <span class="fn">math.div</span>(<span class="var">$px</span>, <span class="var">$base</span>) * 1rem;
+}
+
+<span class="s">h1</span> { <span class="p">font-size</span>: <span class="fn">rem</span>(48); }   <span class="cm">// → 3rem</span>
+<span class="s">p</span>  { <span class="p">font-size</span>: <span class="fn">rem</span>(16); }   <span class="cm">// → 1rem</span>
+
+<span class="cm">// Generate spacing scale</span>
+<span class="at">@function</span> <span class="fn">spacing</span>(<span class="var">$n</span>) {
+  <span class="at">@return</span> <span class="var">$n</span> * <span class="var">$spacing-unit</span>;
+}
+<span class="s">.card</span> { <span class="p">padding</span>: <span class="fn">spacing</span>(3); }  <span class="cm">// 24px</span>
+
+<span class="cm">// Built-in SCSS color functions (now in sass:color module)</span>
+<span class="at">@use</span> <span class="str">'sass:color'</span>;
+
+<span class="var">$primary</span>: #6c63ff;
+<span class="var">$primary-dark</span>:  <span class="fn">color.darken</span>(<span class="var">$primary</span>, 10%);
+<span class="var">$primary-light</span>: <span class="fn">color.lighten</span>(<span class="var">$primary</span>, 20%);
+<span class="var">$primary-fade</span>:  <span class="fn">color.adjust</span>(<span class="var">$primary</span>, <span class="var">$alpha</span>: -0.5);
+<span class="var">$mixed</span>:         <span class="fn">color.mix</span>(<span class="var">$primary</span>, white, 20%);
+
+<span class="cm">// Built-in math module</span>
+<span class="at">@use</span> <span class="str">'sass:math'</span>;
+<span class="var">$half</span>: <span class="fn">math.div</span>(100, 3) * 1%;  <span class="cm">// 33.333%</span>
+
+<span class="cm">// Built-in string, list, map modules</span>
+<span class="at">@use</span> <span class="str">'sass:string'</span>;
+<span class="at">@use</span> <span class="str">'sass:list'</span>;
+<span class="at">@use</span> <span class="str">'sass:map'</span>;</pre>
+  </div>
+  <a class="back" href="#top">↑ Top</a>
+</div>
+
+<!-- 32. SCSS Control -->
+<div class="topic" id="scss-control">
+  <div class="topic-hdr">
+    <span class="topic-num">32</span>
+    <h2 class="topic-title">Control Directives (@if, @each, @for)</h2>
+    <span class="topic-tag badge badge-b">SCSS</span>
+  </div>
+  <div class="code-block">
+    <div class="code-label"><div class="code-dot"></div>control-flow.scss</div>
+<pre><span class="cm">// @if / @else if / @else</span>
+<span class="at">@mixin</span> <span class="fn">theme-color</span>(<span class="var">$theme</span>) {
+  <span class="at">@if</span> <span class="var">$theme</span> == dark {
+    <span class="p">background</span>: #1a1a2e;
+    <span class="p">color</span>: #fff;
+  } <span class="at">@else if</span> <span class="var">$theme</span> == light {
+    <span class="p">background</span>: #fff;
+    <span class="p">color</span>: #1a1a2e;
+  } <span class="at">@else</span> {
+    <span class="at">@error</span> <span class="str">"Unknown theme: #{$theme}"</span>;
+  }
+}
+
+<span class="cm">// @each — iterate over list</span>
+<span class="var">$sizes</span>: sm, md, lg, xl;
+<span class="at">@each</span> <span class="var">$size</span> in <span class="var">$sizes</span> {
+  <span class="s">.text-#{$size}</span> {  <span class="cm">// interpolation: .text-sm, .text-md...</span>
+    <span class="p">font-size</span>: <span class="fn">map.get</span>(<span class="var">$font-sizes</span>, <span class="var">$size</span>);
+  }
+}
+
+<span class="cm">// @each — iterate over map</span>
+<span class="at">@each</span> <span class="var">$name</span>, <span class="var">$color</span> in <span class="var">$colors</span> {
+  <span class="s">.text-#{$name}</span>  { <span class="p">color</span>: <span class="var">$color</span>; }
+  <span class="s">.bg-#{$name}</span>    { <span class="p">background</span>: <span class="var">$color</span>; }
+  <span class="s">.border-#{$name}</span>{ <span class="p">border-color</span>: <span class="var">$color</span>; }
+}
+<span class="cm">// Generates: .text-primary { color: #6c63ff; }, .bg-primary {...} etc.</span>
+
+<span class="cm">// @for — numeric loop</span>
+<span class="at">@for</span> <span class="var">$i</span> from 1 through 6 {        <span class="cm">// 1, 2, 3, 4, 5, 6</span>
+  <span class="s">.col-#{$i}</span> { <span class="p">flex</span>: 0 0 percentage(<span class="fn">math.div</span>(<span class="var">$i</span>, 12)); }
+}
+<span class="at">@for</span> <span class="var">$i</span> from 1 to 6 {             <span class="cm">// 1, 2, 3, 4, 5 (excludes 6)</span>
+  <span class="s">.delay-#{$i}</span> { <span class="p">animation-delay</span>: <span class="var">#{$i * 100}ms</span>; }
+}
+
+<span class="cm">// @while — conditional loop (use rarely)</span>
+<span class="var">$i</span>: 1;
+<span class="at">@while</span> <span class="var">$i</span> <= 5 {
+  <span class="s">.item-#{$i}</span> { <span class="p">z-index</span>: <span class="var">$i</span> * 10; }
+  <span class="var">$i</span>: <span class="var">$i</span> + 1;
+}</pre>
+  </div>
+  <a class="back" href="#top">↑ Top</a>
+</div>
+
+<!-- 33. SCSS Modules -->
+<div class="topic" id="scss-modules">
+  <div class="topic-hdr">
+    <span class="topic-num">33</span>
+    <h2 class="topic-title">SCSS Modules & Partials</h2>
+    <span class="topic-tag badge badge-b">SCSS</span>
+  </div>
+  <div class="code-block">
+    <div class="code-label"><div class="code-dot"></div>modules.scss</div>
+<pre><span class="cm">// Partials — files starting with _ are not compiled to CSS</span>
+<span class="cm">// _variables.scss, _mixins.scss, _reset.scss</span>
+
+<span class="cm">// OLD: @import (deprecated — global namespace pollution)</span>
+<span class="at">@import</span> <span class="str">'variables'</span>;  <span class="cm">// everything global</span>
+
+<span class="cm">// NEW: @use — namespaced modules (preferred!)</span>
+<span class="at">@use</span> <span class="str">'sass:math'</span>;
+<span class="at">@use</span> <span class="str">'./variables'</span> as vars;     <span class="cm">// custom namespace</span>
+<span class="at">@use</span> <span class="str">'./mixins'</span>   as *;          <span class="cm">// no namespace (use carefully)</span>
+<span class="at">@use</span> <span class="str">'./tokens'</span>;                 <span class="cm">// namespace = tokens</span>
+
+<span class="s">.btn</span> {
+  <span class="p">background</span>: vars.<span class="var">$primary</span>;   <span class="cm">// namespaced access</span>
+  <span class="at">@include</span> <span class="fn">flex-center</span>;         <span class="cm">// from mixins (as *)</span>
+  <span class="p">font-size</span>: tokens.<span class="var">$font-base</span>;
+}
+
+<span class="cm">// @forward — re-export from a file (like index files)</span>
+<span class="cm">// In _index.scss:</span>
+<span class="at">@forward</span> <span class="str">'./variables'</span>;
+<span class="at">@forward</span> <span class="str">'./mixins'</span>;
+<span class="at">@forward</span> <span class="str">'./functions'</span>;
+<span class="cm">// Now: @use './styles' gives access to all</span>
+
+<span class="cm">// @forward with hide/show</span>
+<span class="at">@forward</span> <span class="str">'./variables'</span> hide <span class="var">$internal-var</span>;
+<span class="at">@forward</span> <span class="str">'./mixins'</span>   show <span class="fn">flex-center</span>, <span class="fn">respond-to</span>;</pre>
+  </div>
+  <a class="back" href="#top">↑ Top</a>
+</div>
+
+<!-- 34. 7-1 Architecture -->
+<div class="topic" id="scss-architecture">
+  <div class="topic-hdr">
+    <span class="topic-num">34</span>
+    <h2 class="topic-title">SCSS 7-1 Architecture</h2>
+    <span class="topic-tag badge badge-b">SCSS</span>
+  </div>
+  <p class="explain">
+    The <strong>7-1 Pattern</strong> is a popular SCSS architecture for large projects — 7 folders + 1 main file that imports everything. Keeps concerns separated and files small.
+  </p>
+  <div class="code-block">
+    <div class="code-label"><div class="code-dot"></div>7-1-structure.txt</div>
+<pre>scss/
+├── abstracts/         <span class="cm">← No CSS output — tools only</span>
+│   ├── _variables.scss   <span class="cm">// $colors, $spacing, $breakpoints</span>
+│   ├── _functions.scss   <span class="cm">// rem(), spacing()</span>
+│   ├── _mixins.scss      <span class="cm">// respond-to(), flex-center()</span>
+│   └── _placeholders.scss
+│
+├── base/              <span class="cm">← Reset + global defaults</span>
+│   ├── _reset.scss
+│   ├── _typography.scss
+│   └── _base.scss
+│
+├── components/        <span class="cm">← Individual UI components</span>
+│   ├── _button.scss
+│   ├── _card.scss
+│   ├── _modal.scss
+│   └── _form.scss
+│
+├── layout/            <span class="cm">← Macro layout pieces</span>
+│   ├── _header.scss
+│   ├── _footer.scss
+│   ├── _sidebar.scss
+│   └── _grid.scss
+│
+├── pages/             <span class="cm">← Page-specific styles</span>
+│   ├── _home.scss
+│   └── _about.scss
+│
+├── themes/            <span class="cm">← Dark/light themes</span>
+│   ├── _dark.scss
+│   └── _light.scss
+│
+├── vendors/           <span class="cm">← Third-party CSS</span>
+│   └── _normalize.scss
+│
+└── main.scss          <span class="cm">← Entry point — imports everything</span>
+
+<span class="cm">// main.scss</span>
+@use 'abstracts/variables';
+@use 'abstracts/functions';
+@use 'abstracts/mixins';
+@use 'base/reset';
+@use 'base/typography';
+@use 'components/button';
+<span class="cm">// etc...</span></pre>
+  </div>
+  <a class="back" href="#top">↑ Top</a>
+</div>
+
+<!-- ═══════════ ADVANCED ═══════════ -->
+<div class="sec-div">
+  <div class="sec-div-line"></div>
+  <div class="sec-div-label">⬡ Advanced Concepts</div>
+  <div class="sec-div-line" style="background:linear-gradient(90deg,transparent,var(--accent))"></div>
+</div>
+
+<!-- 35. Stacking Context -->
+<div class="topic" id="stacking">
+  <div class="topic-hdr">
+    <span class="topic-num">35</span>
+    <h2 class="topic-title">Stacking Context</h2>
+    <span class="topic-tag badge badge-r">Tricky</span>
+  </div>
+  <p class="explain">
+    A <strong>stacking context</strong> is a 3D layer — elements inside it are painted together and their z-index values only compete within that context. This is why a child with <code>z-index: 9999</code> can still be below another element if its parent has a lower stacking order.
+  </p>
+  <p class="explain"><em>What creates a new stacking context:</em></p>
+  <div class="pills">
+    <span class="pill">position + z-index (not auto)</span>
+    <span class="pill">opacity &lt; 1</span>
+    <span class="pill">transform</span>
+    <span class="pill">filter</span>
+    <span class="pill">will-change</span>
+    <span class="pill">isolation: isolate</span>
+    <span class="pill">mix-blend-mode</span>
+    <span class="pill">contain: layout</span>
+  </div>
+  <div class="code-block">
+    <div class="code-label"><div class="code-dot"></div>stacking.css</div>
+<pre><span class="cm">/* Problem: child's z-index is trapped in parent's context */</span>
+<span class="s">.parent-a</span> {
+  <span class="p">position</span>: <span class="v">relative</span>;
+  <span class="p">z-index</span>: <span class="n">1</span>;             <span class="cm">/* creates stacking context */</span>
+  <span class="p">opacity</span>: <span class="n">0.9</span>;           <span class="cm">/* ALSO creates stacking context */</span>
+}
+<span class="s">.child</span> {
+  <span class="p">position</span>: <span class="v">relative</span>;
+  <span class="p">z-index</span>: <span class="n">9999</span>;          <span class="cm">/* stuck inside parent's context */</span>
+  <span class="cm">/* will NEVER appear above parent-b if parent-b z-index > 1 */</span>
+}
+<span class="s">.parent-b</span> {
+  <span class="p">position</span>: <span class="v">relative</span>;
+  <span class="p">z-index</span>: <span class="n">2</span>;             <span class="cm">/* above parent-a entirely */</span>
+}
+
+<span class="cm">/* Solution: isolation:isolate — creates stacking context cleanly */</span>
+<span class="s">.safe-layer</span> { <span class="p">isolation</span>: <span class="v">isolate</span>; }
+
+<span class="cm">/* Paint order within same stacking context (back to front): */</span>
+<span class="cm">/* 1. Root element background/borders */</span>
+<span class="cm">/* 2. Negative z-index stacking contexts */</span>
+<span class="cm">/* 3. Block-level boxes */</span>
+<span class="cm">/* 4. Float boxes */</span>
+<span class="cm">/* 5. Inline boxes */</span>
+<span class="cm">/* 6. z-index: 0 / auto */</span>
+<span class="cm">/* 7. Positive z-index */</span></pre>
+  </div>
+  <a class="back" href="#top">↑ Top</a>
+</div>
+
+<!-- 36. BFC -->
+<div class="topic" id="bfc">
+  <div class="topic-hdr">
+    <span class="topic-num">36</span>
+    <h2 class="topic-title">Block Formatting Context (BFC)</h2>
+    <span class="topic-tag badge badge-r">Tricky</span>
+  </div>
+  <p class="explain">
+    A <strong>Block Formatting Context (BFC)</strong> is an isolated layout environment — its children don't affect outside elements and vice versa. BFCs solve several classic CSS problems: <em>float containment</em>, <em>margin collapse prevention</em>, and <em>preventing overlap with floats</em>.
+  </p>
+  <p class="explain"><em>What creates a BFC:</em></p>
+  <div class="pills">
+    <span class="pill">overflow (not visible)</span>
+    <span class="pill">display: flow-root</span>
+    <span class="pill">display: flex/grid</span>
+    <span class="pill">position: absolute/fixed</span>
+    <span class="pill">float (any)</span>
+    <span class="pill">contain: layout/content</span>
+  </div>
+  <div class="code-block">
+    <div class="code-label"><div class="code-dot"></div>bfc.css</div>
+<pre><span class="cm">/* Classic clearfix — OLD way to contain floats */</span>
+<span class="s">.clearfix::after</span> {
+  <span class="p">content</span>: <span class="str">""</span>;
+  <span class="p">display</span>: <span class="v">table</span>;
+  <span class="p">clear</span>: <span class="v">both</span>;
+}
+
+<span class="cm">/* MODERN way — display: flow-root creates a BFC */</span>
+<span class="s">.float-container</span> { <span class="p">display</span>: <span class="v">flow-root</span>; }
+
+<span class="cm">/* BFC prevents margin collapse */</span>
+<span class="s">.parent</span> {
+  <span class="p">overflow</span>: <span class="v">hidden</span>;  <span class="cm">/* creates BFC → stops parent-child margin collapse */</span>
+}
+
+<span class="cm">/* BFC stops content wrapping around a float */</span>
+<span class="s">.float-sibling</span> {
+  <span class="p">overflow</span>: <span class="v">hidden</span>;  <span class="cm">/* creates its own BFC → won't wrap around float */</span>
+}</pre>
+  </div>
+  <a class="back" href="#top">↑ Top</a>
+</div>
+
+<!-- 37. Performance -->
+<div class="topic" id="performance">
+  <div class="topic-hdr">
+    <span class="topic-num">37</span>
+    <h2 class="topic-title">CSS Performance</h2>
+    <span class="topic-tag badge badge-r">Advanced</span>
+  </div>
+  <div class="g2">
+    <div class="card"><div class="card-title">Rendering Pipeline</div><p>Browser parses HTML → builds DOM. Parses CSS → builds CSSOM. Combined into Render Tree → Layout → Paint → Composite. Properties that trigger layout (top/left/width) are expensive; transform/opacity only trigger Composite.</p></div>
+    <div class="card"><div class="card-title">GPU Composited Properties</div><p>Only <code>transform</code> and <code>opacity</code> are GPU-composited — they skip Layout and Paint. Animate these instead of top/left for smooth 60fps animations.</p></div>
+  </div>
+  <div class="code-block">
+    <div class="code-label"><div class="code-dot"></div>performance.css</div>
+<pre><span class="cm">/* ❌ Causes layout recalculation on every frame */</span>
+<span class="s">.bad-animation</span> {
+  <span class="p">transition</span>: <span class="v">left</span> <span class="n">300ms</span>;   <span class="cm">/* triggers layout */</span>
+  <span class="p">transition</span>: <span class="v">width</span> <span class="n">300ms</span>;  <span class="cm">/* triggers layout */</span>
+  <span class="p">transition</span>: <span class="v">margin</span> <span class="n">300ms</span>; <span class="cm">/* triggers layout */</span>
+}
+
+<span class="cm">/* ✅ Compositor-only — fast, no layout/paint */</span>
+<span class="s">.good-animation</span> {
+  <span class="p">transition</span>: <span class="v">transform</span> <span class="n">300ms</span> <span class="v">ease</span>;
+  <span class="p">transition</span>: <span class="v">opacity</span>  <span class="n">300ms</span> <span class="v">ease</span>;
+}
+
+<span class="cm">/* will-change — hints browser to promote to own layer */</span>
+<span class="s">.card:hover</span> {
+  <span class="p">will-change</span>: <span class="v">transform</span>;  <span class="cm">/* pre-promote before hover */</span>
+}
+<span class="cm">/* ⚠ Don't use on everything — each layer uses VRAM */</span>
+
+<span class="cm">/* contain — limit rendering scope */</span>
+<span class="s">.widget</span> {
+  <span class="p">contain</span>: <span class="v">layout</span>;    <span class="cm">/* layout doesn't affect outside */</span>
+  <span class="p">contain</span>: <span class="v">style</span>;     <span class="cm">/* counters don't leak out */</span>
+  <span class="p">contain</span>: <span class="v">paint</span>;     <span class="cm">/* painting clipped to element */</span>
+  <span class="p">contain</span>: <span class="v">strict</span>;    <span class="cm">/* layout + style + paint + size */</span>
+  <span class="p">contain</span>: <span class="v">content</span>;   <span class="cm">/* layout + style + paint (common) */</span>
+}
+
+<span class="cm">/* content-visibility — skip rendering off-screen sections */</span>
+<span class="s">.section</span> {
+  <span class="p">content-visibility</span>: <span class="v">auto</span>;
+  <span class="p">contain-intrinsic-size</span>: <span class="n">0 500px</span>;  <span class="cm">/* estimated height for scrollbar */</span>
+}
+
+<span class="cm">/* Selector performance */</span>
+<span class="cm">/* ❌ Slow — universal descendant */</span>
+<span class="s">.nav * span</span> { ... }
+<span class="cm">/* ✅ Fast — direct class */</span>
+<span class="s">.nav-link</span> { ... }</pre>
+  </div>
+  <a class="back" href="#top">↑ Top</a>
+</div>
+
+<!-- 38. Accessibility -->
+<div class="topic" id="accessibility">
+  <div class="topic-hdr">
+    <span class="topic-num">38</span>
+    <h2 class="topic-title">Accessibility in CSS</h2>
+    <span class="topic-tag badge badge-r">Important</span>
+  </div>
+  <div class="code-block">
+    <div class="code-label"><div class="code-dot"></div>accessibility.css</div>
+<pre><span class="cm">/* Never remove focus outline without replacement */</span>
+<span class="s">:focus</span>          { <span class="p">outline</span>: <span class="n">2px</span> <span class="v">solid blue</span>; }           <span class="cm">/* always visible */</span>
+<span class="s">:focus-visible</span>  { <span class="p">outline</span>: <span class="n">2px</span> <span class="v">solid blue</span>; }           <span class="cm">/* keyboard only */</span>
+<span class="s">:focus:not(:focus-visible)</span> { <span class="p">outline</span>: <span class="v">none</span>; }          <span class="cm">/* hide for mouse */</span>
+
+<span class="cm">/* Visually hidden but accessible (for screen readers) */</span>
+<span class="s">.sr-only</span> {
+  <span class="p">position</span>: <span class="v">absolute</span>;
+  <span class="p">width</span>: <span class="n">1px</span>;
+  <span class="p">height</span>: <span class="n">1px</span>;
+  <span class="p">padding</span>: <span class="n">0</span>;
+  <span class="p">margin</span>: <span class="n">-1px</span>;
+  <span class="p">overflow</span>: <span class="v">hidden</span>;
+  <span class="p">clip</span>: <span class="fn">rect</span>(<span class="n">0</span>, <span class="n">0</span>, <span class="n">0</span>, <span class="n">0</span>);
+  <span class="p">white-space</span>: <span class="v">nowrap</span>;
+  <span class="p">border-width</span>: <span class="n">0</span>;
+}
+<span class="cm">/* .sr-only-focusable — also visible when focused: */</span>
+<span class="s">.sr-only-focusable:focus</span> {
+  <span class="p">position</span>: <span class="v">static</span>;
+  <span class="p">width</span>: <span class="v">auto</span>;
+  <span class="p">height</span>: <span class="v">auto</span>;
+}
+
+<span class="cm">/* Reduced motion */</span>
+<span class="at">@media</span> (prefers-reduced-motion: reduce) {
+  <span class="s">*, *::before, *::after</span> {
+    <span class="p">animation-duration</span>: <span class="n">0.01ms</span> !important;
+    <span class="p">animation-iteration-count</span>: <span class="n">1</span> !important;
+    <span class="p">transition-duration</span>: <span class="n">0.01ms</span> !important;
+    <span class="p">scroll-behavior</span>: <span class="v">auto</span> !important;
+  }
+}
+
+<span class="cm">/* Skip navigation link */</span>
+<span class="s">.skip-link</span> {
+  <span class="p">position</span>: <span class="v">absolute</span>;
+  <span class="p">top</span>: <span class="n">-40px</span>;
+  <span class="s">&:focus</span> { <span class="p">top</span>: <span class="n">0</span>; }
+}
+
+<span class="cm">/* Adequate color contrast (4.5:1 for normal text) */</span>
+<span class="cm">/* Use tools: WebAIM Contrast Checker, Chrome DevTools */</span>
+
+<span class="cm">/* Touch targets — minimum 44x44px */</span>
+<span class="s">button, a, input</span> { <span class="p">min-height</span>: <span class="n">44px</span>; <span class="p">min-width</span>: <span class="n">44px</span>; }</pre>
+  </div>
+  <a class="back" href="#top">↑ Top</a>
+</div>
+
+<!-- 39. Methodologies -->
+<div class="topic" id="methodologies">
+  <div class="topic-hdr">
+    <span class="topic-num">39</span>
+    <h2 class="topic-title">CSS Methodologies — BEM, OOCSS, SMACSS</h2>
+    <span class="topic-tag badge badge-r">Architecture</span>
+  </div>
+  <div class="code-block">
+    <div class="code-label"><div class="code-dot"></div>methodologies.css</div>
+<pre><span class="cm">/* ── BEM (Block Element Modifier) — most popular ── */</span>
+<span class="cm">/* Block — standalone component */</span>
+<span class="s">.card</span> { ... }
+
+<span class="cm">/* Element — part of block (separated by __) */</span>
+<span class="s">.card__title</span>  { ... }
+<span class="s">.card__image</span>  { ... }
+<span class="s">.card__footer</span> { ... }
+
+<span class="cm">/* Modifier — variant of block or element (separated by --) */</span>
+<span class="s">.card--featured</span>       { ... }  <span class="cm">/* block modifier */</span>
+<span class="s">.card__title--large</span>   { ... }  <span class="cm">/* element modifier */</span>
+<span class="s">.btn--primary</span>          { ... }
+<span class="s">.btn--disabled</span>         { ... }
+
+<span class="cm">/* ── OOCSS (Object-Oriented CSS) ── */</span>
+<span class="cm">/* Principle 1: Separate structure from skin */</span>
+<span class="s">.box</span>        { <span class="p">padding</span>: 16px; <span class="p">border</span>: 1px solid; }  <span class="cm">/* structure */</span>
+<span class="s">.box-primary</span>{ <span class="p">background</span>: blue; <span class="p">border-color</span>: blue; } <span class="cm">/* skin */</span>
+
+<span class="cm">/* Principle 2: Separate container from content */</span>
+<span class="s">.heading</span>    { <span class="p">font-size</span>: 2rem; }  <span class="cm">/* not .sidebar .heading */</span>
+
+<span class="cm">/* ── SMACSS (Scalable CSS) ── 5 categories */</span>
+<span class="cm">/* Base     — element defaults (no class selectors) */</span>
+<span class="cm">/* Layout   — major layout sections (l- prefix) */</span>
+<span class="cm">/* Module   — reusable UI components */</span>
+<span class="cm">/* State    — JS-toggled states (is-, has- prefix) */</span>
+<span class="cm">/* Theme    — visual appearance overrides */</span>
+<span class="s">.l-grid</span>      { ... }  <span class="cm">/* layout */</span>
+<span class="s">.is-hidden</span>   { ... }  <span class="cm">/* state */</span>
+<span class="s">.has-error</span>   { ... }  <span class="cm">/* state */</span>
+
+<span class="cm">/* ── Utility-First (Tailwind style) ── */</span>
+<span class="cm">/* Single-purpose classes composed in HTML */</span>
+<span class="s">.flex</span>         { <span class="p">display</span>: flex; }
+<span class="s">.items-center</span> { <span class="p">align-items</span>: center; }
+<span class="s">.p-4</span>          { <span class="p">padding</span>: 1rem; }
+<span class="s">.text-lg</span>      { <span class="p">font-size</span>: 1.125rem; }</pre>
+  </div>
+  <a class="back" href="#top">↑ Top</a>
+</div>
+
+<!-- ═══════════ INTERVIEW Q&A ═══════════ -->
+<div class="sec-div">
+  <div class="sec-div-line"></div>
+  <div class="sec-div-label">⬡ Interview Q&amp;A</div>
+  <div class="sec-div-line" style="background:linear-gradient(90deg,transparent,var(--accent))"></div>
+</div>
+
+<div class="topic" id="interview">
+  <div class="topic-hdr">
+    <span class="topic-num">40</span>
+    <h2 class="topic-title">Top CSS & SCSS Interview Questions</h2>
+    <span class="topic-tag badge badge-p">Must Prepare</span>
+  </div>
+
+  <div class="qa">
+    <div class="qa-q">What is the difference between display:none, visibility:hidden, and opacity:0?</div>
+    <div class="qa-a"><strong>display:none</strong> removes the element completely from the document flow — it takes no space, receives no events, and is invisible. <strong>visibility:hidden</strong> makes the element invisible but it still occupies its space in the layout (like an invisible box). <strong>opacity:0</strong> makes the element fully transparent but it occupies space AND still receives pointer events (clicks, hovers). Use display:none to hide completely, opacity:0 when you want to animate a hide/show without layout shifts.</div>
+  </div>
+
+  <div class="qa">
+    <div class="qa-q">Explain the CSS Box Model and box-sizing: border-box.</div>
+    <div class="qa-a">Every element is a box made of content → padding → border → margin. By default (<code>box-sizing: content-box</code>), <strong>width</strong> refers only to the content area — so actual rendered width = width + padding + border. With <code>box-sizing: border-box</code>, width includes padding and border — the content area shrinks to compensate. This is much more intuitive for layout. Always apply <code>*, *::before, *::after { box-sizing: border-box; }</code> at the start of every project.</div>
+  </div>
+
+  <div class="qa">
+    <div class="qa-q">What is CSS specificity and how is it calculated?</div>
+    <div class="qa-a">Specificity determines which CSS rule wins when multiple rules target the same element. It's calculated as a three-part score (a, b, c): <strong>a</strong> = number of ID selectors, <strong>b</strong> = number of class/attribute/pseudo-class selectors, <strong>c</strong> = number of element/pseudo-element selectors. Higher a always beats lower a regardless of b and c. Inline styles override everything. <code>!important</code> overrides inline styles. So: <code>#id</code> (1,0,0) beats <code>.class.class.class</code> (0,3,0).</div>
+  </div>
+
+  <div class="qa">
+    <div class="qa-q">What is the difference between Flexbox and CSS Grid? When to use each?</div>
+    <div class="qa-a"><strong>Flexbox</strong> is one-dimensional — it works in a single direction (row OR column). It's content-first: you put items in and flexbox figures out the space. Great for navigation bars, toolbars, centering, button groups, and any single-direction distribution. <strong>CSS Grid</strong> is two-dimensional — rows AND columns simultaneously. It's layout-first: you define the grid structure, then place items. Perfect for full-page layouts, card grids, and anything requiring two-axis control. Often you use both: Grid for page layout, Flexbox for component internals.</div>
+  </div>
+
+  <div class="qa">
+    <div class="qa-q">What is a CSS stacking context and what creates one?</div>
+    <div class="qa-a">A stacking context is a three-dimensional rendering layer. Elements inside a stacking context are painted together, and their <code>z-index</code> values only compete within that context. A child with z-index:9999 inside a parent with z-index:1 will never appear above a sibling element that has z-index:2 — the entire parent (with all its children) is compared as one unit. Stacking contexts are created by: position + z-index (not auto), opacity < 1, transform, filter, will-change, isolation:isolate, and others.</div>
+  </div>
+
+  <div class="qa">
+    <div class="qa-q">What is margin collapsing and when does it happen?</div>
+    <div class="qa-a">Margin collapsing is when vertical margins between adjacent block elements merge into a single margin equal to the largest of the two (not their sum). It happens in three cases: (1) Adjacent siblings — bottom margin of one collapses with top margin of the next. (2) Parent-first child — if no border/padding/BFC separates them, parent's top margin collapses with child's top margin. (3) Empty blocks — if an element has no content, its top and bottom margins collapse. Horizontal margins never collapse. Flex/grid items don't collapse.</div>
+  </div>
+
+  <div class="qa">
+    <div class="qa-q">What is a Block Formatting Context (BFC) and what are its uses?</div>
+    <div class="qa-a">A BFC is an isolated layout environment where elements are laid out independently of the outside. It solves three classic problems: (1) <strong>Float containment</strong> — without BFC, floats collapse their parent's height; adding <code>display: flow-root</code> to the parent creates a BFC that contains floats. (2) <strong>Preventing margin collapse</strong> — elements inside a BFC don't collapse margins with outside elements. (3) <strong>Preventing float overlap</strong> — a BFC element won't wrap around adjacent floats. Creates BFC: overflow (not visible), display: flow-root/flex/grid, position: absolute/fixed, float.</div>
+  </div>
+
+  <div class="qa">
+    <div class="qa-q">Explain CSS variables vs SCSS variables. What are the key differences?</div>
+    <div class="qa-a"><strong>SCSS variables</strong> (<code>$var</code>) are compile-time — they're processed before the browser sees them and disappear after compilation. They can't be changed at runtime, can't inherit through the DOM, and can't be accessed with JavaScript. <strong>CSS custom properties</strong> (<code>--var</code>) are runtime — they live in the browser, cascade and inherit through the DOM, respond to media queries, can be changed with JavaScript (<code>element.style.setProperty</code>), and even support transitions. Best practice: use SCSS variables for values only needed at compile time (build configuration, calculations), and CSS variables for values that need to respond to context or be animated.</div>
+  </div>
+
+  <div class="qa">
+    <div class="qa-q">What is the difference between @mixin and @extend in SCSS?</div>
+    <div class="qa-a"><strong>@mixin</strong> copies the CSS into every place it's included — if used 10 times, the rules appear 10 times in the output. But mixins accept parameters, can be used anywhere, work inside media queries, and can contain @content blocks. <strong>@extend</strong>/<strong>%placeholder</strong> merges selectors — instead of copying, it adds your selector to the original rule. More DRY output but no parameters, can't be used inside media queries, and can create unexpected selector chains. General rule: prefer mixins for parameterized/reusable patterns; use placeholders for simple shared styles without parameters.</div>
+  </div>
+
+  <div class="qa">
+    <div class="qa-q">How would you implement a dark mode?</div>
+    <div class="qa-a">Best approach: define all colors as CSS custom properties on <code>:root</code>. Then either: (1) Use <code>@media (prefers-color-scheme: dark)</code> to override variables automatically based on OS setting. (2) Add a <code>.dark</code> class to <code>&lt;html&gt;</code> and override variables there — allows JS toggle. (3) Use both: auto-detect with media query, allow manual override with class, and persist the preference in localStorage. The key is <strong>never hardcode color values in component styles</strong> — always reference variables like <code>var(--bg)</code>, so swapping the theme is just redefining the variables.</div>
+  </div>
+
+  <div class="qa">
+    <div class="qa-q">How do you center an element horizontally and vertically?</div>
+    <div class="qa-a">
+      <strong>Method 1 — Flexbox (most common):</strong> <code>display: flex; align-items: center; justify-content: center;</code> on the parent.
+      <strong>Method 2 — Grid:</strong> <code>display: grid; place-items: center;</code> on the parent.
+      <strong>Method 3 — Absolute + Transform:</strong> <code>position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);</code> — parent must be positioned.
+      <strong>Method 4 — margin: auto (block elements, known width):</strong> <code>width: fit-content; margin: 0 auto;</code> — horizontal only.
+      <strong>Method 5 — Grid with margin auto:</strong> <code>display: grid;</code> on parent + <code>margin: auto;</code> on child.
+      Modern recommendation: use Flexbox or Grid place-items.
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="qa-q">What are the differences between position: sticky and position: fixed?</div>
+    <div class="qa-a"><strong>position: fixed</strong> is always positioned relative to the viewport — it stays in the same place on screen regardless of scrolling. It's removed from the document flow (takes no space). <strong>position: sticky</strong> is a hybrid — it acts like <code>relative</code> while scrolling normally, but "sticks" to its offset (e.g., <code>top: 0</code>) when the user scrolls to it, then unsticks when its scroll container is scrolled past. It remains in the document flow (still takes space). Common sticky gotcha: it won't work if an ancestor has <code>overflow: hidden/auto</code>.</div>
+  </div>
+
+  <div class="qa">
+    <div class="qa-q">What CSS properties can be animated efficiently (GPU-accelerated)?</div>
+    <div class="qa-a">Only <code>transform</code> and <code>opacity</code> are compositor-layer properties — the browser can animate them entirely on the GPU, bypassing Layout and Paint entirely. This means they can animate at 60fps even if the main thread is busy. All other properties (top, left, width, height, background-color, margin) trigger layout recalculation on every frame, causing potential jank. Always animate <code>transform: translateX()</code> instead of <code>left:</code>, and <code>opacity</code> instead of <code>visibility</code>. Use <code>will-change: transform</code> to pre-promote an element before animation begins, but use it sparingly as each promoted layer consumes VRAM.</div>
+  </div>
+
+  <div class="qa">
+    <div class="qa-q">What is the 7-1 SCSS architecture pattern?</div>
+    <div class="qa-a">The 7-1 pattern organizes SCSS into 7 folders plus 1 main file that imports everything. The folders are: <strong>abstracts</strong> (variables, mixins, functions — no CSS output), <strong>base</strong> (reset, typography, global defaults), <strong>components</strong> (individual UI pieces like buttons, cards), <strong>layout</strong> (large-scale sections like header, footer, grid), <strong>pages</strong> (page-specific styles), <strong>themes</strong> (dark/light theme overrides), and <strong>vendors</strong> (third-party CSS). The main.scss imports from all folders using <code>@use</code>. This separation keeps files small, focused, and easy to find — especially valuable on large teams.</div>
+  </div>
+
+  <div class="qa">
+    <div class="qa-q">Explain the difference between :nth-child() and :nth-of-type().</div>
+    <div class="qa-a"><code>:nth-child(n)</code> counts all sibling elements regardless of type. <code>p:nth-child(2)</code> only matches a <code>&lt;p&gt;</code> that is the 2nd child of its parent — if the 2nd child is a <code>&lt;div&gt;</code>, nothing matches. <code>:nth-of-type(n)</code> counts only elements of the same type. <code>p:nth-of-type(2)</code> matches the 2nd <code>&lt;p&gt;</code> among all <code>&lt;p&gt;</code> tags in the parent, skipping non-paragraph siblings. Use nth-child when you know the DOM structure; use nth-of-type for more robust type-based selection.</div>
+  </div>
+
+  <div class="qa">
+    <div class="qa-q">What is the difference between @use and @import in SCSS? Why is @import deprecated?</div>
+    <div class="qa-a"><strong>@import</strong> (deprecated) loads files into a global namespace — every variable, mixin, and function from every imported file is available everywhere. This causes naming collisions and makes it impossible to know where a variable is defined. It also doesn't handle circular imports well. <strong>@use</strong> is the modern replacement — each file is loaded with a namespace (filename by default): <code>variables.$primary</code>. You explicitly see where things come from, there are no naming collisions, files are only loaded once even if @use'd multiple times, and private members (prefixed with <code>-</code> or <code>_</code>) aren't accessible from outside. Use <code>@forward</code> to re-export things from a folder's index file.</div>
+  </div>
+
+  <a class="back" href="#top">↑ Top</a>
+</div>
+
+</main>
+</div>
+
+</body>
+</html>
