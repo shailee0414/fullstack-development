@@ -477,7 +477,7 @@ tr:nth-child(even) td { background: rgba(255,255,255,0.01); }
 
 <span class="cm">// App composes smaller components</span>
 <span class="kw">function</span> <span class="fn">App</span>() {
-  <span class="kw">return</span> &lt;<span class="tag">UserCard</span> <span class="attr">user</span>={{ name: <span class="str">'Shailesh'</span>, avatar: <span class="str">'/pic.jpg'</span> }} /&gt;;
+  <span class="kw">return</span> &lt;<span class="tag">UserCard</span> <span class="attr">user</span>={{ name: <span class="str">'John'</span>, avatar: <span class="str">'/pic.jpg'</span> }} /&gt;;
 }</pre>
     </div>
   </div>
@@ -672,7 +672,7 @@ props.initialCount = <span class="num">10</span>; <span class="cm">// WRONG</spa
 
 <span class="cm">// 2. Object state (spread to update)</span>
 <span class="kw">const</span> [user, setUser] = <span class="fn">useState</span>({ name: <span class="str">''</span>, age: <span class="num">0</span> });
-<span class="fn">setUser</span>(prev =&gt; ({ ...prev, name: <span class="str">'Shailesh'</span> })); <span class="cm">// ✅ functional update</span>
+<span class="fn">setUser</span>(prev =&gt; ({ ...prev, name: <span class="str">'John'</span> })); <span class="cm">// ✅ functional update</span>
 
 <span class="cm">// 3. Lazy initialization (expensive computation runs ONCE)</span>
 <span class="kw">const</span> [data, setData] = <span class="fn">useState</span>(() =&gt; <span class="fn">heavyCompute</span>());
@@ -2235,7 +2235,7 @@ screen.<span class="fn">getByTestId</span>(<span class="str">'user-card'</span>)
 
 <span class="kw">const</span> server = <span class="fn">setupServer</span>(
   http.<span class="fn">get</span>(<span class="str">'/api/user/:id'</span>, ({ params }) =&gt; {
-    <span class="kw">return</span> HttpResponse.<span class="fn">json</span>({ id: params.id, name: <span class="str">'Shailesh'</span> });
+    <span class="kw">return</span> HttpResponse.<span class="fn">json</span>({ id: params.id, name: <span class="str">'John'</span> });
   })
 );
 
@@ -2245,7 +2245,7 @@ afterAll(() =&gt; server.<span class="fn">close</span>());
 
 <span class="fn">test</span>(<span class="str">'loads user data'</span>, <span class="kw">async</span> () =&gt; {
   <span class="fn">render</span>(&lt;<span class="tag">UserProfile</span> <span class="attr">id</span>=<span class="str">"1"</span> /&gt;);
-  <span class="fn">expect</span>(<span class="kw">await</span> screen.<span class="fn">findByText</span>(<span class="str">'Shailesh'</span>)).<span class="fn">toBeInTheDocument</span>();
+  <span class="fn">expect</span>(<span class="kw">await</span> screen.<span class="fn">findByText</span>(<span class="str">'John'</span>)).<span class="fn">toBeInTheDocument</span>();
 });</pre>
     </div>
     <div class="interview-q">

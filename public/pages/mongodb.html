@@ -264,8 +264,8 @@ tr:nth-child(even) td { background: rgba(255,255,255,0.01); }
       <pre><span class="cm">// A MongoDB Document — flexible, nested, no rigid schema</span>
 {
   <span class="attr">_id</span>: ObjectId(<span class="str">"64a1b2c3d4e5f6a7b8c9d0e1"</span>),
-  <span class="attr">name</span>: <span class="str">"Shailesh Yadav"</span>,
-  <span class="attr">email</span>: <span class="str">"shailesh@example.com"</span>,
+  <span class="attr">name</span>: <span class="str">"John Yadav"</span>,
+  <span class="attr">email</span>: <span class="str">"John@example.com"</span>,
   <span class="attr">age</span>: <span class="num">28</span>,
   <span class="attr">address</span>: {                    <span class="cm">// embedded document</span>
     <span class="attr">city</span>: <span class="str">"Faridabad"</span>,
@@ -309,7 +309,7 @@ tr:nth-child(even) td { background: rgba(255,255,255,0.01); }
       <div class="code-label"><span></span>Insert Operations</div>
       <pre><span class="cm">// Insert one document</span>
 db.users.<span class="fn">insertOne</span>({
-  name: <span class="str">"Shailesh"</span>,
+  name: <span class="str">"John"</span>,
   role: <span class="str">"Tech Lead"</span>,
   company: <span class="str">"PB Fintech"</span>
 });
@@ -359,7 +359,7 @@ db.users.<span class="fn">find</span>({ skills: { <span class="op">$size</span>:
 db.users.<span class="fn">find</span>({}).<span class="fn">sort</span>({ age: -<span class="num">1</span> }).<span class="fn">skip</span>(<span class="num">10</span>).<span class="fn">limit</span>(<span class="num">5</span>); <span class="cm">// pagination</span>
 
 <span class="cm">// findOne — returns first match</span>
-db.users.<span class="fn">findOne</span>({ email: <span class="str">"shailesh@example.com"</span> });</pre>
+db.users.<span class="fn">findOne</span>({ email: <span class="str">"John@example.com"</span> });</pre>
     </div>
   </div>
 
@@ -406,7 +406,7 @@ db.users.<span class="fn">updateOne</span>(
 
 <span class="cm">// findOneAndUpdate — returns document (before or after)</span>
 db.users.<span class="fn">findOneAndUpdate</span>(
-  { email: <span class="str">"shailesh@example.com"</span> },
+  { email: <span class="str">"John@example.com"</span> },
   { <span class="op">$inc</span>: { points: <span class="num">10</span> } },
   { returnDocument: <span class="str">'after'</span> }  <span class="cm">// return updated doc</span>
 );</pre>
@@ -564,14 +564,14 @@ db.users.<span class="fn">createIndex</span>({ name: <span class="num">1</span>,
 
 <span class="cm">// This query is COVERED — filter + projection both in index</span>
 db.users
-  .<span class="fn">find</span>({ name: <span class="str">"Shailesh"</span> }, { name: <span class="num">1</span>, email: <span class="num">1</span>, _id: <span class="num">0</span> })
+  .<span class="fn">find</span>({ name: <span class="str">"John"</span> }, { name: <span class="num">1</span>, email: <span class="num">1</span>, _id: <span class="num">0</span> })
   .<span class="fn">explain</span>();
 
 <span class="cm">// explain() shows: "stage": "PROJECTION_COVERED"</span>
 <span class="cm">// totalDocsExamined: 0  ← zero document reads!</span>
 
 <span class="cm">// NOT covered if you include a field not in the index:</span>
-db.users.<span class="fn">find</span>({ name: <span class="str">"Shailesh"</span> }, { name: <span class="num">1</span>, age: <span class="num">1</span> }); <span class="cm">// age not in index</span></pre>
+db.users.<span class="fn">find</span>({ name: <span class="str">"John"</span> }, { name: <span class="num">1</span>, age: <span class="num">1</span> }); <span class="cm">// age not in index</span></pre>
     </div>
     <div class="callout">
       <strong>Senior-Level Tip</strong>
@@ -627,7 +627,7 @@ db.col.<span class="fn">createIndex</span>({ arr1: <span class="num">1</span>, a
   <div class="subtopic">
     <h3>When Indexes Are NOT Used</h3>
     <ul>
-      <li><strong>$regex without anchoring</strong> — <code>{ name: /shailesh/ }</code> may COLLSCAN. Use <code>/^shailesh/</code> (anchored) to use index.</li>
+      <li><strong>$regex without anchoring</strong> — <code>{ name: /John/ }</code> may COLLSCAN. Use <code>/^John/</code> (anchored) to use index.</li>
       <li><strong>Negation operators</strong> — <code>$ne</code>, <code>$nin</code>, <code>$not</code> often cannot use index efficiently</li>
       <li><strong>JavaScript expressions</strong> — <code>$where</code> bypasses indexes entirely</li>
       <li><strong>Low cardinality + high result %</strong> — if query returns >30% of documents, MongoDB may choose COLLSCAN anyway</li>
@@ -788,7 +788,7 @@ db.orders.<span class="fn">aggregate</span>([
       <pre><span class="cm">// ✅ EMBED — address is always fetched with user</span>
 {
   _id: ObjectId(<span class="str">"..."</span>),
-  name: <span class="str">"Shailesh"</span>,
+  name: <span class="str">"John"</span>,
   address: {                  <span class="cm">// embedded</span>
     street: <span class="str">"Sector 14"</span>,
     city: <span class="str">"Faridabad"</span>
@@ -1248,7 +1248,7 @@ userSchema.virtual(<span class="str">'fullName'</span>).<span class="fn">get</sp
     <div class="code-block">
       <div class="code-label"><span></span>CRUD with Mongoose</div>
       <pre><span class="cm">// Create</span>
-<span class="kw">const</span> user = <span class="kw">await</span> User.<span class="fn">create</span>({ name: <span class="str">'Shailesh'</span>, email: <span class="str">'s@pb.com'</span> });
+<span class="kw">const</span> user = <span class="kw">await</span> User.<span class="fn">create</span>({ name: <span class="str">'John'</span>, email: <span class="str">'s@pb.com'</span> });
 
 <span class="cm">// Find</span>
 <span class="kw">const</span> users = <span class="kw">await</span> User.<span class="fn">find</span>({ role: <span class="str">'admin'</span> }).<span class="fn">select</span>(<span class="str">'name email'</span>).<span class="fn">lean</span>();
@@ -1416,7 +1416,7 @@ db.orders.<span class="fn">createIndex</span>({ userId: <span class="num">1</spa
       <pre><span class="cm">// USERS collection</span>
 {
   _id: ObjectId,
-  name: <span class="str">"Shailesh"</span>,
+  name: <span class="str">"John"</span>,
   avatar: <span class="str">"url"</span>,
   lastSeen: Date,
   status: <span class="str">"online"</span>
@@ -1490,7 +1490,7 @@ db.orders.<span class="fn">createIndex</span>({ userId: <span class="num">1</spa
     </div>
     <div class="interview-q">
       <div class="q">Q: What is an atlas search? When would you use it over regular queries?</div>
-      <p>Atlas Search is MongoDB's full-text search built on Apache Lucene. Use for: fuzzy matching ("shailesh" matches "shailesh"), relevance ranking, autocomplete, language-aware search (stemming, stop words). Regular indexes for exact/range matches. Atlas Search for Google-like search experiences.</p>
+      <p>Atlas Search is MongoDB's full-text search built on Apache Lucene. Use for: fuzzy matching ("John" matches "John"), relevance ranking, autocomplete, language-aware search (stemming, stop words). Regular indexes for exact/range matches. Atlas Search for Google-like search experiences.</p>
     </div>
     <div class="interview-q">
       <div class="q">Q: How do you handle schema migration in MongoDB?</div>

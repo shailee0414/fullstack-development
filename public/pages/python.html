@@ -332,8 +332,8 @@ new = <span class="fn">sorted</span>(lst, key=<span class="fn">str</span>, rever
     <div class="code-block">
       <div class="code-label"><span class="dot"></span>Dict Operations</div>
       <pre><span class="cm"># Creation methods</span>
-d = {<span class="str">"name"</span>: <span class="str">"Shailesh"</span>, <span class="str">"age"</span>: <span class="num">28</span>}
-d = <span class="fn">dict</span>(name=<span class="str">"Shailesh"</span>, age=<span class="num">28</span>)
+d = {<span class="str">"name"</span>: <span class="str">"John"</span>, <span class="str">"age"</span>: <span class="num">28</span>}
+d = <span class="fn">dict</span>(name=<span class="str">"John"</span>, age=<span class="num">28</span>)
 d = <span class="fn">dict</span>.<span class="fn">fromkeys</span>([<span class="str">"a"</span>, <span class="str">"b"</span>, <span class="str">"c"</span>], <span class="num">0</span>)  <span class="cm"># {a:0, b:0, c:0}</span>
 
 <span class="cm"># Access — safe methods</span>
@@ -651,9 +651,9 @@ errors = <span class="fn">filter_lines</span>(lines, <span class="str">"ERROR"</
     <div class="code-block">
       <div class="code-label"><span class="dot"></span>Essential String Operations</div>
       <pre><span class="cm"># f-strings (preferred — Python 3.6+)</span>
-name, score = <span class="str">"Shailesh"</span>, <span class="num">98.5</span>
+name, score = <span class="str">"John"</span>, <span class="num">98.5</span>
 <span class="fn">print</span>(<span class="str">f"Name: {name!r}, Score: {score:.2f}"</span>)
-<span class="fn">print</span>(<span class="str">f"{name = }"</span>)          <span class="cm"># f-string debugging: name = 'Shailesh'</span>
+<span class="fn">print</span>(<span class="str">f"{name = }"</span>)          <span class="cm"># f-string debugging: name = 'John'</span>
 <span class="fn">print</span>(<span class="str">f"{2**10 = }"</span>)         <span class="cm"># 2**10 = 1024</span>
 
 <span class="cm"># Common methods</span>
@@ -1681,12 +1681,12 @@ top3 = heapq.<span class="fn">nsmallest</span>(<span class="num">3</span>, data)
 <span class="cm"># Fixtures — reusable setup/teardown</span>
 <span class="dec">@pytest.fixture</span>
 <span class="kw">def</span> <span class="fn">user</span>():
-    u = <span class="fn">User</span>(<span class="str">"Shailesh"</span>, <span class="str">"shailesh@pb.com"</span>)
+    u = <span class="fn">User</span>(<span class="str">"John"</span>, <span class="str">"John@pb.com"</span>)
     <span class="kw">yield</span> u              <span class="cm"># setup above, teardown below</span>
     u.<span class="fn">cleanup</span>()
 
 <span class="kw">def</span> <span class="fn">test_user_email</span>(user):  <span class="cm"># fixture injected</span>
-    <span class="kw">assert</span> user.email == <span class="str">"shailesh@pb.com"</span>
+    <span class="kw">assert</span> user.email == <span class="str">"John@pb.com"</span>
 
 <span class="cm"># Parametrize — run test with multiple inputs</span>
 <span class="dec">@pytest.mark.parametrize</span>(<span class="str">"input,expected"</span>, [

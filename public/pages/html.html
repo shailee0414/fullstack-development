@@ -550,7 +550,7 @@ tr:nth-child(even) td { background: rgba(255,255,255,0.015); }
       <div class="code-label"><span class="dot"></span>Image Best Practices</div>
       <pre><span class="cm">&lt;!-- Always include alt (accessibility + SEO) --&gt;</span>
 <span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="val">"hero.jpg"</span>
-     <span class="attr">alt</span>=<span class="val">"Shailesh presenting at tech conference"</span>
+     <span class="attr">alt</span>=<span class="val">"John presenting at tech conference"</span>
      <span class="attr">width</span>=<span class="val">"800"</span>
      <span class="attr">height</span>=<span class="val">"450"</span>
      <span class="attr">loading</span>=<span class="val">"lazy"</span>
@@ -1020,7 +1020,7 @@ localStorage.<span class="fn">removeItem</span>(<span class="str">'theme'</span>
 localStorage.<span class="fn">clear</span>();                   <span class="cm">// remove all</span>
 
 <span class="cm">// Store objects (must stringify)</span>
-localStorage.<span class="fn">setItem</span>(<span class="str">'user'</span>, <span class="fn">JSON.stringify</span>({ name: <span class="str">'Shailesh'</span> }));
+localStorage.<span class="fn">setItem</span>(<span class="str">'user'</span>, <span class="fn">JSON.stringify</span>({ name: <span class="str">'John'</span> }));
 <span class="kw">const</span> user = <span class="fn">JSON.parse</span>(localStorage.<span class="fn">getItem</span>(<span class="str">'user'</span>));
 
 <span class="cm">// sessionStorage — same API, different scope</span>
@@ -1110,7 +1110,7 @@ customElements.<span class="fn">define</span>(<span class="str">'user-card'</spa
 
 <span class="cm">&lt;!-- Usage --&gt;</span>
 <span class="tag">&lt;user-card&gt;</span>
-  <span class="tag">&lt;span</span> <span class="attr">slot</span>=<span class="val">"name"</span><span class="tag">&gt;</span>Shailesh<span class="tag">&lt;/span&gt;</span>
+  <span class="tag">&lt;span</span> <span class="attr">slot</span>=<span class="val">"name"</span><span class="tag">&gt;</span>John<span class="tag">&lt;/span&gt;</span>
 <span class="tag">&lt;/user-card&gt;</span></pre>
     </div>
   </div>

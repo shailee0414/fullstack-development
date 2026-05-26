@@ -407,7 +407,7 @@ const path = require('path');      // path utilities
 
 console.log(os.hostname());        // your machine name
 console.log(process.env.NODE_ENV); // environment variables
-console.log(__dirname);            // /Users/shailesh/project
+console.log(__dirname);            // /Users/John/project
 
 // ❌ Browser APIs — NOT available in Node.js
 // document.getElementById('app');  // ReferenceError: document is not defined
@@ -494,9 +494,9 @@ console.log('Used heap size:', heapStats.used_heap_size / 1024 / 1024, 'MB');
 console.log('Heap size limit:', heapStats.heap_size_limit / 1024 / 1024, 'MB');
 
 // Serialize/deserialize JS values (V8's internal format)
-const buf = v8.serialize({ name: 'Shailesh', age: 28 });
+const buf = v8.serialize({ name: 'John', age: 28 });
 const obj = v8.deserialize(buf);
-console.log(obj); // { name: 'Shailesh', age: 28 }
+console.log(obj); // { name: 'John', age: 28 }
 
 // V8 flags can be set at startup:
 // node --max-old-space-size=4096 app.js  (4GB heap limit)
@@ -1112,7 +1112,7 @@ setTimeout(() => console.log('D: setTimeout 2'), 0);
       <div class="diagram">
 function main() {          // 1. main() pushed to stack
   console.log('start');    //    Stack: [main]
-  greet('Shailesh');       // 2. greet() pushed
+  greet('John');       // 2. greet() pushed
   console.log('end');      //    Stack: [main, greet]
 }                          // 3. greet() returns, popped
                            //    Stack: [main]
@@ -1713,15 +1713,15 @@ const { add, subtract } = require('./math');
 // module.exports IS what gets returned from require()
 
 // ✅ Both work:
-exports.name = 'Shailesh';          // adds to module.exports object
-module.exports.name = 'Shailesh';   // same thing
+exports.name = 'John';          // adds to module.exports object
+module.exports.name = 'John';   // same thing
 
 // ❌ This BREAKS exports:
-exports = { name: 'Shailesh' };     // creates new local variable
+exports = { name: 'John' };     // creates new local variable
 // require() still returns the original module.exports = {}
 
 // ✅ This replaces entire export:
-module.exports = { name: 'Shailesh' }; // replaces module.exports
+module.exports = { name: 'John' }; // replaces module.exports
 
 // ─── Circular dependency handling ────────────────────────────
 // a.js requires b.js which requires a.js
@@ -3669,15 +3669,15 @@ describe('User Registration', () => {
     const res = await request(app)
       .post('/api/v1/users')
       .send({
-        name: 'Shailesh',
-        email: 'shailesh@test.com',
+        name: 'John',
+        email: 'John@test.com',
         password: 'Password123!',
       });
 
     expect(res.status).toBe(201);
     expect(emailService.sendWelcome).toHaveBeenCalledWith(
-      'shailesh@test.com',
-      expect.objectContaining({ name: 'Shailesh' })
+      'John@test.com',
+      expect.objectContaining({ name: 'John' })
     );
   });
 });

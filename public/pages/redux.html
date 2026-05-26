@@ -306,7 +306,7 @@ store.<span class="fn">replaceReducer</span>(fn);  <span class="cm">// hot reloa
   type: <span class="str">'user/addUser'</span>,    <span class="cm">// required — describes what happened</span>
   payload: {              <span class="cm">// optional — carries data</span>
     id: <span class="num">1</span>,
-    name: <span class="str">'Shailesh'</span>,
+    name: <span class="str">'John'</span>,
     role: <span class="str">'Tech Lead'</span>
   }
 };
@@ -355,7 +355,7 @@ store.<span class="fn">replaceReducer</span>(fn);  <span class="cm">// hot reloa
     <div class="code-block">
       <div class="code-label"><span class="dot r"></span>Dispatch Flow</div>
       <pre><span class="cm">// dispatch sends action through middleware → reducer → new state</span>
-store.<span class="fn">dispatch</span>({ type: <span class="str">'user/ADD_USER'</span>, payload: { id: <span class="num">1</span>, name: <span class="str">'Shailesh'</span> } });
+store.<span class="fn">dispatch</span>({ type: <span class="str">'user/ADD_USER'</span>, payload: { id: <span class="num">1</span>, name: <span class="str">'John'</span> } });
 
 <span class="cm">// In React components (with react-redux)</span>
 <span class="kw">const</span> dispatch = <span class="fn">useDispatch</span>();
@@ -931,7 +931,7 @@ sagaMiddleware.<span class="fn">run</span>(rootSaga); <span class="cm">// ← st
 });
 
 <span class="cm">// Usage</span>
-dispatch(<span class="fn">addUser</span>({ id: <span class="num">1</span>, name: <span class="str">'Shailesh'</span> }));
+dispatch(<span class="fn">addUser</span>({ id: <span class="num">1</span>, name: <span class="str">'John'</span> }));
 
 <span class="cm">// ── RTK Auto-Generated ────────────────────────────</span>
 <span class="cm">// createSlice auto-generates action creators from reducer names</span>
@@ -1225,8 +1225,8 @@ gen.<span class="fn">next</span>(); <span class="cm">// returns { value: 'done',
 }
 <span class="kw">const</span> d = <span class="fn">dialog</span>();
 d.<span class="fn">next</span>();               <span class="cm">// → 'What is your name?'</span>
-d.<span class="fn">next</span>(<span class="str">'Shailesh'</span>);     <span class="cm">// name = 'Shailesh' → 'Hello Shailesh! How old are you?'</span>
-d.<span class="fn">next</span>(<span class="num">28</span>);             <span class="cm">// age = 28 → 'Shailesh is 28 years old.'</span></pre>
+d.<span class="fn">next</span>(<span class="str">'John'</span>);     <span class="cm">// name = 'John' → 'Hello John! How old are you?'</span>
+d.<span class="fn">next</span>(<span class="num">28</span>);             <span class="cm">// age = 28 → 'John is 28 years old.'</span></pre>
     </div>
     <div class="callout info">
       <strong>Why Saga uses generators (not async/await)</strong>
@@ -1674,7 +1674,7 @@ sagaMiddleware.<span class="fn">run</span>(rootSaga); <span class="cm">// starts
   });
 
   <span class="fn">it</span>(<span class="str">'dispatches success with data'</span>, () =&gt; {
-    <span class="kw">const</span> mockUser = { id: <span class="str">'user123'</span>, name: <span class="str">'Shailesh'</span> };
+    <span class="kw">const</span> mockUser = { id: <span class="str">'user123'</span>, name: <span class="str">'John'</span> };
     <span class="cm">// Pass mock API result back via next(mockUser)</span>
     <span class="kw">const</span> effect = gen.<span class="fn">next</span>(mockUser).value;
     <span class="fn">expect</span>(effect).<span class="fn">toEqual</span>(<span class="fn">put</span>({ type: <span class="str">'user/success'</span>, payload: mockUser }));
@@ -1685,7 +1685,7 @@ sagaMiddleware.<span class="fn">run</span>(rootSaga); <span class="cm">// starts
 <span class="kw">import</span> { runSaga } <span class="kw">from</span> <span class="str">'redux-saga'</span>;
 
 <span class="fn">it</span>(<span class="str">'full saga integration test'</span>, <span class="kw">async</span> () =&gt; {
-  jest.<span class="fn">spyOn</span>(userAPI, <span class="str">'getUser'</span>).<span class="fn">mockResolvedValue</span>({ name: <span class="str">'Shailesh'</span> });
+  jest.<span class="fn">spyOn</span>(userAPI, <span class="str">'getUser'</span>).<span class="fn">mockResolvedValue</span>({ name: <span class="str">'John'</span> });
   <span class="kw">const</span> dispatched = [];
 
   <span class="kw">await</span> <span class="fn">runSaga</span>({ dispatch: a =&gt; dispatched.<span class="fn">push</span>(a) }, fetchUserWorker, { payload: <span class="str">'u1'</span> });
